@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Rex · PTE Score Tracker</title>
+  <style>
+    :root { --paper:#fffaf3;--ink:#443b35;--muted:#8a7b6d;--line:#eadfd2;--accent:#bd7951;--accent-dark:#8c5438;--track:#eee5da;--soft:#f8eddf; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-width:260px; padding:8px; background:transparent; font-family:Inter,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; color:var(--ink); }
+    .widget { width:100%; max-width:670px; margin:0 auto; border:1px solid var(--line); border-radius:20px; padding:20px; background:linear-gradient(150deg,#fffdf9 0%,var(--paper) 100%); box-shadow:0 4px 18px rgba(110,82,55,.055); }
+    .top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .eyebrow { color:var(--accent-dark); font-size:10px; letter-spacing:2.1px; font-weight:750; }
+    h1 { font-size:20px; letter-spacing:.2px; margin:5px 0 3px; font-weight:760; }
+    .subtitle { margin:0; color:var(--muted); font-size:12px; line-height:1.5; }
+    .leaf { display:grid; place-items:center; width:41px; height:41px; flex-shrink:0; border-radius:14px; background:var(--soft); font-size:24px; }
+    .rule { height:1px; background:var(--line); margin:17px 0; }
+    .scores { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .skill { min-width:0; padding:12px; border:1px solid var(--line); border-radius:13px; background:rgba(255,255,255,.75); }
+    .skillhead { display:flex; align-items:center; justify-content:space-between; gap:6px; }
+    .name { font-weight:740; font-size:13px; }
+    .short { color:var(--muted); font-weight:600; font-size:10px; margin-left:3px; }
+    .gap { color:var(--accent-dark); background:var(--soft); border-radius:30px; padding:4px 7px; font-size:10px; font-weight:700; white-space:nowrap; }
+    .gap.done { color:#53725a; background:#e9f3e9; }
+    .numbers { margin:11px 0 9px; display:flex; align-items:baseline; gap:5px; }
+    .actual { font-size:27px; font-weight:780; line-height:1; font-variant-numeric:tabular-nums; }
+    .separator { font-size:13px; color:#b6a89a; }
+    .goal { color:var(--muted); font-size:13px; font-weight:650; font-variant-numeric:tabular-nums; }
+    .bar { width:100%; height:5px; overflow:hidden; background:var(--track); border-radius:20px; }
+    .bar span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#d7ae80,#b77450); transition:width .25s ease; }
+    .bottom { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:16px; }
+    .focus { min-width:0; display:flex; flex-direction:column; gap:4px; }
+    .focus small { color:var(--muted); font-size:10px; letter-spacing:.6px; }
+    .focus strong { font-size:12px; line-height:1.55; font-weight:680; }
+    button { cursor:pointer; border-radius:9px; border:1px solid #dcc5b1; padding:8px 10px; color:var(--accent-dark); background:#fffaf3; font:650 11px inherit; font-size:11px; white-space:nowrap; }
+    button:hover { background:var(--soft); }
+    .editor { margin-top:14px; padding:12px; background:#f8f0e6; border-radius:12px; border:1px solid var(--line); }
+    .editor[hidden] { display:none; }
+    .fields { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+    label { display:flex; flex-direction:column; gap:5px; color:var(--muted); font-size:11px; }
+    input { width:100%; min-width:0; border:1px solid #dccbb9; border-radius:7px; background:#fff; padding:7px; color:var(--ink); font:inherit; font-size:14px; }
+    .actions { display:flex; justify-content:flex-end; gap:8px; margin-top:10px; }
+    .save { background:var(--accent-dark); color:#fff; border-color:var(--accent-dark); }
+    .hint { font-size:10px; line-height:1.5; color:var(--muted); margin:10px 0 0; }
+    @media(max-width:390px){ .widget{padding:15px;} .scores{gap:8px;} .skill{padding:10px;} .actual{font-size:24px;} .name{font-size:12px;} .fields{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  </style>
+</head>
+<body>
+  <main class="widget">
+    <div class="top">
+      <div><div class="eyebrow">REX · PTE ACADEMIC</div><h1>我的目标分</h1><p class="subtitle">Current score / Target score</p></div>
+      <div class="leaf" aria-hidden="true">🍂</div>
+    </div>
+    <div class="rule"></div>
+    <div class="scores" id="scores" aria-label="PTE 四科成绩"></div>
+    <div class="bottom">
+      <div class="focus"><small>当前重点 · FOCUS</small><strong id="focusText"></strong></div>
+      <button type="button" id="editBtn" aria-expanded="false" aria-controls="editor">修改成绩 ✎</button>
+    </div>
+    <form class="editor" id="editor" hidden>
+      <div class="fields" id="fields"></div>
+      <div class="actions"><button type="button" id="cancelBtn">取消</button><button class="save" type="submit">保存成绩</button></div>
+      <p class="hint">成绩只尝试保存在当前浏览器，不会同步到 Notion 数据库或其他设备。</p>
+    </form>
+  </main>
+  <script>
+    // 更改这里的 target 和 initial，就能设置你自己的目标分与初始成绩。
+    const config = [
+      { id:'speaking', name:'口语', short:'S', target:88, initial:81 },
+      { id:'writing', name:'写作', short:'W', target:85, initial:75 },
+      { id:'reading', name:'阅读', short:'R', target:70, initial:59 },
+      { id:'listening', name:'听力', short:'L', target:69, initial:69 }
+    ];
+    const storageKey = 'rex-pte-widget-scores-v1';
+    let saved = {};
+    try { const value = JSON.parse(localStorage.getItem(storageKey) || '{}'); if(value && typeof value==='object' && !Array.isArray(value)) saved=value; } catch (_) {}
+    let scores = Object.fromEntries(config.map(s => [s.id, Number.isInteger(saved[s.id]) && saved[s.id]>=10 && saved[s.id]<=90 ? saved[s.id] : s.initial]));
+    const scoreArea = document.getElementById('scores');
+    const focus = document.getElementById('focusText');
+    const editor = document.getElementById('editor');
+    const editBtn = document.getElementById('editBtn');
+    const fields = document.getElementById('fields');
+    fields.innerHTML = config.map(s => `<label for="score-${s.id}">${s.name}<input id="score-${s.id}" name="${s.id}" type="number" min="10" max="90" step="1" required></label>`).join('');
+    function render(){
+      scoreArea.innerHTML = config.map(s => {
+        const current=scores[s.id], remaining=Math.max(0,s.target-current);
+        return `<section class="skill"><div class="skillhead"><span class="name">${s.name}<span class="short">${s.short}</span></span><span class="gap ${remaining===0?'done':''}">${remaining===0?'已达标':`还差 ${remaining}`}</span></div><div class="numbers"><span class="actual">${current}</span><span class="separator">/</span><span class="goal">${s.target}</span></div><div class="bar" role="progressbar" aria-label="${s.name}目标完成比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(100,Math.round(current/s.target*100))}"><span style="width:${Math.min(100,current/s.target*100)}%"></span></div></section>`;
+      }).join('');
+      const ranked=config.map(s=>({...s,remaining:Math.max(0,s.target-scores[s.id])})).filter(s=>s.remaining>0).sort((a,b)=>b.remaining-a.remaining);
+      focus.textContent = ranked.length ? ranked.slice(0,2).map(s=>`${s.name} +${s.remaining}`).join('  ·  ') : '四科已达到设定目标 ✓';
+    }
+    function toggleEditor(open){
+      editor.hidden=!open; editBtn.setAttribute('aria-expanded',String(open));
+      if(open) config.forEach(s=>{fields.elements[s.id].value=scores[s.id];});
+    }
+    editBtn.addEventListener('click',()=>toggleEditor(editor.hidden));
+    document.getElementById('cancelBtn').addEventListener('click',()=>toggleEditor(false));
+    editor.addEventListener('submit',e=>{
+      e.preventDefault(); const updated={};
+      for(const s of config){ const number=Number(fields.elements[s.id].value); if(!Number.isInteger(number)||number<10||number>90){fields.elements[s.id].reportValidity();return;} updated[s.id]=number; }
+      scores=updated;
+      try { localStorage.setItem(storageKey,JSON.stringify(scores)); } catch (_) {}
+      render();toggleEditor(false);
+    });
+    render();
+  </script>
+</body>
+</html>
