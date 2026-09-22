@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Rex · PTE Mini Habit Tracker</title>
+<style>
+  :root{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:#644e3d;background:transparent;font-synthesis:none}
+  *{box-sizing:border-box}
+  body{margin:0;padding:7px;min-width:214px;background:transparent}
+  button,input{font:inherit}
+  button{cursor:pointer}
+  .widget{max-width:430px;margin:0 auto;position:relative;overflow:hidden;border:1px solid #e8d8c6;border-radius:16px;background:linear-gradient(155deg,#fffdf9 0%,#fff9f2 55%,#fbf3e9 100%);padding:12px 12px 10px;box-shadow:0 4px 17px rgba(118,75,39,.065)}
+  .widget::before{content:"✦";position:absolute;top:8px;right:13px;color:#d9b18a;font-size:10px;opacity:.65;pointer-events:none}
+  .head,.between,.subject-head,.foot,.history-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .eyebrow{font-size:9px;letter-spacing:1.7px;color:#ab876c;font-weight:730;line-height:1.4}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:18px;font-style:italic;letter-spacing:.25px;margin:2px 0 0;font-weight:500;color:#94623e}
+  .day{color:#ac886a;font-size:10px;white-space:nowrap;padding-right:12px}
+  .progress-info{margin-top:11px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#9a7961}
+  .progress-info strong{color:#986340;font-size:11px}
+  .bar{height:5px;margin:6px 0 11px;border-radius:99px;background:#f1dfcf;overflow:hidden}
+  .fill{width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,#e9bb83,#ac724c);transition:width .22s ease}
+  .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-bottom:9px}
+  .tab{padding:7px 2px 6px;min-width:0;border:1px solid #efdfcd;border-radius:9px;background:#fffefa;color:#96775d;display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.28;transition:background .15s,border-color .15s}
+  .tab[aria-selected="true"]{background:#f9e8d5;border-color:#d4a87d;color:#81502e}
+  .tab .symbol{font-size:15px;line-height:1.2}
+  .tab .short{font-size:10px;font-weight:700}
+  .tab .count{font-size:9px;font-variant-numeric:tabular-nums}
+  .panel{background:#fffdf9;border:1px solid #efe1d2;border-radius:11px;padding:8px 9px 6px}
+  .subject-head{padding-bottom:6px;border-bottom:1px solid #f0e3d7}
+  .subject-title{font-size:11px;font-weight:730;color:#805737}
+  .subject-count{font-size:10px;color:#a1846e;font-variant-numeric:tabular-nums}
+  .tasks{max-height:158px;overflow-y:auto;scrollbar-color:#dfbea1 transparent;scrollbar-width:thin}
+  .task{min-height:32px;display:flex;align-items:center;gap:9px;padding:4px 2px;color:#624d3d;font-size:12px;border-bottom:1px solid #f6eee6;cursor:pointer;user-select:none}
+  .task:last-child{border-bottom:0}
+  .task input{appearance:none;width:16px;height:16px;border:1.5px solid #d0ad90;border-radius:5px;display:grid;place-items:center;flex-shrink:0;margin:0;background:#fff;cursor:pointer}
+  .task input:checked{background:#b57b50;border-color:#b57b50}
+  .task input:checked::after{content:"";height:6px;width:9px;border-left:2px solid white;border-bottom:2px solid white;transform:translateY(-1px) rotate(-45deg)}
+  .task:has(input:checked) span{text-decoration:line-through;color:#b5a394}
+  .task input:focus-visible,.tab:focus-visible,.action:focus-visible,.close:focus-visible{outline:2px solid #a96b40;outline-offset:2px}
+  .foot{margin-top:10px;min-height:20px;border-top:1px solid #eddbca;padding-top:8px}
+  .motto{font-family:Georgia,"Times New Roman",serif;font-size:11px;font-style:italic;color:#a36d48;letter-spacing:.15px}
+  .action{background:transparent;border:0;color:#94603e;font-weight:680;font-size:10px;padding:3px 1px;white-space:nowrap}
+  .save-msg{font-size:9px;color:#9a7868;margin:6px 1px 0;display:none}
+  .history{display:none;background:#fffdf9;border:1px solid #efe1d2;border-radius:11px;padding:9px;margin-top:9px}
+  .history.open{display:block}
+  .history-head{margin-bottom:6px;font-size:11px;font-weight:720;color:#805737}
+  .close{border:0;background:#f8ebdd;border-radius:7px;color:#9a6d4d;padding:3px 7px;font-size:11px}
+  .history-list{max-height:145px;overflow:auto}
+  .history-row{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;padding:7px 1px;border-bottom:1px solid #f1e5d9}
+  .history-row:last-child{border:0}
+  .history-row small{display:block;font-size:9px;color:#b69a83;margin-top:2px}
+  .history-score{font-weight:750;color:#986340;white-space:nowrap}
+  .history-tools{display:flex;gap:10px;margin-top:7px;align-items:center}
+  .history-tools button,.history-tools label{font-size:10px;color:#8e5c3c;background:#f7e9d9;border:0;border-radius:7px;padding:6px 8px;cursor:pointer}
+  .history-tools input{display:none}
+  .empty{font-size:10px;color:#b3977f;padding:10px 0}
+  @media(prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+<main class="widget" aria-label="PTE 每日习惯追踪器">
+  <header class="head">
+    <div><div class="eyebrow">MY STUDY ROUTINE</div><h1>🍂 Daily Habits</h1></div>
+    <time class="day" id="today"></time>
+  </header>
+  <div class="progress-info"><span>Today's progress</span><strong id="totalCount">0 / 0</strong></div>
+  <div class="bar" role="progressbar" aria-label="今日整体完成进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress"><div class="fill" id="fill"></div></div>
+  <div class="tabs" role="tablist" aria-label="PTE 科目" id="tabs"></div>
+  <section class="panel" id="taskPanel" role="tabpanel">
+    <div class="subject-head"><span class="subject-title" id="subjectTitle"></span><span class="subject-count" id="subjectCount"></span></div>
+    <div class="tasks" id="tasks"></div>
+  </section>
+  <section class="history" id="history" aria-label="历史打卡记录">
+    <div class="history-head"><span>📅 History · 最近 30 天</span><button class="close" id="closeHistory" type="button" aria-label="关闭历史">✕</button></div>
+    <div class="history-list" id="historyList"></div>
+    <div class="history-tools"><button type="button" id="exportBtn" title="下载所有打卡数据备份">↓ 导出备份</button><label for="importFile" title="导入之前导出的 JSON 备份">↑ 导入备份<input id="importFile" type="file" accept="application/json,.json"></label></div>
+  </section>
+  <footer class="foot"><span class="motto">Believe yourself, Rex</span><button class="action" id="historyBtn" type="button" aria-controls="history" aria-expanded="false">History ↗</button></footer>
+  <p class="save-msg" id="saveMsg" role="status"></p>
+</main>
+<script>
+(() => {
+  'use strict';
+  // 可直接修改以下题型名称；每个题型每天只有一次打卡。
+  const groups = [
+    {id:'speaking', label:'Speaking', short:'Speak', emoji:'🎙️', tasks:['RA','RS','DI','RL','ASQ','SGD','RTS']},
+    {id:'listening', label:'Listening', short:'Listen', emoji:'🎧', tasks:['SST','WFD','FIB-L','HIW','HCS','SMW']},
+    {id:'writing', label:'Writing', short:'Write', emoji:'✍️', tasks:['SWT','Essay']},
+    {id:'reading', label:'Reading', short:'Read', emoji:'📖', tasks:['FIB-RW','FIB-R','ROP','MCQ']}
+  ];
+  const STORAGE_KEY = 'rex-pte-habit-tracker-v1';
+  const total = groups.reduce((s,g)=>s+g.tasks.length,0);
+  const $ = id => document.getElementById(id);
+  const localDate = () => { const d=new Date(); return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); };
+  const keyFor = (group,task) => group.id + ':' + task;
+  const defaultData = () => ({version:1, days:{}});
+  let data = defaultData();
+  let selected = 'speaking';
+  let currentDay = localDate();
+  let storageOK = true;
+  const validKey = new Set(groups.flatMap(g=>g.tasks.map(t=>keyFor(g,t))));
+  function clean(obj){
+    const result=defaultData();
+    if(!obj || typeof obj!=='object'||!obj.days||typeof obj.days!=='object') return result;
+    for(const [day,values] of Object.entries(obj.days)){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||!values||typeof values!=='object') continue;
+      const checked={};
+      for(const [key,value] of Object.entries(values)) if(validKey.has(key)&&value===true) checked[key]=true;
+      result.days[day]=checked;
+    }
+    return result;
+  }
+  function load(){
+    try { const saved=localStorage.getItem(STORAGE_KEY); if(saved) data=clean(JSON.parse(saved)); }
+    catch(e){storageOK=false; showSaveWarning('当前环境无法读取本地记录，建议导出备份。');}
+  }
+  function save(){
+    try {localStorage.setItem(STORAGE_KEY,JSON.stringify(data)); storageOK=true; $('saveMsg').style.display='none';}
+    catch(e){storageOK=false;showSaveWarning('此嵌入环境可能无法保存打卡；请使用“导出备份”。');}
+  }
+  function showSaveWarning(message){ $('saveMsg').textContent=message; $('saveMsg').style.display='block'; }
+  function dayData(day=currentDay){return data.days[day]||{};}
+  function progressFor(g,day=currentDay){return g.tasks.filter(t=>dayData(day)[keyFor(g,t)]===true).length;}
+  function allProgress(day=currentDay){return groups.reduce((s,g)=>s+progressFor(g,day),0);}
+  function renderTabs(){
+    const tabs=$('tabs'); tabs.replaceChildren();
+    for(const g of groups){
+      const button=document.createElement('button');button.type='button';button.className='tab';button.setAttribute('role','tab');
+      button.setAttribute('aria-selected',String(selected===g.id));button.setAttribute('aria-controls','taskPanel');
+      const sym=document.createElement('span');sym.className='symbol';sym.textContent=g.emoji;
+      const name=document.createElement('span');name.className='short';name.textContent=g.short;
+      const count=document.createElement('span');count.className='count';count.textContent=`${progressFor(g)}/${g.tasks.length}`;
+      button.append(sym,name,count);button.addEventListener('click',()=>{selected=g.id;render();});tabs.append(button);
+    }
+  }
+  function render(){
+    $('today').textContent=new Date().toLocaleDateString('en-AU',{month:'short',day:'numeric'});
+    $('today').dateTime=currentDay;
+    const completed=allProgress();$('totalCount').textContent=`${completed} / ${total}`;
+    const percentage=total?Math.round(completed/total*100):0;
+    $('fill').style.width=percentage+'%';$('progress').setAttribute('aria-valuenow',String(percentage));
+    renderTabs();
+    const group=groups.find(g=>g.id===selected)||groups[0];
+    $('subjectTitle').textContent=group.emoji+' '+group.label;
+    $('subjectCount').textContent=`${progressFor(group)} / ${group.tasks.length}`;
+    const list=$('tasks');list.replaceChildren();
+    for(const task of group.tasks){
+      const label=document.createElement('label');label.className='task';
+      const input=document.createElement('input');input.type='checkbox';
+      const id=keyFor(group,task);input.checked=dayData()[id]===true;
+      input.setAttribute('aria-label',group.label+' '+task+' 今日完成');
+      input.addEventListener('change',()=>{syncDay();if(!data.days[currentDay])data.days[currentDay]={}; if(input.checked)data.days[currentDay][id]=true;else delete data.days[currentDay][id];save();render();if($('history').classList.contains('open'))renderHistory();});
+      const text=document.createElement('span');text.textContent=task;label.append(input,text);list.append(label);
+    }
+  }
+  function renderHistory(){
+    const box=$('historyList');box.replaceChildren();
+    const dates=Object.keys(data.days).filter(day=>day<=currentDay).sort().reverse().slice(0,30);
+    if(!dates.length){const hint=document.createElement('div');hint.className='empty';hint.textContent='还没有打卡记录，先完成今天的第一项吧。';box.append(hint);return;}
+    for(const day of dates){
+      const row=document.createElement('div');row.className='history-row';
+      const left=document.createElement('div');left.textContent=day;
+      const detail=document.createElement('small');detail.textContent=groups.map(g=>`${g.short} ${progressFor(g,day)}/${g.tasks.length}`).join(' · ');left.append(detail);
+      const score=document.createElement('span');score.className='history-score';score.textContent=`${allProgress(day)}/${total}`;
+      row.append(left,score);box.append(row);
+    }
+  }
+  function syncDay(){const newDay=localDate();if(newDay!==currentDay){currentDay=newDay;render();if($('history').classList.contains('open'))renderHistory();}}
+  $('historyBtn').addEventListener('click',()=>{syncDay();const opened=$('history').classList.toggle('open');$('historyBtn').setAttribute('aria-expanded',String(opened));$('historyBtn').textContent=opened?'Close ↑':'History ↗';if(opened)renderHistory();});
+  $('closeHistory').addEventListener('click',()=>{$('history').classList.remove('open');$('historyBtn').setAttribute('aria-expanded','false');$('historyBtn').textContent='History ↗';});
+  $('exportBtn').addEventListener('click',()=>{
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`pte-habits-backup-${currentDay}.json`;
+    document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  });
+  $('importFile').addEventListener('change',async event=>{
+    const file=event.target.files&&event.target.files[0];if(!file)return;
+    try{
+      const raw=JSON.parse(await file.text());
+      if(!raw||typeof raw!=='object'||raw.version!==1||!raw.days||typeof raw.days!=='object')throw new Error('invalid backup');
+      if(!confirm('导入备份将覆盖当前全部打卡数据，确定继续吗？'))return;
+      data=clean(raw);save();render();renderHistory();
+    }catch(e){alert('无法导入：请选择此组件导出的 JSON 备份文件。');}
+    finally{event.target.value='';}
+  });
+  load();render();
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncDay();});
+  setInterval(syncDay,60000);
+  if(!storageOK)showSaveWarning('当前环境无法读取本地记录，建议导出备份。');
+})();
+</script>
+</body>
+</html>
