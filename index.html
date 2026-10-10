@@ -343,6 +343,17 @@ body.effects-off .eternal-hanging-ornament,body.effects-off .ball-nebula,body.ef
 @media(max-width:600px){.eternal-hanging-ornament{right:12px;transform:scale(.85);transform-origin:44px 0}.eternal-hanging-ornament:before{height:145px}.eternal-hanging-ornament .angel-companion{top:145px}}
 @media(prefers-reduced-motion:reduce){.eternal-hanging-ornament,.ball-nebula,.ball-stars{animation:none!important}}
 </style>
+<style>
+/* Glass sphere: fixed reflections and refraction stay cheap while the nebula moves. */
+.crystal-ball{border-color:#e7e8ffbb;background:radial-gradient(ellipse at 28% 18%,#fcffffee 0%,#e5eaff77 9%,transparent 25%),radial-gradient(ellipse at 40% 38%,#b9b6e25c 12%,#6779ac66 43%,#34345aa8 69%,#151d3b 95%);box-shadow:inset 2px 2px 3px #fff9,inset -7px -9px 10px #111b3fcc,inset 0 -3px 2px #bcf9ffb0,0 6px 9px #38314e55,0 1px 2px #fff8}
+.crystal-ball:before{content:'';position:absolute;inset:3px;border-radius:50%;border-top:2px solid #ffffffcf;border-left:1px solid #e4faff88;border-right:2px solid #a8c3f855;border-bottom:3px solid #b4ebff9c;transform:rotate(-24deg);z-index:4;pointer-events:none}
+.crystal-ball:after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 78% 72%,#99e9ff80,transparent 24%),radial-gradient(ellipse at 45% 35%,transparent 35%,#17244770 76%);z-index:3;pointer-events:none}
+.ball-highlight{left:12px;top:9px;width:28px;height:18px;background:linear-gradient(145deg,#fff 0%,#ffffffaa 30%,#ffffff22 76%,transparent);transform:rotate(-36deg);box-shadow:0 1px 1px #ffffff88;z-index:5}
+.ball-highlight:after{content:'';position:absolute;left:44px;top:33px;width:5px;height:17px;border-radius:50%;background:linear-gradient(#fff9,#e8faff33);transform:rotate(12deg)}
+.ball-nebula{inset:13px 11px 16px;background:radial-gradient(ellipse at 32% 35%,#b9f5ecb0,transparent 42%),radial-gradient(ellipse at 65% 60%,#c5a0f6d0,transparent 50%),radial-gradient(ellipse at 48% 50%,#8186b999,transparent 68%);box-shadow:inset 0 0 10px #b7c6f333}
+.ball-stars{inset:30px 16px;font-size:9px;letter-spacing:7px;transform:rotate(-18deg);z-index:2}
+.eternal-hanging-ornament .angel-companion:before{background:linear-gradient(90deg,#80612c,#fae5aa 35%,#c0a268 65%,#77572e);box-shadow:inset 0 1px #fff7,0 1px 2px #34233b66}
+</style>
 </head>
 <body><div class="eternal-hanging-layer"><div class="eternal-hanging-ornament"><button class="angel-companion" id="angelCompanion" aria-label="吊挂水晶球" title="水晶球 · 珍藏每一刻成长"><span class="crystal-ball" aria-hidden="true"><span class="ball-nebula"></span><span class="ball-stars">✧ · ✦</span><span class="ball-highlight"></span></span><span class="angel-message">Rex，每一刻成长都值得珍藏 ∞</span></button></div></div><svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="phoenix-remove-black" color-interpolation-filters="sRGB" x="-30%" y="-30%" width="160%" height="160%"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  1 1 1 0 0"/><feComponentTransfer><feFuncA type="gamma" amplitude="1" exponent=".65" offset="0"/></feComponentTransfer><feDropShadow dx="0" dy="0" stdDeviation="1.2" flood-color="#ffb329" flood-opacity=".7"/></filter></defs></svg>
 <div class="magic-atmosphere" aria-hidden="true"><div class="celestial-rays"></div><div class="nebula one"></div><div class="nebula two"></div><div class="nebula three"></div><div class="aurora"></div><div class="ambient-seal"></div></div><canvas id="stars" aria-hidden="true"></canvas><canvas id="arcane-fx" aria-hidden="true"></canvas>
