@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='rex-focus-offline-v147';
+const CACHE='rex-focus-offline-v148';
 const FONT_CACHE='rex-public-fonts-v1';
 const ROOT=new URL('./',self.location.href);
 const HOME=new URL('index.html',ROOT).href;
@@ -10,7 +10,7 @@ const CORE=[
  'themes.js?v=soft-wings-84','daily-overview.js?v=dashboard-2',
  'dashboard-layout.js?v=soft-wings-84','hero-tasks.js?v=responsive-12',
  'weekly-calendar.js?v=soft-wings-84','pendant-position.js',
- 'page-unlock.js?v=login-restored-66','compact-dashboard.js?v=7',
+ 'page-unlock.js?v=login-space-67','compact-dashboard.js?v=7',
  'remember-archive.js?v=1','unified-sanctuary.png','avatar-3d.png',
  'crystal-pendant.png?v=full-34'
 ].map(path=>new URL(path,ROOT).href);
