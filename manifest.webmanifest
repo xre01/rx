@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "Rex World · 修炼圣殿",
+  "short_name": "Rex World",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#142035",
+  "theme_color": "#f7f2e8",
+  "icons": [
+    {
+      "src": "focus-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

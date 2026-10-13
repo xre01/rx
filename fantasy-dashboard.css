@@ -1,0 +1,739 @@
+/* Presentation only: existing application controls and storage remain intact. */
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]){--ink:#172449;--muted:#7b8299;--gold:#c79942;--teal:#58b4a5;--border:#dedbe8; color:#172449!important;background:linear-gradient(180deg,#151a39 0,#363154 700px,#eeedf2 980px)!important;min-height:100vh}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]):before{content:'';position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,#0c122530,#15152c18 65%,#eeedf2),url('./unified-sanctuary.png') center top / cover no-repeat!important;opacity:1!important;z-index:0}
+body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .magic-atmosphere{opacity:.12}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) #stars{opacity:.25;mix-blend-mode:screen}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) #arcane-fx{mix-blend-mode:screen}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .arcane-header{background:#11162ee8!important;border-bottom:1px solid #d5b36b45!important;box-shadow:0 5px 30px #07091d45!important;backdrop-filter:blur(18px)}
+body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .header-inner{max-width:1380px!important;min-height:84px!important;padding:14px 32px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .header-right{gap:20px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .realm-status{display:none}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .header-date{color:#cecde2!important;font-size:12px}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .arcane-header .brand,html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .arcane-header .brand span{color:#ffe0a0!important;-webkit-text-fill-color:#ffe0a0!important;font-family:Georgia,serif!important;background:none!important;text-shadow:0 2px 18px #f4b74033!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .brand{font-size:32px!important;letter-spacing:1px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .brand span{font-size:19px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .brand-copy:after{display:none}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .world-mist,body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .world-current{opacity:.2}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .arcane-header .nav button{color:#e4e5fa!important;background:transparent!important;border-color:transparent!important;border-radius:12px!important;padding:12px 18px!important;font-size:14px!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .arcane-header .nav button.active{color:#ffe2a0!important;background:linear-gradient(135deg,#ffe5a521,#ffd3700d)!important;box-shadow:inset 0 -2px #e5c179!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .nav-icon{color:#ffe3a8!important}
+body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .header-avatar{border:1px solid #ebc97a!important;background:radial-gradient(circle at 30% 20%,#ffe5a1,#a77ec8 45%,#374376)!important;color:#fff2ca!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .cultivation-menu{background:#fffdf7!important;color:#172449!important;border-radius:14px!important;box-shadow:0 15px 50px #0005!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .cultivation-menu button{color:#25345d!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .profile-popover{z-index:60}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) main{max-width:1380px!important;padding:28px 32px 60px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .reference-welcome{display:flex;justify-content:space-between;align-items:center;gap:28px;min-height:210px;padding:20px 22px 35px;margin-bottom:20px;color:#fff0ca;text-shadow:0 3px 22px #10152b}
+body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .reference-welcome .eyebrow{color:#ebd19b;letter-spacing:4px;font-size:10px}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .reference-welcome h1{font:500 clamp(32px,4vw,48px) Georgia,'Noto Sans SC',serif;margin:12px 0 15px;color:#ffe6a8}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .reference-welcome p{color:#f2e6ed;font-size:14px;letter-spacing:1px;margin:0;line-height:1.9}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .welcome-note{padding:23px 30px;border:1px solid #efd7a45c;border-radius:20px;background:linear-gradient(135deg,#1e2948df,#25253fdf);backdrop-filter:blur(14px);max-width:380px;box-shadow:0 15px 45px #0c0e2633}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .welcome-note b{display:block;color:#ffe2a0;font:22px Georgia,serif;margin-bottom:12px}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .welcome-note p{font-size:12px;color:#d2d1e3}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .card,html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel{background:linear-gradient(135deg,#fffdfaf5,#faf8f5f2)!important;border:1px solid #ffffffbf!important;border-radius:22px!important;box-shadow:0 15px 45px #131b3626!important;color:#172449!important;backdrop-filter:blur(16px);padding:26px!important}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .card h2,html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .overview-heading h2,html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel h3{color:#152348!important;letter-spacing:.5px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-heading h2:before{content:'✦';color:#edbc5e;margin-right:12px;font-size:26px}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-heading .eyebrow{color:#b1925e!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .sub,html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .sub,html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel small{color:#7c8197!important}
+body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .today-overview{margin-bottom:18px}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-cards{gap:12px}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-item{border-radius:13px!important;background:linear-gradient(135deg,#f5f1fa,#edf3f3)!important;border-color:#e6e3eb!important;padding:18px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-item h3{color:#25345b!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-item h3 span{color:#95809c}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-item .empty,body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-item li{color:#81889b!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-item:nth-child(2){background:linear-gradient(135deg,#fff3e5,#f9efe8)!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-item:nth-child(3){background:linear-gradient(135deg,#edf4ef,#e7f2f3)!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-item:nth-child(4){background:linear-gradient(135deg,#f1eafe,#f5edf7)!important}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .action,html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .action{background:linear-gradient(135deg,#ffe5a2,#ffd680)!important;border:1px solid #ffdb8a!important;color:#513711!important;border-radius:12px!important;box-shadow:0 4px 16px #eec27622!important;padding:11px 18px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .ghost{background:#f8f7fc!important;color:#435172!important;border:1px solid #dedee8!important;border-radius:10px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) input:not([type=checkbox]):not([type=file]),body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) select,body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) textarea{background:#fffdfb!important;color:#243255!important;border-color:#dddee7!important;border-radius:9px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .growth-form{border-top-color:#e4e1e9!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .growth-form label{color:#7a7691!important}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) #ptePanel{max-width:none!important;margin:18px 0!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) #ptePanel .overview-heading{border-bottom-color:#e4e1e9!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .theme-preview{color:#f3e5c4!important;margin:18px 0 10px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .theme-preview button{background:#202541b3!important;color:#e4d9eb!important;border-color:#d2bfd33d!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .theme-preview button[aria-pressed=true]{color:#ffe1a0!important;border-color:#e9c67899!important;background:#c89b3730!important}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .pte-plan-settings{border:1px solid #e5e1eb!important;background:#fffdf8!important;border-radius:15px!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .pte-type{border:1px solid #e4e1ec!important;background:#faf8fc!important;border-radius:12px!important;box-shadow:none!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .pte-type b{color:#263657!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel summary,html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel label{color:#626c87!important}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .pte-card-sync{background:#d6eddf!important;color:#265f53!important;border:1px solid #c4e4d4!important;border-radius:8px!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .pte-dot{background:#deddea!important;border-radius:4px!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .pte-dot.complete{background:#65b5a4!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .pte-practice-layout #pteInlineWorkspace{background:#f4f1f8!important;border:1px solid #e4deed!important;border-radius:16px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .daily-chart-overview{border:1px solid #e5e1e9!important;border-radius:16px!important;background:#f6f4f9!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .daily-chart-title h3{color:#233355!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .daily-chart-overview .chart-bar{fill:#65b5aa!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .daily-chart-overview .focus-bar{fill:#9a8cd8!important}
+html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .focus-dialog{background:linear-gradient(145deg,#fffdf9,#f2eef8)!important;color:#283455!important;border:1px solid #e9d9af!important;border-radius:24px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .focus-heading h2{color:#243154!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .focus-overlay{background:#10162b8c!important;backdrop-filter:blur(12px)}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .focus-actions button:first-child{background:linear-gradient(120deg,#ffe6a0,#ffd578)!important;color:#493517!important;border-radius:30px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .focus-status{color:#77748b!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .focus-modes button{color:#5e6183!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .focus-modes button[aria-pressed=true]{background:#e5dcf3!important;color:#68548a!important}
+body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .archive-settings,body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .archive-entry{background:#fffaf5!important;color:#233355!important;border-radius:14px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .viewtitle{color:#ffe6ac!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .notice{background:#fffbf1!important;color:#56452d!important;border-radius:12px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) footer{color:#8a889e!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .eternal-hanging-layer{z-index:45!important}
+@media(min-width:1000px){body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .reference-welcome{padding-left:25%;min-height:230px}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .today-overview{margin-left:25%;}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) #ptePanel{margin-left:0!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .eternal-hanging-layer{left:28px!important;right:auto!important;top:340px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .eternal-hanging-ornament{position:relative!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .angel-companion{width:145px!important;height:160px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .angel-message{right:auto!important;left:0!important;top:150px!important}}
+@media(max-width:760px){body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .header-inner{padding:12px 16px!important;min-height:75px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .header-right{gap:8px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .header-date{display:none}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .arcane-header .brand{font-size:25px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .brand span{font-size:13px!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .arcane-header .nav button{font-size:11px!important;padding:9px!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) main{padding:20px 14px 40px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .reference-welcome{padding:10px 8px 20px;min-height:180px;display:block}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .reference-welcome h1{font-size:34px}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .welcome-note{margin-top:22px;padding:17px 20px;max-width:none}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .card{padding:20px!important;border-radius:18px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .overview-cards{grid-template-columns:1fr 1fr!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .eternal-hanging-layer{right:12px!important;top:100px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .angel-companion{width:55px!important;height:75px!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .daily-chart-grid{grid-template-columns:1fr!important}html body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas])[data-sanctuary-theme] #ptePanel .pte-practice-layout{grid-template-columns:1fr!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .growth-form input{min-width:0!important}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .reference-welcome p{font-size:12px;max-width:80%}body:not([data-sanctuary-theme=arcane]):not([data-sanctuary-theme=journal]):not([data-sanctuary-theme=ghost]):not([data-sanctuary-theme=christmas]) .welcome-note p{max-width:100%}}
+/* Transparent character portraits keep their original silhouette. */
+html body .profile-menu .header-avatar:has(img){background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;width:62px!important;height:68px!important;padding:0!important;transform:none!important}
+html body .profile-menu .header-avatar img{display:block;width:100%!important;height:100%!important;object-fit:contain!important;border-radius:0!important;filter:drop-shadow(0 3px 2px #0a0c2940) drop-shadow(0 7px 8px #0a0c294d);transition:transform .2s ease}
+html body .profile-menu .header-avatar:hover img{transform:translateY(-2px) scale(1.05)}
+@media(max-width:760px){html body .profile-menu .header-avatar:has(img){width:46px!important;height:54px!important}}
+@media(prefers-reduced-motion:reduce){html body .profile-menu .header-avatar img{transition:none}html body .profile-menu .header-avatar:hover img{transform:none}}
+/* Override theme decoration on the portrait control itself. */
+html body #profileToggle.header-avatar,html body #profileToggle.header-avatar:hover,html body #profileToggle.header-avatar[aria-expanded=true]{background:none!important;background-image:none!important;background-color:transparent!important;border:0!important;box-shadow:none!important;outline:none!important;border-radius:0!important;overflow:visible!important;padding:0!important;isolation:auto!important}
+html body #profileToggle.header-avatar:before,html body #profileToggle.header-avatar:after{content:none!important;display:none!important;background:none!important;box-shadow:none!important;border:0!important}
+html body #profileToggle.header-avatar img{background:none!important;border:0!important;box-shadow:none!important;outline:none!important;object-fit:contain!important;mix-blend-mode:normal!important}
+html body #profileToggle.header-avatar:focus-visible{outline:2px solid #e7c47b!important;outline-offset:4px!important}
+/* A gentle idle motion for the transparent character portrait. */
+html body #profileToggle.header-avatar img{transform-origin:50% 90%;animation:rexPortraitIdle 4.6s ease-in-out infinite;will-change:transform;transition:filter .25s ease;filter:drop-shadow(0 4px 5px #07091d55)}
+html body #profileToggle.header-avatar:hover img{animation:rexPortraitHello 1.25s ease-in-out infinite;filter:drop-shadow(0 7px 7px #07091d66)}
+html body #profileToggle.header-avatar[aria-expanded=true] img{animation:rexPortraitIdle 4.6s ease-in-out infinite}
+@keyframes rexPortraitIdle{0%,100%{transform:translateY(0) rotate(-1deg) scale(1)}50%{transform:translateY(-4px) rotate(1deg) scale(1.025)}}
+@keyframes rexPortraitHello{0%,100%{transform:translateY(-3px) rotate(-3deg) scale(1.04)}50%{transform:translateY(-6px) rotate(3deg) scale(1.065)}}
+@media(prefers-reduced-motion:reduce){html body #profileToggle.header-avatar img,html body #profileToggle.header-avatar:hover img,html body #profileToggle.header-avatar[aria-expanded=true] img{animation:none!important;transform:none!important;will-change:auto}}
+/* Clearly visible motion; normal controls remain stationary. */
+html body #profileToggle.header-avatar img,html body #profileToggle.header-avatar[aria-expanded=true] img{animation:rexPortraitVisibleIdle 2.4s ease-in-out infinite!important;transform-origin:50% 90%!important}
+html body #profileToggle.header-avatar:hover img{animation:rexPortraitVisibleHello .85s ease-in-out infinite!important}
+@keyframes rexPortraitVisibleIdle{0%,100%{transform:translateY(1px) rotate(-5deg) scale(1)}25%{transform:translateY(-6px) rotate(0deg) scale(1.04)}50%{transform:translateY(-10px) rotate(5deg) scale(1.08)}75%{transform:translateY(-5px) rotate(0deg) scale(1.04)}}
+@keyframes rexPortraitVisibleHello{0%,100%{transform:translateY(-5px) rotate(-8deg) scale(1.08)}50%{transform:translateY(-12px) rotate(8deg) scale(1.13)}}
+@media(prefers-reduced-motion:reduce){html body #profileToggle.header-avatar img,html body #profileToggle.header-avatar:hover img,html body #profileToggle.header-avatar[aria-expanded=true] img{animation:none!important;transform:none!important}}
+/* User preference: keep the portrait completely still. */
+html body #profileToggle.header-avatar img,html body #profileToggle.header-avatar:hover img,html body #profileToggle.header-avatar[aria-expanded=true] img{animation:none!important;transform:none!important;transition:none!important;will-change:auto!important;filter:drop-shadow(0 4px 5px #07091d55)!important}
+/* Profile panel shares the navy and gold character styling. */
+html body #profilePopover.card{background:linear-gradient(145deg,#222b49f7,#171d35fa)!important;color:#e9e8f4!important;border:1px solid #dbc18770!important;border-radius:20px!important;box-shadow:0 22px 65px #070b2259,inset 0 1px 0 #fff1!important;padding:23px!important;backdrop-filter:blur(20px)}
+html body #profilePopover .profile-popover-heading{padding:0 0 18px!important;margin-bottom:18px!important;border-bottom:1px solid #dbc18729!important;display:flex;align-items:center}
+html body #profilePopover .profile-identity{gap:10px;flex-wrap:wrap;position:relative;padding-left:64px;min-height:70px;align-content:center}
+html body #profilePopover .profile-identity:before{content:'';position:absolute;left:-6px;top:0;width:65px;height:75px;background:url('./avatar-3d.png') center / contain no-repeat;filter:drop-shadow(0 4px 5px #05081766);pointer-events:none}
+html body #profilePopover .profile-identity h2{color:#ffe2a3!important;font-family:Georgia,serif!important;font-size:24px!important;letter-spacing:1px!important}
+html body #profilePopover #rank{background:#e6c37315!important;border:1px solid #e6c37338!important;color:#ecd5a0!important;border-radius:7px;padding:5px 8px;font-size:10px!important}
+html body #profilePopover .profile-close{color:#c3c5dc!important;background:transparent!important;border:0!important;box-shadow:none!important;align-self:flex-start}
+html body #profilePopover .profile-close:hover{color:#ffe2a3!important;background:#ffffff0a!important}
+html body #profilePopover #expLabel{color:#b9bdd7!important;font-size:12px!important}
+html body #profilePopover .progress{height:7px!important;background:#ffffff12!important;border:0!important;margin-top:12px!important;border-radius:10px}
+html body #profilePopover #expBar{background:linear-gradient(90deg,#edbd65,#ffedb8)!important;box-shadow:0 0 9px #f8d08235}
+html body #profilePopover .stats{margin-top:22px!important;padding:16px 0!important;border-top:1px solid #dbc18720;border-bottom:1px solid #dbc18720;gap:0!important}
+html body #profilePopover .stat{background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:7px 4px!important}
+html body #profilePopover .stat+.stat{border-left:1px solid #dbc18720!important}
+html body #profilePopover .stat b{color:#ffe1a3!important;font:500 25px Georgia,serif!important;margin-bottom:9px!important}
+html body #profilePopover .stat span{color:#acb3cc!important;font-size:10px!important}
+html body #profilePopover .profile-settings{border-top:0!important;margin-top:10px!important;padding-top:0!important}
+html body #profilePopover .profile-settings details+details{border-top:1px solid #dbc18720!important}
+html body #profilePopover .profile-settings summary{color:#ddc89c!important;padding:15px 0!important;font-size:12px!important}
+html body #profilePopover .profile-settings label{color:#bec3dc!important}
+html body #profilePopover .profile-settings p,html body #profilePopover .profile-settings small{color:#919bb9!important;line-height:1.8}
+html body #profilePopover .profile-settings input:not([type=file]){background:#0d142b80!important;color:#eef0ff!important;border:1px solid #bac1df2e!important;border-radius:9px!important}
+html body #profilePopover .profile-settings input::placeholder{color:#7f88a4!important}
+html body #profilePopover .profile-settings button{background:#e2c17e12!important;color:#ecd7a9!important;border:1px solid #e2c17e45!important;border-radius:9px!important;font-size:12px!important}
+html body #profilePopover .profile-settings button:hover{background:#e2c17e25!important}
+/* Shared script wordmark across every sanctuary skin. */
+html body #rexWordmark,html body #rexWordmark span{font-family:'Great Vibes','Segoe Script','Brush Script MT',cursive!important;font-weight:400!important;font-style:normal!important;font-size:46px!important;line-height:1.3!important;letter-spacing:0!important;background:none!important;white-space:nowrap}
+html body #rexWordmark span{font-size:inherit!important}
+@media(max-width:1050px){html body #rexWordmark,html body #rexWordmark span{font-size:39px!important}}
+@media(max-width:760px){html body #rexWordmark,html body #rexWordmark span{font-size:32px!important}}
+@media(max-width:400px){html body #rexWordmark,html body #rexWordmark span{font-size:27px!important}}
+/* Reference layout only; existing theme colors and controls are retained. */
+html body #home.active{display:grid!important;grid-template-columns:minmax(0,1fr) 270px;gap:20px;align-items:start}
+html body #home>.reference-welcome{grid-column:1/-1;grid-row:1;min-height:230px;padding:22px 16px 35px!important;margin:0!important;display:grid;grid-template-columns:minmax(0,1fr) 410px;gap:35px;align-items:start}
+html body #home>.reference-welcome h1{margin-top:15px}
+html body #home>.theme-preview{grid-column:1;grid-row:2;margin:0!important;min-height:36px}
+html body #home>#ptePanel{grid-column:1;grid-row:3;margin:0!important;min-width:0;max-width:none!important}
+html body #home>.today-overview{grid-column:1/-1;grid-row:4;margin:0!important}
+html body #home #dashboardFocusCard{grid-column:2;grid-row:2/4;align-self:start;position:sticky;top:115px;border:1px solid #d5bb7c75;border-radius:20px;overflow:hidden;padding:22px 18px;background:linear-gradient(180deg,#151e38dc,#25233ce6),url('./unified-sanctuary.png') left center / auto 100%;color:#efdfb6;box-shadow:0 14px 40px #090d2c50;text-align:center;min-height:325px}
+html body #dashboardFocusCard h2{font-size:16px;font-weight:500;margin:0 0 12px;color:#f1d99f;letter-spacing:1px}
+html body #dashboardFocusCard p{color:#bcb9d4;font-size:12px;margin:10px 0 18px}
+html body #dashboardFocusCard>.action{width:100%;border-radius:30px!important}
+html body #dashboardFocusCard .eternal-hanging-ornament{position:relative!important;inset:auto!important;width:100%!important;height:180px!important;display:grid!important;place-items:center!important;transform:none!important;margin:0!important}
+html body #dashboardFocusCard #angelCompanion{position:relative!important;inset:auto!important;margin:0!important;width:135px!important;height:165px!important;transform-origin:50% 0}
+html body #dashboardFocusCard .angel-message{display:none!important}
+html body .eternal-hanging-layer:empty{display:none!important}
+html body #home .layout-profile-summary{max-width:none;width:100%;padding:20px 23px;border-radius:18px}
+html body .layout-profile-identity{display:flex;align-items:center;gap:12px}
+html body .layout-profile-identity img{width:54px;height:64px;object-fit:contain;filter:drop-shadow(0 3px 4px #080c2755)}
+html body .layout-profile-identity b{font-size:18px;margin:0 0 8px;line-height:1.5}
+html body .layout-profile-identity span{display:block;font-size:11px;color:#bdbed3}
+html body .layout-xp-track{height:8px;margin:14px 0 19px;background:#ffffff19;border-radius:20px;overflow:hidden}
+html body .layout-xp-track>div{height:100%;background:linear-gradient(90deg,#edbd68,#fff0c5);border-radius:20px}
+html body .layout-profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+html body .layout-profile-stats strong{display:block;color:#ffe4a7;font:22px Georgia,serif;margin-bottom:6px}
+html body .layout-profile-stats span{color:#c0bfd1;font-size:11px}
+html body #home #ptePanel .pte-practice-layout{grid-template-columns:minmax(0,1fr)!important;gap:15px!important}
+html body #home #ptePanel .pte-types{max-width:none!important}
+html body #home #ptePanel #pteInlineWorkspace:empty{display:none!important}
+html body #home #ptePanel #pteInlineWorkspace:not(:empty){min-height:0!important}
+html body #home #ptePanel .daily-chart-overview{margin-top:20px!important}
+html body #home #pteLanguage{display:flex;flex-direction:column}
+html body #home #pteLanguage[hidden]{display:none!important}
+html body #home #pteLanguage>.daily-chart-overview{order:10}
+@media(max-width:1050px){html body #home.active{grid-template-columns:minmax(0,1fr) 225px;gap:16px}html body #home>.reference-welcome{grid-template-columns:minmax(0,1fr) 350px;gap:20px}html body .layout-profile-identity b{font-size:16px}}
+@media(max-width:760px){html body #home.active{grid-template-columns:minmax(0,1fr)!important;gap:16px}html body #home>.reference-welcome{grid-column:1;grid-row:1;grid-template-columns:1fr;gap:12px;min-height:0;padding:12px 5px 18px!important}html body #home>.reference-welcome .welcome-note{margin-top:10px}html body #home>.theme-preview{grid-column:1;grid-row:2}html body #home>#ptePanel{grid-column:1;grid-row:3}html body #home #dashboardFocusCard{grid-column:1;grid-row:4;position:relative;top:auto;min-height:0;padding:18px;display:grid;grid-template-columns:90px 1fr;gap:8px 15px;align-items:center}html body #home>.today-overview{grid-column:1;grid-row:5}html body #dashboardFocusCard .eternal-hanging-ornament{grid-column:1;grid-row:1/4;height:125px!important}html body #dashboardFocusCard #angelCompanion{width:85px!important;height:115px!important}html body #dashboardFocusCard h2,html body #dashboardFocusCard p,html body #dashboardFocusCard>.action{grid-column:2;margin:0!important}html body #home .overview-cards{grid-template-columns:1fr 1fr!important}}
+/* Restore the original hanging crystal entry and its existing timer click. */
+html body #home.active{grid-template-columns:minmax(0,1fr)!important}
+html body #home>.reference-welcome,html body #home>.theme-preview,html body #home>#ptePanel,html body #home>.today-overview{grid-column:1!important}
+html body .eternal-hanging-layer{left:auto!important;right:24px!important;top:100px!important;display:block!important}
+html body .eternal-hanging-layer .eternal-hanging-ornament{position:relative!important}
+html body .eternal-hanging-layer #angelCompanion{width:82px!important;height:112px!important}
+html body .eternal-hanging-layer .angel-message{left:auto!important;right:90%!important;top:55px!important}
+@media(max-width:760px){html body .eternal-hanging-layer{right:12px!important;top:100px!important}html body .eternal-hanging-layer #angelCompanion{width:55px!important;height:75px!important}}
+/* Compact tasks and their existing upload/sync view share one card. */
+html body #home .hero-task-card{align-self:start;background:linear-gradient(145deg,#fffefcf5,#f5f3f8f5);color:#26324c;text-shadow:none;border:1px solid #fff9;border-radius:19px;padding:20px 22px;box-shadow:0 12px 38px #111a3333;max-width:590px;min-width:0}
+html body .hero-task-card h2{font-size:17px;margin:0 0 15px;color:#283453;letter-spacing:.5px}html body .hero-task-card h2 small{font-size:12px;color:#858a9c;font-weight:400;margin-left:5px}
+html body .hero-task-row{display:grid;grid-template-columns:25px 1fr 48px minmax(50px,95px) 30px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #e6e2ed80;font-size:12px}
+html body .hero-task-icon{display:grid;place-items:center;background:var(--task-color);color:white;width:24px;height:24px;border-radius:7px;font-size:16px}html body .hero-task-row b{font-weight:500;color:#293451}html body .hero-task-number{font-size:11px;color:#8a8d9e;text-align:right}
+html body .hero-task-track{height:6px;background:#e6e3ea;border-radius:20px;overflow:hidden}html body .hero-task-track>span{display:block;height:100%;background:var(--task-color);border-radius:20px}
+html body .hero-task-arrow{border:0;border-radius:50%;height:28px;width:28px;background:#ffdf92;color:#765522;font:24px Georgia,serif;display:grid;place-items:center;cursor:pointer;padding:0}html body .hero-task-arrow:hover{background:#ffd16c}
+html body .hero-task-back{border:0;background:transparent;color:#5b6684;font:inherit;font-size:12px;padding:2px 0 14px;cursor:pointer}
+html body .hero-task-list[hidden],html body .hero-task-detail[hidden]{display:none!important}
+html body .hero-task-detail #pteInlineWorkspace{padding:0!important;margin:0!important;border:0!important;background:transparent!important;min-height:0!important;color:#293451}
+html body .hero-task-detail #pteInlineWorkspace .pte-actions>.action{display:inline-block!important}
+html body .hero-task-detail #pteInlineWorkspace .pte-checkin{margin:0!important;padding:10px!important;background:#fff8!important;border:1px solid #e1dfea!important;border-radius:12px}
+html body .hero-task-detail #pteInlineWorkspace .pte-question{background:transparent!important;padding:10px 0!important;border:0!important;margin:0!important}
+html body .hero-task-detail #pteInlineWorkspace textarea{font-size:13px;min-height:90px}
+html body .hero-task-detail #pteInlineWorkspace .pte-question label{font-size:12px;color:#646e85;gap:6px}
+html body .hero-task-detail #pteInlineWorkspace .pte-inline-heading{font-size:12px;color:#566380}html body .hero-task-detail #pteInlineWorkspace .pte-actions button{min-height:40px;font-size:11px!important;padding:9px!important}
+html body .hero-task-feedback{font-size:12px!important;color:#707890!important;max-width:100%!important;margin-top:12px!important;overflow-wrap:anywhere;letter-spacing:0!important}
+@media(max-width:760px){html body #home .hero-task-card{max-width:none;padding:18px}html body .hero-task-row{grid-template-columns:24px 1fr 44px minmax(45px,90px) 28px;gap:8px}}
+html body .hero-task-list h2{display:flex;align-items:center;gap:3px}
+html body .hero-task-add{margin-left:auto;border:0;border-radius:50%;background:#ffdf92;color:#765522;width:30px;height:30px;font-size:23px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}
+html body .hero-task-add:hover{background:#ffd16c}
+html body .hero-custom-form[hidden]{display:none!important}
+html body .hero-custom-form h3{font-size:16px;color:#283453;margin:0 0 18px}
+html body .hero-custom-form label{display:grid;gap:7px;font-size:12px;color:#626c85;margin-bottom:14px}
+html body .hero-custom-form input{width:100%;min-width:0;padding:10px;font:inherit;border:1px solid #deddea}
+html body .hero-custom-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+html body .hero-custom-actions{display:flex;justify-content:flex-end;gap:10px}
+html body .hero-custom-form [role=status]{font-size:12px;color:#bd6a5a;max-width:100%;letter-spacing:0}
+html body .hero-task-row b{overflow-wrap:anywhere;min-width:0}
+/* PTE controls now live entirely in Today's cultivation. */
+html body #home #pteLanguage>.overview-heading,html body #home #pteLanguage>p.sub,html body #home #ptePlanSettings{display:none!important}
+html body #home #ptePanel .pte-practice-layout:has(#pteInlineWorkspace:empty){display:none!important}
+html body #home #ptePanel:has(#pteLanguage[hidden]){display:none!important}
+html body #home #ptePanel .daily-chart-overview{margin-top:0!important}
+html body .hero-task-row{grid-template-columns:25px 1fr 75px minmax(50px,95px) 30px!important}
+html body .hero-task-quantity{display:flex;align-items:center;justify-content:flex-end;gap:4px;white-space:nowrap}
+html body .hero-task-quantity input{width:42px!important;min-width:0!important;height:31px;min-height:31px;padding:3px!important;border:1px solid #e3deeb!important;background:#f4f0f8!important;text-align:center;color:#39435e!important;font:12px inherit!important;border-radius:7px!important;appearance:textfield}
+html body .hero-task-quantity input::-webkit-inner-spin-button,html body .hero-task-quantity input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+html body .hero-question-picker{display:flex;gap:6px;flex-wrap:wrap;padding:0 0 13px}
+html body .hero-question-picker button{min-width:32px;height:31px;border:1px solid #ddd6e8;border-radius:7px;color:#65708a;background:#fbf9ff;cursor:pointer;font:12px inherit}
+html body .hero-question-picker button[aria-pressed=true]{border-color:#d5ad59;background:#ffdf92;color:#655021}
+@media(max-width:760px){html body .hero-task-row{grid-template-columns:24px 1fr 70px minmax(35px,70px) 28px!important;gap:6px!important}}
+html body #home #ptePanel .pte-practice-layout{display:none!important}
+html body .hero-task-row{grid-template-columns:25px 1fr 75px minmax(45px,85px) 28px 24px!important;gap:8px!important}
+html body .hero-task-delete{border:0;background:transparent;color:#a69baa;font-size:19px;width:24px;height:28px;cursor:pointer;padding:0;border-radius:6px}
+html body .hero-task-delete:hover{background:#f9e4e6;color:#bd626d}
+@media(max-width:760px){html body .hero-task-row{grid-template-columns:24px 1fr 65px minmax(25px,60px) 26px 22px!important;gap:5px!important}}
+/* Reserve an outer gutter for the hanging crystal, away from profile cards. */
+@media(min-width:761px){html body main{padding-right:135px!important}html body .eternal-hanging-layer{right:15px!important;left:auto!important;top:110px!important;width:96px!important}html body #home>.reference-welcome{grid-template-columns:minmax(0,1fr) minmax(285px,360px)!important;gap:24px!important}}
+@media(min-width:761px) and (max-width:1050px){html body #home>.reference-welcome{grid-template-columns:minmax(0,1fr)!important}html body #home .layout-profile-summary{max-width:410px!important;justify-self:end}}
+@media(max-width:760px){html body .eternal-hanging-layer{right:12px!important;top:92px!important}html body #home>.reference-welcome{padding-top:86px!important}}
+/* Clear the rectangular button surface; retain only translucent spherical glass. */
+html body .eternal-hanging-layer,html body .eternal-hanging-layer .eternal-hanging-ornament,html body #angelCompanion,html body #angelCompanion:hover,html body #angelCompanion:active{background:none!important;background-color:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;outline:none!important;backdrop-filter:none!important;overflow:visible!important}
+html body #angelCompanion .crystal-ball{border-radius:50%!important;overflow:hidden!important;background:radial-gradient(ellipse at 30% 22%,#ffffff70,transparent 30%),radial-gradient(ellipse at 65% 72%,#9bdcd522,transparent 65%)!important;border:1px solid #def2ed88!important;box-shadow:inset 2px 2px 5px #ffffff50,inset -3px -5px 7px #a1c8d333,0 3px 9px #15244622!important}
+html body #angelCompanion .crystal-ball:before{border-radius:50%!important;background:transparent!important}
+html body #angelCompanion .crystal-ball:after{border-radius:50%!important;background:radial-gradient(ellipse at 85% 55%,#ffffff22,transparent 30%)!important}
+html body #angelCompanion .ball-nebula{opacity:.25!important;box-shadow:none!important}
+html body #angelCompanion:focus-visible{outline:2px solid #e7c47b!important;outline-offset:5px!important;border-radius:50%}
+html body #home .layout-profile-summary{background:linear-gradient(145deg,#fffefbf5,#f6f3f8f5)!important;border:1px solid #ffffffb8!important;color:#26314c!important;box-shadow:0 12px 35px #141d3426!important;text-shadow:none!important;padding:21px!important;backdrop-filter:blur(14px)}
+html body .layout-profile-identity b{color:#1e2c48!important;font:600 23px Georgia,serif!important;margin:0 0 5px!important}
+html body .layout-profile-identity span{color:#60687e!important;font-size:12px!important}
+html body .layout-progress-row{display:flex;gap:9px;align-items:center;margin:13px 0 21px}
+html body .layout-progress-row .layout-xp-track{margin:0!important;flex:1;height:8px!important;background:#e3e0e8!important}
+html body .layout-progress-row .layout-xp-track>div{background:linear-gradient(90deg,#263754,#536681)!important}
+html body .layout-progress-row .layout-xp-label{color:#7d8294;font-size:10px;white-space:nowrap}
+html body .layout-profile-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important}
+html body .layout-profile-stats strong{color:#293651!important;font:19px Georgia,serif!important}
+html body .layout-profile-stats span{color:#858a9a!important;font-size:10px!important;white-space:nowrap}
+html body #home .daily-chart-overview{display:none!important}
+/* Align the main cards and consolidate secondary practice entry. */
+html body main{max-width:1380px!important;padding-top:30px!important;padding-bottom:48px!important}
+html body #home.active{gap:24px!important}
+html body #home>.reference-welcome{padding:0!important;margin:0!important;min-height:0!important;grid-template-columns:minmax(0,1.55fr) minmax(290px,1fr)!important;gap:24px!important;align-items:start!important}
+html body #home .hero-task-card{width:100%!important;max-width:none!important;padding:24px!important;border-radius:20px!important}
+html body #home .layout-profile-summary{width:100%!important;max-width:none!important;margin:0!important;justify-self:stretch!important;border-radius:20px!important;padding:24px!important}
+html body #home>#ptePanel{display:none!important}
+html body #home>.today-overview{grid-row:3!important;padding:24px!important;border-radius:20px!important}
+html body #home>.theme-preview{grid-row:2!important;margin:0!important;justify-content:flex-start!important;padding:4px 2px!important}
+html body .hero-task-card .pte-other-practice{margin-top:22px!important;padding-top:18px!important;border-top:1px solid #dedbe7!important;text-shadow:none}
+html body .hero-task-card .pte-other-practice h3{font-size:15px!important;color:#2c3855!important;margin-bottom:8px!important}
+html body .hero-task-card .pte-other-practice p{font-size:11px!important;line-height:1.8!important;color:#83889c!important;max-width:100%!important;letter-spacing:0!important}
+html body .hero-task-card #pteOtherForm{display:grid!important;grid-template-columns:minmax(0,1fr) 80px auto!important;gap:10px!important;align-items:end!important}
+html body .hero-task-card #pteOtherForm label{width:auto!important;min-width:0!important;font-size:11px!important;color:#79829b!important;gap:7px!important}
+html body .hero-task-card #pteOtherForm input{min-height:40px!important;font-size:13px!important;padding:9px!important}
+html body .hero-task-card #pteOtherForm button{min-height:40px!important;font-size:12px!important;padding:10px 12px!important}
+html body .hero-task-card .pte-other-row{background:#f7f4fb!important;border-color:#e6e1ed!important;color:#56627f!important;gap:8px!important;border-radius:10px!important}
+html body .hero-task-card .pte-other-delete{background:transparent!important;border:0!important;color:#a78c95!important;min-height:32px!important}
+html body #home .overview-cards{gap:14px!important}
+@media(max-width:1050px){html body #home>.reference-welcome{grid-template-columns:minmax(0,1.3fr) minmax(260px,1fr)!important;gap:18px!important}html body #home .hero-task-card,html body #home .layout-profile-summary{padding:20px!important}html body .hero-task-card #pteOtherForm{grid-template-columns:minmax(0,1fr) 70px!important}html body .hero-task-card #pteOtherForm button{grid-column:1/-1;width:100%!important}}
+@media(max-width:760px){html body main{padding:20px 14px 40px!important}html body #home>.reference-welcome{grid-template-columns:1fr!important;gap:16px!important;padding-top:80px!important}html body #home .layout-profile-summary{order:-1}html body #home.active{gap:16px!important}html body #home>.today-overview{padding:18px!important}html body .hero-task-card #pteOtherForm{grid-template-columns:minmax(0,1fr) 80px!important}}
+html body .theme-preview{display:none!important}
+html body #home>.today-overview{grid-row:2!important}
+/* Keep the task card footprint when switching into its question detail. */
+html body .hero-task-card.showing-task-detail{box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column}
+html body .hero-task-card.showing-task-detail .pte-other-practice{display:none!important}
+html body .hero-task-card.showing-task-detail .hero-task-detail{min-height:0;flex:1;overflow:auto;scrollbar-gutter:stable;overscroll-behavior:contain;padding-right:3px}
+html body .hero-task-card.showing-task-detail .hero-task-back{position:sticky;top:0;z-index:2;background:#fbf9fd;width:100%;text-align:left;padding:6px 0 12px}
+html body .hero-task-card .pte-other-practice[hidden]{display:none!important}
+html body .hero-task-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:0 0 15px}
+html body .hero-task-toolbar select{font:12px inherit;padding:7px 9px;border:1px solid #ddd7e6;max-width:100%;flex:1;min-width:135px}
+html body .hero-task-toolbar button{font:11px inherit;border:1px solid #e4deeb;border-radius:16px;padding:7px 10px;background:#f9f5fc;color:#736887;cursor:pointer}
+html body .hero-general-empty{color:#8a849b!important;font-size:12px!important;line-height:1.9!important;max-width:100%!important;margin:16px 0!important;letter-spacing:0!important}
+html body .hero-generic-detail h3{font-size:17px;color:#283653;margin:8px 0 12px}
+html body .hero-generic-detail>.ghost{font-size:11px;padding:7px 10px;margin-bottom:16px}
+html body .hero-generic-form label{display:grid;gap:7px;font-size:12px;color:#66708a;margin-bottom:15px}
+html body .hero-generic-form textarea{min-height:95px;padding:10px;font:13px inherit;resize:vertical;width:100%}
+html body .hero-generic-form input{max-width:100%;padding:8px;font:13px inherit;border:1px solid #ded8e9}
+html body .hero-repeat-label{display:flex!important;align-items:center;gap:8px!important}
+html body .hero-repeat-label input{width:16px!important;height:16px!important;accent-color:#7b71a2}
+html body .hero-task-card.showing-task-detail{min-height:360px}
+html body .hero-task-card.showing-task-detail{min-height:0!important}
+/* One shared card theme across the dashboard, profile and dialogs. */
+html body{--rex-card-bg:linear-gradient(145deg,#fffdf9f7,#f7f4eff5);--rex-card-ink:#263451;--rex-card-muted:#83889b;--rex-card-edge:#dfd2b880;--rex-card-shadow:0 12px 36px #15203924}
+html body #home .hero-task-card,html body #home .layout-profile-summary,html body #home .today-overview,html body #profilePopover.card,html body .focus-overlay .focus-dialog,html body #archives .card,html body #archives .archive-entry{background:var(--rex-card-bg)!important;color:var(--rex-card-ink)!important;border:1px solid var(--rex-card-edge)!important;border-radius:20px!important;box-shadow:var(--rex-card-shadow)!important;text-shadow:none!important;backdrop-filter:blur(14px)}
+html body #home .overview-item,html body .hero-task-card .pte-other-row,html body .hero-task-detail .pte-checkin,html body #archives .archive-settings{background:#f4f1ecb8!important;color:var(--rex-card-ink)!important;border:1px solid #e3dbcf!important;border-radius:12px!important;box-shadow:none!important}
+html body #profilePopover .profile-identity h2,html body #profilePopover .stat b,html body #profilePopover .profile-settings summary,html body .focus-dialog h2,html body .focus-dialog h3,html body #archives .archive-entry h3{color:#293751!important;text-shadow:none!important}
+html body #profilePopover #rank{background:#ede6d6!important;border-color:#ded0ad!important;color:#927c49!important}
+html body #profilePopover #expLabel,html body #profilePopover .stat span,html body #profilePopover .profile-settings label,html body #profilePopover .profile-settings p,html body #profilePopover .profile-settings small{color:#83889b!important}
+html body #profilePopover .progress{background:#e5e0d8!important}html body #profilePopover #expBar{background:linear-gradient(90deg,#cba85d,#e8cd8c)!important;box-shadow:none!important}
+html body #profilePopover .profile-popover-heading,html body #profilePopover .stats,html body #profilePopover .stat+.stat,html body #profilePopover .profile-settings details+details{border-color:#ded6c980!important}
+html body #profilePopover .profile-close{color:#8892a0!important}html body #profilePopover .profile-settings input:not([type=file]){background:#fffdf9!important;border-color:#ded9cf!important;color:#293751!important}
+html body #profilePopover .profile-settings button{background:#f3ead8!important;border-color:#dfcea9!important;color:#806b40!important}
+html body .hero-task-toolbar button,html body .hero-question-picker button{background:#f4f0e8!important;border-color:#e0d6c5!important;color:#7c705a!important}
+html body .hero-task-detail #pteInlineWorkspace,html body .hero-task-detail #pteInlineWorkspace .pte-question{background:transparent!important}
+html body .hero-task-card.showing-task-detail .hero-task-back{background:#fcf9f3!important}
+html body .focus-dialog .focus-stats,html body .focus-dialog .focus-time-picker,html body .focus-dialog .focus-menu{background:#fffaf2!important;color:#293751!important;border-color:#ded2bc!important;border-radius:14px!important}
+/* Cards harmonize with the twilight magical study. */
+html body{--rex-card-bg:linear-gradient(145deg,#242940ed,#171e35eb);--rex-card-ink:#eee8f5;--rex-card-muted:#bab4ce;--rex-card-edge:#d7b97765;--rex-card-shadow:0 14px 40px #080d2d55,inset 0 1px 0 #ffffff08}
+html body #home .hero-task-card,html body #home .layout-profile-summary,html body #home .today-overview,html body #profilePopover.card,html body .focus-overlay .focus-dialog,html body #archives .card,html body #archives .archive-entry{background:var(--rex-card-bg)!important;color:var(--rex-card-ink)!important;border-color:var(--rex-card-edge)!important;box-shadow:var(--rex-card-shadow)!important}
+html body #home .overview-item,html body .hero-task-card .pte-other-row,html body .hero-task-detail .pte-checkin,html body #archives .archive-settings{background:#111a3085!important;color:#e3def1!important;border-color:#a39bc330!important}
+html body #home h2,html body #home h3,html body .hero-task-row b,html body .layout-profile-identity b,html body .layout-profile-stats strong,html body #profilePopover .profile-identity h2,html body #profilePopover .stat b,html body #profilePopover .profile-settings summary,html body .focus-dialog h2,html body .focus-dialog h3{color:#f6dda4!important}
+html body #home .sub,html body #home .overview-item .empty,html body #home .overview-item li,html body .hero-task-number,html body .hero-task-list h2 small,html body .layout-profile-identity span,html body .layout-profile-stats span,html body .layout-xp-label,html body .hero-custom-form label,html body .hero-generic-form label,html body .hero-task-card .pte-other-practice p,html body .hero-task-card #pteOtherForm label,html body #profilePopover #expLabel,html body #profilePopover .stat span,html body #profilePopover .profile-settings label,html body #profilePopover .profile-settings p,html body #profilePopover .profile-settings small{color:#b6b3cc!important}
+html body #home input:not([type=checkbox]):not([type=file]),html body #home select,html body #home textarea,html body #profilePopover .profile-settings input:not([type=file]){background:#10182dbd!important;color:#ece8fa!important;border-color:#b8a2cb38!important}
+html body #home input::placeholder,html body #home textarea::placeholder{color:#888ca7!important}
+html body .hero-task-quantity input{background:#ffffff0b!important;color:#f2dfb8!important;border-color:#dac18230!important}
+html body .hero-task-track,html body .layout-progress-row .layout-xp-track,html body #profilePopover .progress{background:#ffffff15!important}
+html body .layout-progress-row .layout-xp-track>div,html body #profilePopover #expBar{background:linear-gradient(90deg,#d7af62,#f9e4ad)!important}
+html body .hero-task-toolbar button,html body .hero-question-picker button,html body #profilePopover .profile-settings button,html body #home .ghost{background:#dec38313!important;color:#dacaab!important;border-color:#dec38340!important}
+html body .hero-question-picker button[aria-pressed=true]{background:#e7c57c!important;color:#4d381b!important}
+html body .hero-task-back,html body .hero-task-card.showing-task-detail .hero-task-back{background:#21273f!important;color:#e1d1b2!important}
+html body .hero-task-feedback,html body .hero-general-empty{color:#b9b4ce!important}
+html body .hero-task-card .pte-other-practice,html body #home .growth-form,html body #profilePopover .profile-popover-heading,html body #profilePopover .stats,html body #profilePopover .stat+.stat,html body #profilePopover .profile-settings details+details{border-color:#dac18c27!important}
+html body #profilePopover #rank{background:#e2c48115!important;border-color:#d4b77e40!important;color:#e0cda5!important}
+html body .focus-dialog .focus-stats,html body .focus-dialog .focus-time-picker,html body .focus-dialog .focus-menu{background:#20273f!important;color:#e4def2!important;border-color:#d4b77e40!important}
+/* Lighter misty violet glass, retaining the magical palette. */
+html body{--rex-card-bg:linear-gradient(145deg,#66658be8,#484f78e3);--rex-card-ink:#fff9ff;--rex-card-muted:#e0dbea;--rex-card-edge:#efd89b85;--rex-card-shadow:0 12px 35px #10173130,inset 0 1px 0 #ffffff22}
+html body #home .overview-item,html body .hero-task-card .pte-other-row,html body .hero-task-detail .pte-checkin,html body #archives .archive-settings{background:#c8bcdf1c!important;color:#faf5ff!important;border-color:#e4d9ed38!important}
+html body #home .sub,html body #home .overview-item .empty,html body #home .overview-item li,html body .hero-task-number,html body .hero-task-list h2 small,html body .layout-profile-identity span,html body .layout-profile-stats span,html body .layout-xp-label,html body .hero-custom-form label,html body .hero-generic-form label,html body .hero-task-card .pte-other-practice p,html body .hero-task-card #pteOtherForm label,html body #profilePopover #expLabel,html body #profilePopover .stat span,html body #profilePopover .profile-settings label,html body #profilePopover .profile-settings p,html body #profilePopover .profile-settings small,html body .hero-task-feedback,html body .hero-general-empty{color:#e6e0f0!important}
+html body #home input:not([type=checkbox]):not([type=file]),html body #home select,html body #home textarea,html body #profilePopover .profile-settings input:not([type=file]){background:#d4cce61f!important;color:#fff9ff!important;border-color:#ece0f34d!important}
+html body #home select option{background:#626484;color:#fff9ff}
+html body #home input::placeholder,html body #home textarea::placeholder{color:#d0c8e0!important}
+html body .hero-task-toolbar button,html body .hero-question-picker button,html body #profilePopover .profile-settings button,html body #home .ghost{background:#e6dbef20!important;color:#fff0d0!important;border-color:#ecd6a95c!important}
+html body .hero-task-back,html body .hero-task-card.showing-task-detail .hero-task-back{background:#626484!important;color:#fff0d0!important}
+html body .focus-dialog .focus-stats,html body .focus-dialog .focus-time-picker,html body .focus-dialog .focus-menu{background:#636788!important;color:#fff9ff!important;border-color:#e6cd9380!important}
+html body .hero-task-delete{color:#e4d5e5!important}
+html body .dashboard-side-column{display:grid;gap:20px;min-width:0;width:100%;align-self:start}
+html body .dashboard-calendar-card{background:var(--rex-card-bg);color:var(--rex-card-ink);border:1px solid var(--rex-card-edge);border-radius:20px;padding:20px;box-shadow:var(--rex-card-shadow);backdrop-filter:blur(14px);text-shadow:none}
+html body .calendar-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;flex-wrap:wrap}html body .calendar-heading h2{font-size:15px;margin:0;color:#f6dda4}
+html body .week-range{font-size:10px;color:#e1d9ec}html body .week-totals{font-size:12px;color:#ede5f3;margin-bottom:16px}
+html body .weekly-bars{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}html body .weekly-day{display:flex;flex-direction:column;align-items:center;gap:7px;border:0;padding:0;background:none;color:#eee5f4;font-size:11px;cursor:pointer;min-width:0}
+html body .weekly-count{color:#ffe3a7;font-size:12px}html body .weekly-track{display:flex;align-items:end;height:68px;width:100%;max-width:25px;background:#ffffff10;border-radius:6px;overflow:hidden}html body .weekly-track>span{display:block;width:100%;background:linear-gradient(0deg,#a6bdde,#f0ce8f);border-radius:5px}html body .weekly-day small{font-size:9px;color:#d7cfe4}
+html body .calendar-note{font-size:10px!important;color:#d5cee2!important;margin:12px 0 0!important;line-height:1.7;max-width:100%!important;letter-spacing:0!important}
+html body .calendar-navigation{display:flex;align-items:center;gap:8px;font-size:12px}html body .calendar-navigation button{border:1px solid #ecd6a940;background:#ffffff0e;color:#ffe4aa;border-radius:7px;width:27px;height:27px;font-size:19px;cursor:pointer;padding:0}
+html body .calendar-weekdays,html body .calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;text-align:center}html body .calendar-weekdays{font-size:10px;color:#d5cee2;margin-bottom:8px}
+html body .calendar-day{position:relative;background:transparent;border:1px solid transparent;border-radius:8px;color:#efe8f6;font-size:12px;min-height:32px;padding:5px 0 9px;cursor:pointer}html body .calendar-day.has-activity:after{content:'';position:absolute;width:4px;height:4px;background:#ffe0a0;border-radius:50%;bottom:4px;left:calc(50% - 2px)}html body .calendar-day.is-today{border-color:#efd89b7a}html body .calendar-day[aria-pressed=true]{background:#f2d598;color:#51402b;border-color:#f2d598}html body .calendar-day[aria-pressed=true]:after{background:#80643b}
+html body .calendar-selected{font-size:11px;color:#f3e7d0;line-height:1.8;margin-top:14px;padding-top:12px;border-top:1px solid #e9d8b52a}
+@media(max-width:760px){html body .dashboard-side-column{gap:16px}html body .dashboard-calendar-card{padding:18px}}
+/* A balanced personal homepage, with the crystal in its own visible corner. */
+html body main{max-width:1240px!important;padding:38px 30px 60px!important}
+html body #home.active{gap:25px!important}
+html body #home>.reference-welcome{grid-template-columns:minmax(0,1.4fr) minmax(290px,1fr)!important;gap:28px!important;padding-top:18px!important;align-items:start!important}
+html body .dashboard-side-column{display:block!important;padding-top:0!important}
+html body #home .hero-task-card{padding:25px!important}
+html body #home .layout-profile-summary{padding:25px!important}
+html body #home>.homepage-insights{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:25px;grid-column:1!important;grid-row:2!important;align-items:stretch}
+html body #home>.today-overview{grid-row:3!important}
+html body .dashboard-calendar-card{padding:23px!important}
+html body .weekly-track{height:105px!important}
+html body .calendar-heading{margin-bottom:20px!important}
+html body .eternal-hanging-layer{display:block!important;position:fixed!important;right:14px!important;left:auto!important;top:92px!important;width:90px!important;height:155px!important;overflow:visible!important;z-index:50!important;pointer-events:none!important}
+html body .eternal-hanging-layer .eternal-hanging-ornament{display:block!important;position:relative!important;left:0!important;right:auto!important;top:0!important;bottom:auto!important;width:90px!important;height:155px!important;margin:0!important;opacity:1!important;visibility:visible!important;overflow:visible!important}
+html body .eternal-hanging-layer .eternal-hanging-ornament:before{height:42px!important;top:0!important;left:44px!important}
+html body .eternal-hanging-layer #angelCompanion{display:block!important;position:absolute!important;left:0!important;right:auto!important;top:42px!important;bottom:auto!important;margin:0!important;width:86px!important;height:106px!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important}
+@media(max-width:1000px){html body main{padding:28px 24px 48px!important}html body #home>.reference-welcome{grid-template-columns:minmax(0,1.3fr) minmax(260px,1fr)!important;gap:20px!important}html body .eternal-hanging-layer{right:4px!important;top:88px!important;transform:scale(.78);transform-origin:top right}}
+@media(max-width:760px){html body main{padding:24px 15px 40px!important}html body #home>.reference-welcome{grid-template-columns:1fr!important;padding-top:76px!important;gap:18px!important}html body #home>.homepage-insights{grid-template-columns:1fr;gap:18px}html body .dashboard-side-column{order:-1}html body .eternal-hanging-layer{right:9px!important;top:84px!important;transform:scale(.65)}html body #home .hero-task-card,html body #home .layout-profile-summary,html body .dashboard-calendar-card{padding:20px!important}}
+/* Explicit dock overrides all earlier theme positioning rules. */
+html body #crystalDock.eternal-hanging-layer{position:fixed!important;inset:90px 12px auto auto!important;left:auto!important;right:12px!important;top:90px!important;bottom:auto!important;width:90px!important;height:155px!important;transform:none!important;margin:0!important;z-index:55!important;overflow:visible!important;pointer-events:none!important}
+html body #crystalDock .eternal-hanging-ornament{position:absolute!important;inset:0!important;width:90px!important;height:155px!important;margin:0!important;transform-origin:45px 0!important}
+html body #crystalDock #angelCompanion{position:absolute!important;inset:42px auto auto 0!important;top:42px!important;left:0!important;width:86px!important;height:106px!important;margin:0!important;pointer-events:auto!important}
+@media(max-width:760px){html body #crystalDock.eternal-hanging-layer{inset:84px 8px auto auto!important;right:8px!important;top:84px!important;transform:scale(.65)!important;transform-origin:top right!important}}
+/* The pendant hangs from the upper-right edge on a visible cord. */
+html body #crystalDock.eternal-hanging-layer{inset:0 18px auto auto!important;top:0!important;right:18px!important;width:90px!important;height:245px!important;transform:none!important}
+html body #crystalDock .eternal-hanging-ornament{inset:0!important;height:245px!important;transform-origin:44px 0!important}
+html body #crystalDock .eternal-hanging-ornament:before{content:''!important;display:block!important;position:absolute!important;inset:0 auto auto 44px!important;width:1px!important;height:145px!important;background:linear-gradient(#f5deb0aa,#d4b777)!important;box-shadow:0 0 3px #efd49b44!important}
+html body #crystalDock #angelCompanion{inset:145px auto auto 0!important;top:145px!important;left:0!important}
+@media(max-width:760px){html body #crystalDock.eternal-hanging-layer{inset:0 9px auto auto!important;top:0!important;right:9px!important;transform:scale(.65)!important;transform-origin:top right!important}}
+/* Personal-homepage proportions, tuned against the supplied full-page screenshot. */
+html body .arcane-header .header-inner{max-width:1180px!important;min-height:94px!important;padding:10px 24px!important}
+html body .arcane-header{min-height:94px!important}
+html body .header-brand{gap:12px!important}
+html body main{max-width:1180px!important;padding:38px 24px 50px!important}
+html body #home.active{gap:22px!important}
+html body #home>.reference-welcome{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;gap:22px!important;padding:0!important;align-items:stretch!important}
+html body .dashboard-side-column{height:100%;display:flex!important;align-items:stretch}
+html body #home .hero-task-card,html body #home .layout-profile-summary{padding:22px!important;min-height:208px;border-radius:18px!important}
+html body #home .layout-profile-summary{height:100%;display:flex;flex-direction:column;justify-content:center}
+html body .hero-task-list h2{font-size:18px!important;margin-bottom:15px!important}
+html body .hero-task-toolbar{gap:7px!important;margin-bottom:12px!important}
+html body .hero-task-toolbar select{flex:1 1 100%!important;min-height:34px;padding:7px 10px!important}
+html body .hero-task-toolbar button{padding:6px 11px!important;font-size:12px!important}
+html body .hero-general-empty{font-size:12px!important;line-height:1.8!important;margin:14px 0 0!important}
+html body #home>.homepage-insights{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;gap:22px!important;align-items:stretch!important}
+html body .dashboard-calendar-card{padding:20px 22px!important;border-radius:18px!important}
+html body .calendar-heading{margin-bottom:16px!important}
+html body .calendar-heading h2{font-size:15px!important}
+html body .week-totals{margin-bottom:18px!important}
+html body .weekly-track{height:90px!important;max-width:29px!important}
+html body .weekly-bars{gap:12px!important;margin:8px 0 17px!important}
+html body .calendar-days{gap:3px!important}
+html body .calendar-day{min-height:29px!important;padding:4px 0 7px!important}
+html body .calendar-selected{margin-top:10px!important;padding-top:10px!important}
+html body .calendar-note{margin-top:9px!important}
+html body .layout-profile-identity img{width:51px;height:61px}
+html body .layout-progress-row{margin:12px 0 20px!important}
+html body #home>.today-overview{padding:22px!important;border-radius:18px!important}
+@media(max-width:1000px){html body main{padding:28px 22px 45px!important}html body #home>.reference-welcome,html body #home>.homepage-insights{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)!important;gap:18px!important}}
+@media(max-width:760px){html body main{padding:24px 15px 40px!important}html body .arcane-header .header-inner{padding:10px 14px!important;min-height:80px!important}html body .arcane-header{min-height:80px!important}html body #home>.reference-welcome,html body #home>.homepage-insights{grid-template-columns:1fr!important;gap:16px!important}html body #home>.reference-welcome{padding-top:72px!important}html body .dashboard-side-column{order:-1;height:auto}html body #home .hero-task-card,html body #home .layout-profile-summary{min-height:0!important;padding:20px!important}html body .dashboard-calendar-card{padding:20px!important}}
+/* Approved parchment homepage draft: shared presentation, existing controls. */
+html body{--rex-card-bg:linear-gradient(135deg,#fff8e9f5,#f4e8d2f5);--rex-card-ink:#203252;--rex-card-muted:#837b70;--rex-card-edge:#caa260a6;--rex-card-shadow:0 9px 26px #16172a33,inset 0 0 0 4px #fff7e93d}
+html body #home.active{gap:18px!important}
+html body #home>.homepage-welcome-banner{grid-column:1;grid-row:1;text-align:center;min-height:165px;padding:20px 16px 38px;color:#fce1a4;text-shadow:0 3px 18px #101931;display:flex;flex-direction:column;align-items:center;justify-content:center}
+html body .homepage-welcome-banner h1{font:500 clamp(30px,3.4vw,43px) Georgia,'Noto Sans SC',serif;color:#fce1a4;margin:0 0 15px;border-bottom:1px solid #f4d79065;padding-bottom:12px;letter-spacing:2px}
+html body .homepage-welcome-banner p{color:#f5e5c0;font-size:13px;letter-spacing:1px;margin:0}
+html body #home>.reference-welcome{grid-row:2!important;grid-template-columns:minmax(0,1fr)!important;display:block!important;padding:0!important;min-height:0!important}
+html body #home .dashboard-side-column,html body #home>.today-overview{display:none!important}
+html body #home>.homepage-insights{grid-row:3!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important}
+html body #home .hero-task-card{width:100%!important;max-width:none!important;padding:24px 28px!important;min-height:0!important}
+html body #home .hero-task-card,html body .dashboard-calendar-card{position:relative;border-radius:12px!important;border:1px solid var(--rex-card-edge)!important;outline:1px solid #e0ba744d;outline-offset:-6px;background:var(--rex-card-bg)!important;color:var(--rex-card-ink)!important;box-shadow:var(--rex-card-shadow)!important}
+html body .dashboard-calendar-card{padding:22px 26px!important}
+html body #home .hero-task-card:before,html body .dashboard-calendar-card:before{content:'';position:absolute;inset:9px;border:1px solid #b9934b33;border-radius:7px;pointer-events:none;z-index:0}
+html body #home h2,html body #home h3,html body .hero-task-row b,html body .calendar-heading h2{color:#243652!important;text-shadow:none!important}
+html body #home .sub,html body .hero-task-number,html body .hero-task-list h2 small,html body .hero-custom-form label,html body .hero-generic-form label,html body .hero-task-card .pte-other-practice p,html body .hero-task-card #pteOtherForm label,html body .hero-task-feedback,html body .hero-general-empty,html body .week-range,html body .week-totals,html body .weekly-day,html body .weekly-day small,html body .calendar-note,html body .calendar-weekdays,html body .calendar-selected{color:#7a746d!important}
+html body #home input:not([type=checkbox]):not([type=file]),html body #home select,html body #home textarea{background:#fffaf1ba!important;color:#243652!important;border:1px solid #cbbb9c70!important}
+html body #home input::placeholder,html body #home textarea::placeholder{color:#a29a8d!important}
+html body #home select option{background:#fff8e9;color:#243652}
+html body .hero-task-toolbar{display:flex!important;gap:10px!important;margin-bottom:14px!important}
+html body .hero-task-toolbar select{flex:0 1 200px!important;width:200px!important}
+html body .hero-task-toolbar button,html body .hero-question-picker button,html body #home .ghost{background:#fbf3e2!important;color:#6f5b37!important;border-color:#cdb07766!important}
+html body .hero-task-row{grid-template-columns:27px minmax(110px,1fr) 80px minmax(80px,2fr) 32px 28px!important;gap:15px!important;padding:12px 8px!important;border-top:1px solid #d7c6a94f!important}
+html body .hero-task-track{background:#d9d0c080!important;height:7px!important}
+html body .hero-task-arrow,html body .hero-task-add{background:linear-gradient(135deg,#c7a15d,#a5803e)!important;color:#fff7df!important}
+html body .hero-task-delete{color:#8c7151!important}
+html body .hero-task-quantity input{background:#f4ead5!important;color:#39445a!important;border-color:#d4c3a4!important}
+html body .hero-task-card .pte-other-practice{border-color:#d6c09870!important;margin-top:18px!important;padding-top:16px!important}
+html body .hero-task-card #pteOtherForm{grid-template-columns:minmax(0,1fr) 110px auto!important}
+html body .hero-task-card #pteOtherForm button{grid-column:auto!important;width:auto!important}
+html body #home .action{background:linear-gradient(120deg,#c7a15d,#ab8745)!important;border-color:#b18a45!important;color:#fff9e6!important;box-shadow:none!important}
+html body .hero-task-card .pte-other-row,html body .hero-task-detail .pte-checkin{background:#fffbf370!important;border-color:#d8c6a769!important;color:#34445e!important}
+html body .hero-task-back,html body .hero-task-card.showing-task-detail .hero-task-back{background:#faf0df!important;color:#7e6c4e!important}
+html body .hero-question-picker button[aria-pressed=true]{background:#c5a15e!important;color:#fff8e5!important}
+html body .weekly-count{color:#7f6337!important}
+html body .weekly-track{background:#d8cfbd66!important;height:76px!important}
+html body .weekly-track>span{background:linear-gradient(0deg,#7184bb,#c0aa71)!important}
+html body .calendar-navigation{color:#2e3e59!important}
+html body .calendar-navigation button{background:transparent!important;border-color:#c8ae784d!important;color:#92703c!important}
+html body .calendar-day{color:#35435d!important}
+html body .calendar-day.is-today{border-color:#b78f47!important}
+html body .calendar-day[aria-pressed=true]{background:#c6a059!important;color:#fff9e9!important;border-color:#c6a059!important}
+html body .calendar-day.has-activity:after{background:#aa833d!important}
+html body .calendar-selected{border-color:#c9b58c55!important}
+@media(max-width:760px){html body #home>.homepage-welcome-banner{min-height:150px;padding:28px 40px 25px}html body #home>.reference-welcome{padding:0!important}html body #home>.homepage-insights{grid-template-columns:1fr!important}html body #home .hero-task-card,html body .dashboard-calendar-card{padding:20px!important}html body .hero-task-toolbar{flex-wrap:wrap!important}html body .hero-task-toolbar select{flex:1 1 100%!important;width:100%!important}html body .hero-task-row{grid-template-columns:24px minmax(40px,1fr) 65px minmax(30px,1fr) 27px 22px!important;gap:5px!important;padding:10px 0!important}html body .hero-task-card #pteOtherForm{grid-template-columns:minmax(0,1fr) 80px!important}html body .hero-task-card #pteOtherForm button{grid-column:1/-1!important;width:100%!important}}
+/* Pendant styling from the approved sketch, retaining the original timer control. */
+html body #crystalDock .eternal-hanging-ornament:before{width:2px!important;background:repeating-linear-gradient(180deg,#f9df9e 0 4px,#9b7134 4px 6px,#ebc77c 6px 10px)!important;box-shadow:1px 0 0 #60482355,0 0 5px #f0cc7f35!important}
+html body #crystalDock #angelCompanion:before{content:''!important;display:block!important;position:absolute!important;inset:8px auto auto 34px!important;width:18px!important;height:10px!important;border:1px solid #9c722f!important;border-radius:7px 7px 3px 3px!important;background:linear-gradient(90deg,#967034,#f9dfa1 45%,#bb934e)!important;box-shadow:inset 0 1px 0 #fff2c6,0 0 7px #efcb7e35!important;z-index:6!important}
+html body #crystalDock #angelCompanion:after{content:''!important;display:block!important;position:absolute!important;inset:0 auto auto 39px!important;width:8px!important;height:11px!important;border:2px solid #d6af68!important;border-radius:50%!important;background:transparent!important;box-shadow:0 0 4px #edcf8833!important;z-index:6!important}
+html body #crystalDock #angelCompanion .crystal-ball{top:16px!important;left:4px!important;width:78px!important;height:78px!important;border:1px solid #f5dab9b8!important;border-radius:50%!important;background:radial-gradient(ellipse at 28% 18%,#fffdf6bd,transparent 22%),radial-gradient(ellipse at 60% 58%,#9d79d153,transparent 63%),radial-gradient(circle,#49416b25,#a895bf35 70%,#e4c9ae66 100%)!important;box-shadow:inset 2px 3px 5px #fff3da8c,inset -3px -5px 8px #7c5a914d,0 0 13px #d0afe13d,0 0 26px #f1ce872b!important}
+html body #crystalDock #angelCompanion .crystal-ball:before{inset:3px!important;border:1px solid #fff2d67a!important;border-top:2px solid #fffae6bd!important;border-left:1px solid #ffe9d9a8!important;background:transparent!important}
+html body #crystalDock #angelCompanion .crystal-ball:after{background:radial-gradient(circle at 70% 72%,#e5bef748,transparent 32%),radial-gradient(circle at 32% 60%,#bfc3ff33,transparent 38%)!important}
+html body #crystalDock #angelCompanion .ball-nebula{opacity:.65!important;background:radial-gradient(ellipse at 35% 35%,#c7b9fc70,transparent 45%),radial-gradient(ellipse at 68% 67%,#d6a9e96b,transparent 55%)!important}
+html body #crystalDock #angelCompanion .ball-stars{inset:25px 8px!important;color:#fff0cb!important;letter-spacing:6px!important;font-size:13px!important;text-shadow:0 0 6px #ffffffd0,0 0 11px #d8b4f1}
+html body #crystalDock #angelCompanion .ball-highlight{background:linear-gradient(145deg,#fff8ecbe,#fff7ef22)!important;width:22px!important;height:13px!important;box-shadow:none!important}
+/* Reference-based transparent pendant artwork; original click listener stays attached. */
+html body #crystalDock.eternal-hanging-layer{width:140px!important;height:240px!important;right:6px!important}
+html body #crystalDock .eternal-hanging-ornament{width:140px!important;height:240px!important;transform-origin:70px 0!important}
+html body #crystalDock .eternal-hanging-ornament:before,html body #crystalDock #angelCompanion:before,html body #crystalDock #angelCompanion:after{display:none!important;content:none!important}
+html body #crystalDock .pendant-artwork{display:block;position:absolute;left:0;top:0;width:140px;height:240px;object-fit:fill;pointer-events:none;user-select:none;filter:drop-shadow(0 0 5px #eac28825)}
+html body #crystalDock #angelCompanion{inset:130px auto auto 15px!important;top:130px!important;left:15px!important;width:110px!important;height:95px!important;background:none!important;border:0!important;box-shadow:none!important}
+html body #crystalDock #angelCompanion .crystal-ball{visibility:hidden!important}
+html body #crystalDock #angelCompanion .pendant-timer{z-index:8;left:50%;transform:translateX(-50%);bottom:8px;top:auto}
+@media(max-width:760px){html body #crystalDock.eternal-hanging-layer{right:4px!important;transform:scale(.65)!important}}
+/* Show the complete pendant asset rather than a clipped image at native size. */
+html body #crystalDock .eternal-hanging-ornament{overflow:visible!important;clip-path:none!important;mask:none!important}
+html body #crystalDock img.pendant-artwork{position:absolute!important;inset:0 auto auto 0!important;display:block!important;width:140px!important;height:224px!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center top!important;clip-path:none!important;mask:none!important;border:0!important;border-radius:0!important;padding:0!important;margin:0!important;background:transparent!important;opacity:1!important;visibility:visible!important;z-index:1!important;transform:none!important;animation:none!important;pointer-events:none!important}
+html body #crystalDock #angelCompanion{z-index:2!important}
+/* Animated highlights align with the globe inside the transparent pendant artwork. */
+html body #crystalDock .pendant-starlight{position:absolute;left:24px;top:116px;width:94px;height:94px;border-radius:50%;overflow:hidden;pointer-events:none;z-index:3;mix-blend-mode:screen}
+html body #crystalDock .pendant-starlight i{position:absolute;width:3px;height:3px;left:25%;top:34%;border-radius:50%;background:#fff8ff;box-shadow:0 0 4px #ffffff,0 0 9px #d5b9ff;animation:pendantTwinkle 2.8s ease-in-out infinite}
+html body #crystalDock .pendant-starlight i:before,html body #crystalDock .pendant-starlight i:after{content:'';position:absolute;left:-4px;top:1px;width:11px;height:1px;background:linear-gradient(90deg,transparent,#fff8ff,transparent)}
+html body #crystalDock .pendant-starlight i:after{transform:rotate(90deg)}
+html body #crystalDock .pendant-starlight i:nth-child(2){left:66%;top:30%;animation-delay:-.8s;animation-duration:3.5s}
+html body #crystalDock .pendant-starlight i:nth-child(3){left:45%;top:72%;animation-delay:-1.6s;animation-duration:3.1s}
+html body #crystalDock .pendant-starlight i:nth-child(4){left:73%;top:67%;animation-delay:-2.1s;animation-duration:4s}
+html body #crystalDock .pendant-starlight i:nth-child(5){left:20%;top:60%;animation-delay:-1.2s;animation-duration:3.8s}
+html body #crystalDock .pendant-starlight i:nth-child(6){left:49%;top:17%;animation-delay:-2.5s;animation-duration:3.3s}
+html body #crystalDock .pendant-central-star{position:absolute;left:39%;top:38%;width:22px;height:22px;background:radial-gradient(circle,#ffffffc9, #c6b3ff70 15%,transparent 65%);animation:pendantStarPulse 4.2s ease-in-out infinite}
+html body #crystalDock .pendant-central-star:before,html body #crystalDock .pendant-central-star:after{content:'';position:absolute;left:0;top:10px;width:22px;height:1px;background:linear-gradient(90deg,transparent,#f8efff,transparent);box-shadow:0 0 4px #d5baff}
+html body #crystalDock .pendant-central-star:after{transform:rotate(90deg)}
+@keyframes pendantTwinkle{0%,100%{opacity:.15;transform:scale(.65)}45%{opacity:1;transform:scale(1.35)}70%{opacity:.35;transform:scale(.8)}}
+@keyframes pendantStarPulse{0%,100%{opacity:.4;transform:scale(.8) rotate(0)}50%{opacity:.95;transform:scale(1.15) rotate(15deg)}}
+@media(prefers-reduced-motion:reduce){html body #crystalDock .pendant-starlight i,html body #crystalDock .pendant-central-star{animation:none!important;opacity:.6}}
+/* Stronger, visibly changing stars within the globe silhouette. */
+html body #crystalDock .pendant-starlight{z-index:10!important;mix-blend-mode:normal!important;background:radial-gradient(circle at 50% 48%,#b49cff20,transparent 65%);animation:pendantGlowVisible 2.7s ease-in-out infinite}
+html body #crystalDock .pendant-starlight i{width:4px!important;height:4px!important;box-shadow:0 0 6px 2px #ffffff,0 0 15px 4px #bb8dff!important;animation:pendantTwinkleVisible 1.9s ease-in-out infinite!important}
+html body #crystalDock .pendant-starlight i:before,html body #crystalDock .pendant-starlight i:after{left:-7px!important;top:1.5px!important;width:18px!important;height:1px!important}
+html body #crystalDock .pendant-starlight i:nth-child(2){animation-delay:-.5s!important}html body #crystalDock .pendant-starlight i:nth-child(3){animation-delay:-1.2s!important}html body #crystalDock .pendant-starlight i:nth-child(4){animation-delay:-.9s!important}html body #crystalDock .pendant-starlight i:nth-child(5){animation-delay:-1.7s!important}html body #crystalDock .pendant-starlight i:nth-child(6){animation-delay:-.3s!important}
+html body #crystalDock .pendant-central-star{width:32px!important;height:32px!important;left:34%!important;top:33%!important;background:radial-gradient(circle,#ffffffff,#efe0ffb0 16%,#be91ff44 40%,transparent 70%)!important;animation:pendantCentralVisible 2.4s ease-in-out infinite!important}
+html body #crystalDock .pendant-central-star:before,html body #crystalDock .pendant-central-star:after{width:32px!important;top:15px!important;box-shadow:0 0 7px 1px #dfc2ff!important}
+@keyframes pendantTwinkleVisible{0%,100%{opacity:.08;transform:scale(.45)}45%{opacity:1;transform:scale(1.6)}65%{opacity:.6;transform:scale(1)}}
+@keyframes pendantCentralVisible{0%,100%{opacity:.12;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1.4) rotate(35deg)}}
+@keyframes pendantGlowVisible{0%,100%{opacity:.45}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){html body #crystalDock .pendant-starlight,html body #crystalDock .pendant-starlight i,html body #crystalDock .pendant-central-star{animation:none!important}}
+/* Comfortable reading variant: muted highlights, matte warm cards and gentle motion. */
+html body{--rex-card-bg:linear-gradient(135deg,#eee6d6fa,#e9e0cefa);--rex-card-ink:#30404d;--rex-card-muted:#6e706d;--rex-card-edge:#b8a07880;--rex-card-shadow:0 8px 25px #16172a26,inset 0 0 0 4px #f5ecdd33}
+html body:before{filter:brightness(.86) saturate(.8)!important}
+html body #home .hero-task-card,html body .dashboard-calendar-card{backdrop-filter:none!important}
+html body #home h2,html body #home h3,html body .hero-task-row b,html body .calendar-heading h2{color:#304052!important}
+html body .hero-task-number,html body .hero-task-list h2 small,html body .hero-custom-form label,html body .hero-generic-form label,html body .hero-task-card .pte-other-practice p,html body .hero-task-card #pteOtherForm label,html body .hero-task-feedback,html body .hero-general-empty,html body .week-range,html body .week-totals,html body .weekly-day,html body .weekly-day small,html body .calendar-note,html body .calendar-weekdays,html body .calendar-selected{color:#686e70!important}
+html body #home input:not([type=checkbox]):not([type=file]),html body #home select,html body #home textarea{background:#f4eee1!important;color:#304052!important;border-color:#bcb09a88!important}
+html body #home input::placeholder,html body #home textarea::placeholder{color:#7c807d!important}
+html body .hero-task-row{font-size:14px!important;line-height:1.6}
+html body .hero-general-empty,html body .week-totals{font-size:13px!important;line-height:1.8!important}
+html body .calendar-day{font-size:13px!important}
+html body #crystalDock .pendant-artwork{filter:brightness(.92) saturate(.85)!important}
+html body #crystalDock .pendant-starlight{animation:none!important;opacity:.55!important;background:none!important}
+html body #crystalDock .pendant-starlight i{box-shadow:0 0 3px #f0e8ff,0 0 6px #ccbef1!important;animation:pendantCalmStars 6s ease-in-out infinite!important}
+html body #crystalDock .pendant-starlight i:before,html body #crystalDock .pendant-starlight i:after{width:9px!important;left:-3px!important}
+html body #crystalDock .pendant-central-star{width:22px!important;height:22px!important;left:39%!important;top:38%!important;animation:pendantCalmStars 7s ease-in-out infinite!important;background:radial-gradient(circle,#f6eeff80,#d8c8eb30 35%,transparent 70%)!important}
+html body #crystalDock .pendant-central-star:before,html body #crystalDock .pendant-central-star:after{width:22px!important;top:10px!important;box-shadow:0 0 3px #d9cbea66!important}
+@keyframes pendantCalmStars{0%,100%{opacity:.4;transform:scale(.95)}50%{opacity:.7;transform:scale(1.05)}}
+@media(prefers-reduced-motion:reduce){html body #crystalDock .pendant-starlight i,html body #crystalDock .pendant-central-star{animation:none!important}}
+/* Visible but gentle staggered twinkles, without sharp flashes or zooming. */
+html body #crystalDock .pendant-starlight{opacity:.75!important;animation:none!important;mix-blend-mode:screen!important}
+html body #crystalDock .pendant-starlight i{background:#fff1cf!important;box-shadow:0 0 3px #f4e0bc99,0 0 7px #c9b9de66!important;animation:pendantSoftTwinkle 4.8s ease-in-out infinite!important}
+html body #crystalDock .pendant-starlight i:before,html body #crystalDock .pendant-starlight i:after{background:linear-gradient(90deg,transparent,#f6e5cfbb,transparent)!important}
+html body #crystalDock .pendant-starlight i:nth-child(1){animation-delay:0s!important}
+html body #crystalDock .pendant-starlight i:nth-child(2){animation-delay:-1.4s!important}
+html body #crystalDock .pendant-starlight i:nth-child(3){animation-delay:-3.1s!important}
+html body #crystalDock .pendant-starlight i:nth-child(4){animation-delay:-2s!important}
+html body #crystalDock .pendant-starlight i:nth-child(5){animation-delay:-3.9s!important}
+html body #crystalDock .pendant-starlight i:nth-child(6){animation-delay:-.7s!important}
+html body #crystalDock .pendant-central-star{animation:pendantSoftCenter 6s ease-in-out infinite!important;background:radial-gradient(circle,#f8ecd19c,#d4c3e23d 30%,transparent 70%)!important}
+@keyframes pendantSoftTwinkle{0%,100%{opacity:.12;transform:scale(.95)}50%{opacity:.78;transform:scale(1)}}
+@keyframes pendantSoftCenter{0%,100%{opacity:.25;transform:scale(.98)}50%{opacity:.7;transform:scale(1.02)}}
+@media(prefers-reduced-motion:reduce){html body #crystalDock .pendant-starlight i,html body #crystalDock .pendant-central-star{animation:none!important;opacity:.45!important}}
+/* More discernible twinkling through contrast, rather than bright flashes. */
+html body #crystalDock .pendant-starlight{opacity:1!important}
+html body #crystalDock .pendant-starlight i{width:4px!important;height:4px!important;box-shadow:0 0 4px #f5dfbca0,0 0 8px #cbbbe16b!important;animation:pendantClearSoftTwinkle 3.4s ease-in-out infinite!important}
+html body #crystalDock .pendant-starlight i:before,html body #crystalDock .pendant-starlight i:after{width:13px!important;left:-4.5px!important;top:1.5px!important}
+html body #crystalDock .pendant-central-star{animation:pendantClearSoftCenter 4.5s ease-in-out infinite!important}
+@keyframes pendantClearSoftTwinkle{0%,100%{opacity:.02;transform:scale(.9)}50%{opacity:.95;transform:scale(1.08)}}
+@keyframes pendantClearSoftCenter{0%,100%{opacity:.08;transform:scale(.95)}50%{opacity:.85;transform:scale(1.08)}}
+@media(prefers-reduced-motion:reduce){html body #crystalDock .pendant-starlight i,html body #crystalDock .pendant-central-star{animation:none!important;opacity:.5!important}}
+/* Slightly smaller pendant, with artwork, sparkle and hit area scaled together. */
+html body #crystalDock.eternal-hanging-layer{transform:scale(.85)!important;transform-origin:top right!important}
+@media(max-width:760px){html body #crystalDock.eternal-hanging-layer{transform:scale(.58)!important}}
+/* Compact daily tasks on the right, with progress and calendar on the left. */
+html body #home.active{grid-template-columns:minmax(0,1fr) minmax(380px,460px)!important;gap:18px!important;align-items:start!important}
+html body #home>.homepage-welcome-banner{grid-column:1/-1!important;grid-row:1!important}
+html body #home>.reference-welcome{grid-column:2!important;grid-row:2/4!important;min-width:0!important}
+html body #home>.homepage-insights{display:contents!important}
+html body #home>.homepage-insights>.dashboard-calendar-card:first-child{grid-column:1!important;grid-row:2!important}
+html body #home>.homepage-insights>.dashboard-calendar-card:last-child{grid-column:1!important;grid-row:3!important}
+html body #home .hero-task-card{padding:20px!important;min-height:340px!important}
+html body #home .hero-task-toolbar{flex-wrap:wrap!important;gap:7px!important}
+html body #home .hero-task-toolbar select{flex:1 1 100%!important;width:100%!important}
+html body #home .hero-task-toolbar button{flex:1;padding:7px 9px!important}
+html body #home .hero-task-row{grid-template-columns:24px minmax(48px,1fr) 70px minmax(35px,.8fr) 27px 22px!important;gap:7px!important;padding:11px 0!important}
+html body #home .hero-task-row b{overflow-wrap:anywhere;font-size:13px!important}
+html body #home .hero-task-card #pteOtherForm{grid-template-columns:minmax(0,1fr) 80px!important}
+html body #home .hero-task-card #pteOtherForm button{grid-column:1/-1!important;width:100%!important}
+html body #home .hero-task-card.showing-task-detail{min-height:340px!important}
+@media(max-width:900px){html body #home.active{grid-template-columns:minmax(0,1fr)!important}html body #home>.reference-welcome{grid-column:1!important;grid-row:2!important}html body #home>.homepage-insights>.dashboard-calendar-card:first-child{grid-row:3!important}html body #home>.homepage-insights>.dashboard-calendar-card:last-child{grid-row:4!important}html body #home .hero-task-card{min-height:0!important}}
+/* Readable profile text on the warm parchment surface. */
+html body #profilePopover.card{background:linear-gradient(145deg,#f8f3e7,#eee5d2)!important;color:#293951!important}
+html body #profilePopover #profileTitle,html body #profilePopover .stat b{color:#293951!important;text-shadow:none!important}
+html body #profilePopover #rank{background:#e9ddc2!important;color:#70582d!important;border-color:#c2aa78!important;font-size:12px!important}
+html body #profilePopover #expLabel,html body #profilePopover .stat span,html body #profilePopover .profile-settings label,html body #profilePopover .profile-settings p,html body #profilePopover .profile-settings small{color:#59616b!important}
+html body #profilePopover .stat span{font-size:12px!important}
+html body #profilePopover .profile-settings summary{color:#604b2c!important;font-size:14px!important}
+html body #profilePopover .profile-close{color:#59616b!important}
+html body #profilePopover .profile-close:hover{color:#293951!important;background:#d7c7a933!important}
+html body #profilePopover .progress{background:#d5ccba!important}
+html body #profilePopover #expBar{background:linear-gradient(90deg,#8d713e,#b09050)!important;box-shadow:none!important}
+html body #profilePopover .profile-popover-heading,html body #profilePopover .stats,html body #profilePopover .stat+.stat,html body #profilePopover .profile-settings details+details{border-color:#c4b69888!important}
+html body #profilePopover .profile-settings input:not([type=file]){background:#fffcf5!important;color:#293951!important;border-color:#bfb299!important}
+html body #profilePopover .profile-settings input::placeholder{color:#72716b!important}
+html body #profilePopover .profile-settings button{background:#e9ddc2!important;color:#604b2c!important;border-color:#bca477!important}
+/* Raise and compact the daily task card on desktop. */
+@media(min-width:901px){
+html body #home.active{grid-template-columns:minmax(0,1fr) minmax(350px,410px)!important}
+html body #home>.reference-welcome{margin-top:-70px!important;position:relative;z-index:2}
+html body #home .hero-task-card{padding:17px 18px!important;min-height:285px!important}
+html body #home .hero-task-card.showing-task-detail{min-height:285px!important}
+html body #home .hero-task-list h2{font-size:17px!important;margin-bottom:12px!important}
+html body #home .hero-task-toolbar{margin-bottom:10px!important}
+html body #home .hero-task-toolbar select{min-height:32px!important;padding:6px 9px!important}
+html body #home .hero-task-toolbar button{padding:5px 8px!important}
+html body #home .hero-task-row{grid-template-columns:22px minmax(40px,1fr) 65px minmax(28px,.7fr) 25px 20px!important;gap:6px!important;padding:9px 0!important}
+html body #home .hero-general-empty{margin-top:10px!important;line-height:1.7!important}
+}
+/* Daily tasks sit in the upper-right sky beside the welcome message. */
+@media(min-width:901px){
+html body #home>.homepage-welcome-banner{grid-column:1!important;grid-row:1!important;min-height:165px!important}
+html body #home>.reference-welcome{grid-column:2!important;grid-row:1/4!important;margin-top:0!important;align-self:start!important}
+}
+html.rex-locked{overflow:hidden!important}
+html.rex-locked body>:not(#rexUnlockGate){visibility:hidden!important;pointer-events:none!important}
+#rexUnlockGate[hidden]{display:none!important}
+#rexUnlockGate{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:24px;background:linear-gradient(#11192b80,#11192ba8),url('unified-sanctuary.png') center/cover;color:#293951}
+#rexUnlockGate .rex-unlock-card{width:min(100%,380px);padding:36px 30px;background:linear-gradient(145deg,#f8f3e7,#eee5d2);border:1px solid #bca477;border-radius:18px;box-shadow:0 20px 60px #080e3066;text-align:center}
+#rexUnlockGate .rex-unlock-symbol{font-size:35px;color:#93733f}
+#rexUnlockGate h1{font:500 34px Georgia,serif;color:#293951;margin:14px 0 8px}
+#rexUnlockGate p{color:#59616b;font-size:14px;line-height:1.7}
+#rexUnlockGate label{display:block;text-align:left;font-size:13px;margin:24px 0 8px;color:#465267}
+#rexUnlockGate input{display:block;width:100%;padding:12px 14px;border:1px solid #bfb299;border-radius:9px;background:#fffcf5;color:#293951;font:inherit}
+#rexUnlockGate button{width:100%;margin-top:15px;padding:12px;border:1px solid #aa8747;border-radius:9px;background:#a68449;color:#fffaf0;font:inherit}
+#rexUnlockGate button:disabled{opacity:.65;cursor:wait}
+#rexUnlockStatus{min-height:24px;margin-bottom:0!important}
+#rexLockButton{position:fixed;bottom:18px;right:20px;z-index:500;padding:8px 15px;border:1px solid #c3ab79;border-radius:20px;background:#f2e9d8;color:#604b2c;font:13px 'Noto Sans SC',sans-serif;box-shadow:0 3px 12px #11192b33}
+/* Dimensional magical gateway, isolated from the homepage. */
+#rexUnlockGate{overflow:hidden;isolation:isolate;perspective:1000px;background:radial-gradient(ellipse at 50% 45%,#51448745,transparent 65%),linear-gradient(#10162c99,#10162cb8),url('unified-sanctuary.png') center/cover}
+#rexUnlockGate .rex-unlock-card{position:relative;z-index:2;padding:34px 32px 26px;border:1px solid #ddc38d99;border-radius:24px;background:linear-gradient(135deg,#414765ef,#252c47f5 65%,#333550f5);box-shadow:0 30px 75px #070b24b3,0 0 35px #b6a0db26,inset 0 2px 0 #fff1d64d,inset 0 -8px 18px #11172b88;outline:1px solid #dab97c33;outline-offset:-8px;transform:rotateX(3deg);transition:transform .5s ease,opacity .5s ease}
+#rexUnlockGate .rex-unlock-card:before{content:'✧';position:absolute;top:-16px;left:calc(50% - 16px);width:32px;height:32px;border:1px solid #e1c79188;border-radius:50%;background:#343a56;color:#eed59b;line-height:32px;box-shadow:0 0 16px #dbc19040}
+#rexUnlockGate .rex-unlock-symbol{width:82px;height:82px;margin:0 auto;border:1px solid #e7cc9299;border-radius:50%;line-height:80px;font-size:42px;color:#ffe3a5;background:radial-gradient(circle,#bea3e866,#69649d44 45%,#222d4844 70%);box-shadow:0 0 0 7px #cbb9ed0a,0 0 0 8px #cbb9ed33,inset 0 0 20px #c9b5f466,0 0 28px #b399e54d;text-shadow:0 0 14px #f7dca4}
+#rexUnlockGate h1{color:#f3d89c;text-shadow:0 2px 3px #11182b,0 0 18px #d7b87533;font-size:36px;letter-spacing:1px}
+#rexUnlockGate p{color:#ddd9e9}
+#rexUnlockGate label{color:#e6d7b6;letter-spacing:1px}
+#rexUnlockGate input{background:#161e35b3;color:#fff3d3;border-color:#c9b58c80;box-shadow:inset 0 3px 8px #070d2455}
+#rexUnlockGate input::placeholder{color:#b8b8cd}
+#rexUnlockGate input:focus{outline:2px solid #c5b1ea;outline-offset:3px;border-color:#e7cf9d}
+#rexUnlockGate button{background:linear-gradient(#e1c591,#b99759);color:#26314c;border-color:#f4dba8;box-shadow:0 5px 0 #715e3e,0 9px 20px #080d254d,inset 0 1px 0 #fff3ce99;font-weight:600;transition:transform .2s,box-shadow .2s}
+#rexUnlockGate button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 7px 0 #715e3e,0 12px 23px #080d2555}
+#rexUnlockGate button:active:not(:disabled){transform:translateY(3px);box-shadow:0 2px 0 #715e3e}
+#rexUnlockStatus{font-size:12px!important}
+#rexUnlockGate .rex-portal-scene{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:1}
+#rexUnlockGate .rex-portal-halo{position:absolute;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,#a58bcd12,#9f8dcd30 40%,transparent 70%);animation:rexHaloBreath 7s ease-in-out infinite}
+#rexUnlockGate .rex-portal-ring{position:absolute;width:530px;height:530px;border:1px solid #dec79155;border-radius:50%;box-shadow:0 0 0 13px #d9bd8109,0 0 0 14px #d9bd8133,inset 0 0 28px #c4aeec22,0 0 40px #c4aeec22;background:repeating-conic-gradient(from 10deg,#dfc79766 0deg 1deg,transparent 1deg 30deg);mask-image:radial-gradient(circle,transparent 64%,#000 65%);animation:rexRingOrbit 65s linear infinite}
+#rexUnlockGate .rex-portal-core{position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,#d0bddf66,#9b85c03b 42%,transparent 72%);opacity:0}
+#rexUnlockGate .rex-portal-scene i{position:absolute;left:50%;top:50%;width:4px;height:4px;background:#eed5a0;border-radius:50%;transform:rotate(var(--angle)) translateX(var(--distance));box-shadow:0 0 8px #dfc99f;animation:rexParticleGlow 5s ease-in-out var(--delay) infinite}
+#rexUnlockGate.rex-entering .rex-unlock-card{transform:translateZ(130px) scale(.9);opacity:0;pointer-events:none}
+#rexUnlockGate.rex-entering .rex-portal-ring{animation:rexPortalOpen 1.7s ease-in forwards;mask-image:none;background:transparent;border-width:3px}
+#rexUnlockGate.rex-entering .rex-portal-core{animation:rexPortalDepth 1.7s ease-in forwards}
+#rexUnlockGate.rex-entering .rex-portal-scene i{animation:rexParticleTravel 1.7s ease-in forwards}
+@keyframes rexHaloBreath{50%{opacity:.6;transform:scale(1.06)}}
+@keyframes rexRingOrbit{to{transform:rotate(360deg)}}
+@keyframes rexParticleGlow{50%{opacity:.3}}
+@keyframes rexPortalOpen{0%{transform:scale(.85);opacity:.5}45%{opacity:1;box-shadow:0 0 35px #d8bbec77,inset 0 0 35px #d8bbec55}100%{transform:scale(4);opacity:0}}
+@keyframes rexPortalDepth{0%{opacity:0;transform:scale(.5)}65%{opacity:.65}100%{opacity:0;transform:scale(9)}}
+@keyframes rexParticleTravel{to{transform:rotate(var(--angle)) translateX(calc(var(--distance) * 4));opacity:0}}
+@media(max-width:600px){#rexUnlockGate .rex-unlock-card{padding:30px 24px 24px}#rexUnlockGate .rex-portal-ring{width:420px;height:420px}}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate *,#rexUnlockGate *:before{animation:none!important;transition:none!important}#rexUnlockGate.rex-entering .rex-unlock-card{opacity:0}}
+/* Visible gateway phase before revealing the homepage. */
+#rexUnlockGate .rex-portal-message{position:absolute;top:calc(50% + 155px);color:#ffe4af;font:500 22px Georgia,'Noto Sans SC',serif;letter-spacing:5px;text-shadow:0 0 12px #c5a4dc;opacity:0}
+#rexUnlockGate.rex-entering .rex-unlock-card{transition:opacity .35s,transform .35s;transform:scale(.8);opacity:0}
+#rexUnlockGate.rex-entering .rex-portal-scene{z-index:3}
+#rexUnlockGate.rex-entering .rex-portal-ring{width:280px;height:280px;mask-image:none!important;border:3px solid #edd8ae;background:repeating-conic-gradient(#d6bee955 0deg 2deg,transparent 2deg 30deg);box-shadow:0 0 0 12px #cab0ea22,0 0 0 14px #edd8ae77,0 0 45px #c7a9e5aa,inset 0 0 35px #c7a9e588;animation:rexVisibleGate 2.8s ease-in-out forwards!important}
+#rexUnlockGate.rex-entering .rex-portal-core{width:265px;height:265px;background:radial-gradient(circle,#f1e6f0aa 0%,#bca2de88 20%,#7267a8bb 45%,#252b57bb 65%,transparent 72%);animation:rexVisibleDepth 2.8s ease-in-out forwards!important}
+#rexUnlockGate.rex-entering .rex-portal-scene i{width:6px;height:6px;box-shadow:0 0 14px #ffe0ac;animation:rexVisibleStars 2.8s ease-in-out forwards!important}
+#rexUnlockGate.rex-entering .rex-portal-message{animation:rexGateMessage 2.8s ease forwards}
+@keyframes rexVisibleGate{0%{opacity:0;transform:scale(.6) rotate(-35deg)}20%{opacity:1;transform:scale(1) rotate(0deg)}65%{opacity:1;transform:scale(1.15) rotate(65deg)}100%{opacity:0;transform:scale(7) rotate(110deg)}}
+@keyframes rexVisibleDepth{0%{opacity:0;transform:scale(.5)}20%{opacity:.9;transform:scale(1)}65%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(9)}}
+@keyframes rexVisibleStars{0%{opacity:0;transform:rotate(var(--angle)) translateX(65px)}25%{opacity:1;transform:rotate(var(--angle)) translateX(var(--distance))}65%{opacity:1;transform:rotate(calc(var(--angle) + 45deg)) translateX(var(--distance))}100%{opacity:0;transform:rotate(calc(var(--angle) + 70deg)) translateX(calc(var(--distance) * 5))}}
+@keyframes rexGateMessage{0%,10%{opacity:0}25%,65%{opacity:1}85%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate.rex-entering .rex-portal-ring,#rexUnlockGate.rex-entering .rex-portal-core,#rexUnlockGate.rex-entering .rex-portal-scene i,#rexUnlockGate.rex-entering .rex-portal-message{animation:none!important}}
+html body main[tabindex="-1"]:focus{outline:none!important}
+/* Faster, layered arcane portal. */
+#rexUnlockGate.rex-entering .rex-portal-ring{animation-duration:1.6s!important;border-color:#f3dfb3;box-shadow:0 0 0 8px #c9afea22,0 0 0 10px #eed7a188,0 0 0 23px #c9afea0d,0 0 0 24px #c9afea66,0 0 45px #c7a9e599,inset 0 0 35px #c7a9e577}
+#rexUnlockGate.rex-entering .rex-portal-ring:before{content:'✧ ᚱ ✦ ᛉ ✧ ᚨ ✦ ᛟ ✧';position:absolute;inset:-38px;border:1px dashed #e4cfa499;border-radius:50%;color:#f3dcb0;font:17px Georgia,serif;letter-spacing:14px;text-align:center;padding-top:14px;text-shadow:0 0 8px #e2c797;transform:rotate(-25deg)}
+#rexUnlockGate.rex-entering .rex-portal-ring:after{content:'';position:absolute;inset:16px;border:1px solid #e0c8f3aa;border-radius:50%;box-shadow:inset 0 0 15px #c9afea66,0 0 12px #c9afea44;transform:rotateX(38deg) rotateY(-18deg)}
+#rexUnlockGate.rex-entering .rex-portal-core{animation-duration:1.6s!important;background:radial-gradient(ellipse at 42% 40%,#f3e9f5bb 0%,#bc9fe0aa 17%,#7161a7bb 40%,#252448dd 62%,transparent 72%)}
+#rexUnlockGate.rex-entering .rex-portal-scene i,#rexUnlockGate.rex-entering .rex-portal-message{animation-duration:1.6s!important}
+#rexUnlockGate .rex-portal-message{font-size:19px;letter-spacing:4px}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate.rex-entering .rex-portal-ring:before,#rexUnlockGate.rex-entering .rex-portal-ring:after{animation:none!important}}
+/* Let the portal form and settle before travelling through it. */
+#rexUnlockGate.rex-entering .rex-portal-ring,#rexUnlockGate.rex-entering .rex-portal-core,#rexUnlockGate.rex-entering .rex-portal-scene i,#rexUnlockGate.rex-entering .rex-portal-message{animation-duration:2.2s!important}
+@keyframes rexVisibleGate{0%{opacity:0;transform:scale(.6) rotate(-25deg)}25%{opacity:1;transform:scale(1) rotate(0deg)}72%{opacity:1;transform:scale(1.06) rotate(38deg)}100%{opacity:0;transform:scale(7) rotate(85deg)}}
+@keyframes rexVisibleDepth{0%{opacity:0;transform:scale(.5)}25%{opacity:.9;transform:scale(1)}72%{opacity:.95;transform:scale(1.04)}100%{opacity:0;transform:scale(9)}}
+@keyframes rexVisibleStars{0%{opacity:0;transform:rotate(var(--angle)) translateX(65px)}25%{opacity:1;transform:rotate(var(--angle)) translateX(var(--distance))}72%{opacity:1;transform:rotate(calc(var(--angle) + 30deg)) translateX(var(--distance))}100%{opacity:0;transform:rotate(calc(var(--angle) + 60deg)) translateX(calc(var(--distance) * 5))}}
+@keyframes rexGateMessage{0%,18%{opacity:0}35%,72%{opacity:1}92%,100%{opacity:0}}
+/* Fire portal entry: warm embers and layered flame rings. */
+#rexUnlockGate.rex-entering .rex-portal-ring{border-color:#ffdc8c!important;background:repeating-conic-gradient(from 12deg,#ffb34888 0deg 2deg,transparent 2deg 25deg)!important;box-shadow:0 0 0 7px #ffb25333,0 0 0 10px #ffd694bb,0 0 0 22px #f77b2622,0 0 0 24px #ffb75188,0 0 50px #f98b3199,inset 0 0 40px #ffb84988!important}
+#rexUnlockGate.rex-entering .rex-portal-ring:before{color:#ffe2a5!important;border:2px dashed #ffb65baa!important;text-shadow:0 0 10px #ff9c48,0 0 22px #f57835!important;background:repeating-conic-gradient(from 5deg,transparent 0deg 13deg,#ffad4944 14deg 16deg,transparent 18deg 30deg);box-shadow:0 0 25px #ed793c55}
+#rexUnlockGate.rex-entering .rex-portal-ring:after{border-color:#ffd58c!important;box-shadow:inset 0 0 25px #ffac5977,0 0 22px #ef742955!important;transform:rotateX(25deg) rotateY(-12deg)}
+#rexUnlockGate.rex-entering .rex-portal-core{background:radial-gradient(ellipse at 42% 40%,#ffe5b8b3 0%,#eaa36099 16%,#a34a2fbb 38%,#382335dd 62%,transparent 72%)!important}
+#rexUnlockGate.rex-entering .rex-portal-halo{background:radial-gradient(circle,#f4a54733,#ec822c33 40%,transparent 70%)!important}
+#rexUnlockGate.rex-entering .rex-portal-scene i{background:#ffce75!important;box-shadow:0 0 6px #ffe1a3,0 0 16px #ff913c!important;width:4px!important;height:8px!important;border-radius:70% 20% 70% 20%!important}
+#rexUnlockGate.rex-entering .rex-portal-message{color:#ffe0a5!important;text-shadow:0 0 15px #f39446!important}
+#rexUnlockGate .rex-flame-crown,#rexUnlockGate .rex-fire-vortex{display:none}
+#rexUnlockGate.rex-entering .rex-flame-crown{display:block;position:absolute;width:290px;height:290px;border-radius:50%;animation:rexFireArrival 2.2s ease-in-out forwards}
+#rexUnlockGate .rex-flame-crown b{position:absolute;left:calc(50% - 10px);top:calc(50% - 27px);width:20px;height:54px;transform:rotate(var(--turn)) translateY(-145px);transform-origin:10px 27px}
+#rexUnlockGate .rex-flame-crown b:before{content:'';display:block;width:100%;height:100%;border-radius:65% 15% 70% 20%;background:linear-gradient(0deg,#fff0b8,#ffb743 35%,#f8652288 75%,transparent);filter:drop-shadow(0 0 7px #f89234);transform-origin:center bottom;animation:rexFlameDance .43s ease-in-out var(--flicker) infinite alternate}
+#rexUnlockGate.rex-entering .rex-fire-vortex{display:block;position:absolute;width:245px;height:245px;border-radius:50%;background:repeating-conic-gradient(from 0deg,transparent 0deg 25deg,#ffb95366 40deg,#ed6d3333 60deg,transparent 80deg 120deg);animation:rexFireSpin .9s linear infinite;opacity:.85;mask-image:radial-gradient(circle,transparent 5%,#000 38%,transparent 72%)}
+#rexUnlockGate.rex-entering .rex-portal-ring:before{animation:rexRuneSpin 1.8s linear infinite!important}
+#rexUnlockGate.rex-entering .rex-portal-ring:after{animation:rexRuneSpin 1.2s linear infinite reverse!important}
+@keyframes rexFlameDance{from{transform:skewX(-15deg) scaleY(.6);opacity:.65}to{transform:skewX(17deg) scaleY(1.25);opacity:1}}
+@keyframes rexRuneSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes rexFireSpin{from{transform:rotate(0deg) scale(.9)}to{transform:rotate(360deg) scale(1.08)}}
+@keyframes rexFireArrival{0%{opacity:0;transform:scale(.6) rotate(-20deg)}25%{opacity:1;transform:scale(1) rotate(0deg)}72%{opacity:1;transform:scale(1.06) rotate(60deg)}100%{opacity:0;transform:scale(7) rotate(100deg)}}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate .rex-flame-crown,#rexUnlockGate .rex-fire-vortex{display:none!important}#rexUnlockGate.rex-entering .rex-portal-ring:before,#rexUnlockGate.rex-entering .rex-portal-ring:after{animation:none!important}}
+/* Volumetric fire illusion: layered hot cores, shaded curls and smoke. */
+#rexUnlockGate .rex-fire-smoke{display:none}
+#rexUnlockGate.rex-entering .rex-flame-crown{transform-style:preserve-3d;filter:drop-shadow(0 13px 14px #160b1aaa)}
+#rexUnlockGate .rex-flame-crown b{width:26px;height:65px;left:calc(50% - 13px);top:calc(50% - 32px);transform-origin:13px 32px}
+#rexUnlockGate .rex-flame-crown b:nth-child(2n){transform:rotate(var(--turn)) translateY(-139px) translateZ(28px);z-index:2}
+#rexUnlockGate .rex-flame-crown b:nth-child(3n){transform:rotate(var(--turn)) translateY(-154px) translateZ(-18px);filter:brightness(.75);z-index:0}
+#rexUnlockGate .rex-flame-crown b:before{border-radius:65% 25% 60% 35%;background:radial-gradient(ellipse at 43% 85%,#fff6d7 0%,#ffdc83 18%,#ffad35 38%,#e05d20 58%,#91301955 76%,transparent 90%);box-shadow:inset 5px 0 8px #ffe29b77,inset -5px -6px 10px #8e261766,0 0 10px #ec742a66;filter:drop-shadow(2px 3px 5px #ffb34e55);animation-duration:.65s}
+#rexUnlockGate .rex-flame-crown b:after{content:'';position:absolute;inset:16px 7px 0 5px;border-radius:75% 10% 70% 25%;background:linear-gradient(0deg,#fff4c8,#ffd478 40%,#f3943344 75%,transparent);filter:blur(1px);transform-origin:center bottom;animation:rexFlameCurl .8s ease-in-out var(--flicker) infinite alternate;mix-blend-mode:screen}
+#rexUnlockGate.rex-entering .rex-fire-smoke{display:block;position:absolute;width:370px;height:370px;border-radius:50%;background:radial-gradient(ellipse at 20% 25%,#ae846344,transparent 33%),radial-gradient(ellipse at 75% 25%,#8d687650,transparent 35%),radial-gradient(ellipse at 25% 75%,#704d6544,transparent 30%);filter:blur(12px);animation:rexSmokeDrift 2.2s ease-out forwards;z-index:-1}
+#rexUnlockGate.rex-entering .rex-portal-ring{box-shadow:0 5px 0 4px #6b2c24,0 -3px 0 3px #ffe8b6bb,0 0 0 9px #efa14588,0 0 0 18px #a74b2a44,0 18px 30px #160c21aa,0 0 50px #fca34388,inset 0 10px 20px #8e361855,inset 0 -7px 16px #ffe0a777!important}
+#rexUnlockGate.rex-entering .rex-portal-core{background:radial-gradient(ellipse at 48% 43%,#171327ee 0%,#352135ee 32%,#823c2daa 52%,#e48a4399 62%,#ffdc8d77 67%,transparent 73%)!important}
+@keyframes rexFlameCurl{from{transform:rotateY(-25deg) skewX(-18deg) scaleY(.65);opacity:.7}to{transform:rotateY(35deg) skewX(20deg) scaleY(1.2);opacity:1}}
+@keyframes rexSmokeDrift{0%{opacity:0;transform:scale(.7) rotate(-15deg)}30%{opacity:.75}70%{opacity:.5;transform:scale(1.25) rotate(25deg)}100%{opacity:0;transform:scale(3) rotate(45deg)}}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate .rex-fire-smoke{display:none!important}#rexUnlockGate .rex-flame-crown b:after{animation:none!important}}
+#rexUnlockGate .rex-real-fire{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:none}
+#rexUnlockGate.rex-entering .rex-real-fire{display:block}
+#rexUnlockGate.rex-entering .rex-flame-crown,#rexUnlockGate.rex-entering .rex-fire-vortex,#rexUnlockGate.rex-entering .rex-portal-ring,#rexUnlockGate.rex-entering .rex-portal-core,#rexUnlockGate.rex-entering .rex-portal-scene i{display:none!important}
+#rexUnlockGate.rex-entering .rex-portal-message{z-index:2;top:calc(50% + 210px)}
+#rexUnlockGate.rex-entering .rex-portal-halo{background:radial-gradient(circle,#8bcaf033,#7ba9d833 40%,transparent 70%)!important}
+#rexUnlockGate.rex-entering .rex-portal-message{color:#d3efff!important;text-shadow:0 0 15px #86b9e6!important}
+#rexUnlockGate .rex-portal-chooser{display:flex;align-items:end;gap:10px;margin-top:18px}
+#rexUnlockGate .rex-portal-chooser label{flex:1;margin:0;font-size:12px}
+#rexUnlockGate .rex-portal-chooser select{display:block;width:100%;margin-top:7px;padding:9px;border:1px solid #c9b58c80;border-radius:8px;background:#222a43;color:#eee3cb;font:inherit}
+#rexUnlockGate .rex-portal-chooser button{width:auto;margin:0;padding:9px 12px;background:#54516b;color:#f2e3c5;box-shadow:none;font-size:12px}
+#rexUnlockGate.rex-entering .rex-portal-halo{background:radial-gradient(circle,rgba(var(--portal-rgb),.18),rgba(var(--portal-rgb),.12) 40%,transparent 70%)!important}
+#rexUnlockGate.rex-entering .rex-portal-message{color:rgb(var(--portal-rgb))!important;text-shadow:0 0 15px rgba(var(--portal-rgb),.6)!important}
+#rexUnlockGate .rex-lightning-gateway{display:none;position:absolute;width:min(380px,72vw);height:min(480px,70vh);object-fit:contain;filter:drop-shadow(0 20px 18px #15122b66);pointer-events:none}
+#rexUnlockGate[data-portal=lightning].rex-entering .rex-lightning-gateway{display:block;animation:rexGatewayMaterialize 2.2s ease-in-out forwards}
+#rexUnlockGate[data-portal=lightning].rex-entering .rex-portal-message{top:calc(50% + min(260px,38vh))}
+@keyframes rexGatewayMaterialize{0%{opacity:0;transform:perspective(800px) rotateY(-18deg) scale(.7) translateY(15px)}25%{opacity:1;transform:perspective(800px) rotateY(-7deg) scale(1)}72%{opacity:1;transform:perspective(800px) rotateY(3deg) scale(1.04) translateY(-5px)}100%{opacity:0;transform:perspective(800px) rotateY(0deg) scale(5)}}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate[data-portal=lightning].rex-entering .rex-lightning-gateway{animation:none!important}}
+#rexUnlockGate.rex-entering .rex-portal-halo{animation:none!important}
+#rexUnlockGate.rex-entering .rex-fire-smoke{display:none!important}
+#rexUnlockGate .rex-crown-choice{margin:14px 0 0;font-size:12px}
+#rexUnlockGate .rex-crown-choice[hidden]{display:none!important}
+#rexUnlockGate .rex-crown-choice select{display:block;width:100%;margin-top:7px;padding:9px;border:1px solid #c9b58c80;border-radius:8px;background:#222a43;color:#eee3cb;font:inherit}
+#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-message{font-size:16px;letter-spacing:3px;top:calc(50% + 190px);color:#e9d9af!important;text-shadow:0 0 10px #bca57866!important}
+#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-halo{opacity:.45!important}
+#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-message{font-size:19px;letter-spacing:4px;top:calc(50% + 210px);color:#e5c071!important;text-shadow:0 0 15px #c7a56b99!important}
+#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-halo{opacity:1!important}
+#rexUnlockGate .rex-portal-chooser[hidden],#rexUnlockGate .rex-crown-choice[hidden]{display:none!important}
+
+/* Monumental blue flame entrance; scoped to the blue portal. */
+#rexUnlockGate[data-portal=blue]{--blue-portal-duration:2.8s}
+#rexUnlockGate[data-portal=blue].rex-entering .rex-unlock-card{transition:opacity .38s ease,transform .48s cubic-bezier(.2,.7,.2,1);transform:scale(.82) translateY(12px)}
+#rexUnlockGate[data-portal=blue].rex-entering .rex-portal-halo{width:100vw;height:100vh;border-radius:0;background:radial-gradient(ellipse at 50% 48%,#125ede28,transparent 65%)!important;animation:rexBlueAtmosphere var(--blue-portal-duration) ease both!important}
+#rexUnlockGate[data-portal=blue].rex-entering .rex-portal-message{top:calc(var(--blue-portal-y,48%) + var(--blue-portal-radius,210px) * 1.42 + 24px);left:20px;right:20px;text-align:center;font-family:'Noto Sans SC',system-ui,sans-serif;font-size:clamp(16px,1.6vw,22px);font-weight:500;letter-spacing:clamp(2px,.45vw,7px);color:#d7f8ff!important;text-shadow:0 0 12px #66dfff,0 0 32px #177ce9!important;animation:rexBlueGateMessage var(--blue-portal-duration) ease both!important;animation-duration:var(--blue-portal-duration)!important}
+@keyframes rexBlueAtmosphere{0%{opacity:0}25%,70%{opacity:1}100%{opacity:0}}
+@keyframes rexBlueGateMessage{0%,24%{opacity:0;transform:translateY(12px)}40%,70%{opacity:1;transform:translateY(0)}89%,100%{opacity:0;transform:translateY(-9px)}}
+@media(max-height:540px){#rexUnlockGate[data-portal=blue].rex-entering .rex-portal-message{top:auto;bottom:16px;font-size:14px}#rexUnlockGate[data-portal=blue].rex-entering .rex-portal-message:before{display:none}}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate[data-portal=blue].rex-entering .rex-portal-halo,#rexUnlockGate[data-portal=blue].rex-entering .rex-portal-message{animation:none!important}#rexUnlockGate[data-portal=blue].rex-entering .rex-real-fire{display:none!important}}
+
+/* Supreme coronation: ivory gold, sapphire and a monumental celestial seal. */
+#rexUnlockGate .rex-unlock-card{max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+#rexUnlockGate .rex-portal-chooser{gap:12px;margin-top:18px;padding-top:15px;border-top:1px solid #ddc38d33}
+#rexUnlockGate .rex-portal-chooser select{padding:9px 10px;background:#19243c;border-color:#c9b58c66;color:#f4dfb5}
+#rexUnlockGate .rex-portal-chooser button{padding:10px 13px;color:#f4dfb5;background:#c9a56b1a;border-color:#c9a56b66}
+#rexUnlockGate[data-portal=legendary]{--legendary-portal-duration:3.4s}
+#rexUnlockGate[data-portal=legendary].rex-entering .rex-unlock-card{transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);transform:scale(.8) translateY(14px)}
+#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-halo{width:100vw;height:100vh;border-radius:0;background:radial-gradient(ellipse at 50% 45%,#f4b73c20,transparent 68%)!important;animation:rexSupremeAtmosphere var(--legendary-portal-duration) ease both!important}
+#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-message{top:calc(var(--legendary-portal-y,45%) + var(--legendary-portal-radius,230px) * 1.48 + 28px);left:16px;right:16px;text-align:center;font-family:'Noto Sans SC',system-ui,sans-serif;font-size:clamp(17px,1.75vw,24px);font-weight:500;letter-spacing:clamp(2px,.4vw,6px);color:#fff1c4!important;text-shadow:0 0 14px #e8b451,0 0 35px #b8772c!important;animation:rexSupremeMessage var(--legendary-portal-duration) ease both!important;animation-duration:var(--legendary-portal-duration)!important}
+@keyframes rexSupremeAtmosphere{0%{opacity:0}26%,77%{opacity:1}100%{opacity:0}}
+@keyframes rexSupremeMessage{0%,31%{opacity:0;transform:translateY(12px)}48%,76%{opacity:1;transform:translateY(0)}92%,100%{opacity:0;transform:translateY(-8px)}}
+@media(max-height:540px){#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-message{top:auto;bottom:16px;font-size:14px}#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-message:before{display:none}}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-halo,#rexUnlockGate[data-portal=legendary].rex-entering .rex-portal-message{animation:none!important}#rexUnlockGate[data-portal=legendary].rex-entering .rex-real-fire{display:none!important}}
+
+/* Water and night entrances use the same cinematic timing as their canvas scenes. */
+#rexUnlockGate[data-portal=waterfall]{--cinematic-portal-duration:3s;--cinematic-accent:169,235,247;--cinematic-glow:57,173,211}
+#rexUnlockGate[data-portal=dark]{--cinematic-portal-duration:3.2s;--cinematic-accent:227,213,255;--cinematic-glow:137,84,218}
+#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-unlock-card{transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);transform:scale(.82) translateY(12px)}
+#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-portal-halo{width:100vw;height:100vh;border-radius:0;background:radial-gradient(ellipse at 50% 45%,rgba(var(--cinematic-glow),.13),transparent 68%)!important;animation:rexElementAtmosphere var(--cinematic-portal-duration) ease both!important}
+#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-portal-message{top:calc(var(--cinematic-portal-y,45%) + var(--cinematic-portal-radius,230px) * 1.4 + 24px);left:16px;right:16px;text-align:center;font-family:'Noto Sans SC',system-ui,sans-serif;font-size:clamp(16px,1.65vw,22px);font-weight:500;letter-spacing:clamp(2px,.4vw,6px);color:rgb(var(--cinematic-accent))!important;text-shadow:0 0 13px rgba(var(--cinematic-glow),.9),0 0 32px rgba(var(--cinematic-glow),.6)!important;animation:rexElementMessage var(--cinematic-portal-duration) ease both!important;animation-duration:var(--cinematic-portal-duration)!important}
+#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-portal-message:before{display:block;margin-bottom:12px;color:rgba(var(--cinematic-accent),.7);font:10px Georgia,serif;letter-spacing:3px}
+@keyframes rexElementAtmosphere{0%{opacity:0}25%,72%{opacity:1}100%{opacity:0}}
+@keyframes rexElementMessage{0%,27%{opacity:0;transform:translateY(12px)}43%,73%{opacity:1;transform:translateY(0)}91%,100%{opacity:0;transform:translateY(-8px)}}
+@media(max-height:540px){#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-portal-message{top:auto;bottom:16px;font-size:14px}#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-portal-message:before{display:none}}
+@media(prefers-reduced-motion:reduce){#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-portal-halo,#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-portal-message{animation:none!important}#rexUnlockGate:is([data-portal=waterfall],[data-portal=dark]).rex-entering .rex-real-fire{display:none!important}}
+
+/* Speaking, writing, reading and listening practice modules */
+.hero-task-list .hero-language-module{margin:12px 0;padding:12px;border:1px solid #d9c59b;border-radius:14px;background:rgba(255,249,231,.52)}
+.hero-language-module h3{display:flex;align-items:center;gap:9px;margin:0 0 5px;font-size:19px;color:#34465c}.hero-module-symbol{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#9a82d8;color:white}.hero-language-module[data-module=writing] .hero-module-symbol{background:#c3974e}.hero-language-module[data-module=reading] .hero-module-symbol{background:#5daec4}.hero-language-module[data-module=listening] .hero-module-symbol{background:#748cdb}.hero-module-add{margin-left:auto;padding:5px 12px;border:1px solid #dfcda8;border-radius:20px;background:#fff7e6;color:#8a6b37;font-size:13px;cursor:pointer}.hero-module-empty{margin:12px 0 4px;font-size:13px;color:#8b8578}.hero-language-module .pte-other-practice{margin-top:14px;padding-top:12px}.hero-language-module .hero-task-row{min-width:0}.hero-task-card:not(.showing-task-detail){height:auto!important}
+
+.hero-language-tabs{display:flex;gap:6px;padding:5px;margin:8px 0 12px;background:rgba(177,142,72,.12);border:1px solid #dfcda8;border-radius:12px}.hero-language-tabs [role=tab]{flex:1;padding:9px 4px;border:0;border-radius:8px;background:transparent;color:#8a744b;font:inherit;font-weight:600;cursor:pointer}.hero-language-tabs [aria-selected=true]{background:linear-gradient(135deg,#c8a357,#a88643);color:#fff;box-shadow:0 2px 7px #8a6b3725}.hero-language-tabs [role=tab]:focus-visible{outline:2px solid #8a6b37;outline-offset:2px}.hero-language-module[hidden]{display:none!important}
+
+/* Keep today's practice card stable across all four modules. */
+html body #home .hero-task-card:not(.showing-task-detail){height:660px!important;min-height:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
+html body #home .hero-task-card .hero-task-list:not([hidden]){flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+html body #home .hero-task-list>h2,html body #home .hero-task-list>.hero-language-tabs{flex-shrink:0}
+html body #home .hero-task-list>.hero-language-module:not([hidden]){flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;margin-bottom:0;scrollbar-gutter:stable;overscroll-behavior:contain}
+html body #home .hero-task-card>.hero-custom-form:not([hidden]){min-height:0;overflow-y:auto}
+@media(max-width:760px){html body #home .hero-task-card:not(.showing-task-detail){height:clamp(480px,75dvh,660px)!important}}
+/* Compact study dashboard */
+html body #home.active{display:block!important}
+.compact-dashboard{width:100%;max-width:1180px;margin:0 auto;display:grid;gap:18px}
+.compact-heading h1{font-size:27px;margin:7px 0;color:#34445e}.compact-heading p{font-size:13px;color:#817665;margin:0}.compact-heading [hidden]{display:none!important}
+.compact-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.compact-metrics article{padding:16px 20px;background:var(--rex-card-bg,#f8f0df);border:1px solid #d8c6a7;border-radius:14px}.compact-metrics span{font-size:12px;color:#82735f;display:block}.compact-metrics strong{font-size:23px;display:block;color:#34445e;margin-top:7px}
+.compact-main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(290px,1fr);gap:18px;align-items:start}.compact-side{display:grid;gap:16px;min-width:0}
+html body #home .compact-main>.reference-welcome{display:block!important;margin:0!important;padding:0!important;min-height:0!important;width:100%!important;min-width:0!important}
+html body #home .compact-main .hero-task-card:not(.showing-task-detail){height:460px!important;min-height:0!important;padding:18px!important}
+html body #home .compact-main .hero-task-card.showing-task-detail{min-height:0!important;overflow:auto!important}
+.compact-side .dashboard-calendar-card{padding:18px!important;margin:0!important}.compact-countdown h2{font-size:17px;margin:0 0 12px;color:#806535}.countdown-list{max-height:145px;overflow:auto}.countdown-list>p{font-size:12px;color:#817665}.countdown-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #d8c6a74d}.countdown-item>div{flex:1;min-width:0}.countdown-item b{display:block;font-size:13px;overflow-wrap:anywhere}.countdown-item small{font-size:11px;color:#887b68}.countdown-item strong{font-size:16px;color:#a08141;white-space:nowrap}.countdown-item button{border:0;background:transparent;color:#947b52;font-size:20px;padding:3px 7px}.countdown-form{display:grid;grid-template-columns:minmax(0,1fr) 135px;gap:8px;margin-top:12px}.countdown-form input{width:100%;min-width:0;background:#fff9ee;border:1px solid #d8c6a7;border-radius:8px;padding:9px;font:inherit;font-size:12px;color:#34445e}.countdown-form button{grid-column:1/-1;padding:8px;font-size:12px}.countdown-feedback{font-size:11px;margin:5px 0 0;color:#817665}.calendar-day.has-countdown{box-shadow:inset 0 0 0 2px #bd9651!important}
+.compact-bottom{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:18px;align-items:start}.compact-bottom>.dashboard-calendar-card,.compact-bottom>.daily-chart-overview{margin:0!important;padding:18px!important;min-width:0}.compact-bottom #dailyQuestionChart{max-height:220px;overflow:auto}
+@media(max-width:850px){.compact-main,.compact-bottom{grid-template-columns:1fr}.compact-side{grid-template-columns:1fr 1fr}.compact-metrics{grid-template-columns:repeat(2,1fr)}html body #home .compact-main .hero-task-card:not(.showing-task-detail){height:440px!important}}
+@media(max-width:540px){.compact-side{grid-template-columns:1fr}.compact-metrics article{padding:13px}.compact-metrics strong{font-size:20px}.compact-heading h1{font-size:24px}}
+html body #home .compact-main .dashboard-side-column{display:none!important}
+
+.compact-bottom{grid-template-columns:minmax(0,1fr)!important}
