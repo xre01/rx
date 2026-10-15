@@ -27,10 +27,14 @@
       if(delta&&(state.counts[id]||current[id])){const existing=state.counts[id]||{...current[id],count:0};state.counts[id]={...existing,count:Math.max(0,existing.count+delta)}}
     }
     state.baseline=Object.fromEntries(Object.entries(current).map(([id,r])=>[id,r.count]));
-    for(const r of Object.values(state.counts))if(r.count>0)state.checkins[r.date]=true;
-    for(const r of records())state.checkins[day(r.endedAt)]=true;
-    for(const r of read('rex-daily-growth-v1',[]))if(validDate(r?.date))state.checkins[r.date]=true;
-    for(const [date,list]of Object.entries(read('arcane-sanctuary-v1',{}).done||{}))if(validDate(date)&&Array.isArray(list)&&list.length)state.checkins[date]=true;
+    const derivedBefore=new Set(state.derivedDays||[]),activityDays=new Set();const revoked=read('rex-notion-revoked-days-v1',[]);for(const date of revoked)delete state.checkins[date];
+    for(const list of Object.values(read('rex-notion-pages-v1',{})))for(const r of list)if(validDate(r.date))activityDays.add(r.date);
+    for(const r of Object.values(state.counts))if(r.count>0)activityDays.add(r.date);
+    for(const r of records())activityDays.add(day(r.endedAt));
+    for(const r of read('rex-daily-growth-v1',[]))if(validDate(r?.date))activityDays.add(r.date);
+    for(const [date,list]of Object.entries(read('arcane-sanctuary-v1',{}).done||{}))if(validDate(date)&&Array.isArray(list)&&list.length)activityDays.add(date);
+    for(const date of derivedBefore)if(!activityDays.has(date))delete state.checkins[date];
+    for(const date of activityDays)state.checkins[date]=true;state.derivedDays=[...activityDays];
     save();
   }
   function snapshot(){
@@ -59,14 +63,14 @@
     localStorage.setItem('rex-countdown-targets-v1',JSON.stringify(countdown));
     localStorage.setItem('rex-focus-sessions-v1',JSON.stringify(focus));
     localStorage.setItem('rex-focus-abandoned-v1',JSON.stringify(abandoned));
-    save();
+    refresh();
   }
   function summary(date=day()){
     const counts=Object.values(state.counts).filter(r=>r.date===date&&r.count>0).map(r=>({...r,label:r.type.slice(r.type.indexOf(':')+1)}));
     const sessions=records().filter(r=>day(r.endedAt)===date);
     return {counts,seconds:sessions.reduce((n,r)=>n+r.seconds,0),days:Object.keys(state.checkins).filter(date=>date<=day()).sort(),sessions};
   }
-  window.RexDashboardStore={refresh,snapshot,apply,summary};
+  window.RexDashboardStore={refresh,snapshot,apply,summary,reconcileDays(dates){for(const date of dates)delete state.checkins[date];refresh()}};
   try{refresh()}catch{}
   addEventListener('rex-local-changed',()=>{try{refresh()}catch{}});
   addEventListener('storage',event=>{if(event.key===key){const saved=read(key,{});state.counts=saved.counts||{};state.baseline=saved.baseline||{};state.checkins=saved.checkins||{}}else try{refresh()}catch{}});
