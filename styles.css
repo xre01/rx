@@ -1728,3 +1728,5 @@ html[data-preview-layout] body#rexSanctuary #focusDiamond{cursor:pointer!importa
 html[data-preview-layout] body#rexSanctuary .rex-sidebar #profilePopover{position:fixed!important;inset:auto!important;top:24px!important;left:calc(var(--dashboard-sidebar,250px) + 12px)!important;right:auto!important;bottom:auto!important;width:min(380px,calc(100vw - var(--dashboard-sidebar,250px) - 36px))!important;max-width:calc(100vw - 32px)!important;min-width:0!important;height:auto!important;max-height:calc(100dvh - 48px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;touch-action:pan-y;scrollbar-gutter:stable;-webkit-overflow-scrolling:touch;z-index:190!important;transform:none!important}
 @media(max-width:700px){html[data-preview-layout] body#rexSanctuary .rex-sidebar #profilePopover{top:16px!important;left:16px!important;right:16px!important;width:calc(100vw - 32px)!important;max-height:calc(100dvh - 32px)!important}}
 
+
+.rex-sidebar .brand-copy{display:none!important}.rex-sidebar .header-brand{max-width:100%;justify-content:center!important}
