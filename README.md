@@ -12,13 +12,10 @@ Connect D1 once using the Worker URL and your own sync key. Changes sync automat
 
 ## Deployment
 
-Publish the main branch root with GitHub Pages. The D1 Worker source and schema in `worker/` deploy separately to Cloudflare. Open the HTTPS website online once to prepare the offline cache. Cloud services require a connection. Releases replace the old application cache without deleting personal study records.
+Publish the main branch root with GitHub Pages. The D1 synchronization Worker is deployed separately to Cloudflare. Open the HTTPS website online once to prepare the offline cache. Cloud services require a connection. Releases replace the old application cache without deleting personal study records.
 
 ## Validation
 
-```
-node tests/dashboard-sync.cjs .
-node --test --experimental-test-isolation=none worker/worker.test.mjs
-```
+Validated with 19 automated checks covering D1 record validation, authentication, cross-device synchronization, conflicts, deletions and migration. Browser checks cover practice counts, timer completion, statistics periods, countdown events and reflection drafts/links. Live attachment upload to Notion was not verified in this release.
 
 Only the current background, default avatar and application icon are shipped. No retired login, hanging crystal, theme variants, hourglass images, local secrets, screenshots, drafts or backups are included.
