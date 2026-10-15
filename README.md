@@ -1,15 +1,24 @@
-# Rex World
+# Rex World · Study Sanctuary
 
-A responsive study dashboard with PTE speaking practice, WE document uploads, SWT completion counts, reading mistake screenshots and analysis, listening counts, a study calendar, countdowns, and a focus timer.
+An English study dashboard with PTE practice, a study calendar, countdown events, a focus timer, activity statistics and daily reflections.
 
-The original page unlock password is restored. This is a client-side unlock screen; it does not make GitHub Pages source files private. Notion synchronization requires its separately configured service and access token.
+## Storage
 
-Only current application resources are included. No preview images, retired backgrounds, backups, development scripts, or local credentials are published.
+- Cloudflare D1: question counts, eligible focus sessions, countdown events and study dates. Sessions shorter than 60 seconds are excluded.
+- Notion: practice notes, reflections and attachments, through the configured Notion Worker.
+- Browser: drafts, practice settings, avatar and connection preferences. Local drafts and settings do not transfer automatically to another browser.
+
+Connect D1 once using the Worker URL and your own sync key. Changes sync automatically; **Sync Now** requests an immediate sync. Keys are entered in the website and never shipped in source files. Configure the Notion service separately in **Notion Archive**.
 
 ## Deployment
 
-Use GitHub Actions as the Pages publishing source. The included workflow deploys current root files on pushes to main or master.
+Publish the main branch root with GitHub Pages. The D1 Worker source and schema in `worker/` deploy separately to Cloudflare. Open the HTTPS website online once to prepare the offline cache. Cloud services require a connection. Releases replace the old application cache without deleting personal study records.
 
-## Offline use
+## Validation
 
-After opening the HTTPS site online and allowing its offline cache to finish, local practice records, countdowns, the calendar and focus timer remain usable offline. Notion synchronization and remote media need a network connection.
+```
+node tests/dashboard-sync.cjs .
+node --test --experimental-test-isolation=none worker/worker.test.mjs
+```
+
+Only the current background, default avatar and application icon are shipped. No retired login, hanging crystal, theme variants, hourglass images, local secrets, screenshots, drafts or backups are included.
