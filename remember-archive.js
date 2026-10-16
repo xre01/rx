@@ -11,7 +11,3 @@ input.addEventListener('change',save);checkbox.addEventListener('change',save);d
 gateway.addEventListener('change',()=>{const saved=stored();if(saved&&saved.origin!==origin()){input.value='';sessionStorage.removeItem('arcane-session-password')}if(saved?.origin===origin()&&checkbox.checked)input.value=saved.value});
 document.getElementById('clearArchive').addEventListener('click',()=>{localStorage.removeItem(key);sessionStorage.removeItem('arcane-session-password')});
 })();
-
-
-
-

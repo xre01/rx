@@ -1,25 +1,27 @@
 # Rex World · Study Sanctuary
 
-An English study dashboard with PTE practice, a study calendar, countdown events, a focus timer, activity statistics and daily reflections.
+A static English study dashboard with PTE practice, Notion attachments, a study calendar, countdown events, focus sessions and daily reflections.
 
-## Storage
+## Current release
 
-- Cloudflare D1: question counts, eligible focus sessions, countdown events and study dates. Sessions shorter than 60 seconds are excluded.
-- Notion: practice notes, reflections and attachments, through the configured Notion Worker.
-- Browser: drafts, practice settings, avatar and connection preferences. Local drafts and settings do not transfer automatically to another browser.
+2026-10-16-mint-feather-1 uses a sage, mist-blue and ivory theme with restrained champagne-gold accents. Click **Rex World** to open the focus timer. Decorative feathers share one animation loop, update at most 30 times per second, and pause while scrolling, off screen, in the background or when reduced motion is preferred.
 
-Connect D1 once using the Worker URL and your own sync key. Changes sync automatically; **Sync Now** requests an immediate sync. Keys are entered in the website and never shipped in source files. Configure the Notion service separately in **Notion Archive**.
+The default transparent avatar is a 17 KB WebP. No background photograph, external web font, rose, diamond, retired theme artwork or preview copy is shipped.
 
-## Deployment
+## Uploads and storage
 
-Publish the main branch root with GitHub Pages. The D1 synchronization Worker is deployed separately to Cloudflare. Open the HTTPS website online once to prepare the offline cache. Cloud services require a connection. Releases replace the old application cache without deleting personal study records.
+- Choose attachments, review the filenames and use **Remove** for any incorrect selection. PTE uploads start only when **Sync** is clicked. Images and media previews update after removal.
+- Notion attachments are sent through the configured Worker in idempotent batches of at most five files. PTE supports up to 15 images plus audio, at most 20 MiB in total. Generic practice and reflection forms permit up to 15 attachments.
+- Cloudflare D1 stores dashboard counts, eligible focus sessions, countdown events and study dates. It is a separate service from Notion. Dashboard changes sync automatically only after the user configures that service.
+- Drafts, practice settings, avatar and connection preferences remain in browser storage. Reflection drafts and their files are saved in IndexedDB. PTE file selections are temporary; they are not a persistent offline upload queue.
+- Keys are entered by the user and are not included in the repository. Remembering a Notion key is optional and stores it only in that browser.
 
-## Release 2026-10-16-audit-1
+## Publish and offline use
 
-Retains the rotating 32-facet diamond, handwritten wordmark and continuous feather flow. Removes retired graphics, old navigation and unused styles. Fixes midnight practice dates, Notion deletion reconciliation, lazy archive attachments and query-string offline navigation.
+Publish the **main** branch root through GitHub Pages. Open the HTTPS site online once to install its offline cache. New releases remove only old application caches; personal study records in local storage and IndexedDB are retained. Notion and D1 still need an internet connection. HTTPS Workers are deployed separately.
 
-## Validation
+## Release validation
 
-Automated checks cover the dashboard modules, midnight drafts, 15-image batching, Notion deletion reconciliation, reflection drafts, archive refresh, and D1 record validation, authentication, cross-device synchronization, conflicts, deletions and migration. Browser checks cover practice counts, timer completion, statistics periods, countdown events and reflection drafts/links. Attachment batching is verified with mocked requests; this release does not create test records in a live Notion workspace. Offline D1 changes retry when connected. PTE file selections are not a persistent offline upload queue; reflections still require Save to Notion.
+The release was checked with a DOM adapter, fake local IndexedDB, a controlled clock, mocked network requests and service-worker cache mocks. Checks cover application startup, practice module switching, repeat-task progress, count persistence, navigation, avatar/profile controls, focus timing and statistics, countdown add/delete, calendar navigation, attachment removal, explicit PTE uploads, Notion batching/retries/deletion reconciliation, D1 synchronization/disconnect, reflection drafts, resource hashes and offline cache behavior.
 
-Only the current background, default avatar and application icon are shipped. No retired login, hanging crystal, theme variants, hourglass images, local secrets, screenshots, drafts or backups are included.
+These checks do not create records in a live Notion workspace or deploy a Cloudflare Worker. Browser rendering and live backend integration are separate from the mocked checks.
