@@ -18,6 +18,7 @@
       const type=(task.module||'custom')+':'+task.title;
       if(task.repeat){for(const [date,r]of Object.entries(task.history||{}))add(date,type,r?.done||0)}else add(task.date,type,task.done||0);
     }
+    for(const r of read('rex-study-makeup-v1',[]))if(r)add(r.date,(r.module||'custom')+':'+r.type,r.count);
     return counts;
   }
   function refresh(){
@@ -33,6 +34,7 @@
     for(const r of records())activityDays.add(day(r.endedAt));
     for(const r of read('rex-daily-growth-v1',[]))if(validDate(r?.date))activityDays.add(r.date);
     for(const [date,list]of Object.entries(read('arcane-sanctuary-v1',{}).done||{}))if(validDate(date)&&Array.isArray(list)&&list.length)activityDays.add(date);
+    for(const date of read('rex-reflection-days-v1',[]))if(validDate(date))activityDays.add(date);
     for(const date of derivedBefore)if(!activityDays.has(date))delete state.checkins[date];
     for(const date of activityDays)state.checkins[date]=true;state.derivedDays=[...activityDays];
     save();

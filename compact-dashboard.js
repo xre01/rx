@@ -1,7 +1,7 @@
 (()=>{
 const home=document.getElementById('home'),hero=home?.querySelector('.reference-welcome');if(!hero)return;
 const layout=document.createElement('section');layout.className='compact-dashboard';
-const heading=document.createElement('div');heading.className='compact-heading';heading.innerHTML='<div><span class="eyebrow">REX · STUDY DASHBOARD</span><h1>Today’s Study Dashboard</h1></div>';
+const heading=document.createElement('div');heading.className='compact-heading';heading.innerHTML='<div><span class="eyebrow">REX · STUDY DASHBOARD</span><h1>Today’s Dashboard</h1></div>';
 const metrics=document.createElement('div');metrics.className='compact-metrics';
 const main=document.createElement('div');main.className='compact-main';const aside=document.createElement('aside');aside.className='compact-side';
 const countdown=document.createElement('section');countdown.className='metric-countdown';countdown.innerHTML='<div class="dashboard-section-heading"><h2>Countdown Events</h2><span>Your next milestone</span></div><div class="countdown-list"></div><details class="calendar-target-editor"><summary>＋ Add event</summary><form class="countdown-form"><label>Event name<input name="title" maxlength="60" placeholder="For example: PTE Exam" required></label><label>Event date<input name="date" type="date" required></label><button class="action" type="submit">Add event</button></form></details><p class="countdown-feedback" role="status"></p>';

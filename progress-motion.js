@@ -1,0 +1,6 @@
+(()=>{
+'use strict';
+const metrics=document.querySelector('.compact-metrics');if(!metrics)return;const reduced=matchMedia('(prefers-reduced-motion:reduce)'),values=new Map();
+function update(){[...metrics.children].forEach((cell,index)=>{const value=cell.querySelector('.metric-value');if(!value)return;const target=Number(value.textContent);if(!Number.isFinite(target))return;const previous=values.get(index);if(previous?.frame)cancelAnimationFrame(previous.frame);const state={target,frame:0};values.set(index,state);if(!previous||previous.target===target||reduced.matches)return;const start=performance.now(),from=previous.target;const label=cell.querySelector('strong');label.setAttribute('aria-label',target+' '+(cell.querySelector('.metric-unit')?.textContent||''));value.setAttribute('aria-hidden','true');function frame(now){if(!value.isConnected)return;const t=Math.min(1,(now-start)/420),eased=1-(1-t)**3;value.textContent=String(Math.round(from+(target-from)*eased));if(t<1)state.frame=requestAnimationFrame(frame);else{state.frame=0;value.textContent=String(target);value.removeAttribute('aria-hidden');label.removeAttribute('aria-label');}}state.frame=requestAnimationFrame(frame);});}
+update();new MutationObserver(update).observe(metrics,{childList:true});
+})();
