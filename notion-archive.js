@@ -2,6 +2,9 @@
 'use strict';
 const $=id=>document.getElementById(id),cfgKey='arcane-notion-gateway',batchSize=5;
 const grid=$('archiveGrid');
+let archiveLoaded=false,archiveTruncated=false,archiveMonth=new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit'}).format(new Date()).slice(0,7),archiveDay='';
+const connection=$('loadArchive').closest('.card');if(connection){const settings=node('details','archive-connection');const summary=node('summary','','Notion connection');connection.before(settings);settings.append(summary,connection);}
+$('archives').querySelector('p.sub').textContent='Browse your check-ins by date or search their content.';
 let mediaUrls=[],revision=0,controller=null,lastPayload=null,requestRevision=0,requestController=null;
 grid.classList.add('archive-grouped');
 $('gateway').value=localStorage.getItem(cfgKey)||'https://rex-notion-calendar.xren0220.workers.dev';
@@ -111,18 +114,37 @@ function dayGroup(day,records,index,origin,key,version,signal){
   return details;
 }
 function renderArchive(groups,origin,key,version,signal){
-  let visible=0;
-  const earlier=button('archive-earlier-dates','Show earlier dates');
-  function showEarlier(){
-    if(version!==revision||signal.aborted)return;
-    const end=Math.min(visible+batchSize,groups.length);
-    for(;visible<end;visible++){const [day,records]=groups[visible];grid.append(dayGroup(day,records,visible,origin,key,version,signal));}
-    const remaining=groups.length-visible;
-    earlier.hidden=remaining===0;
-    earlier.textContent=remaining?`Show earlier dates (${remaining} remaining)`:'All dates shown';
-    grid.append(earlier);
-  }
-  earlier.addEventListener('click',showEarlier);showEarlier();
+ const records=groups.flatMap(([,items])=>items),byDay=new Map(groups),today=new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ const shell=node('section','archive-calendar-shell'),toolbar=node('div','archive-calendar-toolbar'),search=document.createElement('input');search.type='search';search.placeholder='Search notes, activities or filenames…';search.setAttribute('aria-label','Search check-in content');
+ const navigation=node('div','archive-month-nav'),previous=button('','‹'),next=button('','›'),caption=node('strong');previous.setAttribute('aria-label','Previous month');next.setAttribute('aria-label','Next month');const current=button('','Today');navigation.append(previous,caption,next,current);toolbar.append(navigation,search);
+ const legend=node('p','archive-calendar-legend'),week=node('div','archive-calendar-week'),days=node('div','archive-calendar-days'),status=node('p','archive-search-status'),results=node('div','archive-calendar-results');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+ for(const text of ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])week.append(node('span','',text));shell.append(toolbar,legend,week,days,status,results);grid.append(shell);
+ let query='',searchVersion=0,timer,limit=20;const detailsCache=new Map();
+ function content(item){const details=detailsCache.get(item.id)||{};return [item.title,item.date,item.category,...(Array.isArray(item.notes)?item.notes:[]),...(details.notes||[]),...(Array.isArray(item.media)?item.media:[]).map(f=>f?.name||''),...(details.media||[]).map(f=>f?.name||'')].filter(Boolean).join(' ').toLocaleLowerCase();}
+ function matches(item){return !query||query.split(/\s+/).every(term=>content(item).includes(term));}
+ function renderResults(){
+  cleanMedia();results.replaceChildren();limit=Math.max(20,limit);const list=records.filter(item=>matches(item)&&(query||dayKey(item.date)===archiveDay));
+  status.textContent=query?'Found '+list.length+' matching records':archiveDay?(archiveDay+' · '+list.length+' records'):'Select a date to view records';
+  if(!archiveLoaded){status.textContent='Sync Notion to see your recorded dates';return;}
+  if(!list.length){results.append(node('p','archive-empty',query?'No matching records.':archiveTruncated?'No records for this date in the loaded results.':'No records for this date.'));return;}
+  for(const item of list.slice(0,limit))results.append(recordCard({...item,...detailsCache.get(item.id)},origin,key,version,signal));
+  if(list.length>limit){const more=button('ghost','Load more');more.addEventListener('click',()=>{limit+=20;renderResults()});results.append(more);}
+ }
+ function renderDays(){
+  days.replaceChildren();caption.textContent=archiveMonth.replace('-',' / ');legend.textContent=archiveLoaded?(archiveTruncated?'● Recorded · Unmarked dates may have records outside the loaded results':'● Recorded · Unmarked dates have no records'):'Not synced · Record status is not available yet';
+  const offset=(new Date(archiveMonth+'-01T12:00:00Z').getUTCDay()+6)%7;for(let i=0;i<offset;i++)days.append(node('span'));
+  const [y,m]=archiveMonth.split('-').map(Number),length=new Date(Date.UTC(y,m,0)).getUTCDate();
+  for(let i=1;i<=length;i++){const date=archiveMonth+'-'+String(i).padStart(2,'0'),items=byDay.get(date)||[],b=button('archive-date',String(i));if(items.length)b.classList.add('has-records');if(date===today)b.classList.add('is-today');if(date===archiveDay)b.classList.add('is-selected');b.setAttribute('aria-pressed',String(date===archiveDay));b.setAttribute('aria-label',date+' · '+(items.length?items.length+' records':archiveLoaded&&!archiveTruncated?'No records':'Status unavailable'));b.addEventListener('click',()=>{archiveDay=date;search.value='';query='';searchVersion++;limit=20;renderDays();renderResults()});days.append(b);}
+ }
+ function move(delta){const [y,m]=archiveMonth.split('-').map(Number);archiveMonth=new Date(Date.UTC(y,m-1+delta,1)).toISOString().slice(0,7);renderDays();}
+ previous.addEventListener('click',()=>move(-1));next.addEventListener('click',()=>move(1));current.addEventListener('click',()=>{archiveMonth=today.slice(0,7);archiveDay=today;query='';search.value='';searchVersion++;renderDays();renderResults()});
+ async function indexNotes(token){
+  const pending=records.filter(item=>!Array.isArray(item.notes)&&/^[0-9a-f-]{36}$/i.test(String(item.id||''))&&!detailsCache.has(item.id));let cursor=0,failed=0;
+  await Promise.all(Array.from({length:Math.min(3,pending.length)},async()=>{while(cursor<pending.length&&token===searchVersion&&version===revision&&!signal.aborted){const item=pending[cursor++];try{const response=await fetch(origin+'/api/entries/'+item.id,{headers:{'X-Arcane-Key':key},signal});if(!response.ok)throw Error();const data=await response.json();detailsCache.set(item.id,{notes:Array.isArray(data.notes)?data.notes:[],media:Array.isArray(data.media)?data.media:[]});}catch{failed++;}}}));
+  if(token!==searchVersion||version!==revision||signal.aborted)return;renderResults();if(failed)status.textContent+=' · Some notes could not be loaded. Search again to retry';if(archiveTruncated)status.textContent+=' · Searching loaded records only';
+ }
+ search.addEventListener('input',()=>{clearTimeout(timer);query=search.value.trim().toLocaleLowerCase();limit=20;const token=++searchVersion;renderResults();if(query){status.textContent+=' · Searching note content…';timer=setTimeout(()=>indexNotes(token),250);}});
+ if(!archiveDay)archiveDay=today;renderDays();renderResults();
 }
 async function load(automatic=false){
  automatic=automatic===true;if(automatic&&($('loadArchive').disabled||document.hidden||navigator.onLine===false))return;
@@ -134,23 +156,26 @@ async function load(automatic=false){
  try{
   const response=await fetch(origin+'/api/entries',{headers:{'X-Arcane-Key':key},signal,cache:'no-store'});const payload=await response.json();
   if(request!==requestRevision||signal.aborted)return;
-  if(!response.ok)throw Error(payload.error||'Sync failed');if(!Array.isArray(payload.records))throw Error('Invalid Notion response; existing records retained');
+  if(!response.ok)throw Error(payload.error||'Sync failed');if(!Array.isArray(payload.records))throw Error('Invalid Notion response');
   const list=payload.records.filter(item=>item&&typeof item==='object'),groups=groupedRecords(list);
+  archiveLoaded=true;archiveTruncated=payload.truncated===true;
   $('archiveStatus').textContent='Connected · Auto sync on';
   window.RexNotionReconcile?.(list,{origin,complete:payload.truncated!==true&&list.length===payload.records.length&&list.every(item=>typeof item.id==='string'&&item.id)});
-  msg(list.length?'Synced '+list.length+' records across '+groups.length+' dates'+(payload.truncated?' (first 500 records)':'')+'. Open a date to browse. Attachments load on demand.':'No records in the selected Notion database.');
+  msg('Synced '+list.length+' records across '+groups.length+' dates'+(payload.truncated?' · Only the first 500 records are loaded':''));
   const signature=JSON.stringify([origin,list]);if(automatic&&signature===lastPayload)return;lastPayload=signature;
-  const version=++revision;if(controller)controller.abort();controller=new AbortController();grid.replaceChildren();cleanMedia();if(groups.length)renderArchive(groups,origin,key,version,controller.signal);
- }catch(error){if(request!==requestRevision||signal.aborted)return;$('archiveStatus').textContent='Connection failed';msg(error.message+'. Existing records have been retained. Check the connection and access key.')}
+  const version=++revision;if(controller)controller.abort();controller=new AbortController();grid.replaceChildren();cleanMedia();renderArchive(groups,origin,key,version,controller.signal);
+ }catch(error){if(request!==requestRevision||signal.aborted)return;$('archiveStatus').textContent='Connection failed';msg(error.message+' · Check your connection settings. The calendar shows the last synced results.')}
  finally{if(request===requestRevision){$('loadArchive').disabled=false;requestController=null}}
 }
+$('archiveMessage').hidden=true;
+renderArchive([], '', '', revision, new AbortController().signal);
 $('loadArchive').addEventListener('click',()=>load());
 function autoRefresh(){if($('gateway').value&&$('arcanePassword').value)load(true)}
 addEventListener('online',autoRefresh);addEventListener('focus',autoRefresh);addEventListener('rex-notion-saved',()=>setTimeout(autoRefresh,500));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoRefresh()});
 setInterval(autoRefresh,60000);setTimeout(autoRefresh,0);
 $('clearArchive').addEventListener('click',()=>{
-  resetArchive();localStorage.removeItem(cfgKey);sessionStorage.removeItem('arcane-session-password');
+  resetArchive();archiveLoaded=false;archiveTruncated=false;renderArchive([], '', '', revision, new AbortController().signal);localStorage.removeItem(cfgKey);sessionStorage.removeItem('arcane-session-password');
   $('gateway').value='';$('arcanePassword').value='';$('loadArchive').disabled=false;$('archiveStatus').textContent='Not connected';
   msg('Disconnected. Your original Notion records are retained.');
 });
