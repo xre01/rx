@@ -113,6 +113,8 @@ async function syncReading(){
  try{
   if(!readingMigrationDone){await readingRequest('/migrate',{method:'POST',body:new FormData()});readingMigrationDone=true;}
   const before=await readingRequest('/records');if(!Array.isArray(before.records)||before.complete!==true)throw Error('Could not load reading records.');for(const removed of before.records.filter(r=>r.deleted)){const i=records.findIndex(r=>r.id===removed.id);if(i>=0)records[i]={...removed,syncedUpdated:removed.updated};}localStorage.setItem(key,JSON.stringify(records));updateReadingXp();
+  const remoteBefore=new Map(before.records.map(r=>[r.id,r]));
+  for(const local of records.filter(readingDirty)){const remote=remoteBefore.get(local.id);if(remote&&!remote.deleted&&local.remoteRevision&&remote.remoteRevision!==local.remoteRevision)throw Error('This note changed in Notion and on this device: '+local.title+'. Your local version is retained. Resolve both versions before retrying.');}
   for(const original of [...records].filter(readingDirty)){
    readingSyncMessage.textContent='Syncing: '+original.title;
    const payload={...original,body:original.body||'',logs:original.logs||[],attachments:original.attachments||[]};delete payload.syncedUpdated;delete payload.notionUrl;delete payload.remotePageId;
@@ -146,8 +148,23 @@ function deleteReading(r,dialog){
 }
 addEventListener('storage',e=>{if(e.key!==key)return;try{const next=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(next)){records=next;updateReadingXp();render()}}catch{}});
 
+let readingLastRefresh=0,readingRestoreBusy=false;
+async function restoreReadingConnection(){
+ if(document.visibilityState==='hidden'||readingSyncBusy||readingRestoreBusy||!readingKey.value)return;
+ if(Date.now()-readingLastRefresh<30000)return;
+ readingLastRefresh=Date.now();readingRestoreBusy=true;
+ try{if(!readingConnected){await readingRequest('/status');readingConnected=true;sessionStorage.setItem('rex-reading-access-key',readingKey.value);}await syncReading();}
+ catch(error){readingSummary.textContent='Notion · Retry needed';readingSyncMessage.textContent=error.message+' · Local notes are retained.';}
+ finally{readingRestoreBusy=false;}
+}
+addEventListener('focus',restoreReadingConnection);
+addEventListener('online',()=>{readingLastRefresh=0;restoreReadingConnection();});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')restoreReadingConnection();});
+setInterval(restoreReadingConnection,60000);
 updateReadingXp();
 render();
+restoreReadingConnection();
 if(location.hash==='#reading')entry.click();
 })();
+
 
