@@ -22,3 +22,11 @@ Notion and Cloudflare D1 require the user's existing service configuration. Noti
 Local checks cover syntax, resource references and hashes, historical speaking upload payloads with mocked responses, duplicate submissions, date validation, count backfills, archive search with mocked content, PNG period aggregation including leap years, and service-worker cache behavior. Browser checks cover view switching, calendar-linked reflections, upload dialogs, profile, timer and mobile layout.
 
 Live Notion/D1 integration needs the user's configured service and was not exercised by creating remote test records. The GitHub review branch does not deploy the website.
+
+## Reading journal
+
+Reading is a native sidebar panel alongside PTE and Notion Archive. It includes a bookshelf with dated book notes, article notes selected from a calendar, search, and image/audio/document/link attachments. Clicking the selected calendar date again collapses its notes.
+
+Reading uses a separate Notion database through the existing authenticated Cloudflare gateway at `/api/reading/*`. Enter the gateway access key under Reading's Notion settings; the server-side Notion token stays in Cloudflare. Drafts and selected files are retained locally until sync succeeds. Reading credentials are session-scoped; existing Notion Archive session credentials can prefill the Reading connection. Test records were removed before release.
+
+The already deployed reading API supports status, migration, record sync and authenticated media. Book/article metadata and sync receipts are stored in its existing Durable Object; Notion pages display readable notes, dates and source links. The gateway must retain this Durable Object state when deploying changes. Notes edited in Notion are not automatically imported into the website; edit reading content from the Reading panel.
