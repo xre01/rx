@@ -71,14 +71,14 @@ function recordCard(item,origin,key,version,signal){
     }
     card.append(wrap);
   }
-  if(Array.isArray(item.notes))for(const text of item.notes)if(typeof text==='string')card.append(node('p','archive-note',text));
+  if(Array.isArray(item.richNotes)){card.append(RexRichEditor.content('',item.richNotes));}else if(Array.isArray(item.notes))for(const text of item.notes)if(typeof text==='string')card.append(node('p','archive-note',text));
   const pageId=String(item.id||'');
   if(!Array.isArray(item.notes)&&!(item.media||[]).length&&/^[0-9a-f-]{36}$/i.test(pageId)){
     const details=button('ghost archive-details-load','View notes and attachments');card.append(details);
     details.addEventListener('click',async()=>{
       if(details.disabled||version!==revision)return;details.disabled=true;details.textContent='Loading…';
       try{const response=await fetch(origin+'/api/entries/'+pageId,{headers:{'X-Arcane-Key':key},signal});const data=await response.json();if(version!==revision||signal.aborted)return;if(!response.ok)throw Error(data.error||'Could not load record');
-       const content=recordCard({...item,notes:Array.isArray(data.notes)?data.notes:[],media:Array.isArray(data.media)?data.media:[]},origin,key,version,signal);
+       const content=recordCard({...item,notes:Array.isArray(data.notes)?data.notes:[],richNotes:data.richNotes,media:Array.isArray(data.media)?data.media:[]},origin,key,version,signal);
        const heading=content.querySelector('h3'),meta=content.querySelector('.meta'),link=content.querySelector('a');heading?.remove();meta?.remove();if(link?.textContent==='View in Notion ↗')link.remove();
        const body=node('div','archive-record-details');while(content.firstChild)body.append(content.firstChild);card.append(body);details.remove();
       }catch(error){if(version!==revision||signal.aborted)return;details.disabled=false;details.textContent='Retry loading record';msg(error.message)}
@@ -140,7 +140,7 @@ function renderArchive(groups,origin,key,version,signal){
  previous.addEventListener('click',()=>move(-1));next.addEventListener('click',()=>move(1));current.addEventListener('click',()=>{archiveMonth=today.slice(0,7);archiveDay=today;query='';search.value='';searchVersion++;renderDays();renderResults()});
  async function indexNotes(token){
   const pending=records.filter(item=>!Array.isArray(item.notes)&&/^[0-9a-f-]{36}$/i.test(String(item.id||''))&&!detailsCache.has(item.id));let cursor=0,failed=0;
-  await Promise.all(Array.from({length:Math.min(3,pending.length)},async()=>{while(cursor<pending.length&&token===searchVersion&&version===revision&&!signal.aborted){const item=pending[cursor++];try{const response=await fetch(origin+'/api/entries/'+item.id,{headers:{'X-Arcane-Key':key},signal});if(!response.ok)throw Error();const data=await response.json();detailsCache.set(item.id,{notes:Array.isArray(data.notes)?data.notes:[],media:Array.isArray(data.media)?data.media:[]});}catch{failed++;}}}));
+  await Promise.all(Array.from({length:Math.min(3,pending.length)},async()=>{while(cursor<pending.length&&token===searchVersion&&version===revision&&!signal.aborted){const item=pending[cursor++];try{const response=await fetch(origin+'/api/entries/'+item.id,{headers:{'X-Arcane-Key':key},signal});if(!response.ok)throw Error();const data=await response.json();detailsCache.set(item.id,{notes:Array.isArray(data.notes)?data.notes:[],richNotes:data.richNotes,media:Array.isArray(data.media)?data.media:[]});}catch{failed++;}}}));
   if(token!==searchVersion||version!==revision||signal.aborted)return;renderResults();if(failed)status.textContent+=' · Some notes could not be loaded. Search again to retry';if(archiveTruncated)status.textContent+=' · Searching loaded records only';
  }
  search.addEventListener('input',()=>{clearTimeout(timer);query=search.value.trim().toLocaleLowerCase();limit=20;const token=++searchVersion;renderResults();if(query){status.textContent+=' · Searching note content…';timer=setTimeout(()=>indexNotes(token),250);}});

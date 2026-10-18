@@ -34,3 +34,20 @@ The already deployed reading API supports status, migration, record sync and aut
 ### Reading XP
 
 Book notes award 3 XP per day with at least one non-empty note, shared across all books. Articles award 3 XP each, capped at 30 XP per note date. Empty books, empty notes and future dates do not earn XP. Reading XP is reconciled from surviving records, so edits/retries cannot award duplicate XP and deletion recalculates the daily caps without changing PTE XP. Deletions sync as tombstones and move Notion records to Trash.
+
+
+## Rich notes release
+
+Reading and PTE Speaking/Writing/Reading support native Notion text annotations and structured blocks. Listening is unchanged. Plain-text records remain supported. Preview themes and avatar frames are not part of this release.
+
+Frontend files are deployed by GitHub Pages. `workers/notion-worker.mjs` is the separately deployed Cloudflare source; keep the existing secrets and Durable Object bindings when updating it. No credentials belong in the repository.
+
+Checks (run from the repository root):
+
+```sh
+node tests/reading-sync.cjs
+node tests/pte-rich-sync.cjs
+node tests/reading-xp.cjs
+```
+
+A new service-worker cache version removes only older `rex-focus-offline-*` resource caches on activation. Notes, attachments, XP and browser-session connection keys are retained.
