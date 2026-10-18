@@ -48,16 +48,19 @@ export default {
     const readingLocal=new URL(request.url).pathname.startsWith('/api/reading/')&&['http://localhost:8765','http://127.0.0.1:8765'].includes(origin);
     const headers = { 'Vary': 'Origin', 'Cache-Control': 'no-store' };
     if ((origin === env.ALLOWED_ORIGIN || readingLocal)) Object.assign(headers, {
-      'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Headers': 'Content-Type, X-Arcane-Key',
+      'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Headers': 'Content-Type, X-Arcane-Key, X-Focus-Key',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
     });
     const finish = response => { const result = new Response(response.body, response); for (const [k,v] of Object.entries(headers)) result.headers.set(k,v); return result; };
     if (origin && origin !== env.ALLOWED_ORIGIN && !readingLocal) return finish(json({ error: '不允许此网站访问。' }, 403));
     if (request.method === 'OPTIONS') return finish(new Response(null, { status: 204 }));
     if (!env.NOTION_TOKEN || !env.ACCESS_PASSWORD) return finish(json({ error: '后端尚未设置 Notion 密钥和通行令。' }, 503));
+    const focusPath=new URL(request.url).pathname,focusMatch=focusPath.match(/^\/api\/focus\/([0-9a-f-]{36})\/(register|subscription|state|schedule|disable)$/i);
+    if (focusMatch&&focusMatch[2]!=='register'){try{return finish(await env.CALENDAR.get(env.CALENDAR.idFromName('focus:'+focusMatch[1])).fetch(request));}catch(error){return finish(json({error:error.message},error.status||500));}}
     if (request.headers.get('X-Arcane-Key') !== env.ACCESS_PASSWORD) return finish(json({ error: '通行令错误。' }, 401));
     try {
       const path = new URL(request.url).pathname;
+      if(focusMatch)return finish(await env.CALENDAR.get(env.CALENDAR.idFromName('focus:'+focusMatch[1])).fetch(request));
       if(path.startsWith('/api/reading/')){if(request.method==='POST'){const reader=request.body?.getReader();if(!reader)throw fail('内容为空。');const chunks=[];let size=0;while(true){const {value,done}=await reader.read();if(done)break;size+=value.byteLength;if(size>LIMIT+512*1024){await reader.cancel();throw fail('同步内容不能超过 20 MiB。',413)}chunks.push(value)}request=new Request(request.url,{method:request.method,headers:request.headers,body:new Blob(chunks)});}const stub=env.CALENDAR.get(env.CALENDAR.idFromName('reading:'+READING_SOURCE));return finish(await stub.fetch(request));}
       if (path === '/api/entries' && request.method === 'POST') {
         if (!request.headers.get('Content-Type')?.startsWith('multipart/form-data')) throw fail('请使用上传表单。');
@@ -110,10 +113,11 @@ export default {
 export class Calendar {
   constructor(state, env) { this.state = state; this.env = env; this.queue = Promise.resolve(); }
   fetch(request) {
-    const result = this.queue.then(() => new URL(request.url).pathname.startsWith('/api/reading/')?readingHandle(request,this.state,this.env):this.submit(request));
+    const result = this.queue.then(() => new URL(request.url).pathname.startsWith('/api/focus/')?focusHandle(request,this.state):new URL(request.url).pathname.startsWith('/api/reading/')?readingHandle(request,this.state,this.env):this.submit(request));
     this.queue = result.catch(() => {});
     return result.catch(e => json({ error: e.message }, e.status || 500));
   }
+  alarm(){const result=this.queue.then(()=>focusAlarm(this.state));this.queue=result.catch(()=>{});return result;}
   async submit(request) {
     const form = await request.formData();
     const id = String(form.get('id') || ''), date = String(form.get('date') || ''), note = String(form.get('note') || '').trim(), requestedCategory = String(form.get('category') || ''), category = requestedCategory === 'skill' ? 'reflection' : requestedCategory;
@@ -320,3 +324,40 @@ async function readingHandle(request,state,env) {
  const result={...clean,attachments:mapped,remotePageId:page.id,remoteRevision:hash,notionUrl:page.url},receipt={record:result};await state.storage.put('reading-record:'+page.id,result);await state.storage.put(receiptKey,receipt);for(const old of top.filter(b=>b.id!==root?.id&&b.type==='toggle'&&/^(读书笔记|文章笔记|Reading notes|Article notes)/.test(readingText(b))))await notion(env,'blocks/'+old.id,'PATCH',{archived:true});return json(receipt);
 }
 
+
+// Empty-payload Web Push: timer details stay in this device's authenticated state endpoint.
+const focusB64=bytes=>btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+async function focusHash(value){return focusB64(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)));}
+function focusEndpoint(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&value.length<4096&&(u.hostname.endsWith('.push.apple.com')||u.hostname==='fcm.googleapis.com'||u.hostname==='updates.push.services.mozilla.com'||u.hostname.endsWith('.notify.windows.com'));}catch{return false;}}
+async function focusJSON(request){const reader=request.body?.getReader();if(!reader)return {};let size=0,chunks=[];while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>8192){await reader.cancel();throw fail('Reminder request is too large.',413);}chunks.push(value);}return JSON.parse(await new Blob(chunks).text());}
+async function focusHandle(request,state){const path=new URL(request.url).pathname,action=path.split('/').at(-1);let config=await state.storage.get('focus:config');
+ if(action==='register'&&request.method==='POST'){
+  const body=await focusJSON(request);if(!/^[A-Za-z0-9_-]{43}$/.test(body.key||''))throw fail('Invalid device key.');const hash=await focusHash(body.key);
+  if(config&&config.keyHash!==hash)throw fail('This reminder device already exists.',409);
+  if(!config){const pair=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']);config={keyHash:hash,privateKey:await crypto.subtle.exportKey('jwk',pair.privateKey),publicKey:focusB64(await crypto.subtle.exportKey('raw',pair.publicKey))};await state.storage.put('focus:config',config);}
+  return json({publicKey:config.publicKey});
+ }
+ if(!config||await focusHash(request.headers.get('X-Focus-Key')||'')!==config.keyHash)throw fail('Reminder device is not authorized.',401);
+ if(action==='state'&&request.method==='GET'){const reminder=await state.storage.get('focus:reminder');return json({enabled:!!config.endpoint,reminder:reminder||null});}
+ const body=await focusJSON(request);
+ if(action==='subscription'&&request.method==='POST'){if(!focusEndpoint(body.endpoint))throw fail('Unsupported push service.');config.endpoint=body.endpoint;await state.storage.put('focus:config',config);return json({ok:true});}
+ if(action==='disable'&&request.method==='POST'){delete config.endpoint;await state.storage.put('focus:config',config);await state.storage.deleteAlarm();await state.storage.delete('focus:reminder');return json({ok:true});}
+ if(action==='schedule'&&request.method==='POST'){
+  if(!config.endpoint)throw fail('Enable notifications again.',409);
+  if(!Number.isSafeInteger(body.version)||body.version<=0)throw fail('Invalid reminder revision.');
+  const previous=await state.storage.get('focus:reminder');if(previous&&body.version<=previous.version)return json({ok:true,reminder:previous});
+  const reminder={version:body.version,status:'cancelled',dueAt:null,test:!!body.test};
+  if(body.dueAt!==null){if(!Number.isSafeInteger(body.dueAt)||body.dueAt<Date.now()+500||body.dueAt>Date.now()+10805000)throw fail('Choose a future countdown within 180 minutes.');reminder.dueAt=body.dueAt;reminder.status='scheduled';}
+  await state.storage.put('focus:reminder',reminder);if(reminder.dueAt)await state.storage.setAlarm(reminder.dueAt);else await state.storage.deleteAlarm();return json({ok:true,reminder});
+ }
+ throw fail('Reminder endpoint not found.',404);
+}
+async function focusAlarm(state){const config=await state.storage.get('focus:config'),r=await state.storage.get('focus:reminder');if(!config?.endpoint||r?.status!=='scheduled')return;
+ if(r.dueAt>Date.now()+250){await state.storage.setAlarm(r.dueAt);return;}if(Date.now()-r.dueAt>90000){await state.storage.put('focus:reminder',{...r,status:'expired'});return;}
+ const audience=new URL(config.endpoint).origin;let auth=await state.storage.get('focus:vapid');
+ if(!auth||auth.aud!==audience||Date.now()-auth.createdAt>3600000){const head=focusB64(new TextEncoder().encode(JSON.stringify({typ:'JWT',alg:'ES256'}))),claims=focusB64(new TextEncoder().encode(JSON.stringify({aud:audience,exp:Math.floor(Date.now()/1000)+21600,sub:'https://xre01.github.io/rx/'}))),message=head+'.'+claims,key=await crypto.subtle.importKey('jwk',config.privateKey,{name:'ECDSA',namedCurve:'P-256'},false,['sign']),signature=await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},key,new TextEncoder().encode(message));auth={aud:audience,createdAt:Date.now(),jwt:message+'.'+focusB64(signature)};await state.storage.put('focus:vapid',auth);}
+ const response=await fetch(config.endpoint,{method:'POST',redirect:'error',headers:{Authorization:'vapid t='+auth.jwt+', k='+config.publicKey,TTL:'60',Urgency:'high',Topic:'rex-focus'},signal:AbortSignal.timeout(10000)});
+ if(response.status===404||response.status===410){delete config.endpoint;await state.storage.put('focus:config',config);await state.storage.put('focus:reminder',{...r,status:'subscription-expired'});return;}
+ if(!response.ok){if(response.status>=500||response.status===429)throw Error('Push service temporarily unavailable.');await state.storage.put('focus:reminder',{...r,status:'failed'});return;}
+ await state.storage.put('focus:reminder',{...r,status:'sent'});
+}

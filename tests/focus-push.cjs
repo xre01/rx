@@ -1,0 +1,21 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),{webcrypto}=require('crypto');
+let now=Date.now(),alarm,pushes=[],reply=201;class Clock extends Date{static now(){return now;}}
+const memory=new Map(),state={storage:{get:async k=>structuredClone(memory.get(k)),put:async(k,v)=>memory.set(k,structuredClone(v)),delete:async k=>memory.delete(k),setAlarm:async t=>alarm=t,deleteAlarm:async()=>alarm=null}};
+const ctx={Date:Clock,URL,Request,Response,Blob,TextEncoder,AbortSignal,crypto:webcrypto,btoa,fetch:async(url,options)=>{pushes.push({url,options});return new Response(null,{status:reply});},json:(b,s=200)=>Response.json(b,{status:s}),fail:(message,status=400)=>Object.assign(Error(message),{status})};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync('workers/notion-worker.mjs','utf8').split('// Empty-payload Web Push:')[1].replace(/^/,'// Empty-payload Web Push:')+'\nglobalThis.handle=focusHandle;globalThis.fire=focusAlarm;',ctx);
+const key='a'.repeat(43),url='https://worker.test/api/focus/12345678-1234-4234-8234-123456789012/';
+async function call(action,body,credential=key){return (await ctx.handle(new Request(url+action,{method:body?'POST':'GET',headers:{'X-Focus-Key':credential,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}),state)).json();}
+(async()=>{
+ const registered=await call('register',{key});assert.equal(registered.publicKey.length,87);assert.ok(!JSON.stringify(registered).includes('private'));
+ await assert.rejects(call('state',null,'wrong'),e=>e.status===401);await assert.rejects(call('register',{key:'b'.repeat(43)}),e=>e.status===409);
+ await assert.rejects(call('subscription',{endpoint:'https://evil.example/push'}));await call('subscription',{endpoint:'https://web.push.apple.com/device/test'});
+ await call('schedule',{version:1,dueAt:now+10000,test:true});assert.equal(alarm,now+10000);
+ await call('schedule',{version:2,dueAt:null});assert.equal(alarm,null);await call('schedule',{version:1,dueAt:now+5000});assert.equal((await call('state')).reminder.status,'cancelled');await ctx.fire(state);assert.equal(pushes.length,0);
+ await call('schedule',{version:3,dueAt:now+1000});now+=1000;await ctx.fire(state);assert.equal(pushes.length,1);assert.equal(pushes[0].options.body,undefined);assert.equal((await call('state')).reminder.status,'sent');await ctx.fire(state);assert.equal(pushes.length,1);
+ const auth=pushes[0].options.headers.Authorization,token=auth.match(/t=([^,]+)/)[1],parts=token.split('.'),claims=JSON.parse(Buffer.from(parts[1],'base64url'));assert.equal(claims.aud,'https://web.push.apple.com');
+ const publicKey=await webcrypto.subtle.importKey('raw',Buffer.from(registered.publicKey,'base64url'),{name:'ECDSA',namedCurve:'P-256'},false,['verify']);assert.ok(await webcrypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},publicKey,Buffer.from(parts[2],'base64url'),Buffer.from(parts.slice(0,2).join('.'))));
+ await call('schedule',{version:4,dueAt:now+1000});now+=1000;reply=503;await assert.rejects(ctx.fire(state));assert.equal((await call('state')).reminder.status,'scheduled');reply=201;await ctx.fire(state);assert.equal((await call('state')).reminder.status,'sent');
+ await call('schedule',{version:5,dueAt:now+1000});now+=92000;const count=pushes.length;await ctx.fire(state);assert.equal(pushes.length,count);assert.equal((await call('state')).reminder.status,'expired');
+ await call('schedule',{version:6,dueAt:now+1000});now+=1000;reply=410;await ctx.fire(state);assert.equal((await call('state')).enabled,false);await call('disable',{});assert.equal(alarm,null);
+ console.log('PASS: focus device authorization, endpoint restrictions, scheduling/cancellation, revision ordering, VAPID signature, retry, expiry and unsubscribe');
+})().catch(e=>{console.error(e);process.exit(1)});
