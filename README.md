@@ -30,3 +30,7 @@ Reading is a native sidebar panel alongside PTE and Notion Archive. It includes 
 Reading uses a separate Notion database through the existing authenticated Cloudflare gateway at `/api/reading/*`. Enter the gateway access key under Reading's Notion settings; the server-side Notion token stays in Cloudflare. Drafts and selected files are retained locally until sync succeeds. Reading credentials are session-scoped; existing Notion Archive session credentials can prefill the Reading connection. Test records were removed before release.
 
 The already deployed reading API supports status, migration, record sync and authenticated media. Book/article metadata and sync receipts are stored in its existing Durable Object; Notion pages display readable notes, dates and source links. The gateway must retain this Durable Object state when deploying changes. Notes edited in Notion are not automatically imported into the website; edit reading content from the Reading panel.
+
+### Reading XP
+
+Book notes award 3 XP per day with at least one non-empty note, shared across all books. Articles award 3 XP each, capped at 30 XP per note date. Empty books, empty notes and future dates do not earn XP. Reading XP is reconciled from surviving records, so edits/retries cannot award duplicate XP and deletion recalculates the daily caps without changing PTE XP. Deletions sync as tombstones and move Notion records to Trash.

@@ -24,7 +24,7 @@ function renderCalendar(){
  controls.append(prev,el('strong','',new Intl.DateTimeFormat('en',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(calendarMonth+'-01T12:00:00Z'))),next);bar.append(controls,btn('Hide notes',()=>{selectedDay='';render()},'reading-calendar-reset'));calendar.append(bar);
  const week=el('div','reading-calendar-week');for(const w of ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])week.append(el('span','',w));calendar.append(week);
  const days=el('div','reading-calendar-days'),[year,month]=calendarMonth.split('-').map(Number),offset=(new Date(Date.UTC(year,month-1,1)).getUTCDay()+6)%7,count=new Date(Date.UTC(year,month,0)).getUTCDate();
- const counts=new Map();for(const r of records.filter(r=>r.kind==='article')){for(const date of noteDays(r))counts.set(date,(counts.get(date)||0)+1)}
+ const counts=new Map();for(const r of records.filter(r=>!r.deleted&&r.kind==='article')){for(const date of noteDays(r))counts.set(date,(counts.get(date)||0)+1)}
  for(let i=0;i<offset;i++)days.append(el('span'));
  for(let n=1;n<=count;n++){const date=calendarMonth+'-'+String(n).padStart(2,'0'),total=counts.get(date)||0,b=btn(String(n),()=>{selectedDay=selectedDay===date?'':date;render()},'reading-calendar-day');if(total)b.classList.add('has-notes');if(date===day())b.classList.add('is-today');if(date===selectedDay)b.classList.add('is-selected');b.setAttribute('aria-label',date+' · '+(total?total+' notes':'No entries'));b.setAttribute('aria-pressed',String(date===selectedDay));b.title=date+' · '+(total?total+' notes':'No entries');days.append(b)}calendar.append(days);
  calendar.append(el('p','reading-calendar-legend','● Article notes · No dot means no entries'));
@@ -32,11 +32,11 @@ function renderCalendar(){
 }
 const shelf=el('section','reading-bookshelf'),shelfGrid=el('div','reading-shelf-grid');shelf.append(el('h2','','Bookshelf'),shelfGrid);const columns=el('div','reading-content-columns');panel.insertBefore(columns,library);panel.insertBefore(shelf,calendar);columns.append(library);
 const names={want:'Want to read',reading:'Reading',done:'Finished',paused:'Paused'};
-function save(next){if(storageError){feedback.textContent=storageError;return false}try{localStorage.setItem(key,JSON.stringify(next));records=next;render();queueReadingSync();return true}catch{feedback.textContent='Could not save. Your changes are still in the open form; check browser storage.';return false}}
+function save(next){if(storageError){feedback.textContent=storageError;return false}try{localStorage.setItem(key,JSON.stringify(next));records=next;updateReadingXp();render();queueReadingSync();return true}catch{feedback.textContent='Could not save. Your changes are still in the open form; check browser storage.';return false}}
 function url(value){try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)?u.href:null}catch{return null}}
 function card(r){const c=el('article','reading-note-card');const body=el('div','reading-item-body');const note=r.kind==='book'?bookNotes(r).filter(n=>!selectedDay||n.date===selectedDay).map(n=>n.note).join('\n\n'):r.body||r.logs.map(l=>l.note).filter(Boolean).join('\n\n');body.append(el('span','reading-note-source',(r.kind==='article'?'Article':'Books')+' · '+(r.source||r.title)+(r.author?' / '+r.author:'')),btn(r.noteTitle||r.title,()=>r.kind==='book'?bookPage(r):notebook(r),'reading-note-title'),el('p','reading-note-excerpt',note||'Start writing your thoughts.'));const foot=el('div','reading-note-footer');foot.append(el('time','reading-written-date','Written on '+(r.writtenDate||r.createdAt?.slice(0,10)||r.updated?.slice(0,10)||'No date')),btn(r.kind==='book'?'Open book →':'Edit note →',()=>r.kind==='book'?bookPage(r):notebook(r),'reading-note-open'));body.append(foot);c.append(body);return c}
 function render(){renderCalendar();
-grid.replaceChildren();shelfGrid.replaceChildren();const q=search.value.trim().toLowerCase(),list=records.filter(r=>(r.kind==='book'||!selectedDay||noteDays(r).includes(selectedDay))&&(!type.value||r.kind===type.value)&&(!status.value||r.status===status.value)&&[r.title,r.source,r.body,r.author,r.tags,...r.logs.map(l=>l.note)].join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));const books=list.filter(r=>r.kind==='book'),articles=list.filter(r=>r.kind==='article');shelf.hidden=false;library.hidden=!selectedDay;
+grid.replaceChildren();shelfGrid.replaceChildren();const q=search.value.trim().toLowerCase(),list=records.filter(r=>!r.deleted&&(r.kind==='book'||!selectedDay||noteDays(r).includes(selectedDay))&&(!type.value||r.kind===type.value)&&(!status.value||r.status===status.value)&&[r.title,r.source,r.body,r.author,r.tags,...r.logs.map(l=>l.note)].join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));const books=list.filter(r=>r.kind==='book'),articles=list.filter(r=>r.kind==='article');shelf.hidden=false;library.hidden=!selectedDay;
  for(const r of books){const item=btn('',()=>bookPage(r),'reading-shelf-book');item.setAttribute('aria-label','Open book: '+(r.source||r.title));const jacket=el('span','reading-book-jacket');jacket.append(el('span','reading-book-mark','READING NOTES'),el('strong','',r.source||r.title),el('span','reading-book-count',bookNotes(r).length+' notes'));item.append(jacket);shelfGrid.append(item)}
  grid.append(el('h2','reading-article-heading',selectedDay?selectedDay+' · Article notes':'Article notes'));if(selectedDay&&!articles.length)grid.append(el('p','sub','No article notes for this date.'));articles.forEach(r=>grid.append(articleContent(r)));
  feedback.textContent=storageError||(readingConnected?'Notion connected · '+records.filter(readingDirty).length+' pending':'Local drafts · Not connected to Notion')}
@@ -47,7 +47,7 @@ function fileDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open
 async function storeFiles(files){const db=await fileDB();try{return await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite'),items=files.map(file=>({id:crypto.randomUUID(),name:file.name,type:file.type,size:file.size}));items.forEach((item,i)=>tx.objectStore('files').put(files[i],item.id));tx.oncomplete=()=>resolve(items);tx.onerror=tx.onabort=()=>reject(Error('Could not save attachments. Check your device storage.'))})}finally{db.close()}}
 async function readFile(id){const db=await fileDB();try{return await new Promise((resolve,reject)=>{const tx=db.transaction('files'),req=tx.objectStore('files').get(id);req.onsuccess=()=>req.result?resolve(req.result):reject(Error('Attachment not found on this device.'));req.onerror=()=>reject(Error('Could not read the attachment.'))})}finally{db.close()}}
 function attachmentList(items,onRemove){const list=el('div','reading-attachments');for(const file of items||[]){const row=el('div','reading-file-row'),open=btn('Open attachment',()=>openReadingFile(file,open,row),'reading-note-open');row.append(el('span','',file.name+' · '+Math.ceil(file.size/1024)+' KB'),el('span','reading-file-status saved',file.blockId?'Synced to Notion':'Saved on this device'),open);if(onRemove)row.append(btn('Remove',()=>onRemove(file),'reading-file-remove'));list.append(row)}return list}
-function articleContent(r){const c=el('article','reading-article-content');c.append(el('h3','',r.source||r.title),el('time','reading-written-date',noteDay(r)));if(url(r.url)){const a=el('a','reading-original-link','View source ↗');a.href=url(r.url);a.target='_blank';a.rel='noopener noreferrer';c.append(a)}c.append(attachmentList(r.attachments));c.append(el('p','reading-article-body',r.body||r.logs.map(n=>n.note).filter(Boolean).join('\n\n')||'No note content.'),btn('Edit note',()=>notebook(r),'reading-note-open'));return c}
+function articleContent(r){const c=el('article','reading-article-content');c.append(el('h3','',r.source||r.title),el('time','reading-written-date',noteDay(r)));if(url(r.url)){const a=el('a','reading-original-link','View source ↗');a.href=url(r.url);a.target='_blank';a.rel='noopener noreferrer';c.append(a)}c.append(attachmentList(r.attachments));c.append(el('p','reading-article-body',r.body||r.logs.map(n=>n.note).filter(Boolean).join('\n\n')||'No note content.'),btn('Edit note',()=>notebook(r),'reading-note-open'),btn('Delete note',()=>deleteReading(r),'reading-note-open'));return c}
 function bookNotes(r){
  const notes=(r.logs||[]).filter(n=>typeof n.note==='string').map(n=>({...n,date:n.date||noteDay(r)}));
  if(r.body)notes.unshift({id:'legacy-'+r.id,date:noteDay(r),note:r.body});
@@ -56,10 +56,10 @@ function bookNotes(r){
 function bookPage(r){
  const d=dialog(r.source||r.title);d.classList.add('reading-notebook');
  const notes=bookNotes(r),top=el('div','reading-book-top');
- top.append(el('p','sub','Books · '+notes.length+' notes'),btn('+ Add note',()=>{d.close();bookEntry(r)},'action'));d.append(top);
+ top.append(el('p','sub','Books · '+notes.length+' notes'),btn('+ Add note',()=>{d.close();bookEntry(r)},'action'),btn('Delete book',()=>deleteReading(r,d),'reading-note-open'));d.append(top);
  const history=el('div','reading-history');
  for(const n of [...notes].sort((a,b)=>b.date.localeCompare(a.date))){
- const item=el('article','reading-book-note');item.append(el('time','reading-book-date',n.date),el('p','',n.note),btn('Edit',()=>{d.close();bookEntry(r,n)},'reading-note-open'));if(n.date===selectedDay)item.classList.add('selected-book-note');history.append(item)}
+ const item=el('article','reading-book-note');item.append(el('time','reading-book-date',n.date),el('p','',n.note),btn('Edit',()=>{d.close();bookEntry(r,n)},'reading-note-open'),btn('Delete note',()=>{const current=records.find(x=>x.id===r.id);if(!current)return;const item={...current,body:'',logs:bookNotes(current).filter(x=>x.id!==n.id),updated:new Date().toISOString()};if(save(records.map(x=>x.id===r.id?item:x))){d.close();bookPage(item)}},'reading-note-open'));if(n.date===selectedDay)item.classList.add('selected-book-note');history.append(item)}
  if(!notes.length)history.append(el('p','sub','Add your first note, then keep writing as you read.'));d.append(history);
 }
 function bookEntry(r,existing){
@@ -76,7 +76,7 @@ function addBook(){
 function notebook(r,initialKind='article'){
  const d=dialog(r?'Edit article note':'Write note');d.classList.add('reading-notebook');const form=el('form','reading-form');d.append(form);
  const kind=choice(form,'Type','kind','article',[['article','Article']]);kind.closest('label').hidden=true;
- const books=records.filter(x=>x.kind==='book'),pick=choice(form,'Choose a book','bookId','',[['','+ Add a new book'],...books.map(x=>[x.id,x.source||x.title])]);
+ const books=records.filter(x=>!x.deleted&&x.kind==='book'),pick=choice(form,'Choose a book','bookId','',[['','+ Add a new book'],...books.map(x=>[x.id,x.source||x.title])]);
  const source=field(form,'Article title','source',r?.source||r?.title||'');source.maxLength=200;source.required=true;
  const date=field(form,'Note date','writtenDate',r?.writtenDate||day(),'date');date.required=true;date.max=day();
  const sourceArea=el('fieldset','reading-source-area');sourceArea.append(el('legend','','Article source (optional)'));form.append(sourceArea);
@@ -112,6 +112,7 @@ async function syncReading(){
  readingSyncBusy=true;readingSummary.textContent='Notion · Syncing…';
  try{
   if(!readingMigrationDone){await readingRequest('/migrate',{method:'POST',body:new FormData()});readingMigrationDone=true;}
+  const before=await readingRequest('/records');if(!Array.isArray(before.records)||before.complete!==true)throw Error('Could not load reading records.');for(const removed of before.records.filter(r=>r.deleted)){const i=records.findIndex(r=>r.id===removed.id);if(i>=0)records[i]={...removed,syncedUpdated:removed.updated};}localStorage.setItem(key,JSON.stringify(records));updateReadingXp();
   for(const original of [...records].filter(readingDirty)){
    readingSyncMessage.textContent='Syncing: '+original.title;
    const payload={...original,body:original.body||'',logs:original.logs||[],attachments:original.attachments||[]};delete payload.syncedUpdated;delete payload.notionUrl;delete payload.remotePageId;
@@ -125,7 +126,7 @@ async function syncReading(){
   }
   const remote=await readingRequest('/records');if(!Array.isArray(remote.records)||remote.complete!==true)throw Error('Notion records could not be fully loaded. Please retry.');
   const map=new Map(records.map(r=>[r.id,r]));for(const r of remote.records){if(!r||typeof r.id!=='string'||!Array.isArray(r.logs))continue;const local=map.get(r.id);if(!local||!readingDirty(local))map.set(r.id,{...r,syncedUpdated:r.updated})}
-  records=[...map.values()];localStorage.setItem(key,JSON.stringify(records));render();readingSummary.textContent='Notion · Connected';readingSyncMessage.textContent='Synced · '+remote.records.length+' reading records';feedback.textContent='Synced to Notion';
+  records=[...map.values()];localStorage.setItem(key,JSON.stringify(records));updateReadingXp();render();readingSummary.textContent='Notion · Connected';readingSyncMessage.textContent='Synced · '+remote.records.filter(r=>!r.deleted).length+' reading records';feedback.textContent='Synced to Notion';
  }catch(error){readingSummary.textContent='Notion · Retry needed';readingSyncMessage.textContent=error.message+' · Local notes are retained.';feedback.textContent='Saved on this device · Notion sync incomplete';}
  finally{readingSyncBusy=false}
 }
@@ -137,6 +138,15 @@ async function openReadingFile(file,button,row){
  }catch(error){button.disabled=false;button.textContent=error.message}
 }
 
+function updateReadingXp(){try{window.RexReadingXP?.reconcile(records,day())}catch{feedback.textContent='Notes saved. XP could not update; please retry.'}}
+function deleteReading(r,dialog){
+ const current=records.find(x=>x.id===r.id);if(!current)return;
+ const deleted={id:current.id,kind:current.kind,title:current.title,body:'',logs:[],attachments:[],deleted:true,updated:new Date().toISOString(),remoteRevision:current.remoteRevision,remotePageId:current.remotePageId};
+ if(save(records.map(x=>x.id===r.id?deleted:x))){dialog?.close();feedback.textContent='Deleted. Reading XP has been recalculated.';}
+}
+addEventListener('storage',e=>{if(e.key!==key)return;try{const next=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(next)){records=next;updateReadingXp();render()}}catch{}});
+
+updateReadingXp();
 render();
 if(location.hash==='#reading')entry.click();
 })();
