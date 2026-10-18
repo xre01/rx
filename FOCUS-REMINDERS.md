@@ -11,3 +11,5 @@ The existing `CALENDAR` binding handles isolated `focus:<random device id>` obje
 Transient push-provider failures retry through Durable Object alarms. Notifications expire after a short window instead of delivering a stale timer alarm much later. Disable reminders revokes the endpoint and cancels the pending cloud alarm. Reinstalling/clearing browser data may require enabling again.
 
 Validation: `tests/focus-push.cjs`, `tests/focus-push-client.cjs`, `tests/focus-push-sw.cjs` cover authenticated enrollment, URL restrictions, VAPID signatures, schedule/cancel/retry, client transitions, offline pending changes and notification clicks. Actual iPhone lock-screen delivery requires the physical-device test above.
+
+Compatibility: Workers outbound fetch uses `redirect: manual` and never follows push-provider redirects. The optional RFC 8030 Topic header is omitted after Apple rejected it with `400 BadWebPushTopic`; notification tags and reminder revisions still suppress duplicates. Provider rejection codes are retained in device reminder state and safe status-only logs; subscription endpoints and device keys are never logged by this feature.

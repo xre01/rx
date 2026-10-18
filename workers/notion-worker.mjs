@@ -356,8 +356,9 @@ async function focusAlarm(state){const config=await state.storage.get('focus:con
  if(r.dueAt>Date.now()+250){await state.storage.setAlarm(r.dueAt);return;}if(Date.now()-r.dueAt>90000){await state.storage.put('focus:reminder',{...r,status:'expired'});return;}
  const audience=new URL(config.endpoint).origin;let auth=await state.storage.get('focus:vapid');
  if(!auth||auth.aud!==audience||Date.now()-auth.createdAt>3600000){const head=focusB64(new TextEncoder().encode(JSON.stringify({typ:'JWT',alg:'ES256'}))),claims=focusB64(new TextEncoder().encode(JSON.stringify({aud:audience,exp:Math.floor(Date.now()/1000)+21600,sub:'https://xre01.github.io/rx/'}))),message=head+'.'+claims,key=await crypto.subtle.importKey('jwk',config.privateKey,{name:'ECDSA',namedCurve:'P-256'},false,['sign']),signature=await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},key,new TextEncoder().encode(message));auth={aud:audience,createdAt:Date.now(),jwt:message+'.'+focusB64(signature)};await state.storage.put('focus:vapid',auth);}
- const response=await fetch(config.endpoint,{method:'POST',redirect:'manual',headers:{Authorization:'vapid t='+auth.jwt+', k='+config.publicKey,TTL:'60',Urgency:'high',Topic:'rex-focus'},signal:AbortSignal.timeout(10000)});
+ const response=await fetch(config.endpoint,{method:'POST',redirect:'manual',headers:{Authorization:'vapid t='+auth.jwt+', k='+config.publicKey,TTL:'60',Urgency:'high'},signal:AbortSignal.timeout(10000)});
+ if(!response.ok){let reason='Unknown';try{const body=await response.json();if(/^[A-Za-z0-9 _.-]{1,100}$/.test(body.reason||''))reason=body.reason;}catch{}r.providerStatus=response.status;r.providerReason=reason;console.warn('Focus push rejected',response.status,reason);await state.storage.put('focus:reminder',r);}
  if(response.status===404||response.status===410){delete config.endpoint;await state.storage.put('focus:config',config);await state.storage.put('focus:reminder',{...r,status:'subscription-expired'});return;}
  if(!response.ok){if(response.status>=500||response.status===429)throw Error('Push service temporarily unavailable.');await state.storage.put('focus:reminder',{...r,status:'failed'});return;}
- await state.storage.put('focus:reminder',{...r,status:'sent'});
+ console.info('Focus push accepted',response.status);await state.storage.put('focus:reminder',{...r,status:'sent'});
 }
