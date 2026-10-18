@@ -1,6 +1,6 @@
 const VERSION = '2025-09-03';
 const LIMIT = 20 * 1024 * 1024;
-const categories = { language: '语言提升', work: '工作提升', strength: '力量提升', skill: '技能提升' };
+const categories = { language: 'PTE 练习', reflection: 'Daily Reflection' };
 const json = (body, status = 200) => Response.json(body, { status });
 const fail = (message, status = 400) => Object.assign(new Error(message), { status });
 const rich = content => [{ type: 'text', text: { content } }];
@@ -116,7 +116,7 @@ export class Calendar {
   }
   async submit(request) {
     const form = await request.formData();
-    const id = String(form.get('id') || ''), date = String(form.get('date') || ''), note = String(form.get('note') || '').trim(), category = String(form.get('category') || '');
+    const id = String(form.get('id') || ''), date = String(form.get('date') || ''), note = String(form.get('note') || '').trim(), requestedCategory = String(form.get('category') || ''), category = requestedCategory === 'skill' ? 'reflection' : requestedCategory;
     let structured=null;if(form.has('richNote')){try{structured=RexRichDoc.normalize(JSON.parse(String(form.get('richNote'))));}catch(error){throw fail(error.message,400);}}
     const files = form.getAll('files').filter(f => typeof f !== 'string' && f.size);
     if (!/^[0-9a-f-]{36}$/i.test(id) || !validDate(date) || !categories[category] || note.length > 2000 || (!note && !files.length)) throw fail('请填写有效日期、分类、任务或附件。');
@@ -319,3 +319,4 @@ async function readingHandle(request,state,env) {
  const top=await children(env,page.id),root=top.filter(b=>b.type==='toggle'&&!b.archived).at(-1);if(!root)throw fail('Could not locate the saved note.',502);await appendRichBlocks(env,root.id,body.length?body:[readingBlock('paragraph','暂无笔记')]);await notion(env,'blocks/'+root.id,'PATCH',{toggle:{rich_text:finalVersionTitle}});const saved=await children(env,root.id);let index=0;for(const file of mapped)if(!file.blockId){const block=saved.filter(b=>['file','pdf','audio','image'].includes(b.type))[index++];if(block)file.blockId=block.id;}
  const result={...clean,attachments:mapped,remotePageId:page.id,remoteRevision:hash,notionUrl:page.url},receipt={record:result};await state.storage.put('reading-record:'+page.id,result);await state.storage.put(receiptKey,receipt);for(const old of top.filter(b=>b.id!==root?.id&&b.type==='toggle'&&/^(读书笔记|文章笔记|Reading notes|Article notes)/.test(readingText(b))))await notion(env,'blocks/'+old.id,'PATCH',{archived:true});return json(receipt);
 }
+

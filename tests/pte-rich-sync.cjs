@@ -19,7 +19,7 @@ const memory=new Map(),state={storage:{get:async k=>structuredClone(memory.get(k
 vm.createContext(ctx);vm.runInContext(fs.readFileSync('rich-doc.js','utf8')+'\n'+fs.readFileSync('workers/notion-worker.mjs','utf8').split('async function appendRichBlocks')[1].split('// Independent reading')[0].replace(/^/, 'async function appendRichBlocks'),ctx);vm.runInContext('const READING_SOURCE'+fs.readFileSync('workers/notion-worker.mjs','utf8').split('const READING_SOURCE')[1]+'\nglobalThis.handle=readingHandle;',ctx);
 async function submit(item,file){const form=new FormData();form.append('record',JSON.stringify(item));if(file)form.append('files',new Blob(['test pdf'],{type:'application/pdf'}),file);return (await ctx.handle(new Request('https://worker.test/api/reading/records',{method:'POST',body:form}),state,{})).json()}
 
-ctx.categories={language:'Language',skill:'Skill'};ctx.marker=(b,id)=>(b[b.type]?.rich_text||[]).some(t=>t.text?.link?.url?.endsWith('#submission='+id));
+ctx.categories={language:'Language',reflection:'Reflection'};ctx.marker=(b,id)=>(b[b.type]?.rich_text||[]).some(t=>t.text?.link?.url?.endsWith('#submission='+id));
 const worker=fs.readFileSync('workers/notion-worker.mjs','utf8');const calendar=worker.slice(worker.indexOf('export class Calendar'),worker.indexOf('(function(root)'));
 // Shared rich helpers appear between the Calendar and reading extension.
 vm.runInContext(calendar.replace('export class Calendar','class Calendar')+'\nglobalThis.TestCalendar=Calendar;',ctx);
@@ -28,4 +28,5 @@ vm.runInContext(calendar.replace('export class Calendar','class Calendar')+'\ngl
  const request=()=>new Request('https://worker.test/api/entries',{method:'POST',body:form});const saved=await (await calendar.submit(request())).json();assert.ok(saved.pageId);
  const top=blocks.get(saved.pageId);const root=top.find(b=>b.type==='toggle'&&ctx.marker(b,'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee'));assert.ok(root);const content=blocks.get(root.id);assert.equal(content[0].paragraph.rich_text[0].annotations.color,'green');assert.equal(content[1].to_do.checked,true);
  const count=pages.length;await calendar.submit(request());assert.equal(pages.length,count);assert.equal(blocks.get(saved.pageId).filter(b=>b.type==='toggle').length,1);
+ const reflection=new FormData();reflection.set('id','ffffffff-ffff-4fff-8fff-ffffffffffff');reflection.set('date','2026-10-18');reflection.set('category','skill');reflection.set('note','Reflection note');await calendar.submit(new Request('https://worker.test/api/entries',{method:'POST',body:reflection}));assert.ok([...blocks.values()].flat().some(b=>b.type==='heading_3'&&ctx.readingText===undefined&&(b.heading_3.rich_text||[]).some(t=>t.text?.content==='Reflection')));
  console.log('PASS: PTE native formatting, checked to-do, completion marker, receipt retry deduplication');})().catch(e=>{console.error(e);process.exit(1)});
