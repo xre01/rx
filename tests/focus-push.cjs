@@ -1,7 +1,7 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),{webcrypto}=require('crypto');
 let now=Date.now(),alarm,pushes=[],reply=201;class Clock extends Date{static now(){return now;}}
 const memory=new Map(),state={storage:{get:async k=>structuredClone(memory.get(k)),put:async(k,v)=>memory.set(k,structuredClone(v)),delete:async k=>memory.delete(k),setAlarm:async t=>alarm=t,deleteAlarm:async()=>alarm=null}};
-const ctx={Date:Clock,URL,Request,Response,Blob,TextEncoder,AbortSignal,crypto:webcrypto,btoa,fetch:async(url,options)=>{pushes.push({url,options});return new Response(null,{status:reply});},json:(b,s=200)=>Response.json(b,{status:s}),fail:(message,status=400)=>Object.assign(Error(message),{status})};vm.createContext(ctx);
+const ctx={Date:Clock,URL,Request,Response,Blob,TextEncoder,AbortSignal,crypto:webcrypto,btoa,fetch:async(url,options)=>{assert.equal(options.redirect,'manual','Cloudflare Workers supports manual/follow redirect modes only');pushes.push({url,options});return new Response(null,{status:reply});},json:(b,s=200)=>Response.json(b,{status:s}),fail:(message,status=400)=>Object.assign(Error(message),{status})};vm.createContext(ctx);
 vm.runInContext(fs.readFileSync('workers/notion-worker.mjs','utf8').split('// Empty-payload Web Push:')[1].replace(/^/,'// Empty-payload Web Push:')+'\nglobalThis.handle=focusHandle;globalThis.fire=focusAlarm;',ctx);
 const key='a'.repeat(43),url='https://worker.test/api/focus/12345678-1234-4234-8234-123456789012/';
 async function call(action,body,credential=key){return (await ctx.handle(new Request(url+action,{method:body?'POST':'GET',headers:{'X-Focus-Key':credential,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}),state)).json();}
