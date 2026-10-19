@@ -159,7 +159,7 @@ async function restoreReadingConnection(){
  if(Date.now()-readingLastRefresh<30000)return;
  readingLastRefresh=Date.now();readingRestoreBusy=true;
  try{if(!readingConnected){await readingRequest('/status');readingConnected=true;sessionStorage.setItem('rex-reading-access-key',readingKey.value);}await syncReading();}
- catch(error){readingSummary.textContent='Notion · Retry needed';readingSyncMessage.textContent=error.message+' · Local notes are retained.';}
+ catch(error){readingSyncError=error.message;readingSummary.textContent='Notion · Retry needed';readingSyncMessage.textContent=error.message+' · Local notes are retained.';}
  finally{readingRestoreBusy=false;updateSyncStatus()}
 }
 addEventListener('focus',restoreReadingConnection);
