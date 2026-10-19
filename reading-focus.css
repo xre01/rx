@@ -3,17 +3,8 @@ html#rexTheme body#rexSanctuary #reading .reading-focus-card{padding:20px 24px;m
 .reading-focus-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px}.reading-focus-metrics div{display:grid;gap:7px}.reading-focus-metrics span{color:#859489;font-size:12px}.reading-focus-metrics strong{font-size:24px;font-weight:500;font-variant-numeric:tabular-nums}.reading-focus-card p{font-size:11px;color:#8b998d;margin:14px 0 0;line-height:1.5}
 @media(max-width:540px){html#rexTheme body#rexSanctuary #reading .reading-focus-card{padding:18px}.reading-focus-metrics{gap:10px}.reading-focus-metrics strong{font-size:18px}}
 
-/* Reading has a tomato dial and no task prompt. */
+/* Reading does not need an activity prompt. */
 html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-goal{display:none!important}
-html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-time{isolation:isolate;overflow:visible!important;background:radial-gradient(ellipse at 30% 24%,#fff4e9 0%,#f7b6a7 30%,#e78d7d 75%,#d97f70 100%)!important;border-radius:46% 46% 43% 43%!important;box-shadow:inset 0 3px 0 #fff7efb0,inset 0 -9px 20px #b9564220,0 10px 25px #b25f4412!important;margin-top:40px!important;margin-bottom:30px!important}
-html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-time::before{content:"";position:absolute;z-index:1;top:-25px;left:calc(50% - 31px);width:62px;height:45px;background:linear-gradient(140deg,#8ba879,#557c59);clip-path:polygon(47% 33%,36% 0,58% 21%,78% 8%,71% 41%,100% 57%,65% 67%,52% 100%,38% 70%,0 61%,28% 40%,15% 14%);transform:rotate(-8deg)}
-html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-time::after{content:none!important}
-html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .timer-digits{color:#793f36!important;font-weight:500;text-shadow:0 1px 0 #fff6!important}
-html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-dial-ticks{opacity:.45}
-html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-dial-ticks line{stroke:#a75948!important}
-html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-dial-hand{background:#976442!important}
-html#rexTheme body#rexSanctuary #focusOverlay.reading-timer :is(.timer-suspension,.timer-cloud,.timer-glass-stars){display:none!important}
-
 html#rexTheme body#rexSanctuary #reading .reading-focus-heading .reading-tomato-entry{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;min-width:52px;padding:5px;border:0!important;border-radius:50%;background:transparent!important;box-shadow:none;transition:transform .16s}
 html#rexTheme body#rexSanctuary #reading .reading-tomato-entry:hover{transform:translateY(-2px)}
 html#rexTheme body#rexSanctuary #reading .reading-tomato-entry:focus-visible{outline:2px solid #8ca17d;outline-offset:3px}
