@@ -2,7 +2,7 @@
 const ball=document.getElementById('rexWordmark'),overlay=document.getElementById('focusOverlay'),minutes=document.getElementById('focusMinutes'),display=document.getElementById('timerDigits'),status=document.getElementById('focusStatus'),start=document.getElementById('focusStart');let mode='down',running=false,elapsed=0,started=0,tick=0,total=25*60;
 let sessionActivity='focus',statsActivity='focus';
 const readingView=()=>document.getElementById('reading')?.classList.contains('active')||location.hash==='#reading';
-function recordedGoal(){const goal=document.getElementById('focusGoal').value.trim();return sessionActivity==='reading'?('Reading · '+(goal||'Reading session')).slice(0,80):goal}
+function recordedGoal(){const goal=document.getElementById('focusGoal').value.trim();return sessionActivity==='reading'?'Reading · Reading session':goal}
 const statsKey='rex-focus-sessions-v1';let sessions=[];try{const saved=JSON.parse(localStorage.getItem(statsKey));if(Array.isArray(saved))sessions=saved.filter(s=>s&&Number.isFinite(s.seconds)&&s.seconds>=60&&Number.isFinite(s.endedAt))}catch{}
 function dayKey(value){const d=new Date(value);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
 function duration(s){return s<60?Math.floor(s)+'  sec':Math.floor(s/60)+'  min'+(Math.floor(s%60)?' '+Math.floor(s%60)+'  sec':'')}
@@ -48,7 +48,7 @@ function celebrate(){
 }
 function close(){picker.hidden=true;saveTimer();overlay.hidden=true;timerOpener?.setAttribute('aria-expanded','false');timerOpener?.focus()}
 let timerOpener=ball;
-function openTimer(activity='focus',trigger=document.activeElement){statsActivity=activity==='reading'?'reading':'focus';timerOpener=trigger||ball;if(!running&&elapsed===0)sessionActivity=activity==='reading'?'reading':'focus';document.getElementById('focusTitle').textContent=sessionActivity==='reading'?'Reading Timer':'Focus Timer';timerOpener.setAttribute('aria-expanded','true');document.getElementById('profilePopover').hidden=true;document.getElementById('profileToggle').setAttribute('aria-expanded','false');overlay.hidden=false;paint();renderStats();overlay.querySelector('.focus-close').focus()}
+function openTimer(activity='focus',trigger=document.activeElement){statsActivity=activity==='reading'?'reading':'focus';timerOpener=trigger||ball;if(!running&&elapsed===0)sessionActivity=activity==='reading'?'reading':'focus';overlay.classList.toggle('reading-timer',sessionActivity==='reading');document.getElementById('focusTitle').textContent=sessionActivity==='reading'?'Reading Timer':'Focus Timer';timerOpener.setAttribute('aria-expanded','true');document.getElementById('profilePopover').hidden=true;document.getElementById('profileToggle').setAttribute('aria-expanded','false');overlay.hidden=false;paint();renderStats();overlay.querySelector('.focus-close').focus()}
 window.RexFocusTimer={open:openTimer};
 ball.setAttribute('aria-label','Rex World');ball.removeAttribute('aria-expanded');ball.removeAttribute('aria-haspopup');ball.removeAttribute('title');
 overlay.querySelector('.focus-close').addEventListener('click',close);overlay.querySelector('.focus-minimize').addEventListener('click',close);overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
