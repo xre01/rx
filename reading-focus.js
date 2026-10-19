@@ -5,7 +5,7 @@ window.RexReadingFocus={summarize};
 const panel=document.getElementById('reading');if(!panel)return;
 const card=document.createElement('section');card.className='reading-focus-card';card.setAttribute('aria-label','Reading time');card.innerHTML='<div class="reading-focus-heading"><span>Reading time</span><button type="button">Start reading</button></div><div class="reading-focus-metrics"><div><span>Today</span><strong data-reading-time="today">0 min</strong></div><div><span>All time</span><strong data-reading-time="total">0 min</strong></div><div><span>Streak</span><strong data-reading-time="streak">0 days</strong></div></div><p>Reading sessions of at least 1 minute count toward your streak.</p>';
 panel.querySelector('.reading-heading').after(card);
-card.querySelector('button').addEventListener('click',()=>document.getElementById('rexWordmark').click());
+card.querySelector('button').addEventListener('click',event=>window.RexFocusTimer.open('reading',event.currentTarget));
 const read=key=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch{return[]}};
 const duration=s=>s>=3600?Math.floor(s/3600)+' h '+Math.floor(s%3600/60)+' min':Math.floor(s/60)+' min';
 function render(){const result=summarize([...read('rex-focus-sessions-v1'),...read('rex-focus-abandoned-v1')]);for(const key of ['today','total','streak']){const el=card.querySelector('[data-reading-time="'+key+'"]'),text=key==='streak'?result[key]+(result[key]===1?' day':' days'):duration(result[key]);if(el.textContent!==text)el.textContent=text}}
