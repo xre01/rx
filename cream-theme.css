@@ -1,0 +1,86 @@
+/* Rex World: cream white and pale blue. CSS-only theme. */
+html#rexTheme body#rexSanctuary{--ui-ink:#34556d;--muted:#8199ab;--gold:#a58e58;--teal:#6a9fbe;--rex-card-bg:#f5faff}
+html#rexTheme body#rexSanctuary::before,html#rexTheme body#rexSanctuary::after{display:none!important}
+html#rexTheme body#rexSanctuary main{box-shadow:none!important}
+html#rexTheme body#rexSanctuary :is(.personal-sidebar,.rex-sidebar){box-shadow:none!important}
+html#rexTheme body#rexSanctuary .personal-card{box-shadow:0 3px 15px #527b9610!important}
+html#rexTheme body#rexSanctuary :is(h1,h2,h3,.viewtitle,.reading-heading h1,.compact-heading h1){color:#355b78!important;text-shadow:none!important}
+html#rexTheme body#rexSanctuary :is(.eyebrow,.sub,.reading-heading p){color:#8aa3b6!important}
+html#rexTheme body#rexSanctuary #home :is(.hero-task-card,.dashboard-calendar-card,.daily-summary-card,.metric-countdown,.compact-metrics>article,.compact-metrics>button), html#rexTheme body#rexSanctuary #reading :is(.reading-library,.reading-calendar,.reading-focus-card), html#rexTheme body#rexSanctuary #archives :is(.card,.archive-calendar-shell,.archive-entry){background:#f8fcff!important;border:1px solid #dce9f2!important;box-shadow:0 3px 14px #6285a008!important;color:#42647d!important}
+html#rexTheme body#rexSanctuary :is(.hero-language-tabs,.reading-action-group){border-color:#d8e7f1!important}
+html#rexTheme body#rexSanctuary .hero-language-tabs button{color:#7c99af!important}
+html#rexTheme body#rexSanctuary .hero-language-tabs [aria-selected=true]{background:#fff!important;color:#4c7597!important;box-shadow:0 1px 6px #5b86a710!important}
+html#rexTheme body#rexSanctuary :is(.rex-sidebar-nav button,.personal-nav button){color:#7192aa!important}
+html#rexTheme body#rexSanctuary :is(.rex-sidebar-nav button.active,.personal-nav button.active){background:#f8fcff!important;color:#3e739c!important;border-color:#c7deee!important}
+html#rexTheme body#rexSanctuary #home :is(.hero-task-row,.calendar-day,.summary-auto-overview,.calendar-selected){background:#edf5fb!important;border-color:#dceaf4!important;color:#52738b!important}
+html#rexTheme body#rexSanctuary :is(input,textarea,select,.rich-editor){color:#3b607a!important;box-shadow:none!important}
+html#rexTheme body#rexSanctuary :is(input,textarea)::placeholder{color:#9aafbf!important}
+html#rexTheme body#rexSanctuary :is(.action,#home .hero-task-arrow,#focusOverlay #focusStart){background:linear-gradient(135deg,#9bbfd9,#80aace)!important;color:#fff!important;border-color:#bdd6e9!important;box-shadow:0 2px 6px #5387af10!important}
+html#rexTheme body#rexSanctuary :is(.ghost,.reading-calendar-arrow,.dashboard-timer-button,.reading-calendar-reset){background:#f2f8fd!important;border-color:#d5e5f0!important;color:#6b91ad!important}
+html#rexTheme body#rexSanctuary #home .hero-task-track{background:#e0ebf3!important}
+html#rexTheme body#rexSanctuary #home .hero-task-track>span{background:#91b7d3!important}
+html#rexTheme body#rexSanctuary :is(.compact-metrics strong,.reading-focus-metrics strong,.reading-calendar-controls strong){color:#487b9f!important}
+html#rexTheme body#rexSanctuary :is(.compact-metrics span,.reading-focus-metrics span,.reading-focus-card p){color:#8aa2b5!important}
+html#rexTheme body#rexSanctuary #home :is(.calendar-day.today,.calendar-day.selected,.calendar-day[aria-pressed=true]),html#rexTheme body#rexSanctuary #reading :is(.reading-calendar-day.selected,.reading-calendar-day.today){background:#d9eafa!important;border-color:#a7c9e3!important;color:#487ca2!important}
+html#rexTheme body#rexSanctuary :is(.reading-book,.reading-note-card,.reading-entry,.reading-shelf){border-color:#dce8f1!important;background:#f7fbfe!important}
+html#rexTheme body#rexSanctuary :is(.focus-dialog,#profilePopover,.makeup-dialog,.countdown-dialog,.reading-dialog){background:#f6fbff!important;border-color:#d4e5f2!important;box-shadow:0 18px 60px #315b7920!important;color:#446680!important}
+html#rexTheme body#rexSanctuary #focusOverlay{background:#7093ad20!important}
+html#rexTheme body#rexSanctuary #focusOverlay :is(#focusTitle,.timer-digits){color:#507d9f!important}
+html#rexTheme body#rexSanctuary #focusOverlay :is(.focus-modes button,.focus-actions button){background:#e9f3fa!important;color:#7193ac!important;border-color:#d5e6f2!important}
+html#rexTheme body#rexSanctuary #focusOverlay .focus-modes [aria-pressed=true]{background:#fff!important;color:#4f7c9d!important;border-color:#bdd7e9!important}
+html#rexTheme body#rexSanctuary #focusOverlay :is(.focus-heading,.focus-status,.focus-goal,.focus-section-title){color:#7898ae!important}
+html#rexTheme body#rexSanctuary #focusOverlay .focus-dial-ticks line{stroke:#9bbbd0!important}
+html#rexTheme body#rexSanctuary #focusOverlay :is(.focus-icon,.focus-close,.focus-minimize){color:#80a0b8!important}
+html#rexTheme body#rexSanctuary :is(.progress,.personal-exp-track){background:#dfebf4!important}
+html#rexTheme body#rexSanctuary :is(#expBar,.personal-exp-bar){background:#8bb5d4!important}
+html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button){border:1px solid #bfd9ed!important}
+html#rexTheme body#rexSanctuary :is(.compact-metrics strong,.reading-focus-metrics strong){color:#3f739c!important}
+html#rexTheme body#rexSanctuary :is(.compact-metrics span,.reading-focus-metrics span){color:#7493ac!important}
+html#rexTheme body#rexSanctuary{background:#f5f1e8!important;color:#496477!important}
+html#rexTheme body#rexSanctuary main{background:linear-gradient(140deg,#fffcf5,#f7f4eb)!important}
+html#rexTheme body#rexSanctuary :is(.personal-sidebar,.rex-sidebar){background:linear-gradient(155deg,#f3f0e7,#e8eff1)!important;border-color:#e4e5dc!important}
+html#rexTheme body#rexSanctuary .personal-card{background:#fffdf6!important;border-color:#f4efe2!important}
+html#rexTheme body#rexSanctuary #home :is(.hero-task-card,.dashboard-calendar-card,.daily-summary-card){background:#fffdf7!important;border-color:#e4e9e8!important}
+html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button){background:linear-gradient(130deg,#f6fbff,#e2eef7)!important;border-color:#d7e5ef!important;box-shadow:inset 0 1px 0 #fff,0 3px 10px #64839c08!important}
+html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button):nth-child(2){background:linear-gradient(130deg,#edf6fd,#dbeaf6)!important}
+html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button):nth-child(3){background:linear-gradient(130deg,#fffaf0,#f2eddf)!important;border-color:#e9e1ce!important}
+html#rexTheme body#rexSanctuary #home :is(.hero-task-row,.calendar-day,.summary-auto-overview){background:#edf4f9!important;border-color:#dce7ed!important}
+html#rexTheme body#rexSanctuary #reading :is(.reading-library,.reading-calendar){background:#fffdf7!important;border-color:#e0e8eb!important}
+html#rexTheme body#rexSanctuary #reading .reading-focus-card{background:linear-gradient(120deg,#fffaf0,#e4f0fa)!important;border-color:#dce6eb!important}
+html#rexTheme body#rexSanctuary :is(input,textarea,select,.rich-editor){background:#fffef9!important;border-color:#dce6eb!important}
+html#rexTheme body#rexSanctuary :is(.hero-language-tabs,.reading-action-group){background:#eaf2f7!important}
+html#rexTheme body#rexSanctuary :is(.rich-toolbar,.reading-toolbar){background:#fffcf5!important;border-color:#e4e9e8!important}
+html#rexTheme body#rexSanctuary #focusOverlay .focus-dialog{background:linear-gradient(145deg,#fffdf7,#ebf4fb)!important}
+html#rexTheme body#rexSanctuary #reading .reading-calendar-controls{display:flex;align-items:center;gap:12px}
+html#rexTheme body#rexSanctuary #reading .reading-calendar-arrow{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;padding:0!important;border:1px solid #d4e3ee!important;border-radius:9px!important;background:#edf5fb!important;color:transparent!important;font-size:0!important;line-height:1!important;box-shadow:none!important}
+html#rexTheme body#rexSanctuary #reading .reading-calendar-arrow::before{content:'';display:block;width:6px;height:6px;border:solid #7496af;border-width:0 1.5px 1.5px 0;transform:rotate(135deg);margin-left:3px}
+html#rexTheme body#rexSanctuary #reading .reading-calendar-arrow:last-child::before{transform:rotate(-45deg);margin-left:-3px}
+html#rexTheme body#rexSanctuary #reading .reading-calendar-arrow:hover{background:#dfedf7!important;border-color:#b7d1e4!important}
+html#rexTheme body#rexSanctuary #reading .reading-calendar-controls strong{min-width:112px;text-align:center;font-size:13px;font-weight:500}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button{color:#7792a8!important}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button svg{color:inherit!important;stroke:currentColor!important}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button:hover{background:#f4f8fc!important;color:#567d9b!important}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button.active,html#rexTheme body#rexSanctuary .rex-sidebar-nav button[aria-current=page]{background:#fffefa!important;color:#567d9b!important;border-color:#dce8ef!important;box-shadow:0 2px 8px #6b8ba008!important}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav,html#rexTheme body#rexSanctuary .rex-sidebar-nav button,html#rexTheme body#rexSanctuary .rex-sidebar-nav button.active,html#rexTheme body#rexSanctuary .rex-sidebar-nav button[aria-current=page]{border:0!important;box-shadow:none!important;outline-offset:3px}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button::before,html#rexTheme body#rexSanctuary .rex-sidebar-nav button::after{content:none!important;display:none!important}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav{background:transparent!important}
+html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button, html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button.active, html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button[aria-current=page]{border:0!important;box-shadow:none!important;background:#fffefa!important;color:#67879f!important;background-image:none!important}
+html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button::before, html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button::after{display:none!important;content:none!important}
+html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button svg{color:#67879f!important;stroke:currentColor!important}
+html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button{background:#eff3f5!important;color:#728a9b!important}
+html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button:hover{background:#e8eff3!important;color:#638095!important}
+html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button.active, html#rexTheme body#rexSanctuary .personal-sidebar .personal-card nav.rex-sidebar-nav button[aria-current=page]{background:#e5edf2!important;color:#5f7d93!important}
+html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button):not(.countdown-metric){background:linear-gradient(125deg,#e1eef9,#d2e5f5)!important;border:1px solid #c8dfee!important;box-shadow:inset 0 1px 0 #ffffffb3,0 3px 10px #64839c08!important}
+html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button), html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button):nth-child(n), html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button):not(.countdown-metric){background:linear-gradient(125deg,#fffaf0,#f2eddf)!important;border:1px solid #e9e1ce!important;box-shadow:inset 0 1px 0 #fffdf8,0 3px 10px #8b7c5407!important}
+html#rexTheme body#rexSanctuary #home .compact-dashboard button.dashboard-export{background:#fffaf0!important;color:#68859b!important;border:1px solid #e3ddcd!important;box-shadow:none!important}
+html#rexTheme body#rexSanctuary #home .compact-dashboard button.dashboard-export:hover{background:#f4efe3!important;color:#4f748f!important}
+html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar .reading-calendar-controls button.reading-calendar-arrow{background:#e8f1f8!important;background-image:none!important;border:1px solid #d3e2ee!important;color:transparent!important;box-shadow:none!important}
+html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar .reading-calendar-controls button.reading-calendar-arrow:hover{background:#dcebf6!important}
+html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar .reading-calendar-controls button.reading-calendar-arrow::before{border-color:#7899b1!important}
+html#rexTheme body#rexSanctuary #home .dashboard-calendar-card .calendar-navigation button[data-month], html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar .reading-calendar-controls button.reading-calendar-arrow{position:relative;display:inline-flex!important;align-items:center;justify-content:center;flex:0 0 30px;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;padding:0!important;background:#dcebf6!important;background-image:none!important;border:1px solid #bfd7e9!important;border-radius:9px!important;color:transparent!important;font-size:0!important;box-shadow:none!important}
+html#rexTheme body#rexSanctuary #home .dashboard-calendar-card .calendar-navigation button[data-month]::before{content:'';display:block;width:6px;height:6px;border:solid #6e91ad;border-width:0 1.5px 1.5px 0;transform:rotate(135deg);margin-left:3px}
+html#rexTheme body#rexSanctuary #home .dashboard-calendar-card .calendar-navigation button[data-month="1"]::before{transform:rotate(-45deg);margin-left:-3px}
+html#rexTheme body#rexSanctuary #home .calendar-navigation{gap:12px!important}
+html#rexTheme body#rexSanctuary #home .dashboard-calendar-card .calendar-navigation button[data-month], html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar .reading-calendar-controls button.reading-calendar-arrow, html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar button.reading-calendar-reset{background:#fffaf0!important;background-image:none!important;border-color:#e8dfcc!important;box-shadow:none!important}
+html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar button.reading-calendar-reset{color:#7892a5!important}
+html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar .reading-calendar-controls button.reading-calendar-arrow:hover, html#rexTheme body#rexSanctuary #reading.reading-panel .reading-calendar button.reading-calendar-reset:hover, html#rexTheme body#rexSanctuary #home .dashboard-calendar-card .calendar-navigation button[data-month]:hover{background:#f4eddf!important}
