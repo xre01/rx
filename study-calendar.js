@@ -25,12 +25,14 @@
     const offset=(new Date(month+'-01T12:00:00Z').getUTCDay()+6)%7;
     for(let i=0;i<offset;i++){const space=document.createElement('span');space.setAttribute('aria-hidden','true');grid.append(space)}
     const [year,m]=month.split('-').map(Number),length=new Date(Date.UTC(year,m,0)).getUTCDate();
-    for(let n=1;n<=length;n++){const d=month+'-'+String(n).padStart(2,'0'),b=document.createElement('button');b.type='button';b.textContent=n;b.className='calendar-day'+(active.has(d)?' has-activity':'')+(d===today?' is-today':'');b.setAttribute('aria-pressed',String(d===selected));b.setAttribute('aria-label',d+(active.has(d)?', Has study records':''));b.addEventListener('click',()=>{const event=new CustomEvent('rex-date-selected',{detail:{date:d},cancelable:true});if(!dispatchEvent(event))return;selected=d;render()});grid.append(b)}
+    for(let n=1;n<=length;n++){const d=month+'-'+String(n).padStart(2,'0'),b=document.createElement('button');b.type='button';b.textContent=n;b.className='calendar-day'+(active.has(d)?' has-activity':'')+(d===today?' is-today':'');b.setAttribute('aria-pressed',String(d===selected));if(d===today){b.setAttribute('aria-current','date');const label=document.createElement('small');label.className='pte-today-label';label.textContent='Today';b.append(label)}b.setAttribute('aria-label',d+(d===today?', Today':'')+(active.has(d)?', Has study records':''));b.addEventListener('click',()=>{const event=new CustomEvent('rex-date-selected',{detail:{date:d},cancelable:true});if(!dispatchEvent(event))return;selected=d;render()});grid.append(b)}
     makeup.hidden=selected>=today;
     const s=store.summary(selected),count=s.counts.reduce((n,r)=>n+r.count,0);
     calendar.querySelector('.calendar-selected').textContent=selected+' · Completed '+count+' items · Focus '+Math.floor(s.seconds/60)+' min';
   }
+  const returnToday=document.createElement('button');returnToday.type='button';returnToday.className='calendar-return-today';returnToday.textContent='Today';returnToday.setAttribute('aria-label','Return to today');calendar.querySelector('.calendar-navigation').append(returnToday);returnToday.addEventListener('click',()=>{const current=day(),event=new CustomEvent('rex-date-selected',{detail:{date:current},cancelable:true});if(!dispatchEvent(event))return;today=current;selected=current;month=current.slice(0,7);render()});
   calendar.querySelectorAll('[data-month]').forEach(b=>b.addEventListener('click',()=>{const [y,m]=month.split('-').map(Number);month=new Date(Date.UTC(y,m-1+Number(b.dataset.month),1)).toISOString().slice(0,7);render()}));
   addEventListener('rex-date-ready',event=>{selected=event.detail.date;month=selected.slice(0,7);render()});
   render();addEventListener('rex-local-changed',render);addEventListener('rex-cloud-changed',render);addEventListener('storage',render);setInterval(render,60000);
 })();
+
