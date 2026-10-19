@@ -13,3 +13,7 @@ html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-dial-ticks{op
 html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-dial-ticks line{stroke:#a75948!important}
 html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-dial-hand{background:#976442!important}
 html#rexTheme body#rexSanctuary #focusOverlay.reading-timer :is(.timer-suspension,.timer-cloud,.timer-glass-stars){display:none!important}
+
+html#rexTheme body#rexSanctuary #reading .reading-focus-heading .reading-tomato-entry{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;min-width:52px;padding:5px;border:0!important;border-radius:50%;background:transparent!important;box-shadow:none;transition:transform .16s}
+html#rexTheme body#rexSanctuary #reading .reading-tomato-entry:hover{transform:translateY(-2px)}
+html#rexTheme body#rexSanctuary #reading .reading-tomato-entry:focus-visible{outline:2px solid #8ca17d;outline-offset:3px}
