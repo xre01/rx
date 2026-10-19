@@ -7,7 +7,7 @@
   const day=(value=Date.now())=>new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value));
   const validDate=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!isNaN(Date.parse(value+'T12:00:00Z'))&&new Date(value+'T12:00:00Z').toISOString().slice(0,10)===value;
   const save=()=>localStorage.setItem(key,JSON.stringify(state));
-  const records=()=>read('rex-focus-sessions-v1',[]).filter(r=>r&&Number.isFinite(r.seconds)&&r.seconds>=60&&Number.isFinite(r.endedAt));
+  const records=()=>read('rex-focus-sessions-v1',[]).filter(r=>r&&!/^Reading · /.test(r.goal||'')&&Number.isFinite(r.seconds)&&r.seconds>=60&&Number.isFinite(r.endedAt));
   function localCounts(){
     const counts={};
     const add=(date,type,n)=>{n=Number(n);if(!validDate(date)||typeof type!=='string'||!type.trim()||!Number.isSafeInteger(n)||n<0)return;type=type.trim().slice(0,80);const id=date+':'+type;counts[id]??={date,type,count:0};counts[id].count+=n};
@@ -36,6 +36,7 @@
     for(const [date,list]of Object.entries(read('arcane-sanctuary-v1',{}).done||{}))if(validDate(date)&&Array.isArray(list)&&list.length)activityDays.add(date);
     for(const date of read('rex-reflection-days-v1',[]))if(validDate(date))activityDays.add(date);
     for(const date of derivedBefore)if(!activityDays.has(date))delete state.checkins[date];
+    for(const r of read('rex-focus-sessions-v1',[]))if(/^Reading · /.test(r?.goal||'')&&Number.isFinite(r.endedAt)&&!activityDays.has(day(r.endedAt)))delete state.checkins[day(r.endedAt)];
     for(const date of activityDays)state.checkins[date]=true;state.derivedDays=[...activityDays];
     save();
   }
