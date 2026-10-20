@@ -16,6 +16,6 @@
   },
   "scripts": {
     "build": "node scripts/build-editor.cjs && node node_modules/esbuild/bin/esbuild reading-editor-source.js --bundle --minify --format=iife --outfile=reading-editor.js",
-    "test": "node tests/book-editor.cjs && node tests/reading-journal.cjs && node tests/reading-editor.cjs && node tests/reading-sync.cjs && node tests/reading-concurrent-edit.cjs && node tests/pte-rich-sync.cjs && node tests/resource-cache.cjs"
+    "test": "node tests/book-editor.cjs && node tests/reading-journal.cjs && node tests/reading-preview.cjs && node tests/reading-editor.cjs && node tests/reading-sync.cjs && node tests/reading-concurrent-edit.cjs && node tests/pte-rich-sync.cjs && node tests/resource-cache.cjs"
   }
 }
