@@ -46,5 +46,17 @@ async function submit(item,file){const form=new FormData();form.append('record',
  const richPage=pages.find(p=>p.id===richSaved.record.remotePageId),richRoot=blocks.get(richPage.id).filter(b=>!b.archived&&b.type==='toggle').at(-1);
  const richParagraph=blocks.get(richRoot.id).find(b=>b.type==='paragraph');richParagraph.paragraph.rich_text[0].annotations.color='blue_background';
  const richEdited=(await (await ctx.handle(new Request('https://worker.test/api/reading/records'),state,{})).json()).records.find(r=>r.id===richSaved.record.id);assert.equal(richEdited.richBody[0].paragraph.rich_text[0].annotations.color,'blue_background');assert.notEqual(richEdited.remoteRevision,richSaved.record.remoteRevision);
+
+
+ const attachmentId='12121212-1212-4212-8212-121212121212',bookDoc={version:1,doc:{type:'doc',content:[{type:'paragraph',content:[{type:'text',text:'Book with file'}]}]}};
+ const attached=await submit({id:'13131313-1313-4313-8313-131313131313',kind:'book',title:'Book files',body:'',logs:[{id:'book-note',date:'2026-10-18',note:'Book with file',editorNote:bookDoc,attachmentIds:[attachmentId]}],editorClientVersion:1,attachments:[{id:attachmentId,name:'book.pdf',size:8}],updated:'2026-10-18T04:00:00Z'},attachmentId);
+ const attachedLoaded=(await (await ctx.handle(new Request('https://worker.test/api/reading/records'),state,{})).json()).records.find(r=>r.id===attached.record.id);assert.deepEqual(attachedLoaded.logs[0].attachmentIds,[attachmentId]);assert.deepEqual(attachedLoaded.logs[0].editorNote,bookDoc);assert.ok(attachedLoaded.attachments[0].blockId);
+ await assert.rejects(()=>submit({...attached.record,editorClientVersion:1,logs:[{...attached.record.logs[0],attachmentIds:['not-a-file'] }],updated:'2026-10-18T05:00:00Z'}));
+ const full={version:1,doc:{type:'doc',content:[{type:'paragraph',content:[{type:'text',text:'Web version',marks:[{type:'textStyle',attrs:{color:'#a43e48',backgroundColor:'#fff0a6'}}]}]}]}};
+ const fullSaved=await submit({id:'ffffffff-ffff-4fff-8fff-ffffffffffff',kind:'article',title:'Full document',body:'Web version',richBody:[{type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:'Web version'}}]}}],editorBody:full,editorClientVersion:1,logs:[],attachments:[],writtenDate:'2026-10-18',updated:'2026-10-18T04:00:00Z'});
+ const fullLoaded=(await (await ctx.handle(new Request('https://worker.test/api/reading/records'),state,{})).json()).records.find(r=>r.id===fullSaved.record.id);assert.deepEqual(fullLoaded.editorBody,full);assert.equal(fullLoaded.remoteRevision,fullSaved.record.remoteRevision);
+ await assert.rejects(()=>submit({...fullSaved.record,updated:'2026-10-18T05:00:00Z'}),e=>e.status===409);
+ const fullRoot=blocks.get(fullSaved.record.remotePageId).filter(b=>!b.archived&&b.type==='toggle').at(-1);blocks.get(fullRoot.id).find(b=>b.type==='paragraph').paragraph.rich_text=[{type:'text',text:{content:'Notion changed'}}];
+ await assert.rejects(()=>ctx.handle(new Request('https://worker.test/api/reading/records'),state,{}),e=>e.status===409);assert.deepEqual(memory.get('reading-record:'+fullSaved.record.remotePageId).editorBody,full);
  console.log('PASS: deletion/tombstones/stale-client protection, separate database, retry deduplication, edit, conflict protection, attachment upload/reuse/removal, complete reload');
 })().catch(e=>{console.error(e);process.exit(1)});

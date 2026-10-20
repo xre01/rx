@@ -51,3 +51,19 @@ node tests/reading-xp.cjs
 ```
 
 A new service-worker cache version removes only older `rex-focus-offline-*` resource caches on activation. Notes, attachments, XP and browser-session connection keys are retained.
+
+## Minimal reading editor
+
+Reading uses a bundled, pinned Tiptap editor. The existing palette and note dialogs remain. The default toolbar shows File (book notes), paragraph style, bold, table and Aa; extra formatting stays in Aa. Table operations appear only when the selection is in a table. Paste HTML tables directly; select Markdown table source and choose Aa → Markdown → Table to convert it.
+
+Old plain text, legacy HTML and Notion block arrays remain readable. On the first local save, the original local library is copied to rex-reading-editor-backup-v1; if that backup cannot be stored, saving stops. Existing fields and IDs are retained, with versioned editorBody/editorNote documents added for exact colors and table structure. Full documents are validated in the browser and Worker. HTML import and display use DOMPurify with a color-only CSS allowlist. Word stylesheet and row colors are imported when available; Safari may omit clipboard styling.
+
+Book-note files are saved in the existing IndexedDB attachment store, referenced by attachmentIds on the log, and synchronized through the existing book record. The existing limit is 10 attachments per book record, with at most 20 MiB of pending upload data per request. Removing a file from a note unlinks it; stored book files are retained.
+
+Build with pnpm install --frozen-lockfile and pnpm build. The generated reading-editor.js is committed so GitHub Pages needs no build service. Run pnpm test or the individual tests under tests/. The shared document validator is copied into the single-file Worker by the build.
+
+Deployment: publish workers/notion-worker.mjs to the existing rex-notion-calendar Worker first, preserving every secret, binding and Durable Object namespace. Do not create a replacement namespace or change migration history. GET /api/reading/status must report editorSchemaVersion: 1. Then publish the frontend. New clients refuse sync with older Workers; old clients cannot overwrite versioned rich documents. Cache activation removes only obsolete owned asset caches.
+
+Notion receives a readable projection; exact website formatting remains in Durable Object state. If Notion changes a versioned note, synchronization stops with a conflict rather than discarding the complete website document. Resolve the versions before retrying; no automatic merge is attempted. Keep the full Worker and browser data when rolling back. The backup is a browser-local recovery copy, not a replacement for a cloud export.
+
+Validation includes HTML/table/color roundtrips, legacy blocks, XSS payloads, compact toolbar structure, book attachments, cloud document preservation, old-client rejection and the existing regression suite. iPhone hardware and the production Worker deployment require separate verification.

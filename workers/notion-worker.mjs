@@ -187,6 +187,27 @@ async function appendRichBlocks(env,parent,blocks){
  for(let i=0;i<blocks.length;i++){const b=blocks[i],nested=b[b.type]?.children;if(nested?.length&&b.type!=='table'){const id=result.results?.[i]?.id;if(!id)throw fail('Could not save nested note content.',502);await appendRichBlocks(env,id,nested);}}
 }
 
+(function(root){'use strict';
+const nodes=new Set('doc paragraph text heading bulletList orderedList listItem blockquote codeBlock hardBreak horizontalRule table tableRow tableCell tableHeader taskList taskItem details detailsSummary detailsContent'.split(' '));
+const marks=new Set('bold italic underline strike code link textStyle highlight'.split(' '));
+const color=v=>typeof v==='string'&&(/^(#[\da-f]{3,8}|rgba?\([\d.,%\s]+\)|[a-z]{1,20})$/i.test(v))&&!/^(inherit|initial|unset)$/i.test(v);
+function validate(input){if(input?.version!==1||input.doc?.type!=='doc')throw Error('Unsupported editor document. Original retained.');let count=0,chars=0;
+ function walk(n,depth=0,mark=false){if(!n||depth>16||++count>10000||!(mark?marks:nodes).has(n.type))throw Error('Unsupported or oversized editor content. Original retained.');const out={type:n.type};if(n.text!==undefined){if(n.type!=='text'||typeof n.text!=='string')throw Error('Invalid text');chars+=n.text.length;out.text=n.text;}
+ if(n.attrs){const attrs={};for(const [k,v]of Object.entries(n.attrs)){if(v===null)continue;
+ if(['color','backgroundColor'].includes(k)){if(!color(v))throw Error('Invalid color');attrs[k]=v;}
+ else if(k==='href'){if(typeof v!=='string'||!/^https?:\/\//i.test(v)||/[\u0000-\u0020]/.test(v))throw Error('Unsafe link');attrs[k]=v;}
+ else if(['target','rel','class'].includes(k)){if(k==='target')attrs.target='_blank';if(k==='rel')attrs.rel='noopener noreferrer';}
+ else if(['level','colspan','rowspan','start'].includes(k)){if(!Number.isInteger(v)||v<1||v>(k==='level'?3:1000))throw Error('Invalid structure');attrs[k]=v;}
+ else if(k==='colwidth'){if(!Array.isArray(v)||v.length>100||v.some(x=>!Number.isInteger(x)||x<1||x>10000))throw Error('Invalid width');attrs[k]=v;}
+ else if(['checked','open'].includes(k)){if(typeof v!=='boolean')throw Error('Invalid state');attrs[k]=v;}
+ else if(k==='language'){if(typeof v!=='string'||v.length>100)throw Error('Invalid language');attrs[k]=v;}
+ else throw Error('Unsupported editor attribute: '+k);
+ }if(Object.keys(attrs).length)out.attrs=attrs;}
+ if(n.content){if(!Array.isArray(n.content))throw Error('Invalid document');out.content=n.content.map(c=>walk(c,depth+1));}if(n.marks){if(!Array.isArray(n.marks)||n.marks.length>10)throw Error('Invalid formatting');out.marks=n.marks.map(m=>walk(m,depth+1,true));}return out;}
+ const doc=walk(input.doc);if(chars>50000)throw Error('Note text is too long');return {version:1,doc};}
+root.RexReadingDocument={validate};if(typeof module!=='undefined')module.exports=root.RexReadingDocument;
+})(globalThis);
+
 // Independent reading data source; credentials remain in Cloudflare secrets.
 const READING_SOURCE = '3fd0d1ce-21d1-8046-a3e4-000bae86ce0d';
 const READING_DB = '3fd0d1ce-21d1-808a-b9dd-c1201cb27918';
@@ -221,7 +242,9 @@ async function readingSnapshot(env,page,state) {
   const projection={title,writtenDate:date,body:stored.kind==='article'?body:stored.body,logs:stored.kind==='book'?logs:stored.logs,url,...(stored.kind==='article'?{richBody}:{})};
   const expected={title:stored.title,writtenDate:stored.writtenDate,body:stored.body,logs:stored.logs,url:stored.url||'',...(stored.kind==='article'&&stored.richBody?{richBody:stored.richBody}:{})};
   let result=stored;
-  if(JSON.stringify(projection)!==JSON.stringify(expected)){
+  const stripEditor=value=>JSON.parse(JSON.stringify(value,(key,v)=>['editorNote','attachmentIds'].includes(key)?undefined:v));
+   if(JSON.stringify(stripEditor(projection))!==JSON.stringify(stripEditor(expected))){
+    if(stored.editorBody||(stored.logs||[]).some(n=>n.editorNote))throw fail('This note has changes in Notion. The complete website version is retained. Resolve both versions before syncing.',409);
    const revision=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(projection))))).map(x=>x.toString(16).padStart(2,'0')).join('');
    result={...stored,...projection,source:title,noteTitle:title,updated:page.last_edited_time||new Date().toISOString(),remoteRevision:revision};await state.storage.put('reading-record:'+page.id,result);
   }
@@ -253,7 +276,7 @@ async function readingHandle(request,state,env) {
    }count++;
   }return json({ok:true,migrated:count});
  }
- if(path==='/api/reading/status'&&request.method==='GET'){await notion(env,'data_sources/'+READING_SOURCE);return json({ok:true,databaseId:READING_DB,name:'Reading and growth'});}
+ if(path==='/api/reading/status'&&request.method==='GET'){await notion(env,'data_sources/'+READING_SOURCE);return json({ok:true,databaseId:READING_DB,name:'Reading and growth',editorSchemaVersion:1});}
  if(path==='/api/reading/records'&&request.method==='GET'){
   const records=[];for(const page of await readingPages(env)){const item=await readingSnapshot(env,page,state);if(item)records.push(item);}const deleted=await state.storage.list({prefix:'reading-tombstone:'});records.push(...deleted.values());return json({records,complete:true});
  }
@@ -286,6 +309,9 @@ async function readingHandle(request,state,env) {
  const files=form.getAll('files').filter(f=>typeof f!=='string'),attachments=item.attachments||[];
  if(attachments.length>10||files.reduce((sum,f)=>sum+f.size,0)>LIMIT)throw fail('最多 10 个附件，每次同步附件总大小不超过 20 MiB。',413);
  if(attachments.some(f=>!f||!readingUUID(f.id)||typeof f.name!=='string'||f.name.length>200))throw fail('附件信息无效。');
+ if((item.editorBody||item.logs.some(n=>n.editorNote))&&item.editorClientVersion!==1)throw fail('Update this device before editing a rich note. The complete document is retained.',409);
+ for(const log of item.logs)if(log.attachmentIds&&(!Array.isArray(log.attachmentIds)||log.attachmentIds.length>10||log.attachmentIds.some(id=>!readingUUID(id)||!attachments.some(f=>f.id===id))))throw fail('Invalid note attachments.');
+ if(item.editorBody)item.editorBody=RexReadingDocument.validate(item.editorBody);for(const log of item.logs)if(log.editorNote)log.editorNote=RexReadingDocument.validate(log.editorNote);
  if(item.kind==='article'&&!item.richBody)item.richBody=item.body?[readingBlock('paragraph',item.body)]:[];
  for(const log of item.logs){if(!log.id)log.id=crypto.randomUUID();if(!log.richNote)log.richNote=log.note?[readingBlock('paragraph',log.note)]:[];}
  if(item.richBody){item.richBody=RexRichDoc.normalize(item.richBody);item.body=RexRichDoc.plain(item.richBody);}
@@ -296,6 +322,7 @@ async function readingHandle(request,state,env) {
  if(pageId){page=await notion(env,'pages/'+pageId);if(!readingBelongs(page)||page.archived||page.in_trash)throw fail('Notion 记录已移动或移除。',409);}
  if(!page)for(const candidate of await readingPages(env)){const stored=await state.storage.get('reading-record:'+candidate.id);const blocks=stored?[]:await children(env,candidate.id);if(stored?.id===item.id||blocks.some(b=>b.type==='toggle'&&readingText(b).startsWith('REX-READING:'+item.id+':'))){page=candidate;break;}}
  const previous=page?await readingSnapshot(env,page,state):null;
+ if(previous?.editorBody&&!item.editorBody||(previous?.logs||[]).some(n=>n.editorNote&&item.logs.some(l=>l.id===n.id&&!l.editorNote)))throw fail('Update this device before editing a rich note. The complete document is retained.',409);
  if(previous?.remoteRevision===hash){const receipt={record:previous};await state.storage.put('reading-page:'+item.id,page.id);await state.storage.put(receiptKey,receipt);return json(receipt);}
  if(previous&&previous.remoteRevision!==(item.remoteRevision||''))throw fail('此笔记已在其他设备更新，请先拉取最新记录。',409);
  const mapped=[],fileBlocks=[];
@@ -313,7 +340,7 @@ async function readingHandle(request,state,env) {
  if(item.kind==='article'){if(item.url)body.push(readingBlock('paragraph','原文：'+item.url));if(item.richBody)body.push(...item.richBody);else if(item.body)body.push(readingBlock('paragraph',item.body));}
  else for(const log of item.logs){body.push(readingBlock('heading_3',log.date));if(log.richNote)body.push(...log.richNote);else body.push(readingBlock('paragraph',log.note));}
  body.push(...fileBlocks);if(body.length>95)throw fail('笔记数量超过单次同步上限。',413);
- const clean={id:item.id,kind:item.kind,title:item.title,source:item.source||item.title,noteTitle:item.title,body:item.body,...(item.richBody?{richBody:item.richBody}:{}),logs:item.logs,attachments:mapped,writtenDate:item.writtenDate||null,createdAt:item.createdAt,updated:item.updated,status:item.status||'reading',url:item.kind==='article'?(item.url||''):''};
+ const clean={...(item.editorBody?{editorBody:item.editorBody}:{}),id:item.id,kind:item.kind,title:item.title,source:item.source||item.title,noteTitle:item.title,body:item.body,...(item.richBody?{richBody:item.richBody}:{}),logs:item.logs,attachments:mapped,writtenDate:item.writtenDate||null,createdAt:item.createdAt,updated:item.updated,status:item.status||'reading',url:item.kind==='article'?(item.url||''):''};
  const version={object:'block',type:'toggle',toggle:{rich_text:[...rich(item.kind==='book'?'读书笔记':('文章笔记 · '+item.writtenDate)),{type:'text',text:{content:' · 网站记录',link:{url:'https://xre01.github.io/rx/#reading-revision='+hash}}}],children:[]}};
  const finalVersionTitle=version.toggle.rich_text;version.toggle.rich_text=rich('Sync in progress');
  const properties={Name:{title:rich(item.title)},Date:{date:item.kind==='article'?{start:item.writtenDate}:null}};
