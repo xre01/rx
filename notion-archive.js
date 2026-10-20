@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const $=id=>document.getElementById(id),cfgKey='arcane-notion-gateway',batchSize=5;
+const $=id=>document.getElementById(id),cfgKey='arcane-notion-gateway';
 const grid=$('archiveGrid');
 let archiveLoaded=false,archiveTruncated=false,archiveMonth=new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit'}).format(new Date()).slice(0,7),archiveDay='';
 const connection=$('loadArchive').closest('.card');if(connection){const settings=node('details','archive-connection');const summary=node('summary','','Notion connection');connection.before(settings);settings.append(summary,connection);}
@@ -23,7 +23,6 @@ function dayKey(value){
   const day=match[1],date=new Date(day+'T00:00:00Z');
   return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===day?day:'';
 }
-function dayLabel(day){return day?new Intl.DateTimeFormat('en',{weekday:'short',day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(day+'T00:00:00Z')):'No date';}
 function groupedRecords(records){
   const groups=new Map();
   for(const item of records){const day=dayKey(item.date);if(!groups.has(day))groups.set(day,[]);groups.get(day).push(item);}
@@ -85,33 +84,6 @@ function recordCard(item,origin,key,version,signal){
     });
   }
   return card;
-}
-function dayGroup(day,records,index,origin,key,version,signal){
-  const details=node('details','archive-day'),summary=node('summary','archive-summary');
-  const title=node('span','archive-day-heading'),date=node(day?'time':'span','archive-day-date',dayLabel(day));
-  if(day)date.dateTime=day;
-  title.append(date);
-  if(index===0&&day)title.append(node('span','archive-day-latest','Latest'));
-  summary.append(title,node('span','archive-day-count',`${records.length} ${records.length===1?'record':'records'}`));
-  details.append(summary);
-  let rendered=0,content=null,cards=null,more=null;
-  function showMore(){
-    if(version!==revision||signal.aborted)return;
-    if(!content){
-      content=node('div','archive-day-content');cards=node('div','archive-day-records');
-      more=button('archive-more-records','Show more records');
-      more.setAttribute('aria-label','Show more records for '+dayLabel(day));
-      more.addEventListener('click',showMore);content.append(cards,more);details.append(content);
-    }
-    const end=Math.min(rendered+batchSize,records.length);
-    for(;rendered<end;rendered++)cards.append(recordCard(records[rendered],origin,key,version,signal));
-    const remaining=records.length-rendered;
-    more.hidden=remaining===0;
-    more.textContent=remaining?`Show more records (${remaining} remaining)`:'All records shown';
-  }
-  details.addEventListener('toggle',()=>{if(details.open&&rendered===0)showMore();});
-  if(index===0){details.open=true;showMore();}
-  return details;
 }
 function renderArchive(groups,origin,key,version,signal){
  const records=groups.flatMap(([,items])=>items),byDay=new Map(groups),today=new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
