@@ -49,19 +49,32 @@ function fileDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open
 async function storeFiles(files){const db=await fileDB();try{return await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite'),items=files.map(file=>({id:crypto.randomUUID(),name:file.name,type:file.type,size:file.size}));items.forEach((item,i)=>tx.objectStore('files').put(files[i],item.id));tx.oncomplete=()=>resolve(items);tx.onerror=tx.onabort=()=>reject(Error('Could not save attachments. Check your device storage.'))})}finally{db.close()}}
 async function readFile(id){const db=await fileDB();try{return await new Promise((resolve,reject)=>{const tx=db.transaction('files'),req=tx.objectStore('files').get(id);req.onsuccess=()=>req.result?resolve(req.result):reject(Error('Attachment not found on this device.'));req.onerror=()=>reject(Error('Could not read the attachment.'))})}finally{db.close()}}
 function attachmentList(items,onRemove){const list=el('div','reading-attachments');for(const file of items||[]){const row=el('div','reading-file-row'),open=btn('Open attachment',()=>openReadingFile(file,open,row),'reading-note-open');row.append(el('span','',file.name+' · '+Math.ceil(file.size/1024)+' KB'),el('span','reading-file-status saved',file.blockId?'Synced to Notion':'Saved on this device'),open);if(onRemove)row.append(btn('Remove',()=>onRemove(file),'reading-file-remove'));list.append(row)}return list}
-function articleContent(r){const c=el('article','reading-article-content');c.append(el('h3','',r.source||r.title),el('time','reading-written-date',noteDay(r)));if(url(r.url)){const a=el('a','reading-original-link','View source ↗');a.href=url(r.url);a.target='_blank';a.rel='noopener noreferrer';c.append(a)}c.append(attachmentList(r.attachments));c.append(RexReadingEditor.content(r.body,r.richBody,r.editorBody),btn('Edit note',()=>notebook(r),'reading-note-open'),btn('Delete note',()=>deleteReading(r),'reading-note-open'));return c}
+function articleContent(r){const c=el('article','reading-article-content reading-journal-card'),head=el('header','reading-note-head'),meta=el('div','reading-note-stamp'),date=el('time','reading-written-date',noteDay(r));date.dateTime=noteDay(r);meta.append(el('span','reading-note-kicker','ARTICLE NOTES'),date);head.append(meta,noteActions(()=>notebook(r),()=>deleteReading(r)));c.append(head,el('h3','',r.noteTitle||r.source||r.title));if(url(r.url)){const a=el('a','reading-original-link','View source ↗');a.href=url(r.url);a.target='_blank';a.rel='noopener noreferrer';c.append(a)}const content=el('div','reading-note-prose');content.append(RexReadingEditor.content(r.body,r.richBody,r.editorBody));c.append(content,attachmentList(r.attachments),recallPrompt());return c}
 function bookNotes(r){
  const notes=(r.logs||[]).filter(n=>typeof n.note==='string').map(n=>({...n,date:n.date||noteDay(r)}));
  if(r.body)notes.unshift({id:'legacy-'+r.id,date:noteDay(r),note:r.body,richNote:r.richBody,editorNote:r.editorBody});
  return notes;
 }
+function noteActions(edit,remove){
+ const menu=el('details','reading-note-actions'),toggle=el('summary','','•••');toggle.setAttribute('aria-label','Note actions');
+ const options=el('div','reading-note-action-list');options.append(btn('Edit note',()=>{menu.open=false;edit()},'reading-note-action'),btn('Delete note',()=>{menu.open=false;remove()},'reading-note-action reading-note-delete'));menu.append(toggle,options);
+ menu.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.open=false;toggle.focus()}});return menu;
+}
+function recallPrompt(){
+ const recall=el('details','reading-recall'),toggle=el('summary','','Take a moment to recall');
+ recall.append(toggle,el('p','','Look away from your notes. What is one idea you remember, and how would you explain it in your own words?'));return recall;
+}
 function bookPage(r){
- const d=dialog(r.source||r.title);d.classList.add('reading-notebook');
+ const d=dialog(r.source||r.title);d.classList.add('reading-notebook','reading-book-reader');
  const notes=bookNotes(r),top=el('div','reading-book-top');
  top.append(el('p','sub','Books · '+notes.length+' notes'),btn('+ Add note',()=>{d.close();bookEntry(r)},'action'),btn('Delete book',()=>deleteReading(r,d),'reading-note-open'));d.append(top);
  const history=el('div','reading-history');
  for(const n of [...notes].sort((a,b)=>b.date.localeCompare(a.date))){
- const item=el('article','reading-book-note');item.append(el('time','reading-book-date',n.date),RexReadingEditor.content(n.note,n.richNote,n.editorNote),btn('Edit',()=>{d.close();bookEntry(r,n)},'reading-note-open'),btn('Delete note',()=>{const current=records.find(x=>x.id===r.id);if(!current)return;const item={...current,body:'',logs:bookNotes(current).filter(x=>x.id!==n.id),updated:new Date().toISOString()};if(save(records.map(x=>x.id===r.id?item:x))){d.close();bookPage(item)}},'reading-note-open'));item.append(attachmentList((r.attachments||[]).filter(f=>(n.attachmentIds||[]).includes(f.id))));if(n.date===selectedDay)item.classList.add('selected-book-note');history.append(item)}
+ const item=el('article','reading-book-note'),head=el('header','reading-note-head'),meta=el('div','reading-note-stamp'),date=el('time','reading-book-date',n.date);date.dateTime=n.date;
+ meta.append(el('span','reading-note-kicker','READING JOURNAL'),date);head.append(meta,noteActions(()=>{d.close();bookEntry(r,n)},()=>{if(!confirm('Delete this note? This cannot be undone.'))return;const current=records.find(x=>x.id===r.id);if(!current)return;const next={...current,body:'',logs:bookNotes(current).filter(x=>x.id!==n.id),updated:new Date().toISOString()};if(save(records.map(x=>x.id===r.id?next:x))){d.close();bookPage(next)}}));
+ const content=el('div','reading-note-prose');content.append(RexReadingEditor.content(n.note,n.richNote,n.editorNote));
+ const foot=el('footer','reading-note-bottom');foot.append(el('span','reading-note-number','NOTE '+String(notes.indexOf(n)+1).padStart(2,'0')),recallPrompt());
+ item.append(head,content,attachmentList((r.attachments||[]).filter(f=>(n.attachmentIds||[]).includes(f.id))),foot);if(n.date===selectedDay)item.classList.add('selected-book-note');history.append(item)}
  if(!notes.length)history.append(el('p','sub','Add your first note, then keep writing as you read.'));d.append(history);
 }
 function bookEntry(r,existing){
