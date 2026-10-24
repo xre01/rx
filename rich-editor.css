@@ -1,4 +1,11 @@
 html#rexTheme body#rexSanctuary .rich-editor-wrap{display:block;margin-top:8px;border:1px solid #b8cbbd;border-radius:10px;background:#fffdf7;overflow:visible}
+html#rexTheme body#rexSanctuary .speaking-note-optional{margin:10px 0;border:1px solid #d2ddcf;border-radius:8px;background:#fffdf7;padding:0 10px}
+html#rexTheme body#rexSanctuary .speaking-note-optional>summary{cursor:pointer;padding:9px 0;color:#53704c;font:13px/1.4 system-ui}
+html#rexTheme body#rexSanctuary .speaking-note-optional>summary span{margin-left:6px;font-size:11px;color:#788575}
+html#rexTheme body#rexSanctuary .speaking-note-optional>label{margin:0 0 10px}
+html#rexTheme body#rexSanctuary .speaking-note-optional .rich-note-editor{min-height:88px;max-height:28vh;padding:10px;font-size:14px;line-height:1.6}
+html#rexTheme body#rexSanctuary .speaking-note-optional .rich-editor-tools{padding:5px;gap:3px;position:relative}
+html#rexTheme body#rexSanctuary .speaking-note-optional .rich-editor-tools :is(button,select){min-height:28px!important;padding:3px 6px!important;font-size:11px!important}
 html#rexTheme body#rexSanctuary .rich-editor-tools{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:8px;background:#edf2e9;border-bottom:1px solid #d2ddcf;position:sticky;top:0;z-index:4;border-radius:10px 10px 0 0}
 html#rexTheme body#rexSanctuary .rich-editor-tools :is(button,select){width:auto!important;min-height:30px!important;margin:0!important;padding:4px 8px!important;font:12px system-ui!important;color:#365747!important;background:#fffdf7!important;border:1px solid #ced9c9!important;border-radius:5px!important;box-shadow:none!important}
 html#rexTheme body#rexSanctuary .rich-editor-tools button:hover{background:#dce9dc!important}
