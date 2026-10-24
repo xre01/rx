@@ -1,6 +1,6 @@
 {
   "id": "./",
-  "name": "Rex World \u00b7 Study Sanctuary",
+  "name": "Rex World · Study Sanctuary",
   "short_name": "Rex World",
   "lang": "en",
   "start_url": "./index.html",
@@ -19,13 +19,7 @@
       "src": "rex-wing-512.png?v=20261019-wing1",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "rex-wing-maskable-512.png?v=20261019-wing1",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ]
 }
