@@ -5,7 +5,7 @@ const pages=[],blocks=new Map(),calls=[],text=v=>[{type:'text',text:{content:v}}
 const name=p=>(p?.title||p?.rich_text||[]).map(t=>t.plain_text??t.text?.content??'').join('');
 function matches(p,f){if(!f)return true;if(f.and)return f.and.every(x=>matches(p,x));if(f.or)return f.or.some(x=>matches(p,x));const v=p.properties[f.property],q=f.select||f.rich_text||f.date;const value=f.select?v?.select?.name:f.date?v?.date?.start:name(v);return q.is_empty?!value:q.equals!==undefined?value===q.equals:q.does_not_equal!==undefined?value!==q.does_not_equal:q.starts_with!==undefined?(value||'').startsWith(q.starts_with):false;}
 function assign(rows,parent){return rows.map(b=>{const id=uuid(),v={...b[b.type]},nested=v.children;delete v.children;if(nested)blocks.set(id,assign(nested,id));return {...b,[b.type]:v,id,parent:{block_id:parent},has_children:!!nested};});}
-async function mock(env,path,method='GET',data){calls.push({path,method,data});
+async function mock(env,path,method='GET',data){calls.push({path,method,data});if(path==='data_sources/legacy-pte/query')throw Error('Legacy source no longer exists: 404');
  if(path.endsWith('/query')){const source=path.split('/')[1];let result=pages.filter(p=>!p.archived&&p.parent.data_source_id===source&&matches(p,data.filter));const start=data.start_cursor?Number(data.start_cursor):0,size=data.page_size||100;return {results:result.slice(start,start+size),has_more:start+size<result.length,next_cursor:String(start+size)};}
  if(path.startsWith('data_sources/'))return {id:path.split('/')[1]};
  if(path==='pages'){const p={id:uuid(),url:'https://notion.so/'+serial,parent:data.parent,properties:data.properties};pages.push(p);blocks.set(p.id,assign(data.children||[],p.id));return p;}
@@ -32,7 +32,7 @@ function seed(source,type,title,date){const p={id:uuid(),url:'https://notion.so/
  const ptePage=pages.find(p=>p.id===pte.pageId);assert.equal(ptePage.parent.data_source_id,SOURCE);assert.equal(ptePage.properties.Type.select.name,'PTE');
  const count=pages.length;await calendar.submit(request('/api/entries',{method:'POST',body:form}));assert.equal(pages.length,count);
  const legacy=seed('legacy-pte',null,'Legacy PTE','2026-10-17');
- let list=await (await ctx.worker.fetch(request('/api/entries'),env)).json();assert.deepEqual(list.records.map(p=>p.id).sort(),[ptePage.id,legacy.id].sort());
+ let list=await (await ctx.worker.fetch(request('/api/entries'),env)).json();assert.deepEqual(list.records.map(p=>p.id).sort(),[ptePage.id].sort());
  list=await (await calendar.fetch(request('/api/reading/records'))).json();assert.equal(list.records.length,2);assert.ok(list.records.every(r=>['book','article'].includes(r.kind)));
  for(const page of [work,pages.find(p=>p.id===article.remotePageId)]){const res=await ctx.worker.fetch(request('/api/entries/'+page.id),env);assert.equal(res.status,403);}
  // Moving legacy pages preserves IDs and receipts; both APIs remain separated.
@@ -42,6 +42,6 @@ function seed(source,type,title,date){const p={id:uuid(),url:'https://notion.so/
  const edited=await reading({...book,title:'Renamed',logs:[book.logs[1]],updated:'2026-10-19T00:00:00Z'});
  await reading(replay); const days=pages.filter(p=>p.properties.RecordKind?.select?.name==='Reading day'&&!p.archived);assert.equal(days.length,1);assert.equal(name(days[0].properties.Name),'Renamed · 2026-10-19');
  await reading({...edited,deleted:true,updated:'2026-10-20T00:00:00Z'});assert.equal(pages.filter(p=>p.properties.RecordKind?.select?.name==='Reading day'&&!p.archived).length,0);
- assert.equal(work.archived,undefined);
+ assert.equal(work.archived,undefined);assert.ok(calls.filter(c=>c.path.endsWith('/query')).every(c=>c.path.includes(SOURCE)));
  console.log('PASS: My World mixed types, same-day isolation, legacy move, receipts, book dates, rename/removal, migration and unchanged reading records');
 })().catch(e=>{console.error(e);process.exit(1)});

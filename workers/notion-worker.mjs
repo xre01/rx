@@ -1,3 +1,5 @@
+/** @type {any} CommonJS export hooks are inactive in this ES module Worker. */
+const module = undefined;
 const VERSION = '2025-09-03';
 const LIMIT = 20 * 1024 * 1024;
 const categories = { language: 'PTE 练习', reflection: 'Daily Reflection' };
@@ -33,7 +35,7 @@ async function children(env, id) {
 function validDate(date) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
   const d = new Date(date + 'T00:00:00Z');
-  return !isNaN(d) && d.toISOString().slice(0, 10) === date;
+  return !isNaN(d.getTime()) && d.toISOString().slice(0, 10) === date;
 }
 function marker(block, id) {
   return (block[block.type]?.rich_text || []).some(t => t.text?.link?.url?.endsWith('#submission=' + id));
@@ -41,7 +43,7 @@ function marker(block, id) {
 function belongs(env, page) {
   return (page.parent?.data_source_id === READING_SOURCE || page.parent?.database_id === READING_DB)
     ? page.properties?.Type?.select?.name === 'PTE'
-    : page.parent?.data_source_id === env.NOTION_DATA_SOURCE_ID || page.parent?.database_id === env.NOTION_DATABASE_ID;
+    : false;
 }
 
 export default {
@@ -109,7 +111,9 @@ export default {
 
 // One object per database serializes website submissions, including concurrent tabs.
 export class Calendar {
-  constructor(state, env) { this.state = state; this.env = env; this.queue = Promise.resolve(); }
+  /** @type {Promise<any>} */
+  queue;
+  constructor(state, env) { this.state = state; this.env = env; /** @type {Promise<any>} */ this.queue = Promise.resolve(); }
   fetch(request) {
     const result = this.queue.then(() => new URL(request.url).pathname.startsWith('/api/focus/')?focusHandle(request,this.state):new URL(request.url).pathname.startsWith('/api/reading/')?readingHandle(request,this.state,this.env):this.submit(request));
     this.queue = result.catch(() => {});
@@ -133,7 +137,7 @@ export class Calendar {
     // Recover from a lost response or restart after Notion accepted the append.
     const existing = await children(env, page.id);
     if (!existing.some(b => marker(b, id))) {
-      const blocks = [{ object: 'block', type: 'heading_3', heading_3: { rich_text: [...rich(categories[category]), { type: 'text', text: { content: ' · 网站记录', link: { url: `${env.ALLOWED_ORIGIN}/rx/#submission=${id}` } } }] } }];
+      /** @type {any[]} */ const blocks = [{ object: 'block', type: 'heading_3', heading_3: { rich_text: [...rich(categories[category]), { type: 'text', text: { content: ' · 网站记录', link: { url: `${env.ALLOWED_ORIGIN}/rx/#submission=${id}` } } }] } }];
       if (note&&!structured) blocks.push({ object: 'block', type: 'to_do', to_do: { rich_text: rich(note), checked: false } });
       for (const file of files) {
         const contentType = uploadType(file);
@@ -173,11 +177,16 @@ const colors=new Set(['default','gray','brown','orange','yellow','green','blue',
 const types=new Set(['paragraph','heading_1','heading_2','heading_3','bulleted_list_item','numbered_list_item','quote','callout','to_do','toggle','code','divider','table','table_row']);
 function text(items){return (items||[]).map(t=>t.text?.content??t.plain_text??'').join('');}
 function spans(items){if(!Array.isArray(items)||items.length>100)throw Error('Too many text fragments.');return items.flatMap(t=>{if(t.type&&t.type!=='text')throw Error('This Notion text type is not supported; the original is retained.');const value=t.text?.content??t.plain_text??'';if(typeof value!=='string')throw Error('Invalid text.');const a=t.annotations||{},annotations={};for(const k of ['bold','italic','underline','strikethrough','code'])if(a[k])annotations[k]=true;if(a.color&&a.color!=='default'){if(!colors.has(a.color))throw Error('Invalid color.');annotations.color=a.color;}const link=t.text?.link?.url||t.href;if(link&&!/^https?:\/\//i.test(link))throw Error('Only HTTP and HTTPS links are supported.');const out=[];for(let i=0;i<value.length;i+=1800)out.push({type:'text',text:{content:value.slice(i,i+1800),...(link?{link:{url:link}}:{})},...(Object.keys(annotations).length?{annotations}:{})});return out;});}
-function normalize(input,maxBlocks=90,maxChars=50000){let count=0,chars=0;function walk(rows,depth=0){if(!Array.isArray(rows)||depth>8)throw Error('Note structure is too deeply nested.');return rows.map(b=>{if(++count>maxBlocks)throw Error('Use at most 90 note blocks.');if(!types.has(b.type))throw Error('Unsupported Notion block: '+b.type+'. The original is retained.');const t=b.type,v=b[t]||{},data={};if(t==='divider')return {object:'block',type:t,[t]:data};if(t==='table'){data.table_width=v.table_width;if(!Number.isInteger(data.table_width)||data.table_width<1||data.table_width>12)throw Error('Invalid table width.');data.has_column_header=!!v.has_column_header;data.has_row_header=!!v.has_row_header;data.children=walk(v.children||[],depth+1);if(!data.children.length||data.children.some(r=>r.type!=='table_row'||r.table_row.cells.length!==data.table_width))throw Error('Invalid table.');}else if(t==='table_row'){if(!Array.isArray(v.cells))throw Error('Invalid table row.');data.cells=v.cells.map(spans);chars+=data.cells.reduce((n,c)=>n+text(c).length,0);}else{data.rich_text=spans(v.rich_text||[]);chars+=text(data.rich_text).length;if(t==='code')data.language='plain text';else if(v.color&&v.color!=='default'){if(!colors.has(v.color))throw Error('Invalid block color.');data.color=v.color;}if(t==='to_do')data.checked=!!v.checked;if(t==='callout')data.icon={type:'emoji',emoji:'💡'};if(v.children?.length){if(t==='code'||t==='table_row')throw Error('Invalid nested block.');data.children=walk(v.children,depth+1);}}
+function normalize(input,maxBlocks=90,maxChars=50000){let count=0,chars=0;
+/** @returns {any[]} */
+function walk(rows,depth=0){if(!Array.isArray(rows)||depth>8)throw Error('Note structure is too deeply nested.');return rows.map(b=>{if(++count>maxBlocks)throw Error('Use at most 90 note blocks.');if(!types.has(b.type))throw Error('Unsupported Notion block: '+b.type+'. The original is retained.');const t=b.type,v=b[t]||{};
+/** @type {any} */
+const data={};if(t==='divider')return {object:'block',type:t,[t]:data};if(t==='table'){data.table_width=v.table_width;if(!Number.isInteger(data.table_width)||data.table_width<1||data.table_width>12)throw Error('Invalid table width.');data.has_column_header=!!v.has_column_header;data.has_row_header=!!v.has_row_header;data.children=walk(v.children||[],depth+1);if(!data.children.length||data.children.some(r=>r.type!=='table_row'||r.table_row.cells.length!==data.table_width))throw Error('Invalid table.');}else if(t==='table_row'){if(!Array.isArray(v.cells))throw Error('Invalid table row.');data.cells=v.cells.map(spans);chars+=data.cells.reduce((n,c)=>n+text(c).length,0);}else{data.rich_text=spans(v.rich_text||[]);chars+=text(data.rich_text).length;if(t==='code')data.language='plain text';else if(v.color&&v.color!=='default'){if(!colors.has(v.color))throw Error('Invalid block color.');data.color=v.color;}if(t==='to_do')data.checked=!!v.checked;if(t==='callout')data.icon={type:'emoji',emoji:'💡'};if(v.children?.length){if(t==='code'||t==='table_row')throw Error('Invalid nested block.');data.children=walk(v.children,depth+1);}}
  return {object:'block',type:t,[t]:data};});}const result=walk(input);if(chars>maxChars)throw Error('Note text is too long.');return result;}
 function plain(doc){return (doc||[]).map(b=>{const v=b[b.type]||{};return b.type==='table_row'?(v.cells||[]).map(text).join(' | '):[text(v.rich_text),v.children?.length?plain(v.children):''].filter(Boolean).join('\n');}).join('\n');}
 root.RexRichDoc={normalize,plain,text};if(typeof module!=='undefined')module.exports=root.RexRichDoc;
 })(globalThis);
+const RexRichDoc = /** @type {any} */ (globalThis).RexRichDoc;
 
 async function appendRichBlocks(env,parent,blocks){
  const shallow=blocks.map(b=>{const v={...b[b.type]};if(b.type!=='table')delete v.children;return {object:'block',type:b.type,[b.type]:v};});
@@ -205,6 +214,7 @@ function validate(input){if(input?.version!==1||input.doc?.type!=='doc')throw Er
  const doc=walk(input.doc);if(chars>50000)throw Error('Note text is too long');return {version:1,doc};}
 root.RexReadingDocument={validate};if(typeof module!=='undefined')module.exports=root.RexReadingDocument;
 })(globalThis);
+const RexReadingDocument = /** @type {any} */ (globalThis).RexReadingDocument;
 
 // Independent reading API; My World reuses its original source and Durable Object identity.
 // NOTION_DATA_SOURCE_ID/NOTION_DATABASE_ID remain the legacy PTE source/identity.
@@ -216,13 +226,11 @@ async function pteDay(env,date){
  const dateFilter={property:'Date',date:{equals:date}};
  const current=await notion(env,`data_sources/${READING_SOURCE}/query`,'POST',{...common,filter:{and:[typeFilter('PTE'),dateFilter]}});
  if(current.results.length)return current.results[0];
- if(!env.NOTION_DATA_SOURCE_ID||env.NOTION_DATA_SOURCE_ID===READING_SOURCE)return null;
- const legacy=await notion(env,`data_sources/${env.NOTION_DATA_SOURCE_ID}/query`,'POST',{...common,filter:dateFilter});
- return legacy.results[0]||null;
+ return null;
 }
 async function ptePages(env){
  const pages=new Map();let truncated=false;
- const sources=[READING_SOURCE,...(env.NOTION_DATA_SOURCE_ID&&env.NOTION_DATA_SOURCE_ID!==READING_SOURCE?[env.NOTION_DATA_SOURCE_ID]:[])];
+ const sources=[READING_SOURCE];
  for(const source of sources){let cursor;do{
   const result=await notion(env,`data_sources/${source}/query`,'POST',{page_size:100,sorts:[{property:'Date',direction:'descending'}],...(source===READING_SOURCE?{filter:typeFilter('PTE')}:{}),...(cursor?{start_cursor:cursor}:{})});
   for(const page of result.results)pages.set(page.id,page);cursor=result.has_more?result.next_cursor:null;
@@ -265,7 +273,7 @@ async function readingSnapshot(env,page,state) {
   const checked=await state.storage.get('reading-checked:'+page.id);if(page.last_edited_time&&checked?.edited===page.last_edited_time&&Date.now()-checked.at<30000)return {...stored,remotePageId:page.id,notionUrl:page.url};
   const top=(await children(env,page.id)).filter(b=>!b.archived&&!b.in_trash);
   const roots=top.filter(b=>b.type==='toggle'&&/^(读书笔记|文章笔记|Reading notes|Article notes)/.test(readingText(b)));
-  async function readDoc(rows,depth=0){if(depth>8)throw fail('Note nesting exceeds the editor limit. The original is retained.',409);const result=[];for(const b of rows){if(b.archived||b.in_trash||['file','pdf','image','audio','video'].includes(b.type))continue;const type=b.type,v={...b[type]};if(b.has_children||v.children?.length)v.children=await readDoc(v.children||await children(env,b.id),depth+1);result.push({object:'block',type,[type]:v});}return result;}
+  /** @returns {Promise<any[]>} */ async function readDoc(rows,depth=0){if(depth>8)throw fail('Note nesting exceeds the editor limit. The original is retained.',409);/** @type {any[]} */ const result=[];for(const b of rows){if(b.archived||b.in_trash||['file','pdf','image','audio','video'].includes(b.type))continue;const type=b.type,v={...b[type]};if(b.has_children||v.children?.length)v.children=await readDoc(v.children||await children(env,b.id),depth+1);result.push({object:'block',type,[type]:v});}return result;}
   let doc=await readDoc(roots.length?await children(env,roots.at(-1).id):[]);
   doc.push(...await readDoc(top.filter(b=>b.type!=='toggle')));
   doc=RexRichDoc.normalize(doc);
@@ -409,7 +417,7 @@ async function focusHandle(request,state){const path=new URL(request.url).pathna
  if(action==='register'&&request.method==='POST'){
   const body=await focusJSON(request);if(!/^[A-Za-z0-9_-]{43}$/.test(body.key||''))throw fail('Invalid device key.');const hash=await focusHash(body.key);
   if(config&&config.keyHash!==hash)throw fail('This reminder device already exists.',409);
-  if(!config){const pair=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']);config={keyHash:hash,privateKey:await crypto.subtle.exportKey('jwk',pair.privateKey),publicKey:focusB64(await crypto.subtle.exportKey('raw',pair.publicKey))};await state.storage.put('focus:config',config);}
+  if(!config){const pair=/** @type {CryptoKeyPair} */ (await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']));config={keyHash:hash,privateKey:await crypto.subtle.exportKey('jwk',pair.privateKey),publicKey:focusB64(await crypto.subtle.exportKey('raw',pair.publicKey))};await state.storage.put('focus:config',config);}
   return json({publicKey:config.publicKey});
  }
  if(!config||await focusHash(request.headers.get('X-Focus-Key')||'')!==config.keyHash)throw fail('Reminder device is not authorized.',401);
