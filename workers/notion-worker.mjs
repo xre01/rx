@@ -39,7 +39,9 @@ function marker(block, id) {
   return (block[block.type]?.rich_text || []).some(t => t.text?.link?.url?.endsWith('#submission=' + id));
 }
 function belongs(env, page) {
-  return page.parent?.data_source_id === env.NOTION_DATA_SOURCE_ID || page.parent?.database_id === env.NOTION_DATABASE_ID;
+  return (page.parent?.data_source_id === READING_SOURCE || page.parent?.database_id === READING_DB)
+    ? page.properties?.Type?.select?.name === 'PTE'
+    : page.parent?.data_source_id === env.NOTION_DATA_SOURCE_ID || page.parent?.database_id === env.NOTION_DATABASE_ID;
 }
 
 export default {
@@ -73,13 +75,9 @@ export default {
         return finish(await stub.fetch(safeRequest));
       }
       if (path === '/api/entries' && request.method === 'GET') {
-        let cursor; const pages = [];
-        do {
-          const result = await notion(env, `data_sources/${env.NOTION_DATA_SOURCE_ID}/query`, 'POST', { page_size: 100, sorts: [{ property: 'Date', direction: 'descending' }], ...(cursor ? { start_cursor: cursor } : {}) });
-          pages.push(...result.results); cursor = result.has_more ? result.next_cursor : null;
-        } while (cursor && pages.length < 500);
+        const {pages,truncated} = await ptePages(env);
         const records = pages.map(p => ({ id: p.id, title: (p.properties.Name?.title || []).map(t => t.plain_text ?? t.text?.content ?? '').join(''), date: p.properties.Date?.date?.start, url: p.url, minutes: null, exp: null, media: [], category: '每日任务' }));
-        return finish(json({ records, truncated: !!cursor }));
+        return finish(json({ records, truncated }));
       }
       const match = path.match(/^\/api\/entries\/([0-9a-f-]{36})$/i);
       if (match && request.method === 'GET') {
@@ -128,9 +126,9 @@ export class Calendar {
     const cached = await this.state.storage.get('receipt:' + id);
     if (cached) return json(cached);
     const env = this.env;
-    const found = await notion(env, `data_sources/${env.NOTION_DATA_SOURCE_ID}/query`, 'POST', { filter: { property: 'Date', date: { equals: date } }, sorts: [{ timestamp: 'created_time', direction: 'ascending' }], page_size: 1 });
-    let page = found.results[0];
-    if (!page) page = await notion(env, 'pages', 'POST', { parent: { type: 'data_source_id', data_source_id: env.NOTION_DATA_SOURCE_ID }, properties: { Name: { title: rich(`${date} · 每日任务`) }, Date: { date: { start: date } } } });
+    // Retain this object's original identity and receipts while changing its Notion destination.
+    let page = await pteDay(env,date);
+    if (!page) page = await notion(env, 'pages', 'POST', { parent: { type: 'data_source_id', data_source_id: READING_SOURCE }, properties: { Name: { title: rich(`${date} · 每日任务`) }, Date: { date: { start: date } }, Type:{select:{name:'PTE'}} } });
     const receipt = { pageId: page.id, url: page.url, date };
     // Recover from a lost response or restart after Notion accepted the append.
     const existing = await children(env, page.id);
@@ -208,18 +206,58 @@ function validate(input){if(input?.version!==1||input.doc?.type!=='doc')throw Er
 root.RexReadingDocument={validate};if(typeof module!=='undefined')module.exports=root.RexReadingDocument;
 })(globalThis);
 
-// Independent reading data source; credentials remain in Cloudflare secrets.
+// Independent reading API; My World reuses its original source and Durable Object identity.
+// NOTION_DATA_SOURCE_ID/NOTION_DATABASE_ID remain the legacy PTE source/identity.
 const READING_SOURCE = '3fd0d1ce-21d1-8046-a3e4-000bae86ce0d';
 const READING_DB = '3fd0d1ce-21d1-808a-b9dd-c1201cb27918';
+const typeFilter = name => ({property:'Type',select:{equals:name}});
+async function pteDay(env,date){
+ const common={sorts:[{timestamp:'created_time',direction:'ascending'}],page_size:1};
+ const dateFilter={property:'Date',date:{equals:date}};
+ const current=await notion(env,`data_sources/${READING_SOURCE}/query`,'POST',{...common,filter:{and:[typeFilter('PTE'),dateFilter]}});
+ if(current.results.length)return current.results[0];
+ if(!env.NOTION_DATA_SOURCE_ID||env.NOTION_DATA_SOURCE_ID===READING_SOURCE)return null;
+ const legacy=await notion(env,`data_sources/${env.NOTION_DATA_SOURCE_ID}/query`,'POST',{...common,filter:dateFilter});
+ return legacy.results[0]||null;
+}
+async function ptePages(env){
+ const pages=new Map();let truncated=false;
+ const sources=[READING_SOURCE,...(env.NOTION_DATA_SOURCE_ID&&env.NOTION_DATA_SOURCE_ID!==READING_SOURCE?[env.NOTION_DATA_SOURCE_ID]:[])];
+ for(const source of sources){let cursor;do{
+  const result=await notion(env,`data_sources/${source}/query`,'POST',{page_size:100,sorts:[{property:'Date',direction:'descending'}],...(source===READING_SOURCE?{filter:typeFilter('PTE')}:{}),...(cursor?{start_cursor:cursor}:{})});
+  for(const page of result.results)pages.set(page.id,page);cursor=result.has_more?result.next_cursor:null;
+ }while(cursor&&pages.size<500);truncated ||= !!cursor;}
+ return {pages:[...pages.values()].sort((a,b)=>(b.properties.Date?.date?.start||'').localeCompare(a.properties.Date?.date?.start||'')),truncated};
+}
 const readingText = b => (b?.[b.type]?.rich_text || []).map(t => t.plain_text ?? t.text?.content ?? '').join('');
 const readingUUID = s => typeof s === 'string' && /^[0-9a-f-]{36}$/i.test(s);
 function readingParts(s) { const out=[]; for(let i=0;i<s.length;i+=1800) out.push(s.slice(i,i+1800)); return out.length?out:['']; }
 const readingBlock = (type,text) => ({object:'block',type,[type]:{rich_text:readingParts(text).flatMap(rich)}});
-const readingBelongs = page => page.parent?.data_source_id===READING_SOURCE || page.parent?.database_id===READING_DB;
+const readingBelongs = page => (page.parent?.data_source_id===READING_SOURCE || page.parent?.database_id===READING_DB)
+ && (!page.properties?.Type?.select?.name || page.properties.Type.select.name==='Reading')
+ && page.properties?.RecordKind?.select?.name!=='Reading day';
 async function readingPages(env) {
  const pages=[]; let cursor;
- do { const result=await notion(env,'data_sources/'+READING_SOURCE+'/query','POST',{page_size:100,...(cursor?{start_cursor:cursor}:{})}); pages.push(...result.results); cursor=result.has_more?result.next_cursor:null; if(pages.length>2000)throw fail('阅读记录超出加载上限。',413); } while(cursor);
+ do { const result=await notion(env,'data_sources/'+READING_SOURCE+'/query','POST',{page_size:100,filter:{and:[{or:[typeFilter('Reading'),{property:'Type',select:{is_empty:true}}]},{property:'RecordKind',select:{does_not_equal:'Reading day'}}]},...(cursor?{start_cursor:cursor}:{})}); pages.push(...result.results.filter(readingBelongs)); cursor=result.has_more?result.next_cursor:null; if(pages.length>2000)throw fail('阅读记录超出加载上限。',413); } while(cursor);
  return pages;
+}
+// Calendar rows point to the original book, whose complete document/files remain authoritative.
+// They are excluded from readingPages, so the website still sees one book and unchanged XP.
+async function readingCalendar(env,state,record){
+ if(record.kind!=='book')return;
+ const prefix='book-day:'+record.id+':',days=new Set(record.deleted?[]:(record.logs||[]).map(log=>log.date).filter(validDate));
+ const rows=[];let cursor;
+ do{const result=await notion(env,'data_sources/'+READING_SOURCE+'/query','POST',{page_size:100,filter:{and:[typeFilter('Reading'),{property:'RecordKind',select:{equals:'Reading day'}},{property:'RecordKey',rich_text:{starts_with:prefix}}]},...(cursor?{start_cursor:cursor}:{})});
+ rows.push(...result.results.filter(p=>p.properties?.RecordKind?.select?.name==='Reading day'&&(p.properties.RecordKey?.rich_text||[]).map(t=>t.plain_text??t.text?.content??'').join('').startsWith(prefix)));cursor=result.has_more?result.next_cursor:null;
+ }while(cursor);
+ for(const date of days){
+  const key=prefix+date,existing=rows.find(p=>(p.properties.RecordKey?.rich_text||[]).map(t=>t.plain_text??t.text?.content??'').join('')===key);
+  const properties={Name:{title:rich(record.title+' · '+date)},Date:{date:{start:date}},Type:{select:{name:'Reading'}},RecordKind:{select:{name:'Reading day'}},RecordKey:{rich_text:rich(key)}};
+  if(existing){if(readingText({type:'title',title:{rich_text:existing.properties.Name?.title}})!==record.title+' · '+date)await notion(env,'pages/'+existing.id,'PATCH',{properties});continue;}
+  const link={object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:'打开书籍查看这一天的完整笔记与附件',link:{url:record.notionUrl}}}]}};
+  await notion(env,'pages','POST',{parent:{type:'data_source_id',data_source_id:READING_SOURCE},properties,children:[link]});
+ }
+ for(const row of rows)if(!days.has(row.properties.Date?.date?.start))await notion(env,'pages/'+row.id,'PATCH',{archived:true});
 }
 async function readingSnapshot(env,page,state) {
  const stored=state&&await state.storage.get("reading-record:"+page.id);
@@ -265,6 +303,16 @@ async function readingSnapshot(env,page,state) {
 async function readingHandle(request,state,env) {
  const url=new URL(request.url),path=url.pathname;
 
+ if(path==='/api/reading/calendar-migrate'&&request.method==='POST'){
+  let migrated=0,unrecognized=0;
+  for(const page of await readingPages(env)){
+   const record=await readingSnapshot(env,page,state);if(!record){unrecognized++;continue;}
+   await notion(env,'pages/'+page.id,'PATCH',{properties:{Type:{select:{name:'Reading'}},RecordKind:{select:{name:record.kind==='book'?'Book':'Article'}}}});
+   await readingCalendar(env,state,record);migrated++;
+  }
+  return json({ok:true,migrated,unrecognized});
+ }
+
  if(path==='/api/reading/migrate'&&request.method==='POST'){
   let count=0;for(const page of await readingPages(env)){const record=await readingSnapshot(env,page,state);if(!record)continue;const top=await children(env,page.id);
    // Persist recovery information before removing visible technical blocks.
@@ -276,7 +324,7 @@ async function readingHandle(request,state,env) {
    }count++;
   }return json({ok:true,migrated:count});
  }
- if(path==='/api/reading/status'&&request.method==='GET'){await notion(env,'data_sources/'+READING_SOURCE);return json({ok:true,databaseId:READING_DB,name:'Reading and growth',editorSchemaVersion:1});}
+ if(path==='/api/reading/status'&&request.method==='GET'){await notion(env,'data_sources/'+READING_SOURCE);return json({ok:true,databaseId:READING_DB,name:'My World',editorSchemaVersion:1,calendarSchemaVersion:1});}
  if(path==='/api/reading/records'&&request.method==='GET'){
   const records=[];for(const page of await readingPages(env)){const item=await readingSnapshot(env,page,state);if(item)records.push(item);}const deleted=await state.storage.list({prefix:'reading-tombstone:'});records.push(...deleted.values());return json({records,complete:true});
  }
@@ -299,7 +347,7 @@ async function readingHandle(request,state,env) {
   const pageId=await state.storage.get('reading-page:'+item.id);
   if(pageId){const page=await notion(env,'pages/'+pageId);if(!readingBelongs(page))throw fail('Cannot access this reading record.',403);if(!page.archived&&!page.in_trash)await notion(env,'pages/'+pageId,'PATCH',{archived:true});}
   const record={id:item.id,kind:item.kind,title:item.title,body:'',logs:[],attachments:[],deleted:true,updated:item.updated,remoteRevision:'deleted:'+item.updated,remotePageId:pageId};
-  await state.storage.put('reading-tombstone:'+item.id,record);return json({record});
+  await state.storage.put('reading-tombstone:'+item.id,record);await readingCalendar(env,state,record);return json({record});
  }
  if(await state.storage.get('reading-tombstone:'+item.id))throw fail('This reading record was deleted. Refresh to load the latest records.',409);
  if(typeof item.body!=='string'||item.body.length>50000||item.logs.length>40||item.logs.some(l=>!l||!validDate(l.date)||typeof l.note!=='string'||l.note.length>50000))throw fail('笔记内容过长或日期无效。');
@@ -317,13 +365,13 @@ async function readingHandle(request,state,env) {
  if(item.richBody){item.richBody=RexRichDoc.normalize(item.richBody);item.body=RexRichDoc.plain(item.richBody);}
  for(const log of item.logs)if(log.richNote){log.richNote=RexRichDoc.normalize(log.richNote);log.note=RexRichDoc.plain(log.richNote);}
  const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(item))))).map(x=>x.toString(16).padStart(2,'0')).join('');
- const receiptKey='reading-receipt:'+item.id+':'+hash,cached=await state.storage.get(receiptKey);if(cached)return json(cached);
+ const receiptKey='reading-receipt:'+item.id+':'+hash,cached=await state.storage.get(receiptKey);if(cached){await readingCalendar(env,state,cached.record);return json(cached);}
  let pageId=await state.storage.get('reading-page:'+item.id),page;
  if(pageId){page=await notion(env,'pages/'+pageId);if(!readingBelongs(page)||page.archived||page.in_trash)throw fail('Notion 记录已移动或移除。',409);}
  if(!page)for(const candidate of await readingPages(env)){const stored=await state.storage.get('reading-record:'+candidate.id);const blocks=stored?[]:await children(env,candidate.id);if(stored?.id===item.id||blocks.some(b=>b.type==='toggle'&&readingText(b).startsWith('REX-READING:'+item.id+':'))){page=candidate;break;}}
  const previous=page?await readingSnapshot(env,page,state):null;
  if(previous?.editorBody&&!item.editorBody||(previous?.logs||[]).some(n=>n.editorNote&&item.logs.some(l=>l.id===n.id&&!l.editorNote)))throw fail('Update this device before editing a rich note. The complete document is retained.',409);
- if(previous?.remoteRevision===hash){const receipt={record:previous};await state.storage.put('reading-page:'+item.id,page.id);await state.storage.put(receiptKey,receipt);return json(receipt);}
+ if(previous?.remoteRevision===hash){const receipt={record:previous};await state.storage.put('reading-page:'+item.id,page.id);await readingCalendar(env,state,previous);await state.storage.put(receiptKey,receipt);return json(receipt);}
  if(previous&&previous.remoteRevision!==(item.remoteRevision||''))throw fail('此笔记已在其他设备更新，请先拉取最新记录。',409);
  const mapped=[],fileBlocks=[];
  for(const file of attachments){
@@ -343,12 +391,12 @@ async function readingHandle(request,state,env) {
  const clean={...(item.editorBody?{editorBody:item.editorBody}:{}),id:item.id,kind:item.kind,title:item.title,source:item.source||item.title,noteTitle:item.title,body:item.body,...(item.richBody?{richBody:item.richBody}:{}),logs:item.logs,attachments:mapped,writtenDate:item.writtenDate||null,createdAt:item.createdAt,updated:item.updated,status:item.status||'reading',url:item.kind==='article'?(item.url||''):''};
  const version={object:'block',type:'toggle',toggle:{rich_text:[...rich(item.kind==='book'?'读书笔记':('文章笔记 · '+item.writtenDate)),{type:'text',text:{content:' · 网站记录',link:{url:'https://xre01.github.io/rx/#reading-revision='+hash}}}],children:[]}};
  const finalVersionTitle=version.toggle.rich_text;version.toggle.rich_text=rich('Sync in progress');
- const properties={Name:{title:rich(item.title)},Date:{date:item.kind==='article'?{start:item.writtenDate}:null}};
+ const properties={Name:{title:rich(item.title)},Date:{date:item.kind==='article'?{start:item.writtenDate}:null},Type:{select:{name:'Reading'}},RecordKind:{select:{name:item.kind==='book'?'Book':'Article'}}};
  if(!page)page=await notion(env,'pages','POST',{parent:{type:'data_source_id',data_source_id:READING_SOURCE},properties,children:[version]});
  else{await notion(env,'blocks/'+page.id+'/children','PATCH',{children:[version]});await notion(env,'pages/'+page.id,'PATCH',{properties});}
  await state.storage.put('reading-page:'+item.id,page.id);
  const top=await children(env,page.id),root=top.filter(b=>b.type==='toggle'&&!b.archived).at(-1);if(!root)throw fail('Could not locate the saved note.',502);await appendRichBlocks(env,root.id,body.length?body:[readingBlock('paragraph','暂无笔记')]);await notion(env,'blocks/'+root.id,'PATCH',{toggle:{rich_text:finalVersionTitle}});const saved=await children(env,root.id);let index=0;for(const file of mapped)if(!file.blockId){const block=saved.filter(b=>['file','pdf','audio','image'].includes(b.type))[index++];if(block)file.blockId=block.id;}
- const result={...clean,attachments:mapped,remotePageId:page.id,remoteRevision:hash,notionUrl:page.url},receipt={record:result};await state.storage.put('reading-record:'+page.id,result);await state.storage.put(receiptKey,receipt);for(const old of top.filter(b=>b.id!==root?.id&&b.type==='toggle'&&/^(读书笔记|文章笔记|Reading notes|Article notes)/.test(readingText(b))))await notion(env,'blocks/'+old.id,'PATCH',{archived:true});return json(receipt);
+ const result={...clean,attachments:mapped,remotePageId:page.id,remoteRevision:hash,notionUrl:page.url},receipt={record:result};await state.storage.put('reading-record:'+page.id,result);await readingCalendar(env,state,result);await state.storage.put(receiptKey,receipt);for(const old of top.filter(b=>b.id!==root?.id&&b.type==='toggle'&&/^(读书笔记|文章笔记|Reading notes|Article notes)/.test(readingText(b))))await notion(env,'blocks/'+old.id,'PATCH',{archived:true});return json(receipt);
 }
 
 
