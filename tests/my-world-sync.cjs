@@ -26,7 +26,7 @@ function seed(source,type,title,date){const p={id:uuid(),url:'https://notion.so/
  const article=await reading({id:uuid(),kind:'article',title:'Reading article',body:'Read',logs:[],writtenDate:'2026-10-18',attachments:[],updated:'2026-10-18T00:00:00Z'});
  let book=await reading({id:uuid(),kind:'book',title:'Book',body:'',logs:[{id:'a',date:'2026-10-18',note:'One'},{id:'b',date:'2026-10-19',note:'Two'}],attachments:[],updated:'2026-10-18T00:00:00Z'});
  assert.equal(pages.filter(p=>p.properties.RecordKind?.select?.name==='Reading day'&&!p.archived).length,2);
- book=await reading({...book,updated:'2026-10-18T00:00:00Z'});assert.equal(pages.filter(p=>p.properties.RecordKind?.select?.name==='Reading day'&&!p.archived).length,2);
+ const replay={...book,updated:'2026-10-18T00:00:00Z'};book=await reading(replay);assert.equal(pages.filter(p=>p.properties.RecordKind?.select?.name==='Reading day'&&!p.archived).length,2);
  const form=new FormData();form.set('id',uuid());form.set('date','2026-10-18');form.set('category','language');form.set('note','PTE only');
  const pte=await (await calendar.submit(request('/api/entries',{method:'POST',body:form}))).json();assert.notEqual(pte.pageId,article.remotePageId);
  const ptePage=pages.find(p=>p.id===pte.pageId);assert.equal(ptePage.parent.data_source_id,SOURCE);assert.equal(ptePage.properties.Type.select.name,'PTE');
@@ -40,7 +40,7 @@ function seed(source,type,title,date){const p={id:uuid(),url:'https://notion.so/
  list=await (await ctx.worker.fetch(request('/api/entries'),env)).json();assert.equal(list.records.length,2);
  const migration=await (await calendar.fetch(request('/api/reading/calendar-migrate',{method:'POST'}))).json();assert.equal(migration.migrated,2);
  const edited=await reading({...book,title:'Renamed',logs:[book.logs[1]],updated:'2026-10-19T00:00:00Z'});
- const days=pages.filter(p=>p.properties.RecordKind?.select?.name==='Reading day'&&!p.archived);assert.equal(days.length,1);assert.equal(name(days[0].properties.Name),'Renamed · 2026-10-19');
+ await reading(replay); const days=pages.filter(p=>p.properties.RecordKind?.select?.name==='Reading day'&&!p.archived);assert.equal(days.length,1);assert.equal(name(days[0].properties.Name),'Renamed · 2026-10-19');
  await reading({...edited,deleted:true,updated:'2026-10-20T00:00:00Z'});assert.equal(pages.filter(p=>p.properties.RecordKind?.select?.name==='Reading day'&&!p.archived).length,0);
  assert.equal(work.archived,undefined);
  console.log('PASS: My World mixed types, same-day isolation, legacy move, receipts, book dates, rename/removal, migration and unchanged reading records');

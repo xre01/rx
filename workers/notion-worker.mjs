@@ -365,7 +365,7 @@ async function readingHandle(request,state,env) {
  if(item.richBody){item.richBody=RexRichDoc.normalize(item.richBody);item.body=RexRichDoc.plain(item.richBody);}
  for(const log of item.logs)if(log.richNote){log.richNote=RexRichDoc.normalize(log.richNote);log.note=RexRichDoc.plain(log.richNote);}
  const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(item))))).map(x=>x.toString(16).padStart(2,'0')).join('');
- const receiptKey='reading-receipt:'+item.id+':'+hash,cached=await state.storage.get(receiptKey);if(cached){await readingCalendar(env,state,cached.record);return json(cached);}
+ const receiptKey='reading-receipt:'+item.id+':'+hash,cached=await state.storage.get(receiptKey);if(cached){const current=await state.storage.get("reading-record:"+cached.record.remotePageId);await readingCalendar(env,state,current||cached.record);return json(cached);}
  let pageId=await state.storage.get('reading-page:'+item.id),page;
  if(pageId){page=await notion(env,'pages/'+pageId);if(!readingBelongs(page)||page.archived||page.in_trash)throw fail('Notion 记录已移动或移除。',409);}
  if(!page)for(const candidate of await readingPages(env)){const stored=await state.storage.get('reading-record:'+candidate.id);const blocks=stored?[]:await children(env,candidate.id);if(stored?.id===item.id||blocks.some(b=>b.type==='toggle'&&readingText(b).startsWith('REX-READING:'+item.id+':'))){page=candidate;break;}}
