@@ -18,6 +18,10 @@ Existing tests cover Notion attachment/retry/conflict behavior, D1 round trips, 
 
 No live Notion or D1 credentials were supplied; live server authentication and writes were not exercised. Existing synchronization, data schema and record-processing source files are unchanged.
 
-This is not pixel-identical: the reference contains minus/plus controls, an intensity legend and alternate countdown formatting that differ from the app. Original behavior takes priority; no fake controls or fabricated study data were introduced. Weekly chart displays actual counts, including zeroes.
+This is not pixel-identical: the reference contains an intensity legend and alternate countdown formatting that differ from the app. Original behavior takes priority; no fake controls or fabricated study data were introduced. Weekly chart displays actual counts, including zeroes.
 
 Screenshots use an isolated empty browser profile; interaction checks used disposable local test records. No user account or existing learning records were accessed. No merge or deployment to main.
+
+## Practice layout follow-up
+
+Match the detail reference with a two-column grid, blue SVG icons, type descriptions and compact minus/input/plus controls. Steppers use the existing native numeric input and emit normal input/change events; the original Log Today form still owns persistence. No autosave or synchronization behavior changes. Browser checks include the increment control, persistence and all eight viewport widths.

@@ -19,3 +19,21 @@
  }
  render();for(const event of ['rex-local-changed','rex-cloud-changed','storage'])addEventListener(event,render);setInterval(render,60000);
 })();
+
+/* Present native count inputs as compact practice cards. Existing forms own saving. */
+(()=>{
+ 'use strict';
+ const rows=document.querySelector('.pte-count-rows');if(!rows)return;
+ const names={SST:'Summarize Spoken Text','FIB L':'Fill in the Blanks (Listening)','MC single choice':'Multiple Choice (Single)','MC multiple choice':'Multiple Choice (Multiple)',HCS:'Highlight Correct Summary',SMW:'Select Missing Word',HIW:'Highlight Incorrect Words',WFD:'Write From Dictation'};
+ function decorate(){for(const row of rows.children){
+  if(row.querySelector('.sanctuary-count-stepper'))continue;
+  const input=row.querySelector('input'),title=row.querySelector('span');if(!input||!title)continue;
+  const type=input.dataset.type,icon=document.createElement('span'),copy=document.createElement('span'),subtitle=document.createElement('small'),controls=document.createElement('span');
+  icon.className='sanctuary-practice-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+({SST:'<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h5"/>','FIB L':'<path d="M4 14v-3a8 8 0 0 1 16 0v3M4 12h3v8H4zM17 12h3v8h-3z"/>','MC single choice':'<path d="M9 5h12M9 12h12M9 19h8"/><circle cx="3" cy="5" r="1"/><circle cx="3" cy="12" r="1"/><circle cx="3" cy="19" r="1"/>','MC multiple choice':'<path d="M9 5h12M9 12h12M9 19h8"/><path d="M2 4h3v3H2zM2 11h3v3H2zM2 18h3v3H2z"/>',HCS:'<path d="M20 12v8H4V4h10M8 10l4 4 9-11"/>',SMW:'<path d="M3 5h18M3 12h18M3 19h12M20 19h1"/>',HIW:'<path d="M6 3h9l4 4v6M6 3v18h7M9 8h4M9 12h5M9 16h2M13 20l7-7 2 2-7 7-3 1z"/>',WFD:'<path d="M3 10v4M7 6v12M12 3v18M17 7v10M21 10v4"/>'}[type]||'<path d="M5 3h14v18H5zM8 8h8M8 12h8M8 16h5"/>')+'</svg>';
+  copy.className='sanctuary-practice-copy';subtitle.textContent=names[type]||'Completed questions';title.replaceWith(copy);copy.append(title,subtitle);
+  controls.className='sanctuary-count-stepper';
+  for(const [direction,label] of [[-1,'Decrease'],[1,'Increase']]){const button=document.createElement('button');button.type='button';button.textContent=direction===1?'+':'−';button.setAttribute('aria-label',label+' '+type+' count');button.addEventListener('click',event=>{event.preventDefault();direction===1?input.stepUp():input.stepDown();input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));});controls.append(button);}
+  controls.insertBefore(input,controls.lastChild);row.prepend(icon);row.append(controls);
+ }}
+ decorate();new MutationObserver(decorate).observe(rows,{childList:true});
+})();
