@@ -1,0 +1,5 @@
+const fs=require('fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
+const dom=new JSDOM('<div class="compact-main"><div class="reference-welcome"></div></div>',{runScripts:'outside-only',url:'https://test.invalid'}),w=dom.window;let count=2;
+w.RexDashboardStore={summary:()=>({counts:[{count}],seconds:120})};
+w.localStorage.setItem('existing-record','unchanged');
+try{w.eval(fs.readFileSync('sanctuary-presentation.js','utf8'));const card=w.document.querySelector('.sanctuary-weekly');assert.equal(card.querySelectorAll('.sanctuary-week-bars>div').length,7);assert.equal(card.querySelectorAll('strong')[0].textContent,'14');assert.equal(card.querySelectorAll('strong')[1].textContent,'14');count=0;w.dispatchEvent(new w.Event('rex-cloud-changed'));assert.equal(card.querySelectorAll('strong')[0].textContent,'0');assert.equal(w.localStorage.length,1);assert.equal(w.localStorage.getItem('existing-record'),'unchanged');assert.equal(card.querySelectorAll('.sanctuary-week-bars .is-today').length,1);console.log('PASS: read-only weekly presentation, real store totals, cloud refresh, empty data, Sydney today and existing storage retained');}finally{w.close();}
