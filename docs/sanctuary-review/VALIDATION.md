@@ -1,30 +1,29 @@
-# Rex World Sanctuary release validation
+# Rex World consolidated Sanctuary validation
 
-## Scope
+## Current implementation
 
-Continue PR #10 with the approved cream, mist-blue and champagne layout, two-column practice cards, a compact reflection toolbar and aligned desktop column bottoms. Add the approved book/origami, lighthouse, mountain path and persevering hiker artwork. Background assets contain no text or stored statistics.
+One production stylesheet, app.css, owns all page, responsive, rich-editor, timer, dialog and Sanctuary presentation rules. The ten former secondary/override CSS files are deleted; their HTML and service-worker references are removed. The existing presentation module and business/sync/data-processing JavaScript remain unchanged by this consolidation.
 
-Existing Notion/D1 synchronization, data schemas, record-processing scripts and backend Workers are unchanged. The presentation module uses existing inputs and control nodes/handlers. The weekly summary only reads the existing dashboard store.
+The approved book/origami, lighthouse, mountain path and persevering hiker artwork, two-column practice cards, read-only weekly chart and icon-only reflection attachments are retained. Existing native input/upload/delete/save/history controls keep their handlers.
 
-## Cleanup
+## Cleanup and transfer size
 
-- Remove the superseded mountain/leaf metric assets and six obsolete review screenshots.
-- Retain only the current desktop/mobile release screenshots and this validation note.
-- Audit runtime JavaScript and top-level CSS/image/icon references: no unreferenced runtime files identified. Build sources, tests, current icon variants and operational documentation are retained.
-- Upgrade the offline resource cache to rex-focus-offline-20261026-sanctuary-release1. Activation removes older rex-focus-offline-* static caches, including the previously current 20261024-light1 cache, and obsolete requests in the active cache. Other application caches remain intact.
-- No localStorage, IndexedDB, drafts, focus sessions, avatars, Notion data or D1 records are cleared.
-- npm test now includes every tests/*.cjs regression script instead of only a subset.
+978 redundant/superseded declarations removed: 8695 to 7717. Exact duplicate selector/property declarations within the same conditional scope and priority: zero. Readable app.css source is formatted; gzip estimate decreases from 61347 bytes across eleven stylesheets to 54178 bytes in one stylesheet.
 
-## Validation
+Only app.css is referenced and precached. The resource cache rotates to rex-focus-offline-20261026-styles1. Old app-owned static caches, including the preceding release cache, are retired on activation. Unrelated caches, localStorage, IndexedDB, avatars, drafts and learning records are preserved.
 
-All 28 regression scripts passed. They cover rich-text edits, reading data, PTE records and XP, D1/cloud reconciliation, Notion retries and conflict handling, offline queues, push notifications, resource cache cleanup and presentation invariants.
+Superseded background assets and old review screenshots were removed in the preceding cleanup. Current artwork, icon variants, build sources, tests and operational docs remain in use.
 
-Chromium checks at 1672, 1280, 1024, 768, 760, 600, 390 and 320 CSS pixels found no horizontal overflow. Desktop reflection and weekly-progress bottoms aligned exactly at 1672px and 1280px. At narrow widths panels stack naturally.
+## Verification
 
-Browser smoke checks passed: Listening count save/reload, reflection draft reload, Images/Audio/Files chooser activation with correct accept filters, Links editor open/close, reflection history, disconnected Save to Notion retaining the draft, timer start/pause/close, countdown dialog, calendar previous month/return to today, weekly view visibility, PNG generation, Reading/Archive navigation. No page script errors.
+All 29 regression scripts pass via npm test, including the CSS integrity regression: one CSS entry/file/precache item, no retired stylesheet references, valid CSS syntax and no exact duplicate declarations. Resource existence, icons, static cache cleanup and authenticated-request bypass checks pass.
 
-Resource existence, icon dimensions, duplicate resources, authenticated-request cache bypass, cache cleanup and git diff whitespace checks passed.
+Before/after Chromium comparison reports zero computed-style differences in 17 combinations: Speaking at six desktop/mobile widths; Listening; Weekly Review; Reading and Archive at desktop/mobile; Focus Timer at desktop/mobile; countdown, export and profile dialogs. The comparison includes pseudo-elements, uses deterministic decorative randomness, disables animations/transitions, resets hover/focus and normalizes test-server URLs and equivalent gradient serialization.
 
-## Verification boundary
+Separate smoke tests pass at 1672,1280,1024,768,760,600,390,320px with no horizontal overflow: count save/reload, reflection draft reload, image/audio/file choosers with correct accept filters, link editor, reflection history, disconnected-save draft retention, timer start/pause/close, calendar navigation, countdown dialog, weekly view visibility, PNG generation and Reading/Archive navigation. No page script errors.
 
-No production Notion/D1 account credentials were supplied. Production authentication/writes were not exercised; existing mocked synchronization tests passed. Browser checks used an isolated profile with disposable records; existing user learning records were not accessed or modified. Static-cache cleanup reaches each device when it receives and activates the updated service worker online.
+Existing regression tests cover Notion retries/attachments/conflicts, D1 reconciliation, rich-text and reading records, XP, offline queues and push notifications. No production Notion/D1 credentials were supplied, so live account authentication/writes remain untested. Tests use disposable isolated records.
+
+## Publication
+
+Prepared and verified on the independent PR #11 branch; main remains unchanged. Private preview is updated for review. Static-cache cleanup takes effect on each device when the new service worker activates online.
