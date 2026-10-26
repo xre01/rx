@@ -37,3 +37,19 @@
  }}
  decorate();new MutationObserver(decorate).observe(rows,{childList:true});
 })();
+
+/* Speaking/writing/reading cards retain their existing targets and actions. */
+(()=>{
+ 'use strict';
+ const host=document.querySelector('.hero-task-card');if(!host)return;
+ const descriptions={DI:'Describe Image',SGD:'Summarize Group Discussion',RL:'Re-tell Lecture',RTS:'Respond to a Situation',WE:'Write Essay',SWT:'Summarize Written Text'};
+ function decorate(){for(const row of host.querySelectorAll('.hero-task-row')){
+  if(row.querySelector('.sanctuary-task-icon'))continue;
+  const name=row.querySelector('b');if(!name)continue;
+  const type=name.firstChild?.textContent?.trim()||name.textContent.trim(),icon=document.createElement('span');icon.className='sanctuary-practice-icon sanctuary-task-icon';icon.setAttribute('aria-hidden','true');
+  icon.innerHTML='<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+({DI:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2"/><path d="m3 17 5-5 4 4 4-6 5 7"/>',SGD:'<path d="M3 4h14v10H9l-4 4v-4H3zM17 8h4v11h-3l-3 3v-5M6 8h8M6 11h5"/>',RL:'<path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/>',RTS:'<path d="M3 4h18v13H11l-5 4v-4H3zM7 8h10M7 12h6"/>'}[type]||'<path d="M5 3h14v18H5zM8 8h8M8 12h8M8 16h5"/>')+'</svg>';
+  if(descriptions[type]&&!name.querySelector('small')){const subtitle=document.createElement('small');subtitle.textContent=descriptions[type];name.append(subtitle);}
+  row.prepend(icon);
+ }}
+ decorate();new MutationObserver(decorate).observe(host,{childList:true,subtree:true});
+})();

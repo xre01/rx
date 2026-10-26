@@ -25,3 +25,7 @@ Screenshots use an isolated empty browser profile; interaction checks used dispo
 ## Practice layout follow-up
 
 Match the detail reference with a two-column grid, blue SVG icons, type descriptions and compact minus/input/plus controls. Steppers use the existing native numeric input and emit normal input/change events; the original Log Today form still owns persistence. No autosave or synchronization behavior changes. Browser checks include the increment control, persistence and all eight viewport widths.
+
+## Speaking layout follow-up
+
+DI, SGD, RL and RTS now use a two-column icon/title/description card grid. Existing completed/target inputs, upload and delete controls retain their original DOM nodes and handlers. Narrow cards switch to one column using a container query. All eight viewport checks and the existing browser smoke flow passed; no page script errors. No data or sync source changes.
