@@ -6356,8 +6356,11 @@ html[data-preview-layout] body#rexSanctuary .daily-summary-card .summary-history
   color: #826c45 !important;
   opacity: 1 !important;
 }
-html[data-preview-layout] body#rexSanctuary .daily-summary-card textarea::placeholder {
-  color: #9b9282 !important;
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card textarea::placeholder {
+  color: #5c7185 !important;
+  opacity: 1 !important;
+  font: 500 14px/1.7 system-ui, sans-serif !important;
+  letter-spacing: 0.04em;
 }
 @media (max-width: 700px) {
   html[data-preview-layout] body#rexSanctuary #home .compact-main .hero-task-card.showing-task-detail,
@@ -13422,6 +13425,7 @@ html#rexTheme
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-side {
   gap: 18px !important;
+  grid-auto-rows: 1fr;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .hero-task-card {
   padding: 24px !important;
@@ -13779,7 +13783,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary .daily-summary-card te
   }
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-side {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    align-items: start;
+    align-items: stretch;
   }
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics > :is(article, button) {
     padding: 16px !important;
@@ -14218,10 +14222,12 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-refle
   width: 100%;
   margin: 0 !important;
   padding: 16px 16px 52px !important;
-  line-height: 1.6 !important;
+  line-height: 1.8 !important;
+  font-size: 13px !important;
+  color: #40566b !important;
   background: #faf9f5 !important;
-  border: 1px solid #e5e8e8 !important;
-  border-radius: 14px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
   resize: vertical;
 }
 html#rexTheme
@@ -14255,25 +14261,16 @@ html#rexTheme
   background: #fff !important;
   box-shadow: 0 3px 8px #40556315 !important;
 }
-.sanctuary-reflection-overview {
-  margin: 12px 0 0;
-  font-size: 11px;
-  color: #6884a1;
-}
-.sanctuary-reflection-overview summary {
-  cursor: pointer;
-  padding: 5px 0;
-}
-.sanctuary-reflection-overview .summary-auto-overview {
-  margin: 8px 0 !important;
-}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card > footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 12px !important;
-  flex-wrap: wrap;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  flex-wrap: nowrap !important;
+  order: 1;
 }
+
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card > footer button {
   min-height: 36px !important;
   border-radius: 9px !important;
@@ -14303,6 +14300,10 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-refle
   gap: 0;
   margin-top: 10px;
   min-height: 140px;
+  background: #faf9f5;
+  border: 1px solid #e5e8e8;
+  border-radius: 14px;
+  overflow: hidden;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor textarea {
   flex: 1;
@@ -14341,20 +14342,16 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-c
   display: flex !important;
   flex-direction: column;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-overview {
-  margin-top: 8px !important;
-}
 @media (min-width: 1200px) {
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-main {
     align-items: stretch !important;
   }
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-side {
-    display: flex !important;
-    flex-direction: column;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    align-items: stretch;
     align-self: stretch;
-  }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-side > .dashboard-calendar-card {
-    flex: 0 0 auto;
   }
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card,
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor {
@@ -14422,11 +14419,13 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focu
   grid-area: summary !important;
   padding: 22px !important;
   margin: 0 !important;
-  border-radius: 21px !important;
-  border: 1px solid var(--line) !important;
-  background: var(--surface) !important;
-  box-shadow: var(--sanctuary-shadow) !important;
+  border-radius: 28px !important;
+  border: 1px solid rgba(255,255,255,.92) !important;
+  background: radial-gradient(ellipse at 0% 0%, #ffffffed, transparent 65%), radial-gradient(ellipse at 100% 100%, #d8e8f08a, transparent 60%), linear-gradient(135deg, #fffffff0, #eef4f7b5 55%, #fff8edd9) !important;
+  box-shadow: inset 0 1px 1px #fff, inset 0 -1px 2px #9aafbf30, 0 18px 40px #3b566318, 0 3px 8px #3b56630b !important;
   min-width: 0 !important;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-heading {
   color: var(--ink) !important;
@@ -14438,24 +14437,31 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focu
   margin: 18px 0 !important;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics > div {
-  padding: 14px !important;
-  border-radius: 12px !important;
-  background: var(--accent-soft) !important;
-  border: 1px solid var(--line) !important;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 3px #6a91ad1c, 0 8px 16px #41647b12, 0 1px 3px #41647b15 !important;
+  padding: 17px 14px !important;
+  border-radius: 19px !important;
+  background: radial-gradient(ellipse at 12% 0%, #ffffffed, transparent 75%), linear-gradient(145deg, #f6fbffba, #d8e8f2c9 65%, #eaf2f7e6) !important;
+  border: 1px solid #ffffffd9 !important;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics strong {
-  font-size: 27px !important;
-  font-weight: 400 !important;
-  color: var(--ink) !important;
+  font-size: clamp(19px, 2.2vw, 27px) !important;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 0 #ffffffeb;
+  font-weight: 600 !important;
+  color: #284c67 !important;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics span {
   color: var(--muted) !important;
   font-size: 12px !important;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly {
-  border-top: 1px solid var(--line) !important;
+  border-top: 1px solid #ffffffd9 !important;
   margin-top: 16px !important;
-  padding-top: 16px !important;
+  padding: 16px !important;
+  border-radius: 19px;
+  background: linear-gradient(145deg, #ffffffa6, #eff4f76b);
+  box-shadow: inset 0 1px 1px #fff, 0 4px 14px #41647b08;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly-heading,
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly-values strong {
@@ -14470,10 +14476,11 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-tool
   background: transparent !important;
   border: 0 !important;
   min-width: 0 !important;
-  flex-wrap: wrap !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-search-wrap {
-  flex: 1 1 220px !important;
+  flex: 1 1 0 !important;
   min-width: 0 !important;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-search-wrap input {
@@ -14820,7 +14827,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-tool
     gap: 8px !important;
   }
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-search-wrap {
-    flex: 1 1 100% !important;
+    flex: 1 1 0 !important;
   }
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-actions {
     margin-left: 0 !important;
@@ -14832,4 +14839,20 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-tool
     padding: 6px 8px !important;
     min-width: 30px !important;
   }
+}
+
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week-days > span {
+  background: linear-gradient(145deg, #ffffffd9, #dfeaf1b3) !important;
+  border: 1px solid #ffffffd9;
+  box-shadow: inset 0 1px 0 #fff, 0 3px 6px #41647b12;
+  color: #627f96;
+  border-radius: 10px;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week-days > span.has-reading {
+  background: linear-gradient(145deg, #a5c6dc, #7299b5) !important;
+  color: #fff;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week-days > span[aria-current="date"] {
+  outline: 1px solid #c6a56c;
+  outline-offset: 2px;
 }

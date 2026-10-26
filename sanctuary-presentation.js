@@ -57,10 +57,9 @@
 /* Compact reflection presentation; retain the original controls and handlers. */
 (()=>{
  const card=document.querySelector('.daily-summary-card');if(!card)return;
- const note=card.querySelector('textarea'),tools=card.querySelector('.summary-tools'),overview=card.querySelector('.summary-auto-overview');if(!note||!tools)return;
+ const note=card.querySelector('textarea'),tools=card.querySelector('.summary-tools');if(!note||!tools)return;
  const editor=document.createElement('div');editor.className='sanctuary-reflection-editor';note.before(editor);editor.append(note,tools);
  const image=tools.querySelector('[data-add="image"]');if(image){image.setAttribute('aria-label','Images');image.title='Add images';image.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2"/><path d="m3 17 5-5 4 4 4-6 5 7"/></svg>';}
- if(overview){const details=document.createElement('details'),summary=document.createElement('summary');details.className='sanctuary-reflection-overview';summary.textContent='Study overview';details.append(summary,overview);editor.after(details);}
 })();
 
 (()=>{
