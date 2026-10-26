@@ -1,0 +1,171 @@
+/* Rex World · Sanctuary refresh 2026-10-26
+   Presentation-only layer: no behavioral, storage, or synchronization changes. */
+html#rexTheme body#rexSanctuary {
+  --sanctuary-paper:#f5f3ed;
+  --sanctuary-card:#fffefa;
+  --sanctuary-ink:#405a6d;
+  --sanctuary-muted:#71899a;
+  --sanctuary-blue:#90a9bb;
+  --sanctuary-stroke:#dce6e9;
+  --sanctuary-gold:#bda574;
+  --sanctuary-shadow:0 10px 28px rgba(65,86,103,.065),0 2px 6px rgba(65,86,103,.028);
+  background:#f5f3ed!important;
+  color:var(--sanctuary-ink);
+}
+html#rexTheme body#rexSanctuary .rex-sidebar,
+html#rexTheme body#rexSanctuary .personal-sidebar {
+  background:linear-gradient(163deg,#eaf0f3 0%,#e5edf0 45%,#f0f3ee 100%)!important;
+  border-right:1px solid rgba(144,169,187,.2)!important;
+}
+html#rexTheme body#rexSanctuary .rex-sidebar:after{
+  content:"";pointer-events:none;position:absolute;bottom:45px;left:0;right:0;height:190px;
+  background:radial-gradient(ellipse at 25% 96%,rgba(144,169,187,.2),transparent 65%);
+}
+html#rexTheme body#rexSanctuary .personal-card{
+  background:linear-gradient(165deg,#fffefa 0%,#fbfaf6 100%)!important;
+  border:1px solid rgba(255,255,255,.9)!important;
+  border-radius:26px!important;
+  box-shadow:var(--sanctuary-shadow)!important;
+}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button{
+  border-radius:13px!important;
+  transition:background-color .2s ease,box-shadow .2s ease,transform .2s ease!important;
+}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button.active,
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button[aria-current="page"]{
+  color:#426780!important;
+  background:linear-gradient(105deg,#e7f0f5,#d9e6ee)!important;
+  border-left:3px solid #c7a36a!important;
+  box-shadow:0 3px 10px rgba(65,86,103,.05)!important;
+}
+html#rexTheme body#rexSanctuary .rex-sidebar-nav button:not(.active):hover{
+  background:rgba(255,255,255,.7)!important;
+}
+html#rexTheme body#rexSanctuary #home .compact-dashboard{
+  color:var(--sanctuary-ink);
+}
+html#rexTheme body#rexSanctuary #home .compact-metrics{
+  gap:14px!important;
+  margin-bottom:20px!important;
+}
+html#rexTheme body#rexSanctuary #home .compact-metrics>article,
+html#rexTheme body#rexSanctuary #home .compact-metrics>button{
+  position:relative;
+  overflow:hidden;
+  min-height:148px!important;
+  border:1px solid var(--sanctuary-stroke)!important;
+  border-radius:25px!important;
+  background:linear-gradient(145deg,#fffefa,#fbfaf6)!important;
+  box-shadow:var(--sanctuary-shadow)!important;
+  padding:23px 24px!important;
+  transition:box-shadow .2s ease,transform .2s ease,border-color .2s ease!important;
+}
+html#rexTheme body#rexSanctuary #home .compact-metrics>article:nth-child(2){
+  background:linear-gradient(155deg,#fffefa 48%,#edf4f6 100%)!important;
+}
+html#rexTheme body#rexSanctuary #home .compact-metrics>.countdown-metric{
+  background:linear-gradient(145deg,#fafcfc 25%,#e7f0f5 100%)!important;
+}
+html#rexTheme body#rexSanctuary #home .compact-metrics>article:nth-child(4){
+  background:linear-gradient(150deg,#fffefa 45%,#fbf4e9 100%)!important;
+}
+html#rexTheme body#rexSanctuary #home .compact-metrics>article::after,
+html#rexTheme body#rexSanctuary #home .compact-metrics>button::after{
+  position:absolute;right:-12px;bottom:-23px;font-family:Georgia,serif;font-size:90px;
+  line-height:1;opacity:.12;color:#9fb8ca;pointer-events:none;
+}
+html#rexTheme body#rexSanctuary #home .compact-metrics>article:nth-child(1)::after{content:"✧";}
+html#rexTheme body#rexSanctuary #home .compact-metrics>article:nth-child(2)::after{content:"◌";}
+html#rexTheme body#rexSanctuary #home .compact-metrics>.countdown-metric::after{content:"△";}
+html#rexTheme body#rexSanctuary #home .compact-metrics>article:nth-child(4)::after{content:"❧";color:#bda574;opacity:.22;}
+html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button)>span:not(.rex-metric-icon){
+  color:#738a99!important;font-size:12px!important;font-weight:600!important;
+}
+html#rexTheme body#rexSanctuary #home .compact-metrics strong{color:#536b7b!important;letter-spacing:-.025em!important;}
+html#rexTheme body#rexSanctuary #home .compact-metrics .rex-metric-icon{color:#7898ae!important;opacity:.82;}
+html#rexTheme body#rexSanctuary #home .compact-metrics>button:hover{
+  transform:translateY(-2px)!important;box-shadow:0 14px 30px rgba(65,86,103,.1)!important;
+}
+html#rexTheme body#rexSanctuary #home :is(.hero-task-card,.dashboard-calendar-card,.daily-summary-card,.weekly-review){
+  border:1px solid var(--sanctuary-stroke)!important;
+  border-radius:26px!important;
+  background:linear-gradient(145deg,#fffefa 0%,#fbfaf6 100%)!important;
+  box-shadow:var(--sanctuary-shadow)!important;
+}
+html#rexTheme body#rexSanctuary #home .compact-main{gap:20px!important;}
+html#rexTheme body#rexSanctuary #home .compact-side{gap:18px!important;}
+html#rexTheme body#rexSanctuary #home .hero-task-card{padding:24px!important;}
+html#rexTheme body#rexSanctuary #home :is(.dashboard-calendar-card,.daily-summary-card){padding:20px!important;}
+html#rexTheme body#rexSanctuary #home :is(.hero-task-card,.dashboard-calendar-card,.daily-summary-card) h2{
+  color:#405a6d!important;letter-spacing:.005em!important;
+}
+html#rexTheme body#rexSanctuary #home .hero-language-tabs{
+  border:1px solid #dce5e8!important;border-radius:14px!important;
+  background:#edf2f4!important;box-shadow:none!important;padding:4px!important;
+}
+html#rexTheme body#rexSanctuary #home .hero-language-tabs button{
+  border-radius:10px!important;box-shadow:none!important;transition:background .2s ease,color .2s ease!important;
+}
+html#rexTheme body#rexSanctuary #home .hero-language-tabs :is([aria-selected="true"],.active){
+  color:#446b87!important;background:linear-gradient(125deg,#e1edf5,#b8d0e2)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.85)!important;
+}
+html#rexTheme body#rexSanctuary #home .hero-task-row{
+  border:1px solid #dce6e9!important;border-radius:13px!important;
+  background:rgba(255,254,250,.76)!important;
+  box-shadow:none!important;transition:background .18s ease,border-color .18s ease,transform .18s ease!important;
+}
+html#rexTheme body#rexSanctuary #home .hero-task-row:hover{
+  border-color:#bacfdc!important;background:#f3f8fa!important;transform:translateY(-1px)!important;
+}
+html#rexTheme body#rexSanctuary #home :is(.hero-task-number,.hero-task-quantity){
+  border-color:#dde7ea!important;box-shadow:none!important;
+}
+html#rexTheme body#rexSanctuary #home .calendar-day{
+  background:#f2f6f7!important;border-color:#dce5e9!important;
+  border-radius:10px!important;box-shadow:none!important;
+  transition:background-color .18s ease,border-color .18s ease!important;
+}
+html#rexTheme body#rexSanctuary #home .calendar-day:hover{background:#e3eff5!important;border-color:#bdd1df!important;}
+html#rexTheme body#rexSanctuary #home .calendar-day[aria-current="date"]{
+  outline:2px solid #c5a36b!important;outline-offset:-2px!important;
+}
+html#rexTheme body#rexSanctuary #home .daily-summary-card textarea{
+  border:1px solid #e0e8ea!important;background:#f8f9f7!important;
+  border-radius:16px!important;box-shadow:none!important;
+  color:#405a6d!important;line-height:1.7!important;
+}
+html#rexTheme body#rexSanctuary #home .daily-summary-card textarea:focus-visible{
+  outline:2px solid #90a9bb!important;outline-offset:2px!important;
+}
+html#rexTheme body#rexSanctuary #home .summary-auto-overview{
+  background:#f5f5f0!important;color:#617c8c!important;border-radius:13px!important;
+}
+html#rexTheme body#rexSanctuary :is(.dashboard-view-controls button,.dashboard-view-controls select,.dashboard-export){
+  border-radius:11px!important;box-shadow:0 2px 7px rgba(65,86,103,.045)!important;
+}
+html#rexTheme body#rexSanctuary :is(button,a,input,textarea,select):focus-visible{
+  outline:2px solid #6c9bbd!important;outline-offset:3px!important;
+}
+@media (min-width:1050px){
+  html#rexTheme body#rexSanctuary #home .compact-main{
+    grid-template-columns:minmax(0,1.95fr) minmax(310px,.98fr)!important;
+  }
+}
+@media(max-width:1050px){
+  html#rexTheme body#rexSanctuary #home .compact-metrics{gap:10px!important;}
+  html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button){padding:17px!important;min-height:120px!important;}
+}
+@media(max-width:600px){
+  html#rexTheme body#rexSanctuary #home .compact-metrics{gap:9px!important;}
+  html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button){padding:12px!important;border-radius:17px!important;min-height:108px!important;}
+  html#rexTheme body#rexSanctuary #home :is(.hero-task-card,.dashboard-calendar-card,.daily-summary-card){border-radius:19px!important;padding:15px!important;}
+  html#rexTheme body#rexSanctuary #home .compact-main{gap:14px!important;}
+  html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button)::after{font-size:56px;}
+}
+@media(prefers-reduced-motion:reduce){
+  html#rexTheme body#rexSanctuary #home .compact-metrics>:is(article,button),
+  html#rexTheme body#rexSanctuary #home .hero-task-row,
+  html#rexTheme body#rexSanctuary .rex-sidebar-nav button{transition:none!important;}
+  html#rexTheme body#rexSanctuary #home :is(.hero-task-row,.compact-metrics>button):hover{transform:none!important;}
+}
