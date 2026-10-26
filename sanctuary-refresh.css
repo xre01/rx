@@ -190,8 +190,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics .rex-metric-icon{width:24px!important;height:24px!important;color:#2163a1!important;}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .rex-metric-icon svg{width:24px!important;height:24px!important;}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics>:is(article,button)::after{content:none;}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics>article:nth-child(2){background: url('assets/sanctuary-mountains.webp') right bottom/100% auto no-repeat, var(--surface)!important;}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics>article:nth-child(4){background:url('assets/sanctuary-leaves.webp') right bottom/134px 100px no-repeat,var(--surface)!important;}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .countdown-metric>small{display:block!important;font-size:13px!important;color:#366b9d!important;}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-main{grid-template-columns:minmax(0,2.05fr) minmax(330px,1fr)!important;gap:14px!important;align-items:start!important;}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home :is(.hero-task-card,.dashboard-calendar-card,.daily-summary-card){border-radius:21px!important;padding:22px!important;min-width:0!important;}
@@ -330,3 +328,9 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-refle
  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card{flex:1;}
  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor{flex:1;}
 }
+
+/* Approved motivational artwork, cropped without labels or stored statistics. */
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics>article:nth-child(1){background:url("assets/motivation-completed.webp") right bottom/auto 80% no-repeat,var(--surface)!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics>article:nth-child(2){background:url("assets/motivation-focus.webp") right bottom/auto 80% no-repeat,var(--surface)!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics>.countdown-metric{background:url("assets/motivation-countdown.webp") right bottom/auto 80% no-repeat,var(--surface)!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics>article:nth-child(4){background:url("assets/motivation-study.webp") right bottom/auto 80% no-repeat,var(--surface)!important;}
