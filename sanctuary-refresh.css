@@ -316,3 +316,17 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-refle
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card>footer{display:flex;justify-content:space-between;gap:10px;margin-top:12px!important;flex-wrap:wrap;}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card>footer button{min-height:36px!important;border-radius:9px!important;font-size:11px!important;padding:8px 10px!important;}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor .summary-tools button[data-add="image"]{grid-column:3!important;grid-row:1!important;align-self:end!important;justify-self:end!important;margin:12px!important;width:36px!important;height:36px!important;min-height:36px!important;padding:7px!important;}
+/* One compact attachment toolbar, with keyboard labels and original handlers. */
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor{position:relative;display:flex!important;flex-direction:column;gap:0;margin-top:10px;min-height:140px;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor textarea{flex:1;min-height:140px!important;padding-bottom:58px!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor .summary-tools{position:absolute;bottom:12px;right:12px;display:flex!important;gap:6px!important;margin:0!important;padding:0!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor .summary-tools button[data-add]{display:grid!important;place-items:center;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;margin:0!important;padding:6px!important;border-radius:8px!important;background:#fff!important;color:#426f99!important;box-shadow:0 2px 5px #40556310!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card{display:flex!important;flex-direction:column;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-overview{margin-top:8px!important;}
+@media(min-width:1200px){
+ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-main{align-items:stretch!important;}
+ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-side{display:flex!important;flex-direction:column;align-self:stretch;}
+ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-side>.dashboard-calendar-card{flex:0 0 auto;}
+ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card{flex:1;}
+ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor{flex:1;}
+}

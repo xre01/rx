@@ -62,3 +62,9 @@
  const image=tools.querySelector('[data-add="image"]');if(image){image.setAttribute('aria-label','Images');image.title='Add images';image.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2"/><path d="m3 17 5-5 4 4 4-6 5 7"/></svg>';}
  if(overview){const details=document.createElement('details'),summary=document.createElement('summary');details.className='sanctuary-reflection-overview';summary.textContent='Study overview';details.append(summary,overview);editor.after(details);}
 })();
+
+(()=>{
+ const tools=document.querySelector('.sanctuary-reflection-editor .summary-tools');if(!tools)return;
+ const paths={audio:'<rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/>',file:'<path d="m8 12 7-7a4 4 0 0 1 6 6L11 21a6 6 0 0 1-9-9L12 2M6 14l10-10"/>',link:'<path d="m10 13 4-4M8 16l-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0M13 17a4 4 0 0 0 6 0l5-5a4 4 0 0 0-6-6l-2 2" transform="translate(1 0) scale(.9)"/>'};
+ for(const [type,label]of [['audio','Audio'],['file','Files'],['link','Links']]){const b=tools.querySelector('[data-add="'+type+'"]');if(!b)continue;b.setAttribute('aria-label',label);b.title=label;b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths[type]+'</svg>';}
+})();

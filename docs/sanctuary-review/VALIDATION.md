@@ -33,3 +33,7 @@ DI, SGD, RL and RTS now use a two-column icon/title/description card grid. Exist
 ## Reflection layout follow-up
 
 Compact header/date, large input area and inline image action follow the supplied reference. Audio, files, links, history and save controls retain their original DOM nodes and handlers. Automatic study overview remains available in a disclosure. Draft reload and eight viewport smoke checks passed without page errors. No sync or data schema changes.
+
+## Attachment toolbar and alignment
+
+Images, Audio, Files and Links now share a compact icon toolbar inside the editor; existing button nodes, labels, handlers and busy-state selectors remain intact. Desktop side column stretches to the full practice/weekly height: measured reflection/weekly bottom difference is 0px at 1672px and 1280px. All eight viewport overflow checks and draft-reload smoke checks passed.
