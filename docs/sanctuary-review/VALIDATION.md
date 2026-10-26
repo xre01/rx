@@ -29,3 +29,7 @@ Match the detail reference with a two-column grid, blue SVG icons, type descript
 ## Speaking layout follow-up
 
 DI, SGD, RL and RTS now use a two-column icon/title/description card grid. Existing completed/target inputs, upload and delete controls retain their original DOM nodes and handlers. Narrow cards switch to one column using a container query. All eight viewport checks and the existing browser smoke flow passed; no page script errors. No data or sync source changes.
+
+## Reflection layout follow-up
+
+Compact header/date, large input area and inline image action follow the supplied reference. Audio, files, links, history and save controls retain their original DOM nodes and handlers. Automatic study overview remains available in a disclosure. Draft reload and eight viewport smoke checks passed without page errors. No sync or data schema changes.

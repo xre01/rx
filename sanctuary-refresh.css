@@ -299,3 +299,20 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .hero-task-card{
 @container(max-width:640px){
  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .hero-task-list>.hero-language-module:not([hidden]),html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .pte-count-rows{grid-template-columns:minmax(0,1fr)!important;}
 }
+/* Daily Reflection reference card, with all original attachment/save actions. */
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card{padding:20px 24px!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card h2{font-size:20px!important;font-weight:600!important;margin:0!important;}
+.daily-summary-card h2:before{content:'❧';font-family:Georgia,serif;color:#d5aa63;font-size:30px;vertical-align:middle;margin-right:9px;font-weight:400;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card time{font-size:12px!important;color:#806f59!important;white-space:nowrap;}
+.sanctuary-reflection-editor{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0;margin-top:14px;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor textarea{grid-column:1/-1;grid-row:1;min-height:180px!important;width:100%;margin:0!important;padding:16px 16px 52px!important;line-height:1.6!important;background:#faf9f5!important;border:1px solid #e5e8e8!important;border-radius:14px!important;resize:vertical;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor .summary-tools{display:contents!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor .summary-tools button{grid-row:2;padding:6px 10px!important;min-height:32px!important;font-size:11px!important;border-radius:8px!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor [data-add="image"]{grid-row:1;grid-column:3;align-self:end;justify-self:end;margin:12px!important;width:36px!important;height:36px!important;min-height:36px!important;padding:7px!important;display:grid;place-items:center;background:#fff!important;box-shadow:0 3px 8px #40556315!important;}
+.sanctuary-reflection-overview{margin:12px 0 0;font-size:11px;color:#6884a1;}
+.sanctuary-reflection-overview summary{cursor:pointer;padding:5px 0;}
+.sanctuary-reflection-overview .summary-auto-overview{margin:8px 0!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card>footer{display:flex;justify-content:space-between;gap:10px;margin-top:12px!important;flex-wrap:wrap;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .daily-summary-card>footer button{min-height:36px!important;border-radius:9px!important;font-size:11px!important;padding:8px 10px!important;}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .sanctuary-reflection-editor .summary-tools button[data-add="image"]{grid-column:3!important;grid-row:1!important;align-self:end!important;justify-self:end!important;margin:12px!important;width:36px!important;height:36px!important;min-height:36px!important;padding:7px!important;}
