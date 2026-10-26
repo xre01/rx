@@ -27,3 +27,13 @@ Existing regression tests cover Notion retries/attachments/conflicts, D1 reconci
 ## Publication
 
 Prepared and verified on the independent PR #11 branch; main remains unchanged. Private preview is updated for review. Static-cache cleanup takes effect on each device when the new service worker activates online.
+
+## Unified Reading and Notion Archive
+
+Reading now shares the PTE card geometry, cream surfaces, mist-blue metric/day cells, navy headings, champagne today outline and common spacing. Desktop reading statistics, toolbar and bookshelf sit beside the notes calendar; narrow screens stack naturally. Books and note content keep their original controls.
+
+Archive uses matching connection cards, compact calendar cells, search/input/button geometry and a calendar/results desktop split. Connection details and D1 settings remain available; the result list stacks below the calendar on mobile.
+
+Changes stay in the single app.css; no new override stylesheet is introduced. The stylesheet integrity test still finds no exact duplicate declarations. Runtime reading/archive/data/sync scripts are unchanged. The app resource cache rotates to 20261026-unified2.
+
+All 29 tests pass. Both views pass overflow checks at 1672,1280,1024,768,760,600,390,320px. Browser checks cover saved book/note opening, calendar navigation, reading search, note-editor opening and reading timer. Archive sync/records/search/settings checks use an intercepted test endpoint and disposable data, not live credentials or user records. No page script errors. Review screenshots contain synthetic test notes solely to show populated layouts; no demo records are inserted into the actual application or preview.

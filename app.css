@@ -523,10 +523,6 @@ meta {
   color: #786537;
   box-shadow: 0 8px 50px #6b704126;
 }
-.brand-copy:after,
-.brand-copy:before {
-  pointer-events: none;
-}
 .brand-copy .brand {
   color: #8b6530;
 }
@@ -863,6 +859,7 @@ meta {
 }
 .brand-copy:after,
 .brand-copy:before {
+  pointer-events: none;
   display: none !important;
 }
 .profile-menu {
@@ -3346,17 +3343,21 @@ html body .hero-task-card.showing-task-detail {
   min-height: 0 !important;
 }
 html body #archives .archive-entry,
+html body #archives .archive-entry h3,
 html body #archives .card,
 html body #home .hero-task-card,
+html body #home h2,
+html body #home h3,
 html body #profilePopover .profile-identity h2,
 html body #profilePopover .profile-settings summary,
 html body #profilePopover.card,
+html body .calendar-heading h2,
 html body .focus-dialog h2,
 html body .focus-dialog h3,
-html body .focus-overlay .focus-dialog {
+html body .focus-overlay .focus-dialog,
+html body .hero-task-row b {
   text-shadow: none !important;
 }
-html body #archives .archive-entry,
 html body #archives .card,
 html body #profilePopover.card {
   border: 1px solid var(--rex-card-edge) !important;
@@ -3369,10 +3370,6 @@ html body .hero-task-detail .pte-checkin {
 }
 html body .hero-task-detail .pte-checkin {
   border: 1px solid #e3dbcf !important;
-}
-html body #archives .archive-entry h3 {
-  color: #293751 !important;
-  text-shadow: none !important;
 }
 html body .hero-task-detail #pteInlineWorkspace,
 html body .hero-task-detail #pteInlineWorkspace .pte-question {
@@ -3388,7 +3385,6 @@ html body .focus-overlay .focus-dialog {
   color: var(--rex-card-ink) !important;
   border-color: var(--rex-card-edge) !important;
 }
-html body #archives .archive-entry,
 html body #archives .card {
   background: var(--rex-card-bg) !important;
   box-shadow: var(--rex-card-shadow) !important;
@@ -3403,11 +3399,11 @@ html body #archives .archive-settings {
   border-color: #e4d9ed38 !important;
 }
 html body .focus-dialog .focus-menu,
-html body .focus-dialog .focus-stats,
-html body .focus-dialog .focus-time-picker {
+html body .focus-dialog .focus-stats {
   border-color: #e6cd9380 !important;
 }
 html body .focus-dialog .focus-time-picker {
+  border-color: #e6cd9380 !important;
   border-radius: 14px !important;
   background: #636788 !important;
   color: #fff9ff !important;
@@ -3494,12 +3490,6 @@ html body .dashboard-calendar-card:before {
   border-radius: 7px;
   pointer-events: none;
   z-index: 0;
-}
-html body #home h2,
-html body #home h3,
-html body .calendar-heading h2,
-html body .hero-task-row b {
-  text-shadow: none !important;
 }
 html body #home .sub {
   color: #7a746d !important;
@@ -3662,11 +3652,11 @@ html body #profilePopover #rank {
 html body #profilePopover #expLabel,
 html body #profilePopover .profile-settings label,
 html body #profilePopover .profile-settings p,
-html body #profilePopover .profile-settings small,
-html body #profilePopover .stat span {
+html body #profilePopover .profile-settings small {
   color: #59616b !important;
 }
 html body #profilePopover .stat span {
+  color: #59616b !important;
   font-size: 12px !important;
 }
 html body #profilePopover .profile-settings summary {
@@ -4506,7 +4496,9 @@ html body#rexSanctuary #archives > .sub {
   line-height: 1.8 !important;
   margin-bottom: 22px !important;
 }
-html body#rexSanctuary #archives .archive-entry,
+html body#rexSanctuary #archives .archive-entry {
+  min-width: 0 !important;
+}
 html body#rexSanctuary #archives .card {
   padding: 24px !important;
   min-width: 0 !important;
@@ -4715,7 +4707,6 @@ html body#rexSanctuary footer button {
     gap: 14px !important;
     padding: 13px !important;
   }
-  html body#rexSanctuary #archives .archive-entry,
   html body#rexSanctuary #archives .card {
     padding: 18px !important;
   }
@@ -7537,18 +7528,15 @@ html#rexTheme body#rexSanctuary .rex-sidebar-footer {
 html#rexTheme body#rexSanctuary .rex-sidebar-rule {
   color: #af9766 !important;
 }
-html#rexTheme body#rexSanctuary #archives > .viewtitle,
+html#rexTheme body#rexSanctuary #archives > .viewtitle {
+  text-shadow: none !important;
+}
 html#rexTheme body#rexSanctuary .compact-heading h1 {
   text-shadow: none !important;
   font-family:
     Georgia,
     Times New Roman,
     serif !important;
-}
-html#rexTheme body#rexSanctuary #archives > .viewtitle {
-  color: #344b56 !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.2px !important;
 }
 html#rexTheme body#rexSanctuary .compact-heading .rex-dashboard-date {
   color: #647b78 !important;
@@ -8569,13 +8557,8 @@ html#rexTheme body#rexSanctuary #archives .archive-connection .card {
 }
 html#rexTheme body#rexSanctuary #archives .archive-calendar-toolbar input {
   flex: 1;
-  max-width: 340px;
-  min-width: 180px;
-  min-height: 42px;
-  border-radius: 12px !important;
   padding: 10px 14px;
   font: inherit;
-  font-size: 12px;
 }
 .archive-calendar-legend {
   font-size: 11px;
@@ -8676,8 +8659,6 @@ html#rexTheme body#rexSanctuary #archives .archive-calendar-results .archive-ent
     font-size: 12px;
   }
   html#rexTheme body#rexSanctuary #archives .archive-calendar-toolbar input {
-    width: 100%;
-    max-width: none;
     flex-basis: 100%;
   }
   .archive-calendar-legend {
@@ -8685,11 +8666,7 @@ html#rexTheme body#rexSanctuary #archives .archive-calendar-results .archive-ent
   }
 }
 html#rexTheme body#rexSanctuary #archives #archiveMessage {
-  background: transparent !important;
-  border: 0 !important;
   box-shadow: none !important;
-  padding: 0 4px !important;
-  margin: 12px 0 !important;
   font-size: 11px !important;
   line-height: 1.7 !important;
 }
@@ -8812,11 +8789,6 @@ html#rexTheme body#rexSanctuary #home .hero-task-arrow {
 }
 html#rexTheme body#rexSanctuary .personal-title {
   border-color: #ffffffc2 !important;
-}
-@media (prefers-reduced-transparency: reduce) {
-  html#rexTheme body#rexSanctuary #archives .archive-calendar-shell {
-    background: #f5f8f1 !important;
-  }
 }
 html#rexTheme body#rexSanctuary > .profile-portal {
   position: fixed !important;
@@ -11874,9 +11846,6 @@ html#rexTheme body#rexSanctuary #home .compact-metrics .countdown-metric small {
   white-space: normal !important;
 }
 html#rexTheme body#rexSanctuary #reading .reading-focus-card {
-  padding: 20px 24px;
-  margin: 0 0 22px;
-  border-radius: 18px;
   color: #456553;
 }
 .reading-focus-heading {
@@ -11921,9 +11890,6 @@ html#rexTheme body#rexSanctuary #reading .reading-focus-card {
   line-height: 1.5;
 }
 @media (max-width: 540px) {
-  html#rexTheme body#rexSanctuary #reading .reading-focus-card {
-    padding: 18px;
-  }
   .reading-focus-metrics {
     gap: 10px;
   }
@@ -12020,9 +11986,6 @@ html#rexTheme
 }
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) #home .compact-metrics > :is(article, button) {
   color: var(--ink) !important;
-}
-html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-focus-card {
-  border: 1px solid var(--line) !important;
 }
 html#rexTheme
   body#rexSanctuary:is(#rexSanctuary)
@@ -12315,7 +12278,6 @@ html#rexTheme body#rexSanctuary:is(#rexSanctuary) :is(.calendar-navigation, .rea
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-controls strong {
   min-width: 112px;
   text-align: center;
-  font-size: 13px;
   font-weight: 500;
 }
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) :is(button, a, input, select, textarea):focus-visible {
@@ -12500,15 +12462,8 @@ html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-sync-strip b
   display: none;
 }
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-day.is-today {
-  background: #fffdf8 !important;
   border: 1px solid #9cb8ca !important;
   color: #526f83 !important;
-  box-shadow: inset 0 0 0 1px #cbdce7 !important;
-}
-html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-day.is-selected {
-  background: #e0eaf1 !important;
-  border-color: #c5d7e3 !important;
-  color: #4d6e85 !important;
 }
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-day.is-today.is-selected {
   border-color: #9cb8ca !important;
@@ -12532,12 +12487,6 @@ html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-tod
   font-size: 11px;
   border-radius: 8px;
   min-height: 30px;
-}
-@media (max-width: 540px) {
-  #reading .reading-calendar-bar {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
 }
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) #home .calendar-heading {
   flex-wrap: wrap;
@@ -12649,14 +12598,6 @@ html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-day
   font-size: 7px !important;
   line-height: 8px !important;
   pointer-events: none;
-}
-html#rexTheme body#rexSanctuary:is(#rexSanctuary) #archives .archive-dashboard-sync {
-  margin: 14px 0 20px;
-  padding: 16px 20px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  color: var(--ink);
 }
 .archive-dashboard-sync summary {
   font-size: 13px;
@@ -13140,13 +13081,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary .personal-card {
   transition:
     box-shadow 0.2s var(--depth-ease),
     border-color 0.2s var(--depth-ease) !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary #reading .reading-focus-card {
-  background: linear-gradient(160deg, var(--surface) 55%, var(--depth-surface-bottom)) !important;
-  box-shadow:
-    inset 0 1px 0 var(--depth-highlight),
-    0 2px 4px var(--depth-shadow-near),
-    0 12px 28px -14px var(--depth-shadow) !important;
 }
 html#rexTheme body#rexSanctuary#rexSanctuary #home .compact-metrics > :is(article, button) {
   background: linear-gradient(155deg, var(--surface), var(--depth-surface-bottom)) !important;
@@ -14446,4 +14380,456 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics
   background:
     url("assets/motivation-study.webp") 100% 100% / auto 80% no-repeat,
     var(--surface) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading.active {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.95fr) minmax(330px, 1fr) !important;
+  grid-template-areas: "heading heading" "summary calendar" "toolbar calendar" "books calendar" "notes notes" "sync sync" !important;
+  gap: 16px !important;
+  align-items: start !important;
+  padding: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-heading {
+  grid-area: heading !important;
+  margin: 0 0 2px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  min-width: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-heading h1 {
+  font-family:
+    Segoe UI,
+    Arial,
+    sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  margin: 0 0 6px !important;
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-heading .eyebrow {
+  display: none !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-heading .sub {
+  font-size: 13px !important;
+  color: var(--muted) !important;
+  margin: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-card {
+  grid-area: summary !important;
+  padding: 22px !important;
+  margin: 0 !important;
+  border-radius: 21px !important;
+  border: 1px solid var(--line) !important;
+  background: var(--surface) !important;
+  box-shadow: var(--sanctuary-shadow) !important;
+  min-width: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-heading {
+  color: var(--ink) !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics {
+  gap: 12px !important;
+  margin: 18px 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics > div {
+  padding: 14px !important;
+  border-radius: 12px !important;
+  background: var(--accent-soft) !important;
+  border: 1px solid var(--line) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics strong {
+  font-size: 27px !important;
+  font-weight: 400 !important;
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics span {
+  color: var(--muted) !important;
+  font-size: 12px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly {
+  border-top: 1px solid var(--line) !important;
+  margin-top: 16px !important;
+  padding-top: 16px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly-heading,
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly-values strong {
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-toolbar {
+  grid-area: toolbar !important;
+  display: flex !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  min-width: 0 !important;
+  flex-wrap: wrap !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-search-wrap {
+  flex: 1 1 220px !important;
+  min-width: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-search-wrap input {
+  min-height: 44px !important;
+  font-size: 14px !important;
+  border-radius: 11px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-bookshelf {
+  grid-area: books !important;
+  margin: 0 !important;
+  padding: 20px 22px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 21px !important;
+  box-shadow: var(--sanctuary-shadow) !important;
+  min-width: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-bookshelf h2 {
+  font-family:
+    Segoe UI,
+    Arial,
+    sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  color: var(--ink) !important;
+  margin: 0 0 16px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-shelf-grid {
+  gap: 14px !important;
+  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)) !important;
+  min-height: 34px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-book-jacket {
+  background: linear-gradient(145deg, #eaf3fa, #d4e5f2) !important;
+  color: var(--ink) !important;
+  border-color: #c8dce9 !important;
+  border-radius: 12px !important;
+  box-shadow:
+    inset 3px 0 #bbd2e3,
+    0 4px 10px #4055630a !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-book-jacket strong {
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-book-count,
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-book-mark {
+  color: #5c7f9d !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar {
+  grid-area: calendar !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 22px !important;
+  border-radius: 21px !important;
+  border: 1px solid var(--line) !important;
+  background: var(--surface) !important;
+  box-shadow: var(--sanctuary-shadow) !important;
+  min-width: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-bar {
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-bottom: 14px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-controls strong {
+  font-size: 14px !important;
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-actions {
+  margin-left: auto !important;
+  gap: 6px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-week {
+  color: var(--muted) !important;
+  font-size: 12px !important;
+  margin-bottom: 8px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-days {
+  gap: 6px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-day {
+  min-height: 38px !important;
+  height: 38px !important;
+  background: #eef5fa !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 9px !important;
+  font-size: 14px !important;
+  box-shadow: none !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-day.has-notes {
+  background: #c2ddf0 !important;
+  border-color: #aacfe8 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-day.is-selected {
+  background: #a9cee9 !important;
+  border-color: #88b4d5 !important;
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-day.is-today {
+  border-color: #d29a45 !important;
+  box-shadow: inset 0 0 0 1px #d29a45 !important;
+  background: var(--surface) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-content-columns {
+  grid-area: notes !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-library {
+  padding: 22px !important;
+  border-radius: 21px !important;
+  border: 1px solid var(--line) !important;
+  background: var(--surface) !important;
+  box-shadow: var(--sanctuary-shadow) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-journal-card {
+  border-radius: 14px !important;
+  border: 1px solid var(--line) !important;
+  background: var(--surface) !important;
+  padding: 20px !important;
+  box-shadow: none !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-sync-settings {
+  grid-area: sync !important;
+  margin: 0 !important;
+  padding: 16px 20px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 14px !important;
+  color: var(--muted) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives.active {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  align-items: start !important;
+  max-width: none !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives > .viewtitle {
+  grid-column: 1/-1 !important;
+  font-family:
+    Segoe UI,
+    Arial,
+    sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  margin: 0 !important;
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives > p.sub {
+  grid-column: 1/-1 !important;
+  margin: -8px 0 2px !important;
+  font-size: 13px !important;
+  color: var(--muted) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-connection,
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-dashboard-sync {
+  margin: 0 !important;
+  padding: 16px 20px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--sanctuary-shadow) !important;
+  min-width: 0 !important;
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-connection > summary,
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-dashboard-sync > summary {
+  font-size: 13px !important;
+  color: var(--ink) !important;
+  cursor: pointer !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-connection > .card {
+  padding: 18px 0 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives #archiveGrid {
+  grid-column: 1/-1 !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives #archiveMessage {
+  grid-column: 1/-1 !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  border: 1px solid var(--line) !important;
+  background: var(--surface) !important;
+  border-radius: 14px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-shell {
+  display: grid !important;
+  grid-template-columns: minmax(330px, 0.85fr) minmax(0, 1.15fr) !important;
+  grid-template-areas: "toolbar toolbar" "legend legend" "week status" "days results" !important;
+  gap: 12px 24px !important;
+  padding: 22px !important;
+  border-radius: 21px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: var(--sanctuary-shadow) !important;
+  min-width: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-toolbar {
+  grid-area: toolbar !important;
+  gap: 16px !important;
+  flex-wrap: wrap !important;
+  margin: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-toolbar input {
+  width: min(420px, 100%) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  font-size: 14px !important;
+  border-radius: 11px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-legend {
+  grid-area: legend !important;
+  margin: 0 !important;
+  color: var(--muted) !important;
+  font-size: 12px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-week {
+  grid-area: week !important;
+  margin: 0 !important;
+  color: var(--muted) !important;
+  font-size: 12px !important;
+  align-self: center !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-days {
+  grid-area: days !important;
+  gap: 6px !important;
+  align-self: start !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-search-status {
+  grid-area: status !important;
+  margin: 0 !important;
+  color: var(--muted) !important;
+  font-size: 12px !important;
+  align-self: center !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-results {
+  grid-area: results !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 12px !important;
+  align-self: start !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-date {
+  min-height: 38px !important;
+  height: 38px !important;
+  background: #eef5fa !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 9px !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-date.has-records {
+  background: #c2ddf0 !important;
+  border-color: #aacfe8 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-date.is-selected {
+  background: #a9cee9 !important;
+  border-color: #88b4d5 !important;
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-date.is-today {
+  border-color: #d29a45 !important;
+  box-shadow: inset 0 0 0 1px #d29a45 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-entry {
+  padding: 18px !important;
+  margin: 0 !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-entry h3 {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--ink) !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-record-details {
+  background: #f5f8fa !important;
+  border-color: var(--line) !important;
+  border-radius: 12px !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-controls button,
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-month-nav button,
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .profile-settings-actions button,
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-actions button,
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-toolbar button {
+  min-height: 38px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+  padding: 8px 12px !important;
+  letter-spacing: 0 !important;
+}
+@media (max-width: 1100px) {
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading.active {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "heading" "summary" "toolbar" "books" "calendar" "notes" "sync" !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-shell {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "toolbar" "legend" "week" "days" "status" "results" !important;
+  }
+}
+@media (max-width: 600px) {
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives.active {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-shell,
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-bookshelf,
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar,
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-card,
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-library {
+    padding: 16px !important;
+    border-radius: 19px !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics {
+    gap: 6px !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics > div {
+    padding: 10px 8px !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics strong {
+    font-size: 21px !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-month-nav,
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-toolbar {
+    gap: 8px !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-search-wrap {
+    flex: 1 1 100% !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-actions {
+    margin-left: 0 !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-toolbar input {
+    width: 100% !important;
+  }
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-month-nav button {
+    padding: 6px 8px !important;
+    min-width: 30px !important;
+  }
 }
