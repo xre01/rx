@@ -15121,14 +15121,14 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .personal-card>.rex-sidebar-nav {grid-column:1/-1!important;grid-row:3!important}
  html[data-calm-ui] .personal-avatar-menu #profilePopover {left:auto!important;right:0!important;max-width:calc(100vw - 28px)!important}
  @media(max-width:599px){
-  html[data-calm-ui] .personal-sidebar {position:fixed!important;top:auto!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;left:12px!important;right:12px!important;width:auto!important;height:auto!important;padding:8px!important;background:linear-gradient(135deg,rgba(255,253,245,.78),rgba(231,222,204,.44))!important;backdrop-filter:blur(22px) saturate(130%);-webkit-backdrop-filter:blur(22px) saturate(130%);overflow:visible!important;border:1px solid rgba(255,255,255,.8)!important;border-radius:25px!important;z-index:80!important;box-shadow:inset 0 1px 1px #ffffffd9,inset 0 -1px 1px #b4a58d26,0 12px 30px #6652391a,0 3px 8px #6652390d!important;box-sizing:border-box!important}
+  html[data-calm-ui] .personal-sidebar {position:fixed!important;top:auto!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;left:12px!important;right:12px!important;width:auto!important;height:auto!important;padding:8px!important;background:linear-gradient(135deg,rgba(253,251,244,.96),rgba(237,232,219,.92))!important;backdrop-filter:blur(22px) saturate(130%)!important;-webkit-backdrop-filter:blur(22px) saturate(130%)!important;overflow:visible!important;border:1px solid rgba(255,255,255,.8)!important;border-radius:25px!important;z-index:80!important;box-shadow:inset 0 1px 1px #ffffffd9,inset 0 -1px 1px #b4a58d26,0 12px 30px #6652391a,0 3px 8px #6652390d!important;box-sizing:border-box!important}
   html[data-calm-ui] .personal-sidebar .personal-card {display:block!important;padding:0!important;margin:0!important}
   html[data-calm-ui] .personal-card>.personal-avatar-menu,html[data-calm-ui] .personal-card>.personal-growth {display:none!important}
   html[data-calm-ui] .personal-card>.rex-sidebar-nav {display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;margin:0!important;gap:3px!important}
   html[data-calm-ui] .personal-card>.rex-sidebar-nav button {min-height:50px!important;padding:6px 2px!important;border-radius:18px!important;font-size:10px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:5px!important;min-width:0!important}
   html[data-calm-ui] .personal-card>.rex-sidebar-nav span {white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:100%!important}
   html[data-calm-ui] .personal-card>.rex-sidebar-nav svg {width:20px!important;height:20px!important}
-  html[data-calm-ui] body#rexSanctuary {padding-bottom:calc(88px + env(safe-area-inset-bottom))!important}
+  html[data-calm-ui] body#rexSanctuary {padding-bottom:0!important}
   html[data-calm-ui] main {margin-top:0!important}
   html[data-calm-ui] .personal-sidebar .header-brand {display:none!important}
  }
@@ -15406,4 +15406,12 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .pte-night-reminder small {display:block;font-size:10px;color:var(--calm-muted);margin:8px 0 0 26px}
  html[data-calm-ui] .pte-night-reminder p {font-size:11px;color:var(--calm-muted);margin-bottom:0}
  html[data-calm-ui] .pte-night-reminder p:empty {display:none}
+}
+
+@layer calm {
+ @media(max-width:599px){
+ html[data-calm-ui] main:has(>.panelview) {padding-bottom:calc(130px + env(safe-area-inset-bottom))!important}
+ html[data-calm-ui] {scroll-padding-bottom:calc(130px + env(safe-area-inset-bottom))}
+ html[data-calm-ui] .personal-sidebar::before {content:""!important;position:fixed!important;left:0!important;right:0!important;bottom:0!important;top:auto!important;height:calc(96px + env(safe-area-inset-bottom))!important;background:linear-gradient(to top,#e9efe5 16%,#e9efe5cc 70%,#e9efe500)!important;pointer-events:none!important;z-index:-1!important;border:0!important;box-shadow:none!important;transform:none!important}
+ }
 }
