@@ -15241,22 +15241,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 }
 
 @layer calm {
- html[data-calm-ui] .life-agenda[data-view="week"] .life-week {margin-left:44px!important;margin-bottom:0!important;background:#f7f8f1!important;border-radius:12px 12px 0 0!important;padding:10px 0!important}
- html[data-calm-ui] .life-agenda[data-view="week"] .life-week button {padding:5px 0!important;min-width:0!important;border:0!important;background:transparent!important}
- html[data-calm-ui] .life-agenda[data-view="week"] .life-week button.is-today strong {border-radius:50%!important;background:var(--calm-accent)!important;color:white!important;display:grid!important;place-items:center!important;width:28px!important;height:28px!important;margin:auto!important}
- html[data-calm-ui] .life-agenda[data-view="week"] .life-tasks {max-height:570px!important;overflow-y:auto!important;scrollbar-width:none!important}
- html[data-calm-ui] .agenda-week-grid {display:grid!important;grid-template-columns:44px repeat(7,minmax(0,1fr))!important;min-width:0!important;padding-bottom:8px!important}
- html[data-calm-ui] .agenda-week-hour {font-size:10px!important;color:var(--calm-muted)!important;padding:6px 2px!important;text-align:left!important;min-height:32px!important;background:#f7f8f1!important}
- html[data-calm-ui] .agenda-week-slot {min-width:0!important;min-height:32px!important;border-left:1px solid #dbe3d5!important;border-top:1px solid #e9ede3!important;padding:2px!important;display:flex!important;flex-direction:column!important;gap:2px!important}
- html[data-calm-ui] .agenda-week-slot:nth-child(-n+8) {min-height:65px!important;border-top:0!important;padding-top:10px!important;padding-bottom:10px!important}
- html[data-calm-ui] .agenda-week-slot.is-today {background:#e7eddf!important}
- html[data-calm-ui] .agenda-week-slot .life-task {display:flex!important;flex-wrap:wrap!important;gap:2px!important;padding:4px 2px!important;border:0!important;border-radius:4px!important;background:#d5e3cc!important;min-width:0!important;justify-content:flex-start!important}
- html[data-calm-ui] .agenda-week-slot .life-task>div {flex:1!important;min-width:0!important}
- html[data-calm-ui] .agenda-week-slot .life-task input {width:12px!important;height:12px!important;margin:0!important}
- html[data-calm-ui] .agenda-week-slot .life-task small,html[data-calm-ui] .agenda-week-slot .life-row-actions {display:none!important}
- html[data-calm-ui] .agenda-week-title {display:block!important;width:100%!important;padding:0!important;background:transparent!important;border:0!important;text-align:left!important;min-width:0!important}
- html[data-calm-ui] .agenda-week-title strong {display:block!important;font-size:10px!important;line-height:1.4!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
- html[data-calm-ui] .life-agenda[data-view="week"] {padding-bottom:85px!important}
+
 }
 
 @layer calm {
