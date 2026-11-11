@@ -67,3 +67,27 @@ Deployment: publish workers/notion-worker.mjs to the existing rex-notion-calenda
 Notion receives a readable projection; exact website formatting remains in Durable Object state. If Notion changes a versioned note, synchronization stops with a conflict rather than discarding the complete website document. Resolve the versions before retrying; no automatic merge is attempted. Keep the full Worker and browser data when rolling back. The backup is a browser-local recovery copy, not a replacement for a cloud export.
 
 Validation includes HTML/table/color roundtrips, legacy blocks, XSS payloads, compact toolbar structure, book attachments, cloud document preservation, old-client rejection and the existing regression suite. iPhone hardware and the production Worker deployment require separate verification.
+
+## Personal Home
+
+Home is now the default landing panel; PTE Prep, Reading and Notion Archive remain separate navigation entries. The homepage brings together a dated agenda (optional time and priority, completion filters, editing and deletion), important dates, custom daily habits with streaks and seven-day history, and shortcuts to study and focus.
+
+Planner tasks and habits use `rex-home-planner-v1` in this browser's localStorage. They do not award XP, change PTE question counts or sync through the study APIs. Important dates reuse `rex-countdown-targets-v1` and the existing dashboard sync. Dates and streaks follow Australia/Sydney calendar days; milestones show days remaining, today, or days elapsed. Storage failures retain open form inputs; unreadable planner storage blocks writes to preserve existing data.
+
+Run `node tests/home-page.cjs` for the planner regression checks. After changing runtime assets, run `node scripts/version-assets.cjs` so HTML and service-worker hashes stay consistent.
+
+Tasks support Repeat: Does not repeat, Daily, Weekdays (Monday–Friday), Weekly (the start date's weekday), and Custom days. Repeating tasks begin on the selected start date and store completion independently for each occurrence. Editing a recurring task changes its series; deleting it removes the series and its completion history. Existing one-off tasks remain supported.
+
+For fixed-day cycles such as rent every 28 days, choose `Every N days` and enter the interval. Occurrences are calculated as start date plus multiples of that many calendar days, independently of month lengths and daylight-saving time. `Selected weekdays` remains the separate weekday-based option.
+
+Home Focus totals all saved PTE, Reading and general Home focus records for the Sydney day, including saved partial sessions of at least a minute, with duplicate IDs excluded. Home's timer statistics show all areas. Reading statistics remain Reading-only; PTE statistics exclude both Reading and Home sessions. New general sessions started from Home use a `Home · ` source marker; existing unmarked sessions retain their legacy PTE classification. Opening another panel does not reclassify a running session. XP calculations are unchanged.
+
+## Calm interface and interaction feedback
+
+Home, PTE Prep, Reading, Archive, profile and dialogs share a low-saturation grey-green palette with warm neutral surfaces. The shared `calm` CSS layer replaces legacy decorative backgrounds, glossy cards and oversized navigation while preserving saved rich-note formatting. Small screens use a compact four-entry navigation. Selected states, keyboard focus, pressed states and destructive-action hover states have explicit visual treatments; reduced-motion preferences are respected.
+
+`calm-ui.js` provides one dismissible live status notification, asynchronous button busy indicators and completion feedback. Home and Reading emit success only after a successful local save; existing sync statuses surface successful sync or failures without treating a click or a pending connection as a save. Failed forms retain their input. This release does not change storage destinations or cloud credentials.
+
+Validation: `node tests/calm-ui.cjs` covers real save/failure integration, press/release, no false success on click, loading reset, hidden/pending status filtering, errors, notification dismissal, reduced motion, lifecycle cleanup and palette contrast. The full 33-script suite passes. Desktop and 390px mobile browser checks cover Home, PTE, Reading, Archive and task/note/timer dialogs. Production cloud writes were not used for visual verification.
+
+The compact identity/navigation update reduces the visible avatar to 24px with a 44px profile control, removes its frame and shadow, and aligns the name beside it. Tablet-width windows use one horizontal navigation row; narrow phones retain two compact rows. Profile access, all four navigation entries and wide-screen sidebar navigation remain available. CSS/resource checks and 390px, 600px and desktop layout checks pass.

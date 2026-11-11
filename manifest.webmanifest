@@ -6,8 +6,8 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#EDF2EE",
-  "theme_color": "#E8F0E8",
+  "background_color": "#e9eee4",
+  "theme_color": "#e9eee4",
   "icons": [
     {
       "src": "rex-wing-192.png?v=20261019-wing1",

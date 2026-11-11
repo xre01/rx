@@ -32,7 +32,7 @@ function renderCalendar(){
  if(selectedDay)calendar.append(el('p','reading-calendar-selection',selectedDay+' · '+(counts.get(selectedDay)||0)+' article notes'));
 }
 const shelf=el('section','reading-bookshelf'),shelfGrid=el('div','reading-shelf-grid');shelf.append(el('h2','','Bookshelf'),shelfGrid);const columns=el('div','reading-content-columns');panel.insertBefore(columns,library);panel.insertBefore(shelf,calendar);columns.append(library);
-function save(next){if(storageError){feedback.textContent=storageError;return false}try{if(!localStorage.getItem('rex-reading-editor-backup-v1'))localStorage.setItem('rex-reading-editor-backup-v1',localStorage.getItem(key)||'[]');localStorage.setItem(key,JSON.stringify(next));records=next;updateReadingXp();render();updateSyncStatus();queueReadingSync();return true}catch{feedback.textContent='Could not save. Your changes are still in the open form; check browser storage.';return false}}
+function save(next,message='Saved'){if(storageError){feedback.textContent=storageError;return false}try{if(!localStorage.getItem('rex-reading-editor-backup-v1'))localStorage.setItem('rex-reading-editor-backup-v1',localStorage.getItem(key)||'[]');localStorage.setItem(key,JSON.stringify(next));records=next;updateReadingXp();render();updateSyncStatus();queueReadingSync();dispatchEvent(new CustomEvent('rex-feedback',{detail:{message,tone:'success'}}));return true}catch{feedback.textContent='Could not save. Your changes are still in the open form; check browser storage.';return false}}
 function url(value){try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)?u.href:null}catch{return null}}
 function render(){renderCalendar();
 grid.replaceChildren();shelfGrid.replaceChildren();const q=search.value.trim().toLowerCase(),list=records.filter(r=>!r.deleted&&(r.kind==='book'||!selectedDay||noteDays(r).includes(selectedDay))&&[r.title,r.source,r.body,r.author,r.tags,...r.logs.map(l=>l.note)].join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));const books=list.filter(r=>r.kind==='book'),articles=list.filter(r=>r.kind==='article');shelf.hidden=false;library.hidden=!selectedDay;
@@ -169,7 +169,7 @@ function updateReadingXp(){try{window.RexReadingXP?.reconcile(records,day())}cat
 function deleteReading(r,dialog){
  const current=records.find(x=>x.id===r.id);if(!current)return;
  const deleted={id:current.id,kind:current.kind,title:current.title,body:'',logs:[],attachments:[],deleted:true,updated:new Date().toISOString(),remoteRevision:current.remoteRevision,remotePageId:current.remotePageId};
- if(save(records.map(x=>x.id===r.id?deleted:x))){dialog?.close();feedback.textContent='Deleted. Reading XP has been recalculated.';}
+ if(save(records.map(x=>x.id===r.id?deleted:x),'Deleted')){dialog?.close();feedback.textContent='Deleted. Reading XP has been recalculated.';}
 }
 addEventListener('storage',e=>{if(e.key!==key)return;try{const next=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(next)){records=next;updateReadingXp();render();updateSyncStatus()}}catch{}});
 

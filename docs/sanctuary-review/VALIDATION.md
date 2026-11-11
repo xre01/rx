@@ -1,6 +1,6 @@
 # Current release verification
 
-Work remains on design/sanctuary-reference-polish, PR #11; main is unchanged.
+Updated for the personal Home and calm interface release on 2026-11-11. The full 33-script regression suite, JavaScript syntax checks, resource references, asset hashes and owned-cache cleanup checks pass. Production Notion/D1 writes were not exercised.
 
 ## Current behavior
 
