@@ -15451,3 +15451,10 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .agenda-lunar {max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
  html[data-calm-ui] .agenda-lunar.is-festival {color:#456044;font-weight:600}
 }
+
+@layer calm {
+ html[data-calm-ui] .agenda-month-chip.is-pte {background:#dbe5ed!important;color:#365568!important}
+ html[data-calm-ui] .agenda-pte-card {margin:5px 0 12px;display:flex;justify-content:space-between;gap:12px;padding:14px;border:1px solid #d1dfe6!important;border-radius:12px;background:#eef3f4!important;text-align:left}
+ html[data-calm-ui] .agenda-pte-card strong {font-size:15px}
+ html[data-calm-ui] .agenda-pte-card small {font-size:11px;color:var(--calm-muted)}
+}
