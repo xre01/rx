@@ -91,3 +91,9 @@ Home, PTE Prep, Reading, Archive, profile and dialogs share a low-saturation gre
 Validation: `node tests/calm-ui.cjs` covers real save/failure integration, press/release, no false success on click, loading reset, hidden/pending status filtering, errors, notification dismissal, reduced motion, lifecycle cleanup and palette contrast. The full 33-script suite passes. Desktop and 390px mobile browser checks cover Home, PTE, Reading, Archive and task/note/timer dialogs. Production cloud writes were not used for visual verification.
 
 The compact identity/navigation update reduces the visible avatar to 24px with a 44px profile control, removes its frame and shadow, and aligns the name beside it. Tablet-width windows use one horizontal navigation row; narrow phones retain two compact rows. Profile access, all four navigation entries and wide-screen sidebar navigation remain available. CSS/resource checks and 390px, 600px and desktop layout checks pass.
+
+## Agenda views
+
+Agenda now provides My day, Week and Month tabs, a date picker, previous/next period navigation, a Today action and one bottom-right add button. Completion filters are available under the options menu. Week view groups occurrences Monday–Sunday; month view shows dated task counts and the selected day's tasks. New tasks inherit the selected date. Existing task IDs, one-off completion and all recurrence rules are preserved, with completion stored separately for each occurrence. This interface change keeps the existing browser-local planner storage.
+
+Regression coverage includes week grouping, occurrence completion isolation, filtered month counts, selected-date creation, leap-month navigation, year rollover and keyboard tab selection. Phone and desktop layouts were checked in the local preview.

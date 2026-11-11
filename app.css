@@ -15152,3 +15152,52 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] .reading-book-jacket strong {align-self:center!important;display:-webkit-box!important;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden!important;font:500 18px/1.5 system-ui,sans-serif!important;margin:0!important}
   html[data-calm-ui] :where(.reading-book-mark,.reading-book-count) {color:var(--calm-muted)!important;opacity:1!important}
 }
+/* Agenda: quiet day/week/month planning with a single add action. */
+@layer calm {
+  html[data-calm-ui] .life-agenda {position:relative!important;min-height:500px!important;padding:24px 24px 92px!important}
+  html[data-calm-ui] .agenda-tabs {display:flex;align-items:center;gap:0;margin-bottom:22px}
+  html[data-calm-ui] .agenda-tabs button {background:transparent!important;border:0!important;border-radius:0!important;padding:0 16px!important;min-height:30px;color:var(--calm-muted)!important;font:400 17px/1.3 system-ui,sans-serif!important;box-shadow:none!important}
+  html[data-calm-ui] .agenda-tabs button:first-child {padding-left:0!important}
+  html[data-calm-ui] .agenda-tabs button+button {border-left:1px solid #c1cdba!important}
+  html[data-calm-ui] .agenda-tabs button[aria-selected="true"] {background:transparent!important;color:var(--calm-text)!important;font-weight:650!important;box-shadow:none!important}
+  html[data-calm-ui] .agenda-toolbar {display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:40px;margin-bottom:16px}
+  html[data-calm-ui] .agenda-date {position:relative;display:block;min-width:0;max-width:65%;cursor:pointer}
+  html[data-calm-ui] .agenda-caption {font:600 18px/1.5 system-ui,sans-serif;color:var(--calm-text);overflow-wrap:anywhere}
+  html[data-calm-ui] .agenda-date-input {position:absolute;inset:0;width:100%!important;height:100%;margin:0;opacity:0;cursor:pointer}
+  html[data-calm-ui] .agenda-date:focus-within {outline:3px solid #7f9b70;outline-offset:4px;border-radius:4px}
+  html[data-calm-ui] .agenda-date-actions {display:flex;align-items:center;gap:2px;flex-shrink:0}
+  html[data-calm-ui] .agenda-date-actions>button {background:transparent!important;border:0!important;padding:6px!important;min-width:28px;min-height:34px;border-radius:6px!important;font-size:19px!important}
+  html[data-calm-ui] .agenda-date-actions>.agenda-today {font-size:11px!important}
+  html[data-calm-ui] .agenda-menu {position:relative;margin-left:5px}
+  html[data-calm-ui] .agenda-menu>summary {list-style:none;padding:8px 4px;cursor:pointer;line-height:1;font-size:16px;border-radius:6px;color:var(--calm-muted)}
+  html[data-calm-ui] .agenda-menu>summary::-webkit-details-marker {display:none}
+  html[data-calm-ui] .agenda-menu .life-filters {position:absolute;right:0;top:100%;z-index:20;display:flex;flex-direction:column;gap:4px;min-width:120px;margin:4px 0 0;padding:8px;border:1px solid var(--calm-border);border-radius:10px;background:var(--calm-surface);box-shadow:0 5px 18px #293d3614}
+  html[data-calm-ui] .agenda-menu .life-filters button {border:0!important;border-radius:6px!important;padding:9px 12px!important;text-align:left}
+  html[data-calm-ui] .life-agenda [hidden] {display:none!important}
+  html[data-calm-ui] .life-agenda .life-week {margin:4px 0 16px!important;gap:3px!important}
+  html[data-calm-ui] .life-agenda .life-week .has-tasks strong:after {content:"";display:block;width:4px;height:4px;border-radius:50%;background:var(--calm-accent);margin:3px auto 0}
+  html[data-calm-ui] .life-agenda .life-tasks {min-width:0}
+  html[data-calm-ui] .life-agenda .life-tasks:has(.agenda-empty) {display:grid;place-items:center;min-height:290px}
+  html[data-calm-ui] .agenda-empty {text-align:center;font-size:13px;color:var(--calm-muted);opacity:.8;padding:30px 10px}
+  html[data-calm-ui] .agenda-add {position:absolute;right:22px;bottom:22px;display:grid;place-items:center;width:52px;height:52px;padding:0!important;border:0!important;border-radius:50%!important;background:var(--calm-accent)!important;color:#f5f7ef!important;font:300 34px/1 system-ui,sans-serif!important;box-shadow:0 4px 12px #293d361a!important}
+  html[data-calm-ui] .agenda-add:not(:disabled):hover {background:#3b5742!important;color:#f5f7ef!important}
+  html[data-calm-ui] .agenda-month {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:8px 0 18px}
+  html[data-calm-ui] .agenda-weekday {text-align:center;font-size:10px;color:var(--calm-muted);padding:6px 0 8px}
+  html[data-calm-ui] .agenda-month-day {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;min-width:0;min-height:44px;padding:6px 2px!important;border:1px solid transparent!important;background:transparent!important;border-radius:9px!important;box-shadow:none!important;font-size:13px!important}
+  html[data-calm-ui] .agenda-month-day small {font-size:9px;color:var(--calm-accent)}
+  html[data-calm-ui] .agenda-month-day.is-outside {opacity:.45}
+  html[data-calm-ui] .agenda-month-day[aria-current="date"] {border-color:#8fa483!important}
+  html[data-calm-ui] .agenda-month-day[aria-pressed="true"] {background:var(--calm-selected)!important;border-color:#789771!important;color:#294b32!important}
+  html[data-calm-ui] .life-agenda[data-view="month"] .life-tasks:has(.agenda-empty) {min-height:80px}
+  html[data-calm-ui] .agenda-day-heading {font:600 12px/1.5 system-ui,sans-serif;color:var(--calm-muted);margin:18px 0 4px}
+  @media(max-width:600px) {
+    html[data-calm-ui] .life-agenda {min-height:470px!important;padding:20px 16px 88px!important}
+    html[data-calm-ui] .agenda-tabs {margin-bottom:18px}
+    html[data-calm-ui] .agenda-tabs button {font-size:17px!important;padding-right:14px!important;padding-left:14px!important}
+    html[data-calm-ui] .agenda-caption {font-size:15px}
+    html[data-calm-ui] .agenda-toolbar {gap:5px}
+    html[data-calm-ui] .agenda-date-actions>button {min-width:25px;padding:4px!important}
+    html[data-calm-ui] .agenda-add {right:18px;bottom:18px}
+    html[data-calm-ui] .life-agenda .life-tasks:has(.agenda-empty) {min-height:260px}
+  }
+}
