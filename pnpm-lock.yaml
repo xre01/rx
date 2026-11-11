@@ -35,6 +35,9 @@ importers:
       dompurify:
         specifier: 3.4.17
         version: 3.4.17
+      lunar-javascript:
+        specifier: 1.7.8
+        version: 1.7.8
     devDependencies:
       css-tree:
         specifier: 3.2.1
@@ -472,6 +475,9 @@ packages:
   lru-cache@11.5.3:
     resolution: {integrity: sha512-U4N8FgzmWxc8k1VH8Kr6lQg18U7Fjvby6wXHVRX/ZZ7IwWbRMgrRbP0Wrb5q5NVinryp4SQampHKdvtecItxUg==}
     engines: {node: 20 || >=22}
+
+  lunar-javascript@1.7.8:
+    resolution: {integrity: sha512-T79Lq2t5zjPu7nnkuUn3xFqIMIB5LCVSn6uJXQLvgWEqUGdE4KQXqQOVBaoYsVHY/8MIwFd7ol9dJ5bP2ItXUQ==}
 
   mdn-data@2.27.1:
     resolution: {integrity: sha512-9Yubnt3e8A0OKwxYSXyhLymGW4sCufcLG6VdiDdUGVkPhpqLxlvP5vl1983gQjJl3tqbrM731mjaZaP68AgosQ==}
@@ -971,6 +977,8 @@ snapshots:
   linkifyjs@4.3.3: {}
 
   lru-cache@11.5.3: {}
+
+  lunar-javascript@1.7.8: {}
 
   mdn-data@2.27.1: {}
 

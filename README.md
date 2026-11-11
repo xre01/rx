@@ -110,3 +110,8 @@ PTE reminders are opt-in per device. The nearest upcoming PTE date schedules not
 Asset cache version rex-focus-offline-20261112-app2 replaces only owned application resource caches; user records, attachments and recovery backups are retained. Character icon artwork uses transparent assets from PokeAPI/sprites (official-artwork 877, 10187, 10024); Pokémon artwork belongs to its respective owners.
 
 D1 service source is tracked in workers/sync-worker.mjs. Countdown payload validation accepts optional category and pinned fields while rejecting unrelated data; the existing DB binding and all revisions are preserved.
+
+
+Calendar annotations are bundled locally from lunar-javascript 1.7.8 (MIT; licenses/lunar-javascript.txt), with no dependency on browser Intl Chinese-calendar support. Build calendar-labels.js using node scripts/build-calendar.cjs. Supported annotation years: 1900–2100. The display prioritizes a major holiday, then a Chinese solar term, then the lunar day; the full lunar date and all coincident labels remain in the accessible description.
+
+China annotations cover New Year, Labour Day, National Day and selected traditional lunar festivals including New Year’s Eve, Spring Festival, Lantern Festival, Dragon Boat, Qixi, Mid-Autumn, Double Ninth and Laba, plus the 24 solar terms. Australia annotations are limited to New Year, Australia Day, Good Friday, Easter Sunday/Monday, Christmas and Boxing Day. These are festival dates, not a state-specific legal leave or substitute-holiday calendar. Date references: https://www.hko.gov.hk/sc/gts/time/conversion.htm and https://www.fairwork.gov.au/employment-conditions/public-holidays/2026-public-holidays .

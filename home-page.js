@@ -87,6 +87,7 @@
  }
  let lunarFormatter=null;try{const candidate=new Intl.DateTimeFormat('zh-CN-u-ca-chinese',{month:'long',day:'numeric',timeZone:'Asia/Shanghai'});if(candidate.resolvedOptions().calendar==='chinese')lunarFormatter=candidate}catch{}
  function lunarLabel(date){
+  if(window.RexCalendarLabels)return window.RexCalendarLabels.get(date).lunar;
   if(!lunarFormatter)return '';try{const parts=lunarFormatter.formatToParts(new Date(date+'T12:00:00Z')),n=Number(parts.find(p=>p.type==='day')?.value),digits=['','一','二','三','四','五','六','七','八','九'];if(n===1)return parts.find(p=>p.type==='month')?.value||'';if(n===10)return '初十';if(n===20)return '二十';if(n===30)return '三十';return n>0&&n<30?(n<10?'初':n<20?'十':'廿')+digits[n%10]:''}catch{return ''}
  }
  function renderMonth(month,day){
@@ -95,7 +96,7 @@
   for(let i=0;i<cells;i++){
    const date=shift(gridStart,i),tasks=filteredTasks(date),entries=[...(filter==='done'?[]:milestones.filter(r=>r.date===date).map(record=>({kind:'event',record}))),...tasks.map(record=>({kind:'task',record}))],cell=el('div',undefined,'agenda-month-cell'),button=action('',()=>toggleMonthDate(date),'agenda-month-day');
    cell.dataset.date=date;cell.setAttribute('role','group');cell.setAttribute('aria-label',date);cell.setAttribute('data-selected',String(date===expandedMonthDate));
-   const number=el('span',String(Number(date.slice(8))),'agenda-date-number');if(date===day){number.classList.add('is-today');button.setAttribute('aria-current','date')}button.append(number,el('span',lunarLabel(date),'agenda-lunar'));button.setAttribute('aria-label',date);button.setAttribute('aria-pressed',String(date===expandedMonthDate));button.setAttribute('aria-expanded',String(date===expandedMonthDate));button.title=date+(entries.length?' · '+entries.length+' items':'');
+   const number=el('span',String(Number(date.slice(8))),'agenda-date-number');if(date===day){number.classList.add('is-today');button.setAttribute('aria-current','date')}const info=window.RexCalendarLabels?.get(date),annotation=el('span',info?.primary||lunarLabel(date),'agenda-lunar');if(info?.holidays.length)annotation.classList.add('is-festival');if(info?.details){annotation.title=info.details;button.setAttribute('aria-description',info.details)}button.append(number,annotation);button.setAttribute('aria-label',date);button.setAttribute('aria-pressed',String(date===expandedMonthDate));button.setAttribute('aria-expanded',String(date===expandedMonthDate));button.title=date+(entries.length?' · '+entries.length+' items':'');
    if(date.slice(0,7)!==selected.slice(0,7)){cell.classList.add('is-outside');button.classList.add('is-outside')}if(i%7===6)cell.classList.add('is-last-column');cell.append(button);
    const labels=el('div',undefined,'agenda-month-entries');
    for(const entry of entries.slice(0,2)){const item=entry.record,chip=action(item.title,()=>{selected=date;expandedMonthDate=date;render()},'agenda-month-chip'+(entry.kind==='event'?' is-milestone':item.done?' is-done':''));chip.dataset.kind=entry.kind;chip.dataset.recordId=item.id;chip.title=item.title;chip.setAttribute('aria-label','Show '+item.title+' · '+date);labels.append(chip)}

@@ -15446,3 +15446,8 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .agenda-lunar:empty {display:none!important;min-height:0!important}
  html[data-calm-ui] .agenda-month-cell {justify-content:flex-start!important}
 }
+
+@layer calm {
+ html[data-calm-ui] .agenda-lunar {max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+ html[data-calm-ui] .agenda-lunar.is-festival {color:#456044;font-weight:600}
+}
