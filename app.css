@@ -15191,12 +15191,12 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] .agenda-month-cell.is-last-column {border-right:0}
   html[data-calm-ui] .agenda-month-cell.is-outside {opacity:.45}
   html[data-calm-ui] .agenda-month-cell[data-selected="true"] {background:var(--calm-selected)}
-  html[data-calm-ui] .agenda-month-day {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:100%;min-width:0;min-height:42px;padding:2px!important;border:0!important;background:transparent!important;border-radius:6px!important;box-shadow:none!important;font-size:14px!important}
+  html[data-calm-ui] .agenda-month-day {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:100%;min-width:0;min-height:32px!important;height:auto!important;flex:0 0 auto!important;padding:2px!important;border:0!important;background:transparent!important;border-radius:6px!important;box-shadow:none!important;font-size:14px!important}
   html[data-calm-ui] .agenda-month-day:focus-visible {outline-offset:-3px!important}
   html[data-calm-ui] .agenda-date-number {display:grid;place-items:center;min-width:28px;height:28px;border-radius:50%;line-height:1;font-size:15px}
   html[data-calm-ui] .agenda-date-number.is-today {background:var(--calm-accent);color:#f5f7ef}
   html[data-calm-ui] .agenda-lunar {display:block;font-size:9px;line-height:1.4;color:var(--calm-muted);min-height:13px}
-  html[data-calm-ui] .agenda-month-entries {display:flex;flex-direction:column;gap:3px;min-width:0;margin-top:4px}
+  html[data-calm-ui] .agenda-month-entries {display:flex;flex-direction:column;gap:3px;min-width:0;margin-top:3px!important}
   html[data-calm-ui] .agenda-month-chip {display:block;width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px 3px!important;background:#dce8d5!important;color:#315039!important;border:0!important;border-radius:3px!important;box-shadow:none!important;font:600 12px/1.4 system-ui,sans-serif!important;min-height:25px;text-align:center!important}
   html[data-calm-ui] .agenda-month-chip.is-milestone {background:#d9e6e0!important;color:#35594e!important}
   html[data-calm-ui] .agenda-month-chip.is-done {text-decoration:line-through;background:#e4e8df!important;color:var(--calm-muted)!important}
@@ -15440,4 +15440,9 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .agenda-inline-milestone {display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;padding:16px!important;background:#f7f8f1!important;border:1px solid #dde5d5!important;border-radius:13px!important;text-align:left!important}
  html[data-calm-ui] .agenda-inline-milestone small {font-size:11px;color:var(--calm-muted)}
  html[data-calm-ui] .agenda-inline-details .agenda-inline-add {border:0!important;background:transparent!important;min-height:40px}
+}
+
+@layer calm {
+ html[data-calm-ui] .agenda-lunar:empty {display:none!important;min-height:0!important}
+ html[data-calm-ui] .agenda-month-cell {justify-content:flex-start!important}
 }
