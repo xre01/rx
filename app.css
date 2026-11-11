@@ -15197,7 +15197,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] .agenda-date-number.is-today {background:var(--calm-accent);color:#f5f7ef}
   html[data-calm-ui] .agenda-lunar {display:block;font-size:9px;line-height:1.4;color:var(--calm-muted);min-height:13px}
   html[data-calm-ui] .agenda-month-entries {display:flex;flex-direction:column;gap:3px;min-width:0;margin-top:4px}
-  html[data-calm-ui] .agenda-month-chip {display:block;width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px 3px!important;background:#dce8d5!important;color:#315039!important;border:0!important;border-radius:3px!important;box-shadow:none!important;font:600 12px/1.4 system-ui,sans-serif!important;min-height:25px;text-align:left}
+  html[data-calm-ui] .agenda-month-chip {display:block;width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px 3px!important;background:#dce8d5!important;color:#315039!important;border:0!important;border-radius:3px!important;box-shadow:none!important;font:600 12px/1.4 system-ui,sans-serif!important;min-height:25px;text-align:center!important}
   html[data-calm-ui] .agenda-month-chip.is-milestone {background:#d9e6e0!important;color:#35594e!important}
   html[data-calm-ui] .agenda-month-chip.is-done {text-decoration:line-through;background:#e4e8df!important;color:var(--calm-muted)!important}
   html[data-calm-ui] .agenda-month-more {background:transparent!important;border:0!important;padding:2px!important;font-size:9px!important;text-align:center}
