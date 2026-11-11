@@ -59,7 +59,7 @@ export default {
     if (origin && origin !== env.ALLOWED_ORIGIN && !readingLocal) return finish(json({ error: '不允许此网站访问。' }, 403));
     if (request.method === 'OPTIONS') return finish(new Response(null, { status: 204 }));
     if (!env.NOTION_TOKEN || !env.ACCESS_PASSWORD) return finish(json({ error: '后端尚未设置 Notion 密钥和通行令。' }, 503));
-    const focusPath=new URL(request.url).pathname,focusMatch=focusPath.match(/^\/api\/focus\/([0-9a-f-]{36})\/(register|subscription|state|schedule|disable)$/i);
+    const focusPath=new URL(request.url).pathname,focusMatch=focusPath.match(/^\/api\/focus\/([0-9a-f-]{36})\/(register|subscription|state|schedule|pte|disable)$/i);
     if (focusMatch&&focusMatch[2]!=='register'){try{return finish(await env.CALENDAR.get(env.CALENDAR.idFromName('focus:'+focusMatch[1])).fetch(request));}catch(error){return finish(json({error:error.message},error.status||500));}}
     if (request.headers.get('X-Arcane-Key') !== env.ACCESS_PASSWORD) return finish(json({ error: '通行令错误。' }, 401));
     try {
@@ -421,21 +421,28 @@ async function focusHandle(request,state){const path=new URL(request.url).pathna
   return json({publicKey:config.publicKey});
  }
  if(!config||await focusHash(request.headers.get('X-Focus-Key')||'')!==config.keyHash)throw fail('Reminder device is not authorized.',401);
- if(action==='state'&&request.method==='GET'){const reminder=await state.storage.get('focus:reminder');return json({enabled:!!config.endpoint,reminder:reminder||null});}
+ if(action==='state'&&request.method==='GET'){const reminder=await state.storage.get('focus:reminder');return json({enabled:!!config.endpoint,reminder:reminder||null,pte:await state.storage.get('focus:pte')||null});}
  const body=await focusJSON(request);
  if(action==='subscription'&&request.method==='POST'){if(!focusEndpoint(body.endpoint))throw fail('Unsupported push service.');config.endpoint=body.endpoint;await state.storage.put('focus:config',config);return json({ok:true});}
- if(action==='disable'&&request.method==='POST'){delete config.endpoint;await state.storage.put('focus:config',config);await state.storage.deleteAlarm();await state.storage.delete('focus:reminder');return json({ok:true});}
+ if(action==='disable'&&request.method==='POST'){delete config.endpoint;await state.storage.put('focus:config',config);await state.storage.deleteAlarm();await state.storage.delete('focus:reminder');await state.storage.delete('focus:pte');return json({ok:true});}
+ if(action==='pte'&&request.method==='POST'){
+  if(!config.endpoint)throw fail('Enable notifications first.',409);
+  if(!Number.isSafeInteger(body.version)||body.version<=0)throw fail('Invalid reminder revision.');const previous=await state.storage.get('focus:pte');if(previous&&body.version<=previous.version)return json({ok:true,reminder:previous});
+  let reminder={version:body.version,status:'cancelled',dueAt:null,kind:'pte'};
+  if(body.date!==null){if(typeof body.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(body.date)||isNaN(Date.parse(body.date+'T12:00:00Z'))||new Date(body.date+'T12:00:00Z').toISOString().slice(0,10)!==body.date)throw fail('Invalid exam date.');const next=pteNext(body.date,Date.now());reminder={...reminder,date:body.date,...next,status:next?'scheduled':'cancelled'}}
+  await state.storage.put('focus:pte',reminder);await focusNextAlarm(state);return json({ok:true,reminder});
+ }
  if(action==='schedule'&&request.method==='POST'){
   if(!config.endpoint)throw fail('Enable notifications again.',409);
   if(!Number.isSafeInteger(body.version)||body.version<=0)throw fail('Invalid reminder revision.');
   const previous=await state.storage.get('focus:reminder');if(previous&&body.version<=previous.version)return json({ok:true,reminder:previous});
   const reminder={version:body.version,status:'cancelled',dueAt:null,test:!!body.test};
   if(body.dueAt!==null){if(!Number.isSafeInteger(body.dueAt)||body.dueAt<Date.now()+500||body.dueAt>Date.now()+10805000)throw fail('Choose a future countdown within 180 minutes.');reminder.dueAt=body.dueAt;reminder.status='scheduled';}
-  await state.storage.put('focus:reminder',reminder);if(reminder.dueAt)await state.storage.setAlarm(reminder.dueAt);else await state.storage.deleteAlarm();return json({ok:true,reminder});
+  await state.storage.put('focus:reminder',reminder);await focusNextAlarm(state);return json({ok:true,reminder});
  }
  throw fail('Reminder endpoint not found.',404);
 }
-async function focusAlarm(state){const config=await state.storage.get('focus:config'),r=await state.storage.get('focus:reminder');if(!config?.endpoint||r?.status!=='scheduled')return;
+async function focusTimerAlarm(state){const config=await state.storage.get('focus:config'),r=await state.storage.get('focus:reminder');if(!config?.endpoint||r?.status!=='scheduled')return;
  if(r.dueAt>Date.now()+250){await state.storage.setAlarm(r.dueAt);return;}if(Date.now()-r.dueAt>90000){await state.storage.put('focus:reminder',{...r,status:'expired'});return;}
  const audience=new URL(config.endpoint).origin;let auth=await state.storage.get('focus:vapid');
  if(!auth||auth.aud!==audience||Date.now()-auth.createdAt>3600000){const head=focusB64(new TextEncoder().encode(JSON.stringify({typ:'JWT',alg:'ES256'}))),claims=focusB64(new TextEncoder().encode(JSON.stringify({aud:audience,exp:Math.floor(Date.now()/1000)+21600,sub:'https://xre01.github.io/rx/'}))),message=head+'.'+claims,key=await crypto.subtle.importKey('jwk',config.privateKey,{name:'ECDSA',namedCurve:'P-256'},false,['sign']),signature=await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},key,new TextEncoder().encode(message));auth={aud:audience,createdAt:Date.now(),jwt:message+'.'+focusB64(signature)};await state.storage.put('focus:vapid',auth);}
@@ -445,3 +452,7 @@ async function focusAlarm(state){const config=await state.storage.get('focus:con
  if(!response.ok){if(response.status>=500||response.status===429)throw Error('Push service temporarily unavailable.');await state.storage.put('focus:reminder',{...r,status:'failed'});return;}
  console.info('Focus push accepted',response.status);await state.storage.put('focus:reminder',{...r,status:'sent'});
 }
+
+function pteNext(date,after){for(let days=7;days>=1;days--){const day=new Date(Date.parse(date+'T12:00:00Z')-days*86400000).toISOString().slice(0,10);let dueAt=Date.parse(day+'T22:00:00Z');for(let i=0;i<2;i++){const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(dueAt)),get=k=>parts.find(p=>p.type===k).value;const local=Date.parse(get('year')+'-'+get('month')+'-'+get('day')+'T'+get('hour')+':'+get('minute')+':00Z');dueAt+=Date.parse(day+'T22:00:00Z')-local}if(dueAt>after)return {dueAt,days}}return null}
+async function focusNextAlarm(state){const config=await state.storage.get('focus:config');if(!config?.endpoint){await state.storage.deleteAlarm();return}const reminders=await Promise.all(['focus:reminder','focus:pte'].map(key=>state.storage.get(key))),times=reminders.filter(r=>r?.status==='scheduled'&&r.dueAt).map(r=>r.dueAt);if(times.length)await state.storage.setAlarm(Math.min(...times));else await state.storage.deleteAlarm()}
+async function focusAlarm(state){const timer=await state.storage.get('focus:reminder');if(timer?.status==='scheduled'&&timer.dueAt<=Date.now()+250)await focusTimerAlarm(state);const pte=await state.storage.get('focus:pte');if(pte?.status==='scheduled'&&pte.dueAt<=Date.now()+250){const storage=new Proxy(state.storage,{get(target,property){if(property==='get')return key=>target.get(key==='focus:reminder'?'focus:pte':key);if(property==='put')return (key,value)=>target.put(key==='focus:reminder'?'focus:pte':key,value);const value=target[property];return typeof value==='function'?value.bind(target):value}});await focusTimerAlarm({storage});const sent=await state.storage.get('focus:pte');if(['sent','expired'].includes(sent.status)){const next=pteNext(pte.date,Date.now());await state.storage.put('focus:pte',{...sent,lastDueAt:pte.dueAt,lastDays:pte.days,...(next||{dueAt:null}),status:next?'scheduled':'sent'})}}await focusNextAlarm(state)}

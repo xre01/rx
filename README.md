@@ -9,7 +9,7 @@ A lightweight English PTE dashboard with daily and weekly views, calendar backfi
 - Count-only backfills are separate from attachment submissions. Reflections follow the selected calendar date and store drafts and files locally.
 - Weekly Review includes recorded local counts and backfills. PNG exports support day, Monday–Sunday week, month and year.
 - Notion Archive uses a calendar, content search and attachments loaded on demand. Search indexes the records returned by the configured service and indicates incomplete results.
-- One stylesheet, no live backdrop blur, and lightweight feather animation above Rex World. Reduced-motion preferences are respected.
+- One stylesheet, calm colors and a frosted floating mobile navigation bar. Reduced-motion preferences are respected.
 
 ## Storage and sync
 
@@ -97,3 +97,16 @@ The compact identity/navigation update reduces the visible avatar to 24px with a
 Agenda now provides My day, Week and Month tabs, a date picker, previous/next period navigation, a Today action and one bottom-right add button. Completion filters are available under the options menu. Week view groups occurrences Monday–Sunday; month view shows dated task counts and the selected day's tasks. New tasks inherit the selected date. Existing task IDs, one-off completion and all recurrence rules are preserved, with completion stored separately for each occurrence. This interface change keeps the existing browser-local planner storage.
 
 Regression coverage includes week grouping, occurrence completion isolation, filtered month counts, selected-date creation, leap-month navigation, year rollover and keyboard tab selection. Phone and desktop layouts were checked in the local preview.
+
+
+## Home and mobile navigation
+
+Home includes day timelines, a weekly half-hour grid and a monthly calendar with lunar dates. Blank week slots prefill the task date/time. Month dates toggle the inline add row. Habits support custom emoji and three transparent character icons. Mobile navigation uses Home, PTE Prep, Reading, Archive and Me; Me opens the existing profile.
+
+Home countdowns use rex-home-countdown-targets-v1. PTE countdowns retain rex-countdown-targets-v1 and require only an exam date. Existing shared dates are copied once into Home, then edits/deletions remain independent. D1 countdown IDs beginning home-countdown: are routed only to Home. Home category and pin fields survive a sync round-trip.
+
+PTE reminders are opt-in per device. The nearest upcoming PTE date schedules notifications at 22:00 Australia/Sydney on the seven days before the exam, excluding exam day. Date changes/deletions cancel or replace the schedule. A separate authenticated reminder slot shares the existing push subscription without replacing focus alarms. Disabling notifications cancels both types. iPhone requires installation on the Home Screen and notification permission. Live delivery depends on the device and push service. Deploy the updated existing Worker before publishing the frontend, preserving all secrets and the CALENDAR Durable Object binding.
+
+Asset cache version rex-focus-offline-20261112-app2 replaces only owned application resource caches; user records, attachments and recovery backups are retained. Character icon artwork uses transparent assets from PokeAPI/sprites (official-artwork 877, 10187, 10024); Pokémon artwork belongs to its respective owners.
+
+D1 service source is tracked in workers/sync-worker.mjs. Countdown payload validation accepts optional category and pinned fields while rejecting unrelated data; the existing DB binding and all revisions are preserved.

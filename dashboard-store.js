@@ -44,7 +44,8 @@
     const result={};
     for(const [id,data]of Object.entries(state.counts))result['pte|'+id]={kind:'pte',id,data:{date:data.date,type:data.type,count:data.count}};
     for(const date of Object.keys(state.checkins))result['checkin|'+date]={kind:'checkin',id:date,data:{date}};
-    for(const target of read('rex-countdown-targets-v1',[]))if(target?.id&&validDate(target.date))result['countdown|'+target.id]={kind:'countdown',id:target.id,data:{title:target.title,date:target.date}};
+    for(const target of read('rex-countdown-targets-v1',[]))if(target?.id&&validDate(target.date))result['countdown|'+target.id]={kind:'countdown',id:target.id,data:{title:target.title,date:target.date,...(typeof target.pinned==='boolean'?{pinned:target.pinned}:{}),...(['anniversary','birthday','holiday','uncategorized'].includes(target.category)?{category:target.category}:{})}};
+    for(const target of read('rex-home-countdown-targets-v1',[]))if(target?.id&&validDate(target.date)){const id='home-countdown:'+target.id;result['countdown|'+id]={kind:'countdown',id,data:{title:target.title,date:target.date,...(typeof target.pinned==='boolean'?{pinned:target.pinned}:{}),...(['anniversary','birthday','holiday','uncategorized'].includes(target.category)?{category:target.category}:{})}}}
     for(const [kind,key]of [['focus','rex-focus-sessions-v1'],['abandoned','rex-focus-abandoned-v1']])for(const record of read(key,[])){
       if(!record||!Number.isFinite(record.seconds)||record.seconds<60||!Number.isFinite(record.endedAt))continue;
       const id=record.id||[record.endedAt,record.mode,record.seconds].join('-');
@@ -54,16 +55,17 @@
     return result;
   }
   function apply(all){
-    state.counts={};state.checkins={};const countdown=[],focus=[],abandoned=[];
+    state.counts={};state.checkins={};const countdown=[],homeCountdown=[],focus=[],abandoned=[];
     for(const r of Object.values(all)){
       if(r.deleted)continue;
       if(r.kind==='pte')state.counts[r.id]=r.data;
       if(r.kind==='checkin')state.checkins[r.data.date]=true;
-      if(r.kind==='countdown')countdown.push({id:r.id,...r.data});
+      if(r.kind==='countdown'){if(r.id.startsWith('home-countdown:'))homeCountdown.push({id:r.id.slice(15),...r.data});else countdown.push({id:r.id,...r.data})}
       if(r.kind==='focus'&&r.data.seconds>=60)focus.push({...r.data,id:r.id});
       if(r.kind==='abandoned'&&r.data.seconds>=60)abandoned.push({...r.data,id:r.id});
     }
     localStorage.setItem('rex-countdown-targets-v1',JSON.stringify(countdown));
+    localStorage.setItem('rex-home-countdown-targets-v1',JSON.stringify(homeCountdown));
     localStorage.setItem('rex-focus-sessions-v1',JSON.stringify(focus));
     localStorage.setItem('rex-focus-abandoned-v1',JSON.stringify(abandoned));
     refresh();

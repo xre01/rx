@@ -15108,40 +15108,44 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] :where(#focusTitle,dialog>h2,.reading-dialog-heading h2) {font:600 19px/1.4 system-ui,sans-serif!important;letter-spacing:0!important}
   html[data-calm-ui] .focus-completion-star {display:none!important}
 }
-/* Compact identity and navigation */
+/* Identity and responsive navigation */
 @layer calm {
-  html[data-calm-ui] .personal-card {display:grid!important;grid-template-columns:36px minmax(0,1fr)!important;gap:12px!important;align-items:center!important}
-  html[data-calm-ui] .personal-card>.personal-identity {grid-column:2!important;grid-row:1!important;min-width:0!important;margin:0!important;text-align:left!important}
-  html[data-calm-ui] .personal-card>.personal-identity h2 {justify-content:flex-start!important;text-align:left!important;font-size:17px!important}
-  html[data-calm-ui] .personal-card>.personal-identity .personal-title {display:none!important}
-  html[data-calm-ui] .personal-card>.personal-avatar-menu {grid-column:1!important;grid-row:1!important;width:36px!important;align-self:center!important}
-  html[data-calm-ui] .personal-card #profileToggle {width:44px!important;height:44px!important;padding:0!important;display:grid!important;place-items:center!important;border:0!important;background:transparent!important;box-shadow:none!important;min-height:0!important}
-  html[data-calm-ui] .personal-card #profileToggle img {width:24px!important;height:24px!important;display:block!important;margin:0!important;border:0!important;box-shadow:none!important;border-radius:50%!important;object-fit:cover!important}
-  html[data-calm-ui] .personal-card>.personal-growth {grid-column:1/-1!important;grid-row:2!important;margin:0!important}
-  html[data-calm-ui] .personal-card>.rex-sidebar-nav {grid-column:1/-1!important;grid-row:3!important}
-  @media(max-width:599px) {
-    html[data-calm-ui] .personal-sidebar {padding:10px 14px!important;background:var(--calm-page)!important}
-    html[data-calm-ui] .personal-sidebar .personal-card {grid-template-columns:28px minmax(0,1fr)!important;gap:8px!important;padding:0!important}
-    html[data-calm-ui] .personal-card>.personal-avatar-menu {width:28px!important}
-    html[data-calm-ui] .personal-card #profileToggle {width:44px!important;height:44px!important}
-    html[data-calm-ui] .personal-card>.personal-identity h2 {font-size:14px!important}
-    html[data-calm-ui] .personal-card>.rex-sidebar-nav {grid-row:2!important;margin-top:2px!important;gap:3px!important}
-    html[data-calm-ui] .personal-card>.rex-sidebar-nav button {min-height:42px!important;padding:8px 4px!important;border-radius:8px!important;font-size:11px!important}
-  }
-  @media(min-width:600px) and (max-width:1000px) {
-    html[data-calm-ui] main {margin-left:0!important;width:100%!important;padding:20px!important}
-    html[data-calm-ui] .personal-sidebar {position:relative!important;width:100%!important;height:auto!important;padding:12px 22px!important;background:var(--calm-page)!important;border-right:0!important;border-bottom:1px solid #d0dac9!important;overflow:visible!important}
-    html[data-calm-ui] .personal-sidebar .header-brand {display:none!important}
-    html[data-calm-ui] .personal-sidebar .personal-card {display:flex!important;align-items:center!important;gap:10px!important;padding:0!important}
-    html[data-calm-ui] .personal-card>.personal-avatar-menu {flex:0 0 28px!important;width:28px!important}
-    html[data-calm-ui] .personal-card #profileToggle {width:44px!important;height:44px!important}
-    html[data-calm-ui] .personal-card>.personal-identity {flex:0 0 auto!important;margin-right:16px!important}
-    html[data-calm-ui] .personal-card>.personal-identity h2 {font-size:14px!important;margin:0!important}
-    html[data-calm-ui] .personal-card>.personal-growth {display:none!important}
-    html[data-calm-ui] .personal-card>.rex-sidebar-nav {display:flex!important;flex-direction:row!important;align-items:center!important;flex:1!important;justify-content:flex-end!important;gap:4px!important;margin:0!important;min-width:0!important}
-    html[data-calm-ui] .personal-card>.rex-sidebar-nav button {flex:0 0 auto!important;width:auto!important;min-height:38px!important;padding:9px 12px!important;font-size:13px!important;gap:7px!important;border-radius:8px!important;white-space:nowrap!important}
-    html[data-calm-ui] .personal-card>.rex-sidebar-nav svg {width:16px!important;height:16px!important}
-  }
+ html[data-calm-ui] .personal-card {display:grid!important;grid-template-columns:minmax(0,1fr) 54px!important;gap:12px!important;align-items:center!important}
+ html[data-calm-ui] .personal-card>.personal-identity {grid-column:1!important;grid-row:1!important;min-width:0!important;margin:0!important;text-align:left!important}
+ html[data-calm-ui] .personal-card>.personal-identity h2 {justify-content:flex-start!important;text-align:left!important;font-size:18px!important;margin:0!important}
+ html[data-calm-ui] .personal-card>.personal-identity .personal-title {display:none!important}
+ html[data-calm-ui] .personal-card>.personal-avatar-menu {grid-column:2!important;grid-row:1!important;width:54px!important;align-self:center!important;justify-self:end!important}
+ html[data-calm-ui] .personal-card #profileToggle {width:54px!important;height:54px!important;padding:3px!important;display:grid!important;place-items:center!important;border:1px solid #c3d1bc!important;border-radius:50%!important;background:#f2f5ec!important;box-shadow:0 2px 8px #293d360a!important;min-height:0!important}
+ html[data-calm-ui] .personal-card #profileToggle img {width:46px!important;height:46px!important;display:block!important;margin:0!important;border:0!important;box-shadow:none!important;border-radius:50%!important;object-fit:contain!important}
+ html[data-calm-ui] .personal-card>.personal-growth {grid-column:1/-1!important;grid-row:2!important;margin:0!important}
+ html[data-calm-ui] .personal-card>.rex-sidebar-nav {grid-column:1/-1!important;grid-row:3!important}
+ html[data-calm-ui] .personal-avatar-menu #profilePopover {left:auto!important;right:0!important;max-width:calc(100vw - 28px)!important}
+ @media(max-width:599px){
+  html[data-calm-ui] .personal-sidebar {position:fixed!important;top:auto!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;left:12px!important;right:12px!important;width:auto!important;height:auto!important;padding:8px!important;background:linear-gradient(135deg,rgba(255,253,245,.78),rgba(231,222,204,.44))!important;backdrop-filter:blur(22px) saturate(130%);-webkit-backdrop-filter:blur(22px) saturate(130%);overflow:visible!important;border:1px solid rgba(255,255,255,.8)!important;border-radius:25px!important;z-index:80!important;box-shadow:inset 0 1px 1px #ffffffd9,inset 0 -1px 1px #b4a58d26,0 12px 30px #6652391a,0 3px 8px #6652390d!important;box-sizing:border-box!important}
+  html[data-calm-ui] .personal-sidebar .personal-card {display:block!important;padding:0!important;margin:0!important}
+  html[data-calm-ui] .personal-card>.personal-avatar-menu,html[data-calm-ui] .personal-card>.personal-growth {display:none!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav {display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;margin:0!important;gap:3px!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav button {min-height:50px!important;padding:6px 2px!important;border-radius:18px!important;font-size:10px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:5px!important;min-width:0!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav span {white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:100%!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav svg {width:20px!important;height:20px!important}
+  html[data-calm-ui] body#rexSanctuary {padding-bottom:calc(88px + env(safe-area-inset-bottom))!important}
+  html[data-calm-ui] main {margin-top:0!important}
+  html[data-calm-ui] .personal-sidebar .header-brand {display:none!important}
+ }
+ @media(min-width:600px) and (max-width:1000px){
+  html[data-calm-ui] main {margin-left:0!important;width:100%!important;padding:20px!important}
+  html[data-calm-ui] .personal-sidebar {position:relative!important;width:100%!important;height:auto!important;padding:12px 22px!important;background:var(--calm-page)!important;border-right:0!important;border-bottom:1px solid #d0dac9!important;overflow:visible!important}
+  html[data-calm-ui] .personal-sidebar .header-brand {display:none!important}
+  html[data-calm-ui] .personal-sidebar .personal-card {display:grid!important;grid-template-columns:minmax(0,1fr) 54px!important;gap:16px!important;padding:0!important}
+  html[data-calm-ui] .personal-card>.personal-avatar-menu {grid-column:2!important}
+  html[data-calm-ui] .personal-card>.personal-growth {display:none!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav {grid-column:1!important;grid-row:1!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:6px!important;margin:0!important;min-width:0!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav button {flex:0 1 auto!important;width:auto!important;min-height:42px!important;padding:9px 10px!important;font-size:12px!important;gap:6px!important;border-radius:9px!important;white-space:nowrap!important;min-width:0!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav svg {width:16px!important;height:16px!important;flex-shrink:0!important}
+ }
+ @media(min-width:1001px){
+  html[data-calm-ui] .personal-card>.personal-avatar-menu {position:fixed!important;top:18px!important;right:24px!important;z-index:60!important}
+ }
 }
 /* Keep book covers aligned regardless of title wrapping. */
 @layer calm {
@@ -15216,4 +15220,190 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
     html[data-calm-ui] .agenda-add {right:18px;bottom:18px}
     html[data-calm-ui] .life-agenda .life-tasks:has(.agenda-empty) {min-height:260px}
   }
+}
+
+@layer calm {
+ html[data-calm-ui] .life-agenda[data-view="day"] .life-tasks {display:block!important;min-height:360px!important;padding-top:8px}
+ html[data-calm-ui] .agenda-time-slot {display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;position:relative;padding:8px 0 18px}
+ html[data-calm-ui] .agenda-time-label {font-size:12px;color:var(--calm-muted);text-align:center;padding-top:20px;border-right:1px dashed #bdcdb7}
+ html[data-calm-ui] .agenda-time-cards {display:grid;gap:9px;min-width:0}
+ html[data-calm-ui] .agenda-time-cards .life-task {padding:16px 12px;border:1px solid #d3ddcd!important;border-radius:14px;background:#f7f8f1;gap:10px;box-shadow:0 3px 12px #38523d05}
+ html[data-calm-ui] .agenda-time-cards .life-task input {appearance:none;border:2px solid #78916f;border-radius:50%;width:21px;height:21px;margin:0;display:grid;place-content:center;cursor:pointer}
+ html[data-calm-ui] .agenda-time-cards .life-task input:checked {background:var(--calm-accent);border-color:var(--calm-accent)}
+ html[data-calm-ui] .agenda-time-cards .life-task input:checked::after {content:'✓';color:white;font-size:14px}
+ html[data-calm-ui] .agenda-time-cards .life-task strong {font-size:16px}
+ html[data-calm-ui] .agenda-time-cards .life-row-actions {gap:3px}
+ html[data-calm-ui] .agenda-time-cards .life-row-actions button {font-size:11px;padding:5px}
+ html[data-calm-ui] .agenda-now {display:flex;align-items:center;gap:12px;color:#507b72;margin:4px 0 18px;font-size:12px}
+ html[data-calm-ui] .agenda-now time {width:58px;flex-shrink:0;text-align:center;font-variant-numeric:tabular-nums}
+ html[data-calm-ui] .agenda-now>span {height:0;border-top:1px dashed #84a69b;flex:1}
+ html[data-calm-ui] .life-agenda[data-view="day"] .agenda-empty {padding-top:65px}
+}
+
+@layer calm {
+ html[data-calm-ui] .life-agenda[data-view="week"] .life-week {margin-left:44px!important;margin-bottom:0!important;background:#f7f8f1!important;border-radius:12px 12px 0 0!important;padding:10px 0!important}
+ html[data-calm-ui] .life-agenda[data-view="week"] .life-week button {padding:5px 0!important;min-width:0!important;border:0!important;background:transparent!important}
+ html[data-calm-ui] .life-agenda[data-view="week"] .life-week button.is-today strong {border-radius:50%!important;background:var(--calm-accent)!important;color:white!important;display:grid!important;place-items:center!important;width:28px!important;height:28px!important;margin:auto!important}
+ html[data-calm-ui] .life-agenda[data-view="week"] .life-tasks {max-height:570px!important;overflow-y:auto!important;scrollbar-width:none!important}
+ html[data-calm-ui] .agenda-week-grid {display:grid!important;grid-template-columns:44px repeat(7,minmax(0,1fr))!important;min-width:0!important;padding-bottom:8px!important}
+ html[data-calm-ui] .agenda-week-hour {font-size:10px!important;color:var(--calm-muted)!important;padding:6px 2px!important;text-align:left!important;min-height:32px!important;background:#f7f8f1!important}
+ html[data-calm-ui] .agenda-week-slot {min-width:0!important;min-height:32px!important;border-left:1px solid #dbe3d5!important;border-top:1px solid #e9ede3!important;padding:2px!important;display:flex!important;flex-direction:column!important;gap:2px!important}
+ html[data-calm-ui] .agenda-week-slot:nth-child(-n+8) {min-height:65px!important;border-top:0!important;padding-top:10px!important;padding-bottom:10px!important}
+ html[data-calm-ui] .agenda-week-slot.is-today {background:#e7eddf!important}
+ html[data-calm-ui] .agenda-week-slot .life-task {display:flex!important;flex-wrap:wrap!important;gap:2px!important;padding:4px 2px!important;border:0!important;border-radius:4px!important;background:#d5e3cc!important;min-width:0!important;justify-content:flex-start!important}
+ html[data-calm-ui] .agenda-week-slot .life-task>div {flex:1!important;min-width:0!important}
+ html[data-calm-ui] .agenda-week-slot .life-task input {width:12px!important;height:12px!important;margin:0!important}
+ html[data-calm-ui] .agenda-week-slot .life-task small,html[data-calm-ui] .agenda-week-slot .life-row-actions {display:none!important}
+ html[data-calm-ui] .agenda-week-title {display:block!important;width:100%!important;padding:0!important;background:transparent!important;border:0!important;text-align:left!important;min-width:0!important}
+ html[data-calm-ui] .agenda-week-title strong {display:block!important;font-size:10px!important;line-height:1.4!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+ html[data-calm-ui] .life-agenda[data-view="week"] {padding-bottom:85px!important}
+}
+
+@layer calm {
+ html[data-calm-ui] .agenda-week-slot[role="button"] {cursor:pointer}
+ html[data-calm-ui] .agenda-week-slot[role="button"]:hover {background:#dfe9d7!important}
+ html[data-calm-ui] .agenda-week-slot[role="button"]:focus-visible {outline:2px solid var(--calm-accent);outline-offset:-2px}
+}
+
+@layer calm {
+ html[data-calm-ui] .life-heading-actions {justify-content:flex-end!important;gap:8px!important;position:relative;align-items:center!important}
+ html[data-calm-ui] .life-columns>aside {display:block!important}
+}
+
+@layer calm {
+ html[data-calm-ui] .life-countdown-page[hidden] {display:none!important}
+ html[data-calm-ui] .life-home.show-countdowns> :not(.life-countdown-page):not(.life-status) {display:none!important}
+ html[data-calm-ui] .life-countdown-page .life-dates-card {position:relative;min-height:70vh;margin:0!important;padding:12px 4px 90px!important;background:transparent!important;border:0!important;box-shadow:none!important}
+ html[data-calm-ui] .life-countdown-page header {display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;margin-bottom:30px!important;min-height:42px!important}
+ html[data-calm-ui] .life-countdown-page h2 {font-size:21px!important;font-weight:600!important}
+ html[data-calm-ui] .life-countdown-back {position:absolute;right:0;top:0;font-size:30px!important;border:0!important;background:transparent!important;padding:0 12px!important;min-height:42px}
+ html[data-calm-ui] .life-countdown-page .countdown-add {display:grid!important;place-items:center!important;text-align:center!important;position:fixed;right:max(26px,calc((100vw - 1100px)/2));bottom:var(--floating-add-bottom,32px);z-index:30;width:54px;height:54px;border-radius:50%!important;background:var(--calm-accent)!important;color:#f5f7ef!important;font:300 34px/1 system-ui,sans-serif!important;border:0!important;box-shadow:0 4px 12px #293d361a!important;padding:0!important;touch-action:none;user-select:none;cursor:grab}
+ html[data-calm-ui] .life-countdown-page .life-event {display:flex;flex-wrap:nowrap;gap:18px;padding:22px 0;border:0!important;position:relative}
+ html[data-calm-ui] .life-countdown-page .life-event>div:first-child {min-width:0;flex:1}
+ html[data-calm-ui] .countdown-event-title {padding:0!important;border:0!important;background:transparent!important;text-align:left;font-size:20px!important;font-weight:500!important;overflow-wrap:anywhere;color:var(--calm-text)!important}
+ html[data-calm-ui] .life-countdown-page .life-event small {font-size:12px!important;margin-top:8px}
+ html[data-calm-ui] .life-countdown-page .life-day-count {display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0}
+ html[data-calm-ui] .life-countdown-page .life-day-count b {font:400 42px/1.1 system-ui,sans-serif!important;color:var(--calm-text)!important;font-variant-numeric:tabular-nums}
+ html[data-calm-ui] .life-countdown-page .life-row-actions {display:none!important}
+}
+
+@layer calm {
+ html[data-calm-ui] .countdown-options {position:absolute;left:0;top:0;z-index:35}
+ html[data-calm-ui] .countdown-options>summary {display:grid;place-items:center;list-style:none;cursor:pointer;width:42px;height:42px;font-size:26px;color:var(--calm-text)}
+ html[data-calm-ui] .countdown-options>summary::-webkit-details-marker {display:none}
+ html[data-calm-ui] .countdown-options>div {position:absolute;top:48px;left:0;min-width:150px;padding:8px;background:var(--calm-surface);border:1px solid var(--calm-border);border-radius:12px;box-shadow:0 8px 24px #293d3618}
+ html[data-calm-ui] .countdown-options button {display:block;width:100%;padding:10px 12px!important;border:0!important;background:transparent!important;text-align:left;font-size:13px!important}
+ html[data-calm-ui] .countdown-options button[aria-pressed="true"] {background:#dfe9d7!important}
+}
+
+@layer calm {
+ html[data-calm-ui] .life-countdown-page .countdown-add.is-dragging {cursor:grabbing!important}
+}
+
+@layer calm {
+ html[data-calm-ui] .countdown-pin-badge {display:inline-block;font-size:10px;color:var(--calm-muted);border:1px solid var(--calm-border);border-radius:4px;padding:2px 5px;margin-right:7px;vertical-align:middle}
+ html[data-calm-ui] .life-editor label:has(>input[name="pinned"]) {display:flex;align-items:center;gap:8px}
+ html[data-calm-ui] .life-editor input[name="pinned"] {width:18px;height:18px;margin:0;accent-color:var(--calm-accent)}
+}
+
+@layer calm {
+ html[data-calm-ui] .life-habits-page[hidden] {display:none!important}
+ html[data-calm-ui] .life-home.show-habits> :not(.life-habits-page):not(.life-status) {display:none!important}
+ html[data-calm-ui] .life-home .life-columns {grid-template-columns:minmax(0,1fr)!important}
+ html[data-calm-ui] .life-habits-page>.life-card {position:relative;min-height:65vh;background:transparent!important;border:0!important;box-shadow:none!important;padding:12px 4px!important}
+ html[data-calm-ui] .life-habits-page header {display:flex!important;align-items:center!important;gap:12px!important;margin-bottom:24px!important}
+ html[data-calm-ui] .life-habits-page h2 {flex:1;font-size:21px!important}
+ html[data-calm-ui] .life-habits-close {font-size:28px!important;border:0!important;background:transparent!important;padding:0 8px!important}
+ html[data-calm-ui] .life-heading-actions>.life-habits-toggle,html[data-calm-ui] .life-heading-actions>.life-countdown-toggle,html[data-calm-ui] .life-heading-actions>.life-focus {min-height:38px!important;white-space:nowrap;padding:9px 14px!important;font-size:12px!important;line-height:18px!important}
+ @media(max-width:600px){html[data-calm-ui] .life-heading-actions {width:100%;justify-content:flex-end!important;gap:6px!important}}
+}
+
+@layer calm {
+ html[data-calm-ui] .habit-name {display:flex;align-items:center;gap:10px}
+ html[data-calm-ui] .habit-custom-icon {font-size:24px;line-height:1.2;flex-shrink:0;max-width:64px;overflow:hidden}
+ html[data-calm-ui] .habit-icon-choices {display:flex;flex-wrap:wrap;gap:6px;margin:-6px 0 16px}
+ html[data-calm-ui] .habit-icon-choices button {padding:6px!important;border:1px solid var(--calm-border)!important;border-radius:9px!important;background:transparent!important;font-size:21px!important;min-width:38px;min-height:38px}
+}
+
+@layer calm {
+ html[data-calm-ui] .habit-morpeko {display:inline-flex;width:48px;height:48px;flex-shrink:0;vertical-align:middle}
+ html[data-calm-ui] .habit-morpeko img {width:100%;height:100%;display:block;object-fit:contain;border-radius:0;transform:scale(1.1)}
+ html[data-calm-ui] .habit-icon-choices button:has(.habit-morpeko) {padding:3px!important}
+}
+
+@layer calm {
+ @media(max-width:599px){
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav [data-side-view="archives"] span {font-size:0!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav [data-side-view="archives"] span::after {content:'Archive';font-size:10px}
+ }
+}
+
+@layer calm {
+ html[data-calm-ui] .rex-sidebar-nav>.mobile-me {display:none!important}
+ @media(max-width:599px){html[data-calm-ui] .personal-card>.rex-sidebar-nav>.mobile-me {display:flex!important} html[data-calm-ui] .rex-sidebar-nav>.mobile-me.is-profile-open {background:linear-gradient(145deg,#fffdf4cc,#e4d9c3aa)!important;color:#514d3e!important;box-shadow:inset 0 1px 1px #fff,0 2px 7px #7762471a!important}}
+}
+
+@layer calm {
+ @media(max-width:599px){
+ html[data-calm-ui] .personal-card>.rex-sidebar-nav [data-side-view="lifeHome"] {order:0!important}
+ html[data-calm-ui] .personal-card>.rex-sidebar-nav [data-side-view="home"] {order:1!important}
+ html[data-calm-ui] .personal-card>.rex-sidebar-nav [data-side-view="reading"] {order:2!important}
+ html[data-calm-ui] .personal-card>.rex-sidebar-nav [data-side-view="archives"] {order:3!important}
+ html[data-calm-ui] .personal-card>.rex-sidebar-nav>.mobile-me {order:4!important}
+ html[data-calm-ui] .life-countdown-page {--floating-add-bottom:calc(88px + env(safe-area-inset-bottom))}
+ }
+}
+
+@layer calm {
+ @media(max-width:599px){
+ html[data-calm-ui] .personal-card>.rex-sidebar-nav button:not(.is-profile-open) {color:#625f50!important;background:transparent!important;border:1px solid transparent!important;box-shadow:none!important;transition:background .18s,box-shadow .18s}
+ html[data-calm-ui] .personal-card>.rex-sidebar-nav button.active,html[data-calm-ui] .personal-card>.rex-sidebar-nav button[aria-current="page"] {background:linear-gradient(145deg,rgba(255,255,250,.86),rgba(225,215,193,.65))!important;border-color:rgba(255,255,255,.85)!important;color:#474d3e!important;box-shadow:inset 0 1px 1px #fff,0 3px 8px #7762471a!important}
+ }
+}
+
+@layer calm {
+ html[data-calm-ui] #home .countdown-dialog {position:fixed!important;width:min(440px,calc(100vw - 32px))!important;max-height:85dvh!important;box-sizing:border-box!important;padding:28px!important;border:1px solid #fff9!important;border-radius:24px!important;background:#f5f7f0!important;box-shadow:0 24px 80px #243c3429!important;overflow:auto!important}
+ html[data-calm-ui] #home .countdown-dialog[open] {animation:pte-countdown-in .22s cubic-bezier(.2,.7,.2,1)}
+ html[data-calm-ui] #home .countdown-dialog::backdrop {background:#28382f44;backdrop-filter:blur(5px)}
+ html[data-calm-ui] #home .countdown-dialog .metric-countdown {padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+ html[data-calm-ui] #home .countdown-dialog .dashboard-section-heading {display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:4px!important;padding-right:38px!important;margin:0 0 18px!important;border:0!important}
+ html[data-calm-ui] #home .countdown-dialog h2 {font:600 22px/1.3 system-ui,sans-serif!important;margin:0!important;letter-spacing:-.4px!important}
+ html[data-calm-ui] #home .countdown-dialog .dashboard-section-heading>span {font-size:11px!important;color:var(--calm-muted)!important}
+ html[data-calm-ui] #home .countdown-dialog .countdown-close {position:absolute!important;right:16px!important;top:16px!important;margin:0!important;width:32px!important;height:32px!important;min-height:32px!important;padding:0!important;display:grid!important;place-items:center!important;border:0!important;border-radius:50%!important;background:#e6ecdf!important;color:#56674f!important;font:400 22px/1 system-ui!important}
+ html[data-calm-ui] #home .countdown-dialog .countdown-list {padding:0!important;border:0!important}
+ html[data-calm-ui] #home .countdown-dialog .countdown-list>p {text-align:center!important;padding:28px 0!important;margin:0!important;font-size:13px!important;color:var(--calm-muted)!important}
+ html[data-calm-ui] #home .countdown-dialog .calendar-target-editor {margin:14px 0 0!important;border:0!important;border-radius:0!important;background:transparent!important;padding:0!important}
+ html[data-calm-ui] #home .countdown-dialog .calendar-target-editor summary {display:block!important;list-style:none!important;text-align:center!important;padding:12px 16px!important;border:1px solid #cedbc6!important;border-radius:12px!important;background:#e4ecdE!important;font-size:13px!important;font-weight:500!important;cursor:pointer;transition:background .15s,transform .15s}
+ html[data-calm-ui] #home .countdown-dialog .calendar-target-editor summary::-webkit-details-marker {display:none}
+ html[data-calm-ui] #home .countdown-dialog .calendar-target-editor summary:active {transform:scale(.985)}
+ html[data-calm-ui] #home .countdown-dialog .countdown-form {display:grid!important;gap:14px!important;margin-top:18px!important;padding:0!important;animation:pte-countdown-in .18s ease-out}
+ html[data-calm-ui] #home .countdown-dialog .countdown-form label {display:grid!important;gap:7px!important;font-size:12px!important}
+ html[data-calm-ui] #home .countdown-dialog .countdown-form input {box-sizing:border-box!important;min-height:44px!important;padding:11px 12px!important;border:1px solid #ced8c8!important;border-radius:10px!important;background:#fbfcf7!important;font:400 14px system-ui!important;width:100%!important}
+ html[data-calm-ui] #home .countdown-dialog .countdown-form .action {border-radius:12px!important;min-height:44px!important;background:var(--calm-accent)!important;color:white!important;border:0!important;font-size:13px!important}
+ html[data-calm-ui] #home .countdown-dialog .countdown-item {display:flex!important;align-items:center!important;gap:12px!important;padding:16px 0!important;border-bottom:1px solid #dce3d5!important}
+ html[data-calm-ui] #home .countdown-dialog .countdown-item>div {flex:1;min-width:0}
+ html[data-calm-ui] #home .countdown-dialog .countdown-item strong {font-size:18px!important;color:var(--calm-accent)!important;white-space:nowrap}
+ html[data-calm-ui] #home .countdown-dialog .countdown-feedback {font-size:12px!important;color:var(--calm-muted)!important;margin:12px 0 0!important}
+ @keyframes pte-countdown-in {from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+ @media(prefers-reduced-motion:reduce){html[data-calm-ui] #home .countdown-dialog[open],html[data-calm-ui] #home .countdown-dialog .countdown-form {animation:none!important}}
+}
+
+@layer calm {
+ html[data-calm-ui] .life-home .life-row-actions {gap:6px!important;align-items:center}
+ html[data-calm-ui] .life-home .life-row-actions>.life-edit-button {display:grid!important;place-items:center!important;width:34px!important;height:34px!important;min-height:34px!important;padding:8px!important;border:1px solid #d3ddcc!important;border-radius:10px!important;background:#f5f8f0!important;color:#526c4b!important;box-shadow:0 1px 3px #293d3605!important;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+ html[data-calm-ui] .life-home .life-edit-button svg {display:block;width:16px;height:16px;pointer-events:none}
+ html[data-calm-ui] .life-home .life-row-actions>.life-edit-button:hover {background:#e4eddc!important;border-color:#acbfa0!important}
+ html[data-calm-ui] .life-home .life-row-actions>.life-edit-button:active {transform:scale(.94)}
+ html[data-calm-ui] .life-home .life-row-actions>.life-edit-button:focus-visible {outline:2px solid #78926d;outline-offset:3px}
+ @media(pointer:coarse){html[data-calm-ui] .life-home .life-row-actions>.life-edit-button {width:42px!important;height:42px!important;min-height:42px!important}}
+ @media(prefers-reduced-motion:reduce){html[data-calm-ui] .life-home .life-row-actions>.life-edit-button {transition:none!important}}
+}
+
+@layer calm {
+ html[data-calm-ui] .pte-night-reminder {padding-top:18px;margin-top:18px;border-top:1px solid #dce3d5}
+ html[data-calm-ui] .pte-night-reminder label {display:flex;align-items:center;gap:9px;font-size:12px;cursor:pointer}
+ html[data-calm-ui] .pte-night-reminder input {width:17px;height:17px;accent-color:var(--calm-accent);flex-shrink:0}
+ html[data-calm-ui] .pte-night-reminder small {display:block;font-size:10px;color:var(--calm-muted);margin:8px 0 0 26px}
+ html[data-calm-ui] .pte-night-reminder p {font-size:11px;color:var(--calm-muted);margin-bottom:0}
+ html[data-calm-ui] .pte-night-reminder p:empty {display:none}
 }

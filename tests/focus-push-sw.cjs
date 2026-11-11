@@ -6,5 +6,7 @@ async function push(){let p;listeners.push({waitUntil:v=>p=v});await p;}
  config.pending={version:3,dueAt:now-1000,test:true};offline=true;await push();assert.equal(notifications[1].t,'Rex World · Test reminder');
  config.enabled=false;await push();assert.equal(notifications.length,2);
  let p;listeners.notificationclick({notification:{data:{type:'rex-focus'},close:()=>{}},waitUntil:v=>p=v});await p;assert.ok(focused);assert.equal(message.type,'rex-open-focus');assert.equal(opened,undefined);
+ config.enabled=true;config.pending={version:9,dueAt:null};offline=false;remote={enabled:true,reminder:config.pending,pte:{version:20,date:'2026-12-01',dueAt:now-1000,days:7,status:'scheduled'}};await push();assert.equal(notifications.at(-1).t,'PTE Countdown');assert.ok(notifications.at(-1).o.body.includes('7'));const count=notifications.length;await push();assert.equal(notifications.length,count);remote.pte={...remote.pte,dueAt:now+86400000,lastDueAt:now-1000,lastDays:7,status:'scheduled'};await push();assert.equal(notifications.length,count);let pteOpen;listeners.notificationclick({notification:{data:{type:'rex-pte'},close:()=>{}},waitUntil:v=>pteOpen=v});await pteOpen;assert.equal(message.type,'rex-open-pte-countdown');
+ console.log('PASS: PTE notification, nightly deduplication and exam countdown navigation');
  console.log('PASS: push display, deduplication, cancelled timer suppression, offline state fallback, notification opens timer');
 })().catch(e=>{console.error(e);process.exit(1)});
