@@ -15143,3 +15143,12 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
     html[data-calm-ui] .personal-card>.rex-sidebar-nav svg {width:16px!important;height:16px!important}
   }
 }
+/* Keep book covers aligned regardless of title wrapping. */
+@layer calm {
+  html[data-calm-ui] .reading-shelf-grid {align-items:stretch!important}
+  html[data-calm-ui] .reading-shelf-book {height:236px!important;min-width:0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:12px!important}
+  html[data-calm-ui] .reading-shelf-book:hover {transform:none!important}
+  html[data-calm-ui] .reading-book-jacket {display:grid!important;grid-template-rows:28px minmax(0,1fr) 18px!important;height:100%!important;min-height:0!important;gap:12px!important;padding:20px 16px!important;box-sizing:border-box!important;border:1px solid var(--calm-border)!important;border-radius:12px!important}
+  html[data-calm-ui] .reading-book-jacket strong {align-self:center!important;display:-webkit-box!important;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden!important;font:500 18px/1.5 system-ui,sans-serif!important;margin:0!important}
+  html[data-calm-ui] :where(.reading-book-mark,.reading-book-count) {color:var(--calm-muted)!important;opacity:1!important}
+}
