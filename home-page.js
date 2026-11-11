@@ -63,19 +63,34 @@
   check.addEventListener('change',()=>{if(!persist({...model,tasks:model.tasks.map(r=>r.id===task.id?(repeating(r)?{...r,completedDates:{...(r.completedDates||{}),[date]:check.checked}}:{...r,done:check.checked}):r)},check.checked?'Completed':'Reopened'))check.checked=!!task.done});
   const copy=el('div');copy.append(el('strong',task.title),el('small',(task.time||'Anytime')+(task.priority==='important'?' · Important':'')+(repeating(task)?' · '+(task.repeat==='interval'?'Every '+task.intervalDays+' days':{daily:'Daily',weekdays:'Weekdays',weekly:'Weekly',custom:'Selected weekdays'}[task.repeat]||''):'')));row.append(check,copy);controls(row,'task',task);return row;
  }
+ let lunarFormatter=null;try{const candidate=new Intl.DateTimeFormat('zh-CN-u-ca-chinese',{month:'long',day:'numeric',timeZone:'Asia/Shanghai'});if(candidate.resolvedOptions().calendar==='chinese')lunarFormatter=candidate}catch{}
+ function lunarLabel(date){
+  if(!lunarFormatter)return '';try{const parts=lunarFormatter.formatToParts(new Date(date+'T12:00:00Z')),n=Number(parts.find(p=>p.type==='day')?.value),digits=['','一','二','三','四','五','六','七','八','九'];if(n===1)return parts.find(p=>p.type==='month')?.value||'';if(n===10)return '初十';if(n===20)return '二十';if(n===30)return '三十';return n>0&&n<30?(n<10?'初':n<20?'十':'廿')+digits[n%10]:''}catch{return ''}
+ }
+ function renderMonth(month,day){
+  for(const name of ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])month.append(el('span',name,'agenda-weekday'));
+  const first=selected.slice(0,7)+'-01',gridStart=weekStart(first),last=new Date(Date.UTC(Number(selected.slice(0,4)),Number(selected.slice(5,7)),0)).getUTCDate(),cells=Math.ceil((((weekday(first)+6)%7)+last)/7)*7,milestones=(events()||[]).filter(r=>validDate(r.date));
+  for(let i=0;i<cells;i++){
+   const date=shift(gridStart,i),tasks=filteredTasks(date),entries=[...(filter==='done'?[]:milestones.filter(r=>r.date===date).map(record=>({kind:'event',record}))),...tasks.map(record=>({kind:'task',record}))],cell=el('div',undefined,'agenda-month-cell'),button=action('',()=>{selected=date;render()},'agenda-month-day');
+   cell.dataset.date=date;cell.setAttribute('role','group');cell.setAttribute('aria-label',date);cell.setAttribute('data-selected',String(date===selected));
+   const number=el('span',String(Number(date.slice(8))),'agenda-date-number');if(date===day){number.classList.add('is-today');button.setAttribute('aria-current','date')}button.append(number,el('span',lunarLabel(date),'agenda-lunar'));button.setAttribute('aria-label',date);button.setAttribute('aria-pressed',String(date===selected));button.title=date+(entries.length?' · '+entries.length+' items':'');
+   if(date.slice(0,7)!==selected.slice(0,7)){cell.classList.add('is-outside');button.classList.add('is-outside')}if(i%7===6)cell.classList.add('is-last-column');cell.append(button);
+   const labels=el('div',undefined,'agenda-month-entries');
+   for(const entry of entries.slice(0,2)){const item=entry.record,chip=action(item.title,()=>{selected=date;render();editor(entry.kind,item)},'agenda-month-chip'+(entry.kind==='event'?' is-milestone':item.done?' is-done':''));chip.dataset.kind=entry.kind;chip.dataset.recordId=item.id;chip.title=item.title;chip.setAttribute('aria-label','Edit '+item.title+' · '+date);labels.append(chip)}
+   if(entries.length>2){const more=action('+'+(entries.length-2)+' more',()=>{selected=date;render();$('.life-tasks').scrollIntoView?.({block:'nearest'})},'agenda-month-more');more.setAttribute('aria-label','Show all '+entries.length+' items on '+date);labels.append(more)}cell.append(labels);cell.addEventListener('click',event=>{if(!event.target.closest('button')){selected=date;render()}});month.append(cell);
+   if(i%7===6&&selected>=shift(date,-6)&&selected<=date){const add=action('＋ Add task',()=>editor('task'),'agenda-inline-add');add.setAttribute('aria-label','Add task on '+selected);month.append(add)}
+  }
+ }
  function renderAgenda(day){
   const agenda=$('.life-agenda');agenda.dataset.view=agendaView;$('#agenda-content').setAttribute('aria-labelledby','agenda-tab-'+agendaView);
-  panel.querySelectorAll('[data-agenda-view]').forEach(button=>{const active=button.dataset.agendaView===agendaView;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
+  panel.querySelectorAll('[data-agenda-view]').forEach(button=>{const active=button.dataset.agendaView===agendaView;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;button.textContent=({day:active?'My day':'Day',week:active?'My week':'Week',month:active?'My month':'Month'})[button.dataset.agendaView]});
   $('.agenda-date-input').value=selected;const start=weekStart(selected),end=shift(start,6);
   $('.agenda-caption').textContent=agendaView==='month'?dateCaption(selected,{month:'long',year:'numeric'}):agendaView==='week'?dateCaption(start,{month:'short',day:'numeric'})+' – '+dateCaption(end,{month:'short',day:'numeric',year:'numeric'}):selected.slice(5,7)+' / '+selected.slice(8)+' '+dateCaption(selected,{weekday:'short'});
   const week=$('.life-week');week.hidden=agendaView!=='week';week.replaceChildren();for(let i=0;i<7;i++){const date=agendaView==='week'?shift(start,i):shift(selected,i-3),button=action('',()=>{selected=date;render()});button.append(el('small',dateCaption(date,{weekday:'short'})),el('strong',date.slice(8)));button.setAttribute('aria-label',date);button.setAttribute('aria-pressed',String(date===selected));if(date===day)button.classList.add('is-today');if(tasksOn(date).length)button.classList.add('has-tasks');week.append(button)}if(agendaView!=='week')week.append(action('Today',()=>{selected=today();render()}));
   const month=$('.agenda-month');month.hidden=agendaView!=='month';month.replaceChildren();
-  if(agendaView==='month'){
-   for(const name of ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])month.append(el('span',name,'agenda-weekday'));
-   const first=selected.slice(0,7)+'-01',gridStart=weekStart(first),last=new Date(Date.UTC(Number(selected.slice(0,4)),Number(selected.slice(5,7)),0)).getUTCDate(),cells=Math.ceil((((weekday(first)+6)%7)+last)/7)*7;
-   for(let i=0;i<cells;i++){const date=shift(gridStart,i),tasks=filteredTasks(date),button=action('',()=>{selected=date;render()},'agenda-month-day');button.append(el('span',String(Number(date.slice(8)))));button.setAttribute('aria-label',date);button.setAttribute('aria-pressed',String(date===selected));if(date===day)button.setAttribute('aria-current','date');if(date.slice(0,7)!==selected.slice(0,7))button.classList.add('is-outside');if(tasks.length){button.append(el('small',String(tasks.length)));button.title=tasks.length+' tasks'}month.append(button)}
-  }
+  if(agendaView==='month')renderMonth(month,day);
   const list=$('.life-tasks');list.replaceChildren();const dates=agendaView==='week'?Array.from({length:7},(_,i)=>shift(start,i)):[selected];let count=0;
+  if(agendaView==='month'&&filter!=='done')for(const milestone of (events()||[]).filter(r=>r.date===selected)){list.append(action('◇ '+milestone.title,()=>editor('event',milestone),'agenda-selected-event'));count++}
   for(const date of dates){const tasks=filteredTasks(date);if(!tasks.length)continue;if(agendaView==='week')list.append(el('h3',dateCaption(date,{weekday:'short',month:'short',day:'numeric'}),'agenda-day-heading'));for(const task of tasks){list.append(taskRow(task,date));count++}}
   if(!count){const empty=el('div',undefined,'agenda-empty');empty.append(el('span',filter==='done'?'No completed tasks':filter==='open'?'Nothing to do':agendaView==='week'?'No plans this week':'No plans yet'));list.append(empty)}
  }
