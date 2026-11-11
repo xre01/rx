@@ -14873,8 +14873,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 .life-card{background:#ffffffb8;border:1px solid #dce3d7;border-radius:18px;padding:22px;margin-bottom:20px}
 .life-home .life-card h2{font:21px Georgia,serif;margin:0}
 .life-card>header>button,.life-filters button{background:transparent;border:1px solid #d7dfd2;color:#53705d;padding:7px 11px;border-radius:18px;font-size:12px}
-.life-week{display:flex;gap:6px;margin:22px 0 18px}.life-week button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:11px 2px;background:transparent;border:1px solid transparent;border-radius:12px;color:#65796b}
-.life-week button[aria-pressed=true]{background:#355b49;color:#fff}.life-week .is-today{border-color:#a0b39d}.life-week small{font-size:10px}.life-week strong{font-size:16px}
 .life-filters{display:flex;gap:7px;padding-bottom:12px;border-bottom:1px solid #e8ece4}.life-filters button[aria-pressed=true]{background:#edf2e9;border-color:#ccd9c7}
 .life-task,.life-habit{padding:16px 0;border-bottom:1px solid #edf0e8}.life-task>div,.life-habit>div{flex:1;min-width:0}
 .life-task strong,.life-habit strong,.life-event strong{font-size:14px;font-weight:500;overflow-wrap:anywhere}.life-task small,.life-habit small,.life-event small{display:block;margin-top:6px;color:#83907f;font-size:11px}
@@ -14888,7 +14886,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 .life-editor{background:#fafbf6;color:#34483e;border:1px solid #cfdac8;border-radius:20px;width:min(420px,90vw);padding:26px;box-sizing:border-box}.life-editor::backdrop{background:#243c3066}.life-editor h2{font:25px Georgia,serif;margin:0 0 18px}.life-editor label{display:flex;flex-direction:column;gap:6px;font-size:13px;margin-bottom:12px}.life-editor input,.life-editor select{width:100%;box-sizing:border-box;border:1px solid #cdd7c7;background:#fff;border-radius:9px;padding:11px;color:#34483e;font:inherit}.life-editor-actions{display:flex;justify-content:flex-end;gap:10px}.life-editor-actions button{padding:10px 20px;border:1px solid #ccd7c5;border-radius:18px;background:#fff;color:#45633e;cursor:pointer}.life-editor-actions button[type=submit]{background:#355b49;color:#fff}
 .life-home button:focus-visible,.life-editor button:focus-visible{outline:3px solid #a4bb83;outline-offset:3px}
 
-@media(max-width:600px){.life-home{padding:24px 14px 60px}.life-heading{align-items:flex-start;flex-wrap:wrap}.life-heading-actions{gap:8px}.life-heading-actions button{padding:9px 13px}.life-overview{gap:18px;padding:18px 0;margin:10px 0 22px}.life-ring{width:62px;height:62px}.life-ring strong{font-size:18px}.life-stats{gap:12px}.life-stats strong{font-size:20px}.life-card{padding:20px 15px}.life-columns>aside{display:block}.life-habit{flex-wrap:wrap}.life-week{gap:2px}.life-week button{font-size:10px}.life-home .life-row-actions{gap:0}}
+@media(max-width:600px){.life-home{padding:24px 14px 60px}.life-heading{align-items:flex-start;flex-wrap:wrap}.life-heading-actions{gap:8px}.life-heading-actions button{padding:9px 13px}.life-overview{gap:18px;padding:18px 0;margin:10px 0 22px}.life-ring{width:62px;height:62px}.life-ring strong{font-size:18px}.life-stats{gap:12px}.life-stats strong{font-size:20px}.life-card{padding:20px 15px}.life-columns>aside{display:block}.life-habit{flex-wrap:wrap}.life-home .life-row-actions{gap:0}}
 .life-columns>.life-card,.life-columns>aside{min-width:0}
 @media(max-width:1000px){.life-columns{grid-template-columns:minmax(0,1fr)}.life-columns>aside{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
 @media(max-width:760px){html body#rexSanctuary main:has(>#lifeHome.active){width:100%!important;max-width:none!important}.life-home{padding:20px 12px 40px}.life-heading{flex-wrap:wrap}.life-columns>aside{display:block}}
@@ -15044,7 +15042,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 @keyframes calm-spin {to{rotate:360deg}}
 @keyframes calm-confirm {0%,100%{box-shadow:none}40%{box-shadow:inset 0 0 0 2px #7f9b70;background-color:#d8e5d1}}
 @layer calm {
-  html[data-calm-ui] .life-week button[aria-pressed="false"] {background:transparent!important;border-color:transparent!important}
   @media(max-width:760px) {
     html[data-calm-ui] .personal-avatar-menu {grid-column:1!important;grid-row:1!important;width:44px!important;margin:0!important;align-self:center!important}
     html[data-calm-ui] .personal-identity {grid-column:2!important;grid-row:1!important}
@@ -15178,8 +15175,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] .agenda-menu .life-filters {position:absolute;right:0;top:100%;z-index:20;display:flex;flex-direction:column;gap:4px;min-width:120px;margin:4px 0 0;padding:8px;border:1px solid var(--calm-border);border-radius:10px;background:var(--calm-surface);box-shadow:0 5px 18px #293d3614}
   html[data-calm-ui] .agenda-menu .life-filters button {border:0!important;border-radius:6px!important;padding:9px 12px!important;text-align:left}
   html[data-calm-ui] .life-agenda [hidden] {display:none!important}
-  html[data-calm-ui] .life-agenda .life-week {margin:4px 0 16px!important;gap:3px!important}
-  html[data-calm-ui] .life-agenda .life-week .has-tasks strong:after {content:"";display:block;width:4px;height:4px;border-radius:50%;background:var(--calm-accent);margin:3px auto 0}
   html[data-calm-ui] .life-agenda .life-tasks {min-width:0}
   html[data-calm-ui] .life-agenda .life-tasks:has(.agenda-empty) {display:grid;place-items:center;min-height:290px}
   html[data-calm-ui] .agenda-empty {text-align:center;font-size:13px;color:var(--calm-muted);opacity:.8;padding:30px 10px}
@@ -15202,14 +15197,12 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] .agenda-month-chip.is-done {text-decoration:line-through;background:#e4e8df!important;color:var(--calm-muted)!important}
   html[data-calm-ui] .agenda-month-more {background:transparent!important;border:0!important;padding:2px!important;font-size:9px!important;text-align:center}
   html[data-calm-ui] .agenda-inline-add {grid-column:1/-1;min-height:44px;background:var(--calm-page)!important;border:0!important;border-bottom:1px solid var(--calm-border)!important;border-radius:0!important;font-size:13px!important}
-  html[data-calm-ui] .agenda-selected-event {display:block;width:100%;text-align:left;padding:12px!important;border:1px solid var(--calm-border)!important;border-radius:8px!important;margin-top:10px}
   html[data-calm-ui] .life-agenda[data-view="month"] .life-tasks:has(.agenda-empty) {display:none!important;min-height:0}
   @media(max-width:600px) {
     html[data-calm-ui] .agenda-month-cell {min-height:82px}
     html[data-calm-ui] .agenda-month-chip {font-size:12px!important;padding:5px 2px!important}
   }
 
-  html[data-calm-ui] .agenda-day-heading {font:600 12px/1.5 system-ui,sans-serif;color:var(--calm-muted);margin:18px 0 4px}
   @media(max-width:600px) {
     html[data-calm-ui] .life-agenda {min-height:470px!important;padding:20px 16px 88px!important}
     html[data-calm-ui] .agenda-tabs {margin-bottom:18px}
@@ -15245,9 +15238,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 }
 
 @layer calm {
- html[data-calm-ui] .agenda-week-slot[role="button"] {cursor:pointer}
- html[data-calm-ui] .agenda-week-slot[role="button"]:hover {background:#dfe9d7!important}
- html[data-calm-ui] .agenda-week-slot[role="button"]:focus-visible {outline:2px solid var(--calm-accent);outline-offset:-2px}
 }
 
 @layer calm {
@@ -15318,8 +15308,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 
 @layer calm {
  @media(max-width:599px){
-  html[data-calm-ui] .personal-card>.rex-sidebar-nav [data-side-view="archives"] span {font-size:0!important}
-  html[data-calm-ui] .personal-card>.rex-sidebar-nav [data-side-view="archives"] span::after {content:'Archive';font-size:10px}
  }
 }
 
