@@ -15425,3 +15425,19 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] #home .compact-metrics>.countdown-metric>small {grid-row:3!important;align-self:end!important;display:block!important;font-size:11px!important;line-height:1.4!important;margin:0!important;white-space:nowrap!important}
  @media(max-width:359px){html[data-calm-ui] #home .compact-metrics>:is(article,button)>span:not(.rex-metric-icon) {font-size:10px!important;padding-right:15px!important}}
 }
+
+@layer calm {
+ html[data-calm-ui] .agenda-inline-details {grid-column:1/-1;background:#e7eddf;padding:12px;display:grid;gap:9px;border-bottom:1px solid #d3ddcd}
+ html[data-calm-ui] .agenda-inline-details .life-task {display:grid!important;grid-template-columns:22px minmax(0,1fr) auto!important;align-items:center!important;gap:8px 10px!important;padding:14px!important;border:1px solid #dde5d5!important;border-radius:13px!important;background:#f7f8f1!important;min-width:0}
+ html[data-calm-ui] .agenda-inline-details .life-task input {appearance:none;width:20px;height:20px;border:2px solid #7b9571;border-radius:50%;margin:0;display:grid;place-items:center;cursor:pointer}
+ html[data-calm-ui] .agenda-inline-details .life-task input:checked {background:var(--calm-accent);border-color:var(--calm-accent)}
+ html[data-calm-ui] .agenda-inline-details .life-task input:checked::after {content:'✓';color:white;font-size:13px}
+ html[data-calm-ui] .agenda-card-title {display:block!important;text-align:left!important;padding:0!important;background:transparent!important;border:0!important;min-width:0}
+ html[data-calm-ui] .agenda-card-title strong {font-size:16px!important;line-height:1.4!important;overflow-wrap:anywhere}
+ html[data-calm-ui] .agenda-inline-details .life-task small {font-size:11px!important;line-height:1.4!important;margin-top:4px!important}
+ html[data-calm-ui] .agenda-card-time {font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--calm-text)}
+ html[data-calm-ui] .agenda-inline-details .life-row-actions {grid-column:2/4;justify-content:flex-end}
+ html[data-calm-ui] .agenda-inline-milestone {display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;padding:16px!important;background:#f7f8f1!important;border:1px solid #dde5d5!important;border-radius:13px!important;text-align:left!important}
+ html[data-calm-ui] .agenda-inline-milestone small {font-size:11px;color:var(--calm-muted)}
+ html[data-calm-ui] .agenda-inline-details .agenda-inline-add {border:0!important;background:transparent!important;min-height:40px}
+}
