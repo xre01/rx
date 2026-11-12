@@ -15436,3 +15436,88 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .life-home .task-priority-badge {display:inline-flex;align-items:center;margin-left:7px;padding:3px 7px;border:1px solid #d8ba84;border-radius:6px;background:#f4e3bf;color:#70501f;font:600 11px/1.25 system-ui,sans-serif;white-space:nowrap;vertical-align:middle}
  html[data-calm-ui] .life-home .life-task.is-done .task-priority-badge {background:#e4e8df;color:#59654f;border-color:#c3cdbb}
 }
+
+@layer calm {
+ html[data-calm-ui] .task-subtask-editor {margin:0 0 16px;font-size:12px}
+ html[data-calm-ui] .task-subtask-editor>summary {padding:10px 0;cursor:pointer;color:var(--calm-muted)}
+ html[data-calm-ui] .task-subtask-fields {display:grid;gap:8px;margin:8px 0}
+ html[data-calm-ui] .task-subtask-field {display:flex;align-items:center;gap:8px}
+ html[data-calm-ui] .task-subtask-field input {margin:0!important;flex:1;min-width:0}
+ html[data-calm-ui] .subtask-remove {width:34px;min-height:34px;padding:4px!important;background:transparent!important;border:0!important;color:var(--calm-muted)}
+ html[data-calm-ui] .subtask-add {padding:7px 0!important;background:transparent!important;border:0!important;font-size:12px!important;color:var(--calm-accent)}
+ html[data-calm-ui] .task-subtasks {margin-top:2px;min-width:0}
+ html[data-calm-ui] .life-home .life-task .task-subtasks>summary {font-size:12px!important;color:var(--calm-muted)!important;cursor:pointer;padding:3px 25px 7px 0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;list-style:none!important}
+ html[data-calm-ui] .task-subtask {display:flex!important;align-items:center!important;gap:11px!important;margin:0!important;padding:12px 0 12px 12px!important;font-size:16px!important;line-height:1.4!important;color:var(--calm-text)!important}
+ html[data-calm-ui] .task-subtask input {width:20px!important;height:20px!important;flex-shrink:0}
+ html[data-calm-ui] .task-subtask span {overflow-wrap:anywhere}
+ html[data-calm-ui] .task-subtask.is-done span {text-decoration:line-through;color:var(--calm-muted)}
+}
+
+@layer calm {
+ html[data-calm-ui] .agenda-time-cards .life-task:has(.task-subtasks) {display:grid!important;grid-template-columns:22px minmax(0,1fr)!important;align-items:start!important}
+ html[data-calm-ui] .agenda-time-cards .life-task:has(.task-subtasks)>.life-row-actions {grid-column:2;justify-content:flex-end}
+ html[data-calm-ui] .life-task:has(.task-subtasks)>input {align-self:start;margin-top:3px!important}
+}
+
+@layer calm {
+ html[data-calm-ui] .life-home .life-task .task-subtasks>summary:hover,html[data-calm-ui] .life-home .life-task .task-subtasks>summary:focus {background:transparent!important}
+ html[data-calm-ui] .life-task:has(.task-subtasks)>.agenda-card-time {align-self:start;padding-top:3px}
+}
+
+@layer calm {
+ html[data-calm-ui] .life-task:has(.task-subtasks)>div {position:relative}
+ html[data-calm-ui] .task-subtasks>summary::-webkit-details-marker {display:none}
+ html[data-calm-ui] .task-subtasks>summary::after {content:"";position:absolute;right:4px;top:5px;width:7px;height:7px;border-right:2px solid #74856d;border-bottom:2px solid #74856d;transform:rotate(45deg)}
+ html[data-calm-ui] .task-subtasks[open]>summary::after {transform:rotate(225deg);top:9px}
+ html[data-calm-ui] .life-task:has(.task-subtasks)>div>strong {font-size:17px!important;line-height:1.5!important}
+ html[data-calm-ui] .task-subtasks>label:first-of-type {margin-top:7px!important}
+}
+
+@layer calm {
+ html[data-calm-ui][data-ui-theme="christmas"] {--theme-mark:"🎄";--calm-page:#edf3ee!important;--calm-surface:#fafbf5!important;--calm-inset:#e1ebe2!important;--calm-selected:#d5e5d8!important;--calm-text:#233f32!important;--calm-muted:#536a5c!important;--calm-accent:#345f45!important;--calm-border:#c9d8cb!important;--theme-highlight:#a84950;--theme-button-text:#fff;--theme-glow:#c9816b24}
+ html[data-calm-ui][data-ui-theme="newyear"] {--theme-mark:"🏮";--calm-page:#fbf0e4!important;--calm-surface:#fff9ee!important;--calm-inset:#f2e2d0!important;--calm-selected:#f1d4c6!important;--calm-text:#542e2b!important;--calm-muted:#7d5c50!important;--calm-accent:#973d3b!important;--calm-border:#e2cabb!important;--theme-highlight:#ac7933;--theme-button-text:#fff;--theme-glow:#d8ab5526}
+ html[data-calm-ui][data-ui-theme="midautumn"] {--theme-mark:"☾";--calm-page:#eff0f7!important;--calm-surface:#faf9fd!important;--calm-inset:#e2e3ef!important;--calm-selected:#deddf0!important;--calm-text:#34394f!important;--calm-muted:#64677c!important;--calm-accent:#5e5a83!important;--calm-border:#d1d2e2!important;--theme-highlight:#a88c48;--theme-button-text:#fff;--theme-glow:#d1b77626}
+ html[data-calm-ui][data-ui-theme="halloween"] {--theme-mark:"🎃";--calm-page:#211e2e!important;--calm-surface:#2d293d!important;--calm-inset:#262234!important;--calm-selected:#43384c!important;--calm-text:#f4edf7!important;--calm-muted:#c4b8cf!important;--calm-accent:#edb276!important;--calm-border:#51465e!important;--theme-highlight:#b49bdb;--theme-button-text:#28202e;--theme-glow:#a86b2320}
+ html[data-calm-ui][data-ui-theme="pokemon"] {--theme-mark:"◓";--calm-page:#faf4dc!important;--calm-surface:#fffdf2!important;--calm-inset:#eee6c9!important;--calm-selected:#efe0ad!important;--calm-text:#35434a!important;--calm-muted:#626b60!important;--calm-accent:#a84242!important;--calm-border:#ded4ae!important;--theme-highlight:#c6a548;--theme-button-text:#fff;--theme-glow:#e0bf452e}
+ html[data-calm-ui][data-ui-theme="supreme"] {--theme-mark:"♛";--calm-page:#172129!important;--calm-surface:#22303a!important;--calm-inset:#1c2832!important;--calm-selected:#3a4141!important;--calm-text:#f7eed8!important;--calm-muted:#c9c0a9!important;--calm-accent:#dfbd75!important;--calm-border:#4a5050!important;--theme-highlight:#e8d39e;--theme-button-text:#202b32;--theme-glow:#dcb77516}
+ html[data-calm-ui] .theme-settings {margin-top:20px;padding-top:18px;border-top:1px solid var(--calm-border)}
+ html[data-calm-ui] .theme-settings h3 {font-size:14px;margin:0 0 12px}
+ html[data-calm-ui] .theme-choices {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ html[data-calm-ui] .theme-settings .theme-choices button {display:flex!important;align-items:center!important;gap:9px!important;text-align:left!important;padding:10px!important;min-height:46px!important;border:1px solid var(--calm-border)!important;border-radius:11px!important;background:var(--calm-surface)!important;color:var(--calm-text)!important;font-size:11px!important;line-height:1.3!important}
+ html[data-calm-ui] .theme-settings .theme-choices button[aria-pressed="true"] {border-color:var(--calm-accent)!important;box-shadow:inset 0 0 0 1px var(--calm-accent)!important;background:var(--calm-selected)!important}
+ html[data-calm-ui] .theme-swatch {display:block;width:24px;height:24px;border-radius:8px;flex-shrink:0;border:1px solid #ffffff60;box-shadow:inset 0 1px 2px #ffffff40}
+ html[data-calm-ui] .theme-swatch-default {background:linear-gradient(135deg,#e6eddf 50%,#496b54 50%)}
+ html[data-calm-ui] .theme-swatch-christmas {background:linear-gradient(135deg,#345f45 50%,#a84950 50%)}
+ html[data-calm-ui] .theme-swatch-newyear {background:linear-gradient(135deg,#973d3b 50%,#e0bc73 50%)}
+ html[data-calm-ui] .theme-swatch-midautumn {background:linear-gradient(135deg,#5e5a83 50%,#d7bf80 50%)}
+ html[data-calm-ui] .theme-swatch-halloween {background:linear-gradient(135deg,#332b48 50%,#edb276 50%)}
+ html[data-calm-ui] .theme-swatch-pokemon {background:linear-gradient(135deg,#f1d56c 50%,#b54c49 50%)}
+ html[data-calm-ui] .theme-swatch-supreme {background:linear-gradient(135deg,#22303a 50%,#dfbd75 50%)}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary {background:radial-gradient(ellipse at 95% 0,var(--theme-glow),transparent 45%),var(--calm-page)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.life-card,.card,.profile-popover,.focus-dialog,.life-editor,.countdown-dialog,.hero-task-row,.compact-metrics>article,.compact-metrics>button,.reading-book-jacket,.agenda-time-cards .life-task,.agenda-inline-details .life-task,.agenda-inline-milestone,.pte-question,.pte-count-row) {background:var(--calm-surface)!important;border-color:var(--calm-border)!important;color:var(--calm-text)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.agenda-inline-details,.agenda-weekday,.personal-sidebar,.personal-card #profileToggle,.agenda-month-cell[data-selected="true"]) {background:var(--calm-inset)!important;border-color:var(--calm-border)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(h1,h2,h3,.life-task strong,.life-habit strong,.countdown-event-title,.agenda-card-time,.agenda-date-number,.compact-metrics>article>span,.compact-metrics>button>span) {color:var(--calm-text)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(input,select,textarea,.life-filters button,.calendar-target-editor summary,.life-edit-button,.life-heading-actions button,.agenda-month,.agenda-month-day,.agenda-toolbar button) {background:var(--calm-surface)!important;color:var(--calm-text)!important;border-color:var(--calm-border)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.agenda-add,.countdown-add,.life-check,.countdown-form .action,.agenda-date-number.is-today) {background:var(--calm-accent)!important;color:var(--theme-button-text)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.rex-sidebar-nav button.active,.rex-sidebar-nav button[aria-current="page"],.rex-sidebar-nav>.mobile-me.is-profile-open,.agenda-month-chip) {background:var(--calm-selected)!important;color:var(--calm-text)!important;border-color:var(--calm-border)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary .personal-sidebar::before {background:linear-gradient(to top,var(--calm-page),transparent)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.theme-settings p,.life-task small,.life-empty,.agenda-lunar,.life-date,.life-stats span,.task-subtasks>summary) {color:var(--calm-muted)!important}
+}
+
+@layer calm {
+ html[data-calm-ui][data-ui-theme] .life-heading h1::after {content:var(--theme-mark);display:inline-block;margin-left:10px;font-size:20px;vertical-align:middle;color:var(--theme-highlight)}
+}
+
+@layer calm {
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary #profilePopover :is(.stats,.stat,.profile-settings details,.avatar-settings,.profile,.progress) {background:var(--calm-inset)!important;border-color:var(--calm-border)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary #profilePopover :is(.stat b,.stat span,.profile-settings summary,.sub,.profile-close,.profile-settings button) {color:var(--calm-text)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary #profilePopover #expBar {background:var(--calm-accent)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.life-ring,.reading-focus-metrics,.reading-book-notes,.reading-article-card,.archive-record,.reading-book-note,.reading-focus-card,.reading-weekly-card) {background:var(--calm-surface)!important;color:var(--calm-text)!important;border-color:var(--calm-border)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.life-task.is-done,.task-subtask.is-done span,.life-card small,.reading-file-row,.calendar-days button) {color:var(--calm-muted)!important;background-color:var(--calm-surface)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.agenda-caption,.agenda-weekday,.calendar-title,.calendar-footer,.calendar-weekdays,.reading-sync-strip,.countdown-dialog input,.countdown-dialog label) {color:var(--calm-text)!important;background-color:var(--calm-surface)!important}
+}
+
+@layer calm {
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary .life-task input[type="checkbox"]:checked {background:var(--calm-accent)!important;border-color:var(--calm-accent)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary .life-task input[type="checkbox"]:checked::after {color:var(--theme-button-text)!important}
+}
