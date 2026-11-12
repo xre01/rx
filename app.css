@@ -15474,12 +15474,8 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 }
 
 @layer calm {
- html[data-calm-ui][data-ui-theme="christmas"] {--theme-mark:"🎄";--calm-page:#edf3ee!important;--calm-surface:#fafbf5!important;--calm-inset:#e1ebe2!important;--calm-selected:#d5e5d8!important;--calm-text:#233f32!important;--calm-muted:#536a5c!important;--calm-accent:#345f45!important;--calm-border:#c9d8cb!important;--theme-highlight:#a84950;--theme-button-text:#fff;--theme-glow:#c9816b24}
- html[data-calm-ui][data-ui-theme="newyear"] {--theme-mark:"🏮";--calm-page:#fbf0e4!important;--calm-surface:#fff9ee!important;--calm-inset:#f2e2d0!important;--calm-selected:#f1d4c6!important;--calm-text:#542e2b!important;--calm-muted:#7d5c50!important;--calm-accent:#973d3b!important;--calm-border:#e2cabb!important;--theme-highlight:#ac7933;--theme-button-text:#fff;--theme-glow:#d8ab5526}
- html[data-calm-ui][data-ui-theme="midautumn"] {--theme-mark:"☾";--calm-page:#eff0f7!important;--calm-surface:#faf9fd!important;--calm-inset:#e2e3ef!important;--calm-selected:#deddf0!important;--calm-text:#34394f!important;--calm-muted:#64677c!important;--calm-accent:#5e5a83!important;--calm-border:#d1d2e2!important;--theme-highlight:#a88c48;--theme-button-text:#fff;--theme-glow:#d1b77626}
- html[data-calm-ui][data-ui-theme="halloween"] {--theme-mark:"🎃";--calm-page:#211e2e!important;--calm-surface:#2d293d!important;--calm-inset:#262234!important;--calm-selected:#43384c!important;--calm-text:#f4edf7!important;--calm-muted:#c4b8cf!important;--calm-accent:#edb276!important;--calm-border:#51465e!important;--theme-highlight:#b49bdb;--theme-button-text:#28202e;--theme-glow:#a86b2320}
- html[data-calm-ui][data-ui-theme="pokemon"] {--theme-mark:"◓";--calm-page:#faf4dc!important;--calm-surface:#fffdf2!important;--calm-inset:#eee6c9!important;--calm-selected:#efe0ad!important;--calm-text:#35434a!important;--calm-muted:#626b60!important;--calm-accent:#a84242!important;--calm-border:#ded4ae!important;--theme-highlight:#c6a548;--theme-button-text:#fff;--theme-glow:#e0bf452e}
- html[data-calm-ui][data-ui-theme="supreme"] {--theme-mark:"♛";--calm-page:#172129!important;--calm-surface:#22303a!important;--calm-inset:#1c2832!important;--calm-selected:#3a4141!important;--calm-text:#f7eed8!important;--calm-muted:#c9c0a9!important;--calm-accent:#dfbd75!important;--calm-border:#4a5050!important;--theme-highlight:#e8d39e;--theme-button-text:#202b32;--theme-glow:#dcb77516}
+ html[data-calm-ui][data-ui-theme="newyear"] {--calm-page:#fbf0e4!important;--calm-surface:#fff9ee!important;--calm-inset:#f2e2d0!important;--calm-selected:#f1d4c6!important;--calm-text:#542e2b!important;--calm-muted:#7d5c50!important;--calm-accent:#973d3b!important;--calm-border:#e2cabb!important;--theme-button-text:#fff}
+ html[data-calm-ui][data-ui-theme="pokemon"] {--calm-page:#faf4dc!important;--calm-surface:#fffdf2!important;--calm-inset:#eee6c9!important;--calm-selected:#efe0ad!important;--calm-text:#35434a!important;--calm-muted:#626b60!important;--calm-accent:#a84242!important;--calm-border:#ded4ae!important;--theme-button-text:#fff}
  html[data-calm-ui] .theme-settings {margin-top:20px;padding-top:18px;border-top:1px solid var(--calm-border)}
  html[data-calm-ui] .theme-settings h3 {font-size:14px;margin:0 0 12px}
  html[data-calm-ui] .theme-choices {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
@@ -15487,13 +15483,9 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .theme-settings .theme-choices button[aria-pressed="true"] {border-color:var(--calm-accent)!important;box-shadow:inset 0 0 0 1px var(--calm-accent)!important;background:var(--calm-selected)!important}
  html[data-calm-ui] .theme-swatch {display:block;width:24px;height:24px;border-radius:8px;flex-shrink:0;border:1px solid #ffffff60;box-shadow:inset 0 1px 2px #ffffff40}
  html[data-calm-ui] .theme-swatch-default {background:linear-gradient(135deg,#e6eddf 50%,#496b54 50%)}
- html[data-calm-ui] .theme-swatch-christmas {background:linear-gradient(135deg,#345f45 50%,#a84950 50%)}
  html[data-calm-ui] .theme-swatch-newyear {background:linear-gradient(135deg,#973d3b 50%,#e0bc73 50%)}
- html[data-calm-ui] .theme-swatch-midautumn {background:linear-gradient(135deg,#5e5a83 50%,#d7bf80 50%)}
- html[data-calm-ui] .theme-swatch-halloween {background:linear-gradient(135deg,#332b48 50%,#edb276 50%)}
  html[data-calm-ui] .theme-swatch-pokemon {background:linear-gradient(135deg,#f1d56c 50%,#b54c49 50%)}
- html[data-calm-ui] .theme-swatch-supreme {background:linear-gradient(135deg,#22303a 50%,#dfbd75 50%)}
- html[data-calm-ui][data-ui-theme] body#rexSanctuary {background:radial-gradient(ellipse at 95% 0,var(--theme-glow),transparent 45%),var(--calm-page)!important}
+ html[data-calm-ui][data-ui-theme] body#rexSanctuary {background:var(--calm-page)!important}
  html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.life-card,.card,.profile-popover,.focus-dialog,.life-editor,.countdown-dialog,.hero-task-row,.compact-metrics>article,.compact-metrics>button,.reading-book-jacket,.agenda-time-cards .life-task,.agenda-inline-details .life-task,.agenda-inline-milestone,.pte-question,.pte-count-row) {background:var(--calm-surface)!important;border-color:var(--calm-border)!important;color:var(--calm-text)!important}
  html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.agenda-inline-details,.agenda-weekday,.personal-sidebar,.personal-card #profileToggle,.agenda-month-cell[data-selected="true"]) {background:var(--calm-inset)!important;border-color:var(--calm-border)!important}
  html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(h1,h2,h3,.life-task strong,.life-habit strong,.countdown-event-title,.agenda-card-time,.agenda-date-number,.compact-metrics>article>span,.compact-metrics>button>span) {color:var(--calm-text)!important}
@@ -15502,10 +15494,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.rex-sidebar-nav button.active,.rex-sidebar-nav button[aria-current="page"],.rex-sidebar-nav>.mobile-me.is-profile-open,.agenda-month-chip) {background:var(--calm-selected)!important;color:var(--calm-text)!important;border-color:var(--calm-border)!important}
  html[data-calm-ui][data-ui-theme] body#rexSanctuary .personal-sidebar::before {background:linear-gradient(to top,var(--calm-page),transparent)!important}
  html[data-calm-ui][data-ui-theme] body#rexSanctuary :is(.theme-settings p,.life-task small,.life-empty,.agenda-lunar,.life-date,.life-stats span,.task-subtasks>summary) {color:var(--calm-muted)!important}
-}
-
-@layer calm {
- html[data-calm-ui][data-ui-theme] .life-heading h1::after {content:var(--theme-mark);display:inline-block;margin-left:10px;font-size:20px;vertical-align:middle;color:var(--theme-highlight)}
 }
 
 @layer calm {
