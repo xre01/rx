@@ -15259,6 +15259,8 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .life-countdown-page .life-event small {font-size:12px!important;margin-top:8px}
  html[data-calm-ui] .life-countdown-page .life-day-count {display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0}
  html[data-calm-ui] .life-countdown-page .life-day-count b {font:400 42px/1.1 system-ui,sans-serif!important;color:var(--calm-text)!important;font-variant-numeric:tabular-nums}
+ html[data-calm-ui] .life-countdown-page .life-day-count.is-detailed b {font:600 19px/1.2 system-ui,sans-serif!important}
+ html[data-calm-ui] .life-countdown-page .life-day-count.is-detailed small {font:500 11px/1.4 ui-monospace,monospace!important;white-space:nowrap;font-variant-numeric:tabular-nums}
  html[data-calm-ui] .life-countdown-page .life-row-actions {display:none!important}
 }
 
@@ -15267,9 +15269,13 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .countdown-options>summary {display:grid;place-items:center;list-style:none;cursor:pointer;width:42px;height:42px;font-size:26px;color:var(--calm-text)}
  html[data-calm-ui] .countdown-options>summary::-webkit-details-marker {display:none}
  html[data-calm-ui] .countdown-options>div {position:absolute;top:48px;left:0;min-width:150px;padding:8px;background:var(--calm-surface);border:1px solid var(--calm-border);border-radius:12px;box-shadow:0 8px 24px #293d3618}
+ html[data-calm-ui] .countdown-options .countdown-menu-label {display:block;padding:7px 10px 4px;color:var(--calm-muted);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+ html[data-calm-ui] .countdown-options .countdown-menu-label:not(:first-child) {margin-top:6px;border-top:1px solid var(--calm-border);padding-top:10px}
  html[data-calm-ui] .countdown-options button {display:block;width:100%;padding:10px 12px!important;border:0!important;background:transparent!important;text-align:left;font-size:13px!important}
- html[data-calm-ui] .countdown-options button[aria-pressed="true"] {background:#dfe9d7!important}
+ html[data-calm-ui] .countdown-options button[aria-pressed="true"] {background:var(--calm-selected)!important;color:var(--calm-text)!important}
 }
+
+@layer calm {@media(max-width:420px){html[data-calm-ui] .life-countdown-page .life-event {gap:10px}html[data-calm-ui] .life-countdown-page .life-day-count.is-detailed b {font-size:16px!important}html[data-calm-ui] .life-countdown-page .life-day-count.is-detailed small {font-size:9px!important}}}
 
 @layer calm {
  html[data-calm-ui] .life-countdown-page .countdown-add.is-dragging {cursor:grabbing!important}
