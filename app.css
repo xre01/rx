@@ -15431,3 +15431,9 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .agenda-pte-card strong {font-size:15px}
  html[data-calm-ui] .agenda-pte-card small {font-size:11px;color:var(--calm-muted)}
 }
+
+@layer calm {
+ html[data-calm-ui] .life-home .life-task.is-important {box-shadow:inset 3px 0 0 #b98a43!important}
+ html[data-calm-ui] .life-home .task-priority-badge {display:inline-flex;align-items:center;margin-left:7px;padding:3px 7px;border:1px solid #d8ba84;border-radius:6px;background:#f4e3bf;color:#70501f;font:600 11px/1.25 system-ui,sans-serif;white-space:nowrap;vertical-align:middle}
+ html[data-calm-ui] .life-home .life-task.is-done .task-priority-badge {background:#e4e8df;color:#59654f;border-color:#c3cdbb}
+}
