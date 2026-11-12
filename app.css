@@ -15178,7 +15178,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] .life-agenda .life-tasks {min-width:0}
   html[data-calm-ui] .life-agenda .life-tasks:has(.agenda-empty) {display:grid;place-items:center;min-height:290px}
   html[data-calm-ui] .agenda-empty {text-align:center;font-size:13px;color:var(--calm-muted);opacity:.8;padding:30px 10px}
-  html[data-calm-ui] .agenda-add {position:absolute;right:22px;bottom:22px;display:grid;place-items:center;width:52px;height:52px;padding:0!important;border:0!important;border-radius:50%!important;background:var(--calm-accent)!important;color:#f5f7ef!important;font:300 34px/1 system-ui,sans-serif!important;box-shadow:0 4px 12px #293d361a!important}
+  html[data-calm-ui] .agenda-add {position:fixed!important;right:max(22px,calc((100vw - 1100px)/2));bottom:var(--agenda-add-bottom,24px);z-index:30;display:grid;place-items:center;width:52px;height:52px;padding:0!important;border:0!important;border-radius:50%!important;background:var(--calm-accent)!important;color:#f5f7ef!important;font:300 34px/1 system-ui,sans-serif!important;box-shadow:0 4px 12px #293d361a!important;touch-action:none!important;overscroll-behavior:contain;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:grab}
   html[data-calm-ui] .agenda-add:not(:disabled):hover {background:#3b5742!important;color:#f5f7ef!important}
   html[data-calm-ui] .agenda-month {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0;margin:8px 0 18px;border:1px solid var(--calm-border);border-radius:12px;overflow:hidden;background:var(--calm-surface)}
   html[data-calm-ui] .agenda-weekday {display:grid;place-items:center;text-align:center;font-size:11px;color:var(--calm-text);min-height:38px;border-bottom:1px solid var(--calm-border);background:var(--calm-page)}
@@ -15210,7 +15210,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
     html[data-calm-ui] .agenda-caption {font-size:15px}
     html[data-calm-ui] .agenda-toolbar {gap:5px}
     html[data-calm-ui] .agenda-date-actions>button {min-width:25px;padding:4px!important}
-    html[data-calm-ui] .agenda-add {right:18px;bottom:18px}
+    html[data-calm-ui] .agenda-add {right:18px;bottom:calc(104px + env(safe-area-inset-bottom))}
     html[data-calm-ui] .life-agenda .life-tasks:has(.agenda-empty) {min-height:260px}
   }
 }
@@ -15286,6 +15286,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 
 @layer calm {
  html[data-calm-ui] .life-countdown-page .countdown-add.is-dragging {cursor:grabbing!important}
+ html[data-calm-ui] .agenda-add.is-dragging {cursor:grabbing!important}
 }
 
 @layer calm {
