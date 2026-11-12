@@ -15591,6 +15591,23 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .dashboard-view-
     font-size: 9px !important;
   }
 }
+/* Keep the Personal Home title and its date on the same line. */
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #lifeHome .life-heading > div:first-child {
+  display: flex !important;
+  flex: 1 1 auto;
+  align-items: baseline !important;
+  gap: 12px !important;
+  min-width: 0;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #lifeHome .life-heading h1 {
+  flex: 0 0 auto;
+  margin: 0 !important;
+}
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #lifeHome .life-date {
+  margin: 0 !important;
+  white-space: nowrap;
+  line-height: 1.35;
+}
 /* Give the custom dashboard picker a calm sage selected state. */
 html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-options {
   border-color: #d3dfcc;
