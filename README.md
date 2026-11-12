@@ -70,7 +70,7 @@ Validation includes HTML/table/color roundtrips, legacy blocks, XSS payloads, co
 
 ## Personal Home
 
-Home is now the default landing panel; PTE Prep, Reading and Notion Archive remain separate navigation entries. The homepage brings together a dated agenda (optional time and priority, completion filters, editing and deletion), important dates, custom daily habits with streaks and seven-day history, and shortcuts to study and focus.
+Home is now the default landing panel; PTE Prep, Reading and Notion Archive remain separate navigation entries. The homepage brings together a dated agenda (optional time and priority, completion filters, editing and deletion), important dates, custom daily habits with streaks and seven-day history, and shortcuts to study and focus. Habits also include monthly check-in totals, active days, a daily activity calendar and per-habit counts.
 
 Planner tasks and habits are cached in `rex-home-planner-v1` and sync as separate versioned records to the configured Cloudflare D1 service. They do not award XP, change PTE question counts or sync through the study APIs or Notion. Deletions sync as tombstones; reconnecting another device restores its task and habit records. Important dates reuse `rex-countdown-targets-v1` and the existing dashboard sync. Dates and streaks follow Australia/Sydney calendar days; milestones show days remaining, today, or days elapsed. Storage failures retain open form inputs; unreadable planner storage blocks writes to preserve existing data.
 

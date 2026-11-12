@@ -1,7 +1,7 @@
 (()=>{
 const home=document.getElementById('home'),hero=home?.querySelector('.reference-welcome');if(!hero)return;
 const layout=document.createElement('section');layout.className='compact-dashboard';
-const heading=document.createElement('div');heading.className='compact-heading';heading.innerHTML='<div><span class="eyebrow">REX · STUDY DASHBOARD</span><h1>Today’s Dashboard</h1></div>';
+const heading=document.createElement('div');heading.className='compact-heading';heading.innerHTML='<div><span class="eyebrow">REX · STUDY DASHBOARD</span><h1>Dashboard</h1></div>';
 const timerButton=document.createElement('button');timerButton.type='button';timerButton.className='dashboard-timer-button';timerButton.setAttribute('aria-label','Open focus timer');timerButton.setAttribute('aria-haspopup','dialog');timerButton.setAttribute('aria-expanded','false');timerButton.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M9 2h6m-3 0v3m6 1 2-2m-8 5v4l2 2"/></svg><span>Focus timer</span>';timerButton.addEventListener('click',()=>window.RexFocusTimer.open('focus',timerButton));heading.append(timerButton);
 const metrics=document.createElement('div');metrics.className='compact-metrics';
 const main=document.createElement('div');main.className='compact-main';const aside=document.createElement('aside');aside.className='compact-side';

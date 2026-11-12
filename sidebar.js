@@ -4,20 +4,6 @@ const body=document.body,header=document.querySelector('.arcane-header'),main=do
 const sidebar=document.createElement('aside');sidebar.className='rex-sidebar';sidebar.setAttribute('aria-label','Sidebar');
 const brand=document.querySelector('.header-brand');if(brand)sidebar.append(brand);
 
-const crystal=sidebar.querySelector('#rexWordmark');
-if(crystal){
- const field=document.createElement('span');field.className='rex-feather-gust';field.setAttribute('aria-hidden','true');
- const rear=document.createElement('span');rear.className='rex-feather-gust rex-feather-gust-back';rear.setAttribute('aria-hidden','true');
- for(let i=0;i<16;i++){
-  const feather=document.createElement('span'),front=i<3,middle=i<10,side=i%2===0?-1:1;
-  feather.className='rex-wind-feather'+(i%4===1?' rex-wind-sweep':'')+(front?' rex-wind-front':middle?' rex-wind-middle':' rex-wind-back');
-  feather.style.cssText='--wind-x0:'+side*(18+i%4*9)+'px;--wind-x1:'+side*(56+i%4*8)+'px;--wind-x2:'+side*(28+i%5*9)+'px;--wind-spin:'+side*(34+i%4*13)+'deg;--wind-duration:'+((front?7.8:middle?6.4:10.5)+i%4*.8)+'s;--wind-delay:'+(-i*.69-1.6)+'s;--wind-size:'+(front?21+i*3:middle?12+i%4*2:7+i%3)+'px;--wind-alpha:'+(front?.88:middle?.7:.38)+';--wind-color:'+(i%3===0?'#fff0c5':i%3===1?'#ddbc78':'#e6e9dc');
-  const gradient='rex-feather-shine-'+i;
-  feather.innerHTML='<svg viewBox="0 0 28 54" fill="none"><defs><linearGradient id="'+gradient+'" x1="6" y1="6" x2="22" y2="38" gradientUnits="userSpaceOnUse"><stop stop-color="#fff4d5"/><stop offset=".35" stop-color="currentColor"/><stop offset=".65" stop-color="#bc9758"/><stop offset="1" stop-color="currentColor" stop-opacity=".6"/></linearGradient></defs><path d="M21 2C9 3 1 16 3 30L8 25L5 37L10 32L9 43C20 39 27 19 21 2Z" fill="url(#'+gradient+')" fill-opacity=".86"/><path d="M21 3C17 17 13 35 5 51M17 15l-9 6m7 3-8 6m5 3-3 5m9-20 5 7m-7 2 4 6" stroke="currentColor" stroke-opacity=".8" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  (middle?field:rear).append(feather);
- }
- crystal.append(rear,field);
-}
 const profile=document.querySelector('.profile-menu');if(profile){profile.classList.add('rex-top-profile');body.append(profile);}
 const rule=document.createElement('div');rule.className='rex-sidebar-rule';rule.textContent='◇';sidebar.append(rule);
 const icons={home:'<path d="m3 10 9-7 9 7v10H6V10m3 10v-7h6v7"/>',archives:'<rect x="3" y="3" width="18" height="5" rx="1"/><path d="M5 8v12h14V8M10 12h4"/>'};
