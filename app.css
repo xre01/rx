@@ -15266,13 +15266,20 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 
 @layer calm {
  html[data-calm-ui] .countdown-options {position:absolute;left:0;top:0;z-index:35}
- html[data-calm-ui] .countdown-options>summary {display:grid;place-items:center;list-style:none;cursor:pointer;width:42px;height:42px;font-size:26px;color:var(--calm-text)}
+ html[data-calm-ui] .countdown-options>summary {display:grid;place-items:center;list-style:none;cursor:pointer;width:42px;height:42px;border:1px solid transparent;border-radius:14px;background:transparent;font-size:24px;color:var(--calm-text);transition:background .16s,border-color .16s,transform .16s}
  html[data-calm-ui] .countdown-options>summary::-webkit-details-marker {display:none}
- html[data-calm-ui] .countdown-options>div {position:absolute;top:48px;left:0;min-width:150px;padding:8px;background:var(--calm-surface);border:1px solid var(--calm-border);border-radius:12px;box-shadow:0 8px 24px #293d3618}
- html[data-calm-ui] .countdown-options .countdown-menu-label {display:block;padding:7px 10px 4px;color:var(--calm-muted);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
- html[data-calm-ui] .countdown-options .countdown-menu-label:not(:first-child) {margin-top:6px;border-top:1px solid var(--calm-border);padding-top:10px}
- html[data-calm-ui] .countdown-options button {display:block;width:100%;padding:10px 12px!important;border:0!important;background:transparent!important;text-align:left;font-size:13px!important}
- html[data-calm-ui] .countdown-options button[aria-pressed="true"] {background:var(--calm-selected)!important;color:var(--calm-text)!important}
+ html[data-calm-ui] .countdown-options>summary:hover,html[data-calm-ui] .countdown-options[open]>summary {background:var(--calm-inset);border-color:var(--calm-border)}
+ html[data-calm-ui] .countdown-options>summary:active {transform:scale(.94)}
+ html[data-calm-ui] .countdown-options>div {position:absolute;top:48px;left:0;display:grid;gap:4px;min-width:188px;padding:10px;background:var(--calm-surface);background:color-mix(in srgb,var(--calm-surface) 92%,white);border:1px solid var(--calm-border);border-color:color-mix(in srgb,var(--calm-border) 78%,white);border-radius:20px;box-shadow:0 14px 34px #293d3624,inset 0 1px #ffffffa6;backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);animation:countdown-menu-in .18s cubic-bezier(.2,.7,.2,1)}
+ html[data-calm-ui] .countdown-options .countdown-menu-label {display:block;padding:8px 10px 3px;color:var(--calm-muted);font-size:10px;font-weight:650;letter-spacing:.08em;text-transform:uppercase}
+ html[data-calm-ui] .countdown-options .countdown-menu-label:not(:first-child) {margin-top:5px;border-top:1px solid color-mix(in srgb,var(--calm-border) 72%,transparent);padding-top:11px}
+ html[data-calm-ui] .countdown-options button {display:block;width:100%;min-height:38px;padding:9px 11px!important;border:1px solid transparent!important;border-radius:12px!important;background:transparent!important;color:var(--calm-text)!important;text-align:left;font-size:13px!important;transition:background .16s,border-color .16s,transform .16s}
+ html[data-calm-ui] .countdown-options button:hover {background:var(--calm-inset)!important;transform:translateX(2px)}
+ html[data-calm-ui] .countdown-options button:active {transform:scale(.98)}
+ html[data-calm-ui] .countdown-options button[aria-pressed="true"] {background:var(--calm-selected)!important;border-color:var(--calm-border)!important;color:var(--calm-text)!important}
+ html[data-calm-ui] .countdown-options button:focus-visible {outline:2px solid var(--calm-accent);outline-offset:2px}
+ @keyframes countdown-menu-in {from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+ @media(prefers-reduced-motion:reduce){html[data-calm-ui] .countdown-options>summary,html[data-calm-ui] .countdown-options button {transition:none!important}html[data-calm-ui] .countdown-options>div {animation:none!important}}
 }
 
 @layer calm {@media(max-width:420px){html[data-calm-ui] .life-countdown-page .life-event {gap:10px}html[data-calm-ui] .life-countdown-page .life-day-count.is-detailed b {font-size:16px!important}html[data-calm-ui] .life-countdown-page .life-day-count.is-detailed small {font-size:9px!important}}}
