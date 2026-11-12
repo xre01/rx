@@ -13,9 +13,9 @@ A lightweight English PTE dashboard with daily and weekly views, calendar backfi
 
 ## Storage and sync
 
-PTE files are selected for explicit submission; they are not a persistent offline upload queue. Reflection files are stored in IndexedDB. Local records remain tied to the browser and site origin.
+PTE files are selected for explicit submission; they are not a persistent offline upload queue. Reflection files are stored in IndexedDB. Unsynced records remain tied to the browser and site origin.
 
-Notion and Cloudflare D1 require the user's existing service configuration. Notion receives notes and attachments; D1 receives supported dashboard metrics. No credentials are included in the source. Nothing uploads until the relevant sync action or configured metrics sync runs.
+Notion and Cloudflare D1 require the user's existing service configuration. Notion receives notes and attachments; D1 receives dashboard metrics, My Day tasks and Habits. No credentials are included in the source. D1 data stays on this device until D1 is connected, then changes sync automatically while online.
 
 ## Validation
 
@@ -72,7 +72,7 @@ Validation includes HTML/table/color roundtrips, legacy blocks, XSS payloads, co
 
 Home is now the default landing panel; PTE Prep, Reading and Notion Archive remain separate navigation entries. The homepage brings together a dated agenda (optional time and priority, completion filters, editing and deletion), important dates, custom daily habits with streaks and seven-day history, and shortcuts to study and focus.
 
-Planner tasks and habits use `rex-home-planner-v1` in this browser's localStorage. They do not award XP, change PTE question counts or sync through the study APIs. Important dates reuse `rex-countdown-targets-v1` and the existing dashboard sync. Dates and streaks follow Australia/Sydney calendar days; milestones show days remaining, today, or days elapsed. Storage failures retain open form inputs; unreadable planner storage blocks writes to preserve existing data.
+Planner tasks and habits are cached in `rex-home-planner-v1` and sync as separate versioned records to the configured Cloudflare D1 service. They do not award XP, change PTE question counts or sync through the study APIs or Notion. Deletions sync as tombstones; reconnecting another device restores its task and habit records. Important dates reuse `rex-countdown-targets-v1` and the existing dashboard sync. Dates and streaks follow Australia/Sydney calendar days; milestones show days remaining, today, or days elapsed. Storage failures retain open form inputs; unreadable planner storage blocks writes to preserve existing data.
 
 Run `node tests/home-page.cjs` for the planner regression checks. After changing runtime assets, run `node scripts/version-assets.cjs` so HTML and service-worker hashes stay consistent.
 
@@ -107,9 +107,9 @@ Home countdowns use rex-home-countdown-targets-v1. PTE countdowns retain rex-cou
 
 PTE reminders are opt-in per device. The nearest upcoming PTE date schedules notifications at 22:00 Australia/Sydney on the seven days before the exam, excluding exam day. Date changes/deletions cancel or replace the schedule. A separate authenticated reminder slot shares the existing push subscription without replacing focus alarms. Disabling notifications cancels both types. iPhone requires installation on the Home Screen and notification permission. Live delivery depends on the device and push service. Deploy the updated existing Worker before publishing the frontend, preserving all secrets and the CALENDAR Durable Object binding.
 
-Asset cache version rex-focus-offline-20261112-clean3 replaces only owned application resource caches; user records, attachments and recovery backups are retained. Character icon artwork uses transparent assets from PokeAPI/sprites (official-artwork 877, 10187, 10024); Pokémon artwork belongs to its respective owners.
+Asset cache version rex-focus-offline-20261112-planner-sync2 replaces only owned application resource caches; user records, attachments and recovery backups are retained. Character icon artwork uses transparent assets from PokeAPI/sprites (official-artwork 877, 10187, 10024); Pokémon artwork belongs to its respective owners.
 
-D1 service source is tracked in workers/sync-worker.mjs. Countdown payload validation accepts optional category and pinned fields while rejecting unrelated data; the existing DB binding and all revisions are preserved.
+D1 service source is tracked in workers/sync-worker.mjs. Deploy the Worker before the frontend. Schema version 3 adds validated per-task and per-habit planner records, including completion history and display order. No D1 table migration is required; the existing DB binding and all revisions are preserved.
 
 
 Calendar annotations are bundled locally from lunar-javascript 1.7.8 (MIT; licenses/lunar-javascript.txt), with no dependency on browser Intl Chinese-calendar support. Build calendar-labels.js using node scripts/build-calendar.cjs. Supported annotation years: 1900–2100. The display prioritizes a major holiday, then a Chinese solar term, then the lunar day; the full lunar date and all coincident labels remain in the accessible description.

@@ -6,6 +6,7 @@
   state.counts??={};state.baseline??={};state.checkins??={};
   const day=(value=Date.now())=>new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value));
   const validDate=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!isNaN(Date.parse(value+'T12:00:00Z'))&&new Date(value+'T12:00:00Z').toISOString().slice(0,10)===value;
+  function plannerState(){try{const raw=localStorage.getItem('rex-home-planner-v1');if(raw===null)return {tasks:[],habits:[]};const planner=JSON.parse(raw);if(!planner||!Array.isArray(planner.tasks)||!Array.isArray(planner.habits)||!planner.tasks.every(item=>item&&typeof item.id==='string'&&typeof item.title==='string'&&validDate(item.date))||!planner.habits.every(item=>item&&typeof item.id==='string'&&typeof item.title==='string'&&Array.isArray(item.days)&&item.days.every(validDate))||(planner.checkins!==undefined&&(!Array.isArray(planner.checkins)||!planner.checkins.every(validDate))))return null;return planner}catch{return null}}
   const save=()=>localStorage.setItem(key,JSON.stringify(state));
   const records=()=>read('rex-focus-sessions-v1',[]).filter(r=>r&&!/^(?:Reading|Home) · /.test(r.goal||'')&&Number.isFinite(r.seconds)&&r.seconds>=60&&Number.isFinite(r.endedAt));
   function localCounts(){
@@ -46,6 +47,10 @@
     for(const date of Object.keys(state.checkins))result['checkin|'+date]={kind:'checkin',id:date,data:{date}};
     for(const target of read('rex-countdown-targets-v1',[]))if(target?.id&&validDate(target.date))result['countdown|'+target.id]={kind:'countdown',id:target.id,data:{title:target.title,date:target.date,...(typeof target.pinned==='boolean'?{pinned:target.pinned}:{}),...(['anniversary','birthday','holiday','uncategorized'].includes(target.category)?{category:target.category}:{})}};
     for(const target of read('rex-home-countdown-targets-v1',[]))if(target?.id&&validDate(target.date)){const id='home-countdown:'+target.id;result['countdown|'+id]={kind:'countdown',id,data:{title:target.title,date:target.date,...(typeof target.pinned==='boolean'?{pinned:target.pinned}:{}),...(['anniversary','birthday','holiday','uncategorized'].includes(target.category)?{category:target.category}:{})}}}
+    const planner=plannerState();
+    for(const [type,items]of planner?[['task',planner.tasks],['habit',planner.habits]]:[])items.forEach((item,position)=>{if(item?.id&&typeof item.id==='string'){
+      const id=type+':'+item.id;result['planner|'+id]={kind:'planner',id,data:{type,value:item,position}};
+    }});
     for(const [kind,key]of [['focus','rex-focus-sessions-v1'],['abandoned','rex-focus-abandoned-v1']])for(const record of read(key,[])){
       if(!record||!Number.isFinite(record.seconds)||record.seconds<60||!Number.isFinite(record.endedAt))continue;
       const id=record.id||[record.endedAt,record.mode,record.seconds].join('-');
@@ -55,17 +60,20 @@
     return result;
   }
   function apply(all){
-    state.counts={};state.checkins={};const countdown=[],homeCountdown=[],focus=[],abandoned=[];
+    state.counts={};state.checkins={};const countdown=[],homeCountdown=[],focus=[],abandoned=[],planner={tasks:[],habits:[]};
     for(const r of Object.values(all)){
       if(r.deleted)continue;
       if(r.kind==='pte')state.counts[r.id]=r.data;
       if(r.kind==='checkin')state.checkins[r.data.date]=true;
       if(r.kind==='countdown'){if(r.id.startsWith('home-countdown:'))homeCountdown.push({id:r.id.slice(15),...r.data});else countdown.push({id:r.id,...r.data})}
+      if(r.kind==='planner'&&r.data?.type&&r.data.value&&planner[r.data.type+'s'])planner[r.data.type+'s'].push({id:r.id,position:r.data.position,value:r.data.value});
       if(r.kind==='focus'&&r.data.seconds>=60)focus.push({...r.data,id:r.id});
       if(r.kind==='abandoned'&&r.data.seconds>=60)abandoned.push({...r.data,id:r.id});
     }
     localStorage.setItem('rex-countdown-targets-v1',JSON.stringify(countdown));
     localStorage.setItem('rex-home-countdown-targets-v1',JSON.stringify(homeCountdown));
+    for(const type of ['tasks','habits'])planner[type]=planner[type].sort((a,b)=>a.position-b.position||a.id.localeCompare(b.id)).map(item=>item.value);
+    if(plannerState())localStorage.setItem('rex-home-planner-v1',JSON.stringify(planner));
     localStorage.setItem('rex-focus-sessions-v1',JSON.stringify(focus));
     localStorage.setItem('rex-focus-abandoned-v1',JSON.stringify(abandoned));
     refresh();

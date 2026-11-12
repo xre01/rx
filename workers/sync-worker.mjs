@@ -1,5 +1,5 @@
 const LEGACY_KINDS = new Set(['growth', 'focus', 'abandoned', 'quest', 'avatar']);
-const DASHBOARD_KINDS = new Set(['pte', 'countdown', 'checkin']);
+const DASHBOARD_KINDS = new Set(['pte', 'countdown', 'checkin', 'planner']);
 const validType = value => typeof value === 'string' && value.length > 0
   && value.length <= 80 && value === value.trim() && !/[\u0000-\u001f\u007f]/.test(value);
 const MAX_BODY_BYTES = 200_000;
@@ -39,8 +39,10 @@ function validDashboardRecord(record) {
     if (kind === 'pte') {
       return id[10] === ':' && isDate(id.slice(0, 10)) && validType(id.slice(11));
     }
+    if (kind === 'planner') return /^(?:task|habit):[A-Za-z0-9_-]{1,120}$/.test(id);
     return true;
   }
+  if (kind === 'planner') return validPlannerRecord(record);
   if (kind === 'pte') {
     return onlyFields(data, ['date', 'type', 'count'])
       && isDate(data.date) && validType(data.type)
@@ -54,6 +56,50 @@ function validDashboardRecord(record) {
       && typeof data.title === 'string' && data.title.trim().length > 0 && data.title.length <= 200;
   }
   return onlyFields(data, ['date']) && isDate(data.date) && id === data.date;
+}
+
+function validPlannerRecord({ id, data }) {
+  if (!onlyFields(data, ['type', 'value', 'position'])
+    || !Number.isSafeInteger(data.position) || data.position < 0 || data.position > 100_000
+    || !['task', 'habit'].includes(data.type) || !id.startsWith(`${data.type}:`)) return false;
+  const value = data.value, recordId = id.slice(data.type.length + 1);
+  const validId = valueId => typeof valueId === 'string' && /^[A-Za-z0-9_-]{1,120}$/.test(valueId);
+  const validDays = (days, limit = 9000) => Array.isArray(days)
+    && days.length <= limit && days.every(isDate) && new Set(days).size === days.length;
+  const validFlagMap = (map, limit = 9000) => map && typeof map === 'object' && !Array.isArray(map)
+    && Object.keys(map).length <= limit
+    && Object.entries(map).every(([date, flag]) => isDate(date) && typeof flag === 'boolean');
+  if (!validId(recordId) || !value || typeof value !== 'object' || Array.isArray(value) || value.id !== recordId
+    || typeof value.title !== 'string' || !value.title.trim() || value.title.length > 80) return false;
+  if (data.type === 'habit') {
+    return Object.keys(value).every(key => ['id', 'title', 'days', 'icon'].includes(key))
+      && validDays(value.days)
+      && (value.icon === undefined || typeof value.icon === 'string' && value.icon.length <= 16);
+  }
+  const fields = ['id', 'title', 'date', 'subtasks', 'time', 'priority', 'repeat', 'intervalDays', 'weekdays', 'completedDates', 'done', 'subtaskChecks'];
+  if (!Object.keys(value).every(key => fields.includes(key)) || !isDate(value.date)
+    || (value.time !== undefined && value.time !== '' && !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value.time))
+    || (value.priority !== undefined && !['normal', 'important'].includes(value.priority))
+    || (value.repeat !== undefined && !['none', 'daily', 'weekdays', 'weekly', 'custom', 'interval'].includes(value.repeat))
+    || (value.intervalDays !== undefined && (!Number.isSafeInteger(value.intervalDays) || value.intervalDays < 1 || value.intervalDays > 36_500))
+    || (value.repeat === 'interval' && value.intervalDays === undefined)
+    || (value.repeat === 'custom' && (!Array.isArray(value.weekdays) || !value.weekdays.length))
+    || (value.done !== undefined && typeof value.done !== 'boolean')
+    || (value.weekdays !== undefined && (!Array.isArray(value.weekdays) || value.weekdays.length > 7
+      || value.weekdays.some(day => !Number.isInteger(day) || day < 0 || day > 6) || new Set(value.weekdays).size !== value.weekdays.length))
+    || (value.completedDates !== undefined && !validFlagMap(value.completedDates))) return false;
+  if (value.subtasks !== undefined && (!Array.isArray(value.subtasks) || value.subtasks.length > 30
+    || value.subtasks.some(child => !child || typeof child !== 'object' || Array.isArray(child)
+      || !onlyFields(child, ['id', 'title']) || !validId(child.id)
+      || typeof child.title !== 'string' || !child.title.trim() || child.title.length > 80))) return false;
+  if (value.subtaskChecks !== undefined) {
+    const checks = value.subtaskChecks;
+    if (!checks || typeof checks !== 'object' || Array.isArray(checks) || Object.keys(checks).length > 9000) return false;
+    if (!Object.entries(checks).every(([date, states]) => isDate(date) && states && typeof states === 'object'
+      && !Array.isArray(states) && Object.keys(states).length <= 30
+      && Object.entries(states).every(([childId, done]) => validId(childId) && typeof done === 'boolean'))) return false;
+  }
+  return true;
 }
 
 function validLegacyRecord(record) {
@@ -118,7 +164,7 @@ export default {
           'SELECT kind,id,data,deleted,revision FROM records ORDER BY kind,id',
         ).all();
         return json({
-          storage: 'd1', schemaVersion: 2,
+          storage: 'd1', schemaVersion: 3,
           supportedKinds: [...LEGACY_KINDS, ...DASHBOARD_KINDS],
           records: result.results.map(publicRecord),
         }, 200, cors);
