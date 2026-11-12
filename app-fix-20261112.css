@@ -12671,16 +12671,17 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home button.depth-view-trigger {
   white-space: nowrap;
 }
 .depth-view-chevron {
-  display: block;
-  width: 6px;
-  height: 6px;
-  border-right: 1.5px solid;
-  border-bottom: 1.5px solid;
-  transform: rotate(45deg) translateY(-2px);
+  display: grid;
+  flex: 0 0 12px;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+  border: 0;
+  transform: none;
   transition: transform 0.18s var(--depth-ease);
 }
 .depth-view-trigger[aria-expanded="true"] .depth-view-chevron {
-  transform: rotate(225deg) translate(-1px, -1px);
+  transform: rotate(180deg);
 }
 html#rexTheme body#rexSanctuary#rexSanctuary #home button.depth-view-trigger[aria-expanded="true"] {
   box-shadow:
