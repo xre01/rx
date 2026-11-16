@@ -107,7 +107,7 @@ Home countdowns use rex-home-countdown-targets-v1. PTE countdowns retain rex-cou
 
 PTE reminders are opt-in per device. The nearest upcoming PTE date schedules notifications at 22:00 Australia/Sydney on the seven days before the exam, excluding exam day. Date changes/deletions cancel or replace the schedule. A separate authenticated reminder slot shares the existing push subscription without replacing focus alarms. Disabling notifications cancels both types. iPhone requires installation on the Home Screen and notification permission. Live delivery depends on the device and push service. Deploy the updated existing Worker before publishing the frontend, preserving all secrets and the CALENDAR Durable Object binding.
 
-Asset cache version rex-focus-offline-20261112-planner-sync2 replaces only owned application resource caches; user records, attachments and recovery backups are retained. Character icon artwork uses transparent assets from PokeAPI/sprites (official-artwork 877, 10187, 10024); Pokémon artwork belongs to its respective owners.
+The content-versioned asset cache replaces only owned application resource caches; user records, attachments and recovery backups are retained. Character icon artwork uses transparent assets from PokeAPI/sprites (official-artwork 877, 10187, 10024); Pokémon artwork belongs to its respective owners.
 
 D1 service source is tracked in workers/sync-worker.mjs. Deploy the Worker before the frontend. Schema version 3 adds validated per-task and per-habit planner records, including completion history and display order. No D1 table migration is required; the existing DB binding and all revisions are preserved.
 
