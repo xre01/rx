@@ -15091,6 +15091,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  }
  @media(min-width:1001px){
   html[data-calm-ui] .personal-card>.personal-avatar-menu {position:fixed!important;top:18px!important;right:24px!important;z-index:60!important}
+  html[data-calm-ui] #home .compact-heading {padding-inline-end:64px!important;}
  }
 }
 /* Keep book covers aligned regardless of title wrapping. */
