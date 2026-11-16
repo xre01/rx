@@ -2897,7 +2897,7 @@ html body #profilePopover.card {
 html body #profilePopover .profile-popover-heading {
   padding: 0 0 18px !important;
   margin-bottom: 18px !important;
-  border-bottom: 1px solid #dbc18729 !important;
+  border-bottom: 0 !important;
   display: flex;
   align-items: center;
 }
@@ -2909,27 +2909,32 @@ html body #profilePopover .profile-identity {
   min-height: 70px;
   align-content: center;
 }
-html body #profilePopover .profile-identity:before {
-  content: "";
+html body #profilePopover #profileAvatarEdit {
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
   position: absolute;
   left: -6px;
   top: 0;
   width: 65px;
   height: 75px;
-  background: url(./avatar-3d.webp) 50% / contain no-repeat;
+  background: transparent;
+
+}
+html body #profilePopover #profileAvatarEdit img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   filter: drop-shadow(0 4px 5px #05081766);
-  pointer-events: none;
 }
 html body #profilePopover .profile-identity h2 {
   font-family: Georgia, serif !important;
   font-size: 24px !important;
   letter-spacing: 1px !important;
 }
-html body #profilePopover #rank {
-  border: 1px solid #e6c37338 !important;
-  border-radius: 7px;
-  padding: 5px 8px;
-}
+
 html body #profilePopover .profile-close {
   background: transparent !important;
   border: 0 !important;
@@ -3643,12 +3648,7 @@ html body #profilePopover .stat b {
   color: #293951 !important;
   text-shadow: none !important;
 }
-html body #profilePopover #rank {
-  background: #e9ddc2 !important;
-  color: #70582d !important;
-  border-color: #c2aa78 !important;
-  font-size: 12px !important;
-}
+
 html body #profilePopover #expLabel,
 html body #profilePopover .profile-settings label,
 html body #profilePopover .profile-settings p,
@@ -9679,7 +9679,6 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
 html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-metrics {
   display: none !important;
 }
-#rank,
 .personal-card .personal-title {
   display: inline-flex;
   align-items: center;
@@ -9707,7 +9706,6 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
     0 3px 9px #243d2520;
   white-space: nowrap;
 }
-#rank:before,
 .personal-card .personal-title:before {
   content: "";
   display: block;
@@ -9732,7 +9730,6 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
   );
 }
 @media (max-width: 600px) {
-  #rank,
   .personal-card .personal-title {
     font-size: 12px;
     padding: 5px 9px;
@@ -15360,7 +15357,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] #home .compact-metrics strong {grid-row:2!important;display:flex!important;flex-direction:row!important;align-items:baseline!important;align-self:center!important;gap:8px!important;margin:0!important;line-height:1!important;min-width:0!important}
  html[data-calm-ui] #home .compact-metrics strong .metric-unit {display:inline!important;font-size:12px!important;margin:0!important;line-height:1!important;white-space:nowrap!important}
  html[data-calm-ui] #home .compact-metrics .rex-metric-icon {position:absolute!important;top:19px!important;right:16px!important;width:16px!important;height:16px!important;margin:0!important}
- html[data-calm-ui] #home .compact-metrics>.countdown-metric>small {grid-row:3!important;align-self:end!important;display:block!important;font-size:11px!important;line-height:1.4!important;margin:0!important;white-space:nowrap!important}
+ html[data-calm-ui] #home .compact-metrics>.countdown-metric>small, html[data-calm-ui] #home .compact-metrics>article>.practice-total {grid-row:3!important;align-self:end!important;display:block!important;font-size:11px!important;line-height:1.4!important;margin:0!important;white-space:nowrap!important}
  @media(max-width:359px){html[data-calm-ui] #home .compact-metrics>:is(article,button)>span:not(.rex-metric-icon) {font-size:10px!important;padding-right:15px!important}}
 }
 
@@ -15439,13 +15436,21 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 }
 
 @layer calm {
- html[data-calm-ui] .theme-settings {margin-top:20px;padding-top:18px;border-top:1px solid var(--calm-border)}
- html[data-calm-ui] .theme-settings h3 {font-size:14px;margin:0 0 12px}
- html[data-calm-ui] .theme-choices {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(125px,100%),1fr));gap:8px}
- html[data-calm-ui] .theme-settings .theme-choices button {display:flex!important;align-items:center!important;gap:9px!important;text-align:left!important;padding:10px!important;min-height:46px!important;border:1px solid var(--calm-border)!important;border-radius:11px!important;background:var(--calm-surface)!important;color:var(--calm-text)!important;font-size:11px!important;line-height:1.3!important}
- html[data-calm-ui] .theme-settings .theme-choices button[aria-pressed="true"] {border-color:var(--calm-accent)!important;box-shadow:inset 0 0 0 1px var(--calm-accent)!important;background:var(--calm-selected)!important}
- html[data-calm-ui] .theme-swatch {display:block;width:24px;height:24px;border-radius:8px;flex-shrink:0;border:1px solid #ffffff60;box-shadow:inset 0 1px 2px #ffffff40}
- html[data-calm-ui] .theme-swatch-default {background:linear-gradient(135deg,#e6eddf 50%,#496b54 50%)}
+ html[data-calm-ui] .theme-settings {display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px 16px}
+ html[data-calm-ui] #profileThemeLabel {font-size:14px;font-weight:600}
+ html[data-calm-ui] #profilePopover #profileTheme, html[data-calm-ui] #profilePopover #profileThemeList button {display:flex!important;align-items:center!important;gap:10px!important;min-height:42px!important;padding:8px 12px!important;background:transparent!important;color:var(--calm-text)!important;border:0!important;box-shadow:none!important;font:inherit!important;font-size:13px!important}
+ html[data-calm-ui] #profilePopover #profileTheme {justify-self:end;border-radius:12px!important;background:var(--calm-inset)!important}
+ html[data-calm-ui] #profileTheme::after {content:"";width:6px;height:6px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin:0 3px 4px 6px}
+ html[data-calm-ui] #profileTheme[aria-expanded=true]::after {transform:rotate(225deg);margin-bottom:-3px}
+ html[data-calm-ui] #profileThemeList {grid-column:1/-1;justify-self:end;width:min(100%,225px);box-sizing:border-box;padding:5px;background:var(--calm-surface);border:1px solid var(--calm-border);border-radius:14px}
+ html[data-calm-ui] #profileThemeList[hidden] {display:none!important}
+ html[data-calm-ui] #profilePopover #profileThemeList button {width:100%;border-radius:9px!important;text-align:left!important}
+ html[data-calm-ui] #profilePopover #profileThemeList button:is(:hover,[aria-pressed=true]) {background:var(--calm-selected)!important}
+ html[data-calm-ui] #profileThemeList [aria-pressed=true]::after {content:"✓";margin-left:auto;color:var(--calm-accent)}
+ html[data-calm-ui] .theme-dot {display:inline-block;width:15px;height:15px;flex:none;border-radius:50%;box-shadow:inset 0 0 0 1px #0001}
+ html[data-calm-ui] .theme-swatch-default {background:linear-gradient(135deg,#a9bca5 50%,#476451 50%)}
+ html[data-calm-ui] .theme-settings p {grid-column:1/-1}
+ html[data-calm-ui] .theme-settings p:empty {display:none}
 }
 
 /* Dashboard header: align the title and date, then keep actions in a reserved row. */
@@ -15854,4 +15859,57 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
   html[data-calm-ui] #focusOverlay .focus-dial-ticks line {stroke:var(--calm-accent)!important;opacity:.55;}
   html[data-calm-ui] #focusOverlay .focus-dial-ticks line:nth-child(5n+1) {opacity:1;}
   html[data-calm-ui] #focusOverlay .focus-push-settings summary {color:var(--calm-accent)!important;}
+}
+
+@layer calm {
+  html[data-calm-ui] #profilePopover #profileAvatarEdit {
+    appearance: none;
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+@layer calm {
+ html[data-calm-ui] #dashboardExport {width:min(820px,calc(100vw - 32px))!important;box-sizing:border-box!important;padding:24px!important;border:1px solid var(--calm-border)!important;border-radius:22px!important;background:var(--calm-surface)!important;color:var(--calm-text)!important}
+ html[data-calm-ui] #dashboardExport header {margin:0 0 22px!important}
+ html[data-calm-ui] #dashboardExport h2 {font:600 21px/1.3 system-ui,sans-serif!important;color:var(--calm-text)!important}
+ html[data-calm-ui] #dashboardExport :is(label,.export-help,.export-status) {color:var(--calm-muted)!important;font:400 13px/1.6 system-ui,sans-serif!important}
+ html[data-calm-ui] #dashboardExport label {gap:7px!important}
+ html[data-calm-ui] #dashboardExport :is(input,select) {background:var(--calm-surface)!important;border:1px solid var(--calm-border)!important;color:var(--calm-text)!important;border-radius:12px!important;min-height:44px!important;font:400 14px system-ui,sans-serif!important;padding:10px 12px!important;box-sizing:border-box!important;width:100%!important}
+ html[data-calm-ui] #dashboardExport .export-options {gap:16px!important}
+ html[data-calm-ui] #dashboardExport .export-help {margin:10px 0 4px!important}
+ html[data-calm-ui] #dashboardExport .export-status {margin:0 0 16px!important}
+ html[data-calm-ui] #dashboardExport .export-image {display:block!important;width:100%!important;box-sizing:border-box!important;border:1px solid var(--calm-border)!important;border-radius:16px!important;background:var(--calm-page)!important}
+ html[data-calm-ui] #dashboardExport .export-image:not([src]) {display:none!important}
+ html[data-calm-ui] #dashboardExport footer {margin-top:18px!important}
+ html[data-calm-ui] #dashboardExport .export-download {background:var(--calm-accent)!important;color:var(--calm-surface)!important;border:0!important;border-radius:12px!important;padding:12px 20px!important;min-height:44px!important;font:500 14px system-ui,sans-serif!important}
+ @media(max-width:480px){
+ html[data-calm-ui] #dashboardExport {padding:18px!important}
+ html[data-calm-ui] #dashboardExport .export-options {grid-template-columns:1fr!important;gap:12px!important}
+ html[data-calm-ui] #dashboardExport .export-download {width:100%!important}
+ }
+}
+
+@layer calm {
+ html[data-calm-ui] #dashboardExport [hidden] {display:none!important}
+ html[data-calm-ui] #dashboardExport .export-field {position:relative;display:grid;gap:7px;min-width:0;color:var(--calm-muted);font:400 13px/1.6 system-ui,sans-serif}
+ html[data-calm-ui] #dashboardExport .export-picker {width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;padding:10px 14px;border:1px solid var(--calm-border);border-radius:12px;background:var(--calm-surface);color:var(--calm-text);font:400 14px system-ui,sans-serif;text-align:left;box-shadow:none!important}
+ html[data-calm-ui] #dashboardExport .export-picker::after {content:"";width:6px;height:6px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin:0 3px 4px}
+ html[data-calm-ui] #dashboardExport .export-picker-panel {position:absolute;top:calc(100% + 7px);left:0;right:0;z-index:5;padding:6px;border:1px solid var(--calm-border);border-radius:15px;background:var(--calm-surface);box-shadow:0 12px 32px #20352720}
+ html[data-calm-ui] #dashboardExport .export-period-option {display:flex;align-items:center;width:100%;border:0!important;min-height:42px;padding:10px 12px;border-radius:9px;background:transparent!important;color:var(--calm-text);text-align:left;font:400 14px system-ui,sans-serif;box-shadow:none!important}
+ html[data-calm-ui] #dashboardExport .export-period-option:is(:hover,[aria-pressed=true]) {background:var(--calm-selected)!important}
+ html[data-calm-ui] #dashboardExport .export-period-option[aria-pressed=true]::after {content:"✓";margin-left:auto;color:var(--calm-accent)}
+ html[data-calm-ui] #dashboardExport .export-calendar {padding:12px}
+ html[data-calm-ui] #dashboardExport .export-calendar-heading {display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;color:var(--calm-text);font-weight:600}
+ html[data-calm-ui] #dashboardExport .export-calendar-heading button {width:34px;height:34px;min-height:0;padding:0;border:0!important;background:transparent!important;color:var(--calm-text);font-size:24px;border-radius:9px;box-shadow:none!important}
+ html[data-calm-ui] #dashboardExport .export-calendar-weekdays,html[data-calm-ui] #dashboardExport .export-calendar-days {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}
+ html[data-calm-ui] #dashboardExport .export-calendar-weekdays {margin-bottom:6px;font-size:11px;color:var(--calm-muted)}
+ html[data-calm-ui] #dashboardExport .export-calendar-days button {min-width:0;min-height:34px;height:34px;padding:0;border:0!important;border-radius:9px;background:transparent!important;color:var(--calm-text);font:400 12px system-ui,sans-serif!important;box-shadow:none!important}
+ html[data-calm-ui] #dashboardExport .export-calendar-days .is-outside {color:var(--calm-muted);opacity:.5}
+ html[data-calm-ui] #dashboardExport .export-calendar-days button:hover {background:var(--calm-selected)!important}
+ html[data-calm-ui] #dashboardExport .export-calendar-days button[aria-current=date] {text-decoration:underline;text-underline-offset:4px}
+ html[data-calm-ui] #dashboardExport .export-calendar-days button[aria-pressed=true] {background:var(--calm-accent)!important;color:var(--calm-surface)!important;opacity:1}
+ html[data-calm-ui] #dashboardExport .export-calendar-today {display:block;width:100%;margin-top:10px;padding:8px;border:0!important;border-radius:9px;background:var(--calm-inset);color:var(--calm-text);font:500 12px system-ui,sans-serif;box-shadow:none!important}
 }

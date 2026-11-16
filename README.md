@@ -31,7 +31,7 @@ Reading and PTE share the My World Notion database through the existing authenti
 
 The already deployed reading API supports status, migration, record sync and authenticated media. Book/article metadata and sync receipts are stored in its existing Durable Object; Notion pages display readable notes, dates and source links. The gateway must retain this Durable Object state when deploying changes. Notes edited in Notion are not automatically imported into the website; edit reading content from the Reading panel.
 
-Practice, reading and focus records no longer award XP. Previously earned XP remains visible in the profile. Reading deletions sync as tombstones and move Notion records to Trash.
+Practice, reading and focus records no longer award XP. The Study Days card shows the number of completed practices. Reading deletions sync as tombstones and move Notion records to Trash.
 
 ## Rich notes release
 

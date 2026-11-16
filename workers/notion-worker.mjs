@@ -353,7 +353,12 @@ async function readingHandle(request,state,env) {
 
  if(item.deleted===true){
   const pageId=await state.storage.get('reading-page:'+item.id);
-  if(pageId){const page=await notion(env,'pages/'+pageId);if(!readingBelongs(page))throw fail('Cannot access this reading record.',403);if(!page.archived&&!page.in_trash)await notion(env,'pages/'+pageId,'PATCH',{archived:true});}
+  if(pageId){const page=await notion(env,'pages/'+pageId);if(!readingBelongs(page))throw fail('Cannot access this reading record.',403);if(!page.archived&&!page.in_trash){
+   const current=await readingSnapshot(env,page,state);
+   if(!current||!item.remoteRevision||current.remoteRevision!==item.remoteRevision)
+    throw fail('This reading record changed. Refresh before deleting it.',409);
+   await notion(env,'pages/'+pageId,'PATCH',{archived:true});
+  }}
   const record={id:item.id,kind:item.kind,title:item.title,body:'',logs:[],attachments:[],deleted:true,updated:item.updated,remoteRevision:'deleted:'+item.updated,remotePageId:pageId};
   await state.storage.put('reading-tombstone:'+item.id,record);await readingCalendar(env,state,record);return json({record});
  }

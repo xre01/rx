@@ -1,0 +1,37 @@
+const fs=require('fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
+const dom=new JSDOM('<html data-calm-ui><body><div class="dashboard-view-controls"></div></body></html>',{url:'https://test.invalid',runScripts:'outside-only'});
+const w=dom.window;
+w.HTMLDialogElement.prototype.showModal=function(){this.open=true};
+w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'))};
+w.HTMLCanvasElement.prototype.getContext=()=>new Proxy({measureText:()=>({width:10}),createLinearGradient:()=>({addColorStop(){}})},{get:(obj,key)=>obj[key]||(()=>{})});
+w.HTMLCanvasElement.prototype.toDataURL=()=> 'data:image/png;base64,dGVzdA==';
+w.RexDashboardStore={summary:()=>({days:[],counts:[],seconds:0})};
+try{
+ w.eval(fs.readFileSync('dashboard-export.js','utf8'));
+ const doc=w.document;
+ doc.querySelector('.dashboard-export').click();
+ const picker=doc.querySelectorAll('.export-picker'),period=doc.querySelector('select'),date=doc.querySelector('input');
+ assert(period.hidden&&date.hidden);
+ picker[0].click();
+ const options=doc.querySelectorAll('.export-period-option');
+ options[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'End',bubbles:true}));
+ assert.equal(doc.activeElement,options[3]);
+ options[3].click();assert.equal(period.value,'year');assert(doc.querySelector('#exportPeriodPicker').hidden);
+ date.value='2024-02-29';date.dispatchEvent(new w.Event('change'));picker[1].click();
+ assert.equal(doc.querySelectorAll('.export-calendar-days button').length,42);
+ doc.querySelector('[data-date="2024-02-29"]').dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));
+ assert.equal(doc.activeElement.dataset.date,'2024-03-01');
+ doc.activeElement.click();assert.equal(date.value,'2024-03-01');assert(doc.querySelector('#exportDatePicker').hidden);
+ picker[1].click();
+ doc.activeElement.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+ assert.equal(doc.activeElement,picker[1]);assert(doc.querySelector('#exportDatePicker').hidden);
+ picker[1].click();doc.querySelector('.export-close').click();
+ assert(doc.querySelector('#exportDatePicker').hidden);
+ const {range,aggregate}=require('../dashboard-export.js');
+ assert.equal(range('year','2024-02-29').dates.length,366);
+ assert.equal(range('week','2024-01-01').start,'2024-01-01');
+ assert.throws(()=>range('day','2024-02-30'));
+ const data=aggregate({summary:()=>({days:['2024-02-29'],counts:[{type:'speaking:DI',count:2}],seconds:60})},'day','2024-02-29');
+ assert.equal(data.total,2);assert.equal(data.seconds,60);assert.equal(data.days,1);
+ console.log('PASS: export picker keyboard, leap day/month transitions, popup cleanup and date aggregation');
+}finally{w.close()}

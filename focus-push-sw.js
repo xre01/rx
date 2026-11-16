@@ -1,5 +1,5 @@
 /* Empty push wakes this worker; retrieve timer details using a device-only key. */
-importScripts('focus-push-store.js?v=20261019-push1');
+importScripts('focus-push-store.js?v=1b8e79a3a054');
 self.addEventListener('push',event=>event.waitUntil((async()=>{
  const config=await RexFocusPushStore.read();if(!config?.enabled)return;
  let reminder=config.pending,pte;

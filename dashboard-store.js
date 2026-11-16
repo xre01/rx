@@ -41,13 +41,22 @@
     for(const date of activityDays)state.checkins[date]=true;state.derivedDays=[...activityDays];
     save();
   }
-  function snapshot(){
+  function completedPractices(){
+    return Object.values(state.counts).reduce((total,record)=>total+(Number(record.count)||0),0);
+  }
+  function snapshot(plannerBaseline={}){
     const result={};
     for(const [id,data]of Object.entries(state.counts))result['pte|'+id]={kind:'pte',id,data:{date:data.date,type:data.type,count:data.count}};
     for(const date of Object.keys(state.checkins))result['checkin|'+date]={kind:'checkin',id:date,data:{date}};
     for(const target of read('rex-countdown-targets-v1',[]))if(target?.id&&validDate(target.date))result['countdown|'+target.id]={kind:'countdown',id:target.id,data:{title:target.title,date:target.date,...(typeof target.pinned==='boolean'?{pinned:target.pinned}:{}),...(['anniversary','birthday','holiday','uncategorized'].includes(target.category)?{category:target.category}:{})}};
     for(const target of read('rex-home-countdown-targets-v1',[]))if(target?.id&&validDate(target.date)){const id='home-countdown:'+target.id;result['countdown|'+id]={kind:'countdown',id,data:{title:target.title,date:target.date,...(typeof target.pinned==='boolean'?{pinned:target.pinned}:{}),...(['anniversary','birthday','holiday','uncategorized'].includes(target.category)?{category:target.category}:{})}}}
     const planner=plannerState();
+    if(!planner){
+      // An unreadable planner has no new information about existing rows.
+      for(const [id,record] of Object.entries(plannerBaseline)){
+        if(id.startsWith('planner|'))result[id]=JSON.parse(record);
+      }
+    }
     for(const [type,items]of planner?[['task',planner.tasks],['habit',planner.habits]]:[])items.forEach((item,position)=>{if(item?.id&&typeof item.id==='string'){
       const id=type+':'+item.id;result['planner|'+id]={kind:'planner',id,data:{type,value:item,position}};
     }});
@@ -91,7 +100,7 @@
     const sessions=records().filter(r=>day(r.endedAt)===date);
     return {counts,seconds:sessions.reduce((n,r)=>n+r.seconds,0),days:Object.keys(state.checkins).filter(date=>date<=day()).sort(),sessions};
   }
-  window.RexDashboardStore={refresh,snapshot,apply,summary,focusTotal,reconcileDays(dates){for(const date of dates)delete state.checkins[date];refresh()}};
+  window.RexDashboardStore={refresh,snapshot,apply,summary,focusTotal,completedPractices,reconcileDays(dates){for(const date of dates)delete state.checkins[date];refresh()}};
   try{refresh()}catch{}
   addEventListener('rex-local-changed',()=>{try{refresh()}catch{}});
   addEventListener('storage',event=>{if(event.key===key){const saved=read(key,{});state.counts=saved.counts||{};state.baseline=saved.baseline||{};state.checkins=saved.checkins||{}}else try{refresh()}catch{}});

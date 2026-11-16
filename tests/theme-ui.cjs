@@ -21,14 +21,22 @@ function setup(stored) {
 const w = setup('unknown');
 try {
   assert.equal(w.localStorage.getItem(key), null);
-  const buttons = [...w.document.querySelectorAll('[data-theme-choice]')];
-  assert.deepEqual(buttons.map(b => b.dataset.themeChoice), themes);
-  for (const button of buttons) {
-    const id = button.dataset.themeChoice;
-    button.click();
-    assert.equal(w.localStorage.getItem(key), id);
-    assert.equal(w.document.documentElement.dataset.uiTheme || 'default', id);
-    assert.deepEqual(buttons.filter(b => b.getAttribute('aria-pressed') === 'true'), [button]);
+  const select=w.document.getElementById('profileTheme');
+  const list=w.document.getElementById('profileThemeList');
+  const choices=Array.from(list.children);
+  assert.deepEqual(choices.map(button=>button.dataset.themeChoice),themes);
+  select.click();
+  assert.equal(w.document.activeElement,choices[0]);
+  choices[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'End',bubbles:true}));
+  assert.equal(w.document.activeElement,choices.at(-1));
+  choices.at(-1).dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+  assert.ok(list.hidden);assert.equal(w.document.activeElement,select);
+  function choose(id){select.click();choices.find(b=>b.dataset.themeChoice===id).click()}
+  for(const id of themes){
+    choose(id);
+    assert.equal(w.localStorage.getItem(key),id);
+    assert.equal(w.document.documentElement.dataset.uiTheme||'default',id);
+    assert.ok(list.hidden);assert.equal(list.querySelector('[aria-pressed=true]').dataset.themeChoice,id);
     const reload = setup(id);
     assert.equal(reload.document.documentElement.dataset.uiTheme || 'default', id);
     const color = reload.document.querySelector('meta').content;
@@ -39,7 +47,8 @@ try {
   w.dispatchEvent(new w.StorageEvent('storage', {key, newValue:'winter'}));
   assert.equal(w.document.documentElement.dataset.uiTheme, 'winter');
   w.Storage.prototype.setItem = () => { throw Error('quota'); };
-  buttons[0].click();
+  choose('default');
+  assert.equal(list.querySelector('[aria-pressed=true]').dataset.themeChoice,'winter');
   assert.equal(w.document.documentElement.dataset.uiTheme, 'winter');
   assert.match(w.document.querySelector('[role=status]').textContent, /Could not/);
   w.dispatchEvent(new w.StorageEvent('storage', {key:null}));

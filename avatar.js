@@ -3,6 +3,15 @@
   const input = document.getElementById('avatarFile');
   const status = document.getElementById('avatarStatus');
   const key = 'rex-avatar-v1';
+  const editAvatar = document.getElementById('profileAvatarEdit');
+  const settings = document.getElementById('avatarSettings');
+  if (editAvatar && settings) {
+    editAvatar.addEventListener('click', () => {
+      settings.hidden = !settings.hidden;
+      editAvatar.setAttribute('aria-expanded', String(!settings.hidden));
+      if (!settings.hidden) document.getElementById('avatarUpload').focus();
+    });
+  }
   let selection = 0;
 
   function render() {
@@ -19,6 +28,7 @@
     img.src = custom ? value : 'avatar-3d.webp';
     img.alt = custom ? 'My Avatar' : 'Rex Character avatar';
     toggle.replaceChildren(img);
+    editAvatar?.replaceChildren(img.cloneNode());
   }
 
   document.getElementById('avatarUpload').addEventListener('click', () => input.click());

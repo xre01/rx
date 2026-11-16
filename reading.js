@@ -2,7 +2,17 @@
 'use strict';
 const key='rex-reading-library-v1',main=document.querySelector('main'),nav=document.querySelector('.rex-sidebar-nav');if(!main||!nav)return;
 const day=()=>{const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());return ['year','month','day'].map(k=>p.find(x=>x.type===k).value).join('-')};
-let records=[],storageError='';try{const data=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(data))throw Error();records=data.filter(r=>r&&typeof r.id==='string'&&typeof r.title==='string'&&Array.isArray(r.logs))}catch{storageError='Reading storage could not be loaded. Existing data has not been overwritten.'}
+let records=[],storageError='';
+function loadLibrary(){
+ try{
+  const data=JSON.parse(localStorage.getItem(key)??'[]');
+  if(!Array.isArray(data)||!data.every(r=>r&&typeof r.id==='string'&&typeof r.title==='string'&&Array.isArray(r.logs)))throw Error();
+  records=data;storageError='';return true;
+ }catch{storageError='Reading storage could not be loaded. Existing data has not been overwritten.';return false}
+}
+loadLibrary();
+function pendingBytes(files){return files.reduce((sum,file)=>sum+(file.blockId?0:file.size||0),0)}
+
 const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
 const btn=(text,fn,cls='ghost')=>{const n=el('button',cls,text);n.type='button';n.addEventListener('click',fn);return n};
 const panel=el('section','panelview reading-panel');panel.id='reading';main.append(panel);
@@ -80,7 +90,7 @@ function bookEntry(r,existing){
  function renderFiles(){attachmentArea.replaceChildren();const saved=(r.attachments||[]).filter(f=>kept.includes(f.id));attachmentArea.append(attachmentList(saved,f=>{kept.splice(kept.indexOf(f.id),1);renderFiles()}));for(const [i,file]of pending.entries()){const row=el('div','reading-file-row');row.append(el('span','',file.name),btn('Remove',()=>{pending.splice(i,1);renderFiles()},'reading-file-remove'));attachmentArea.append(row);}}
  files.addEventListener('change',()=>{pending.push(...files.files);files.value='';renderFiles()});renderFiles();
  const submit=el('button','action','Save note');submit.type='submit';form.append(submit);
- form.addEventListener('submit',async e=>{e.preventDefault();if(!note.value.trim())return richNote.editor.commands.focus();if(pending.some(f=>f.size>20*1024*1024)||pending.reduce((n,f)=>n+f.size,0)>20*1024*1024){fileStatus.textContent='Keep new files within 20 MiB total.';return}let current=records.find(x=>x.id===r.id);if(!current||current.deleted||current.updated!==r.updated){fileStatus.textContent='This book changed while you were editing. Your draft is still here; copy it before reopening the book.';return}if((current.attachments||[]).length+pending.length>10){fileStatus.textContent='A book can hold up to 10 attachments.';return}
+ form.addEventListener('submit',async e=>{e.preventDefault();if(!note.value.trim())return richNote.editor.commands.focus();if(pending.some(f=>f.size>20*1024*1024)||pending.reduce((n,f)=>n+f.size,0)>20*1024*1024){fileStatus.textContent='Keep new files within 20 MiB total.';return}let current=records.find(x=>x.id===r.id);if(!current||current.deleted||current.updated!==r.updated){fileStatus.textContent='This book changed while you were editing. Your draft is still here; copy it before reopening the book.';return}if(!existing&&bookNotes(current).length>=40){fileStatus.textContent='A book can hold up to 40 notes. Your draft is still open.';return}if(pendingBytes([...(current.attachments||[]),...pending])>20*1024*1024){fileStatus.textContent='Keep pending files within 20 MiB total.';return}if((current.attachments||[]).length+pending.length>10){fileStatus.textContent='A book can hold up to 10 attachments.';return}
  submit.disabled=true;try{const rich=richNote.html(),doc=richNote.document(),added=pending.length?await storeFiles(pending):[];current=records.find(x=>x.id===r.id);if(!current||current.deleted||current.updated!==r.updated)throw Error('This book changed. Your draft is retained; reopen the book before saving.');const n={...existing,id:existing?.id||crypto.randomUUID(),date:date.value,note:note.value,richNote:rich,editorNote:doc,attachmentIds:[...kept,...added.map(f=>f.id)]},logs=existing?bookNotes(current).map(x=>x.id===existing.id?n:x):[...bookNotes(current),n],item={...current,body:'',logs,attachments:[...(current.attachments||[]),...added],updated:new Date().toISOString()};if(save(records.map(x=>x.id===current.id?item:x))){d.close();bookPage(item)}}catch(error){fileStatus.textContent=error.message}finally{submit.disabled=false}});
 }
 function addBook(){
@@ -93,15 +103,21 @@ function notebook(r){
  const date=field(form,'Note date','writtenDate',r?.writtenDate||day(),'date');date.required=true;date.max=day();
  const sourceArea=el('fieldset','reading-source-area');sourceArea.append(el('legend','','Article source (optional)'));form.append(sourceArea);
  const link=field(sourceArea,'Source link','url',r?.url||'','url');link.addEventListener('input',()=>link.setCustomValidity(''));
- const files=field(sourceArea,'Upload files (PDF, Word, images)','files','','file');files.multiple=true;files.accept='.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.mp3,.wav,.m4a,.ogg';const fileHint=el('p','sub','Up to 10 attachments, 20 MB each. Attachments sync when Notion is connected.');let pendingFiles=[],keptFiles=[...(r?.attachments||[])];const sourceButtons=el('div','reading-source-buttons'),fileSelection=el('div','reading-pending-files');files.closest('label').classList.add('reading-file-picker');const pickFiles=(accept)=>{files.accept=accept;files.click()};sourceButtons.append(btn('Images',()=>pickFiles('image/*'),'reading-source-tab'),btn('Audio',()=>pickFiles('audio/*'),'reading-source-tab'),btn('Files',()=>pickFiles('.pdf,.doc,.docx,.txt,.epub'),'reading-source-tab'),btn('Links',()=>{link.closest('label').hidden=!link.closest('label').hidden;if(!link.closest('label').hidden)link.focus()},'reading-source-tab'));sourceArea.prepend(sourceButtons);sourceArea.append(fileSelection);function renderPending(){fileSelection.replaceChildren();for(const [i,file]of pendingFiles.entries()){const row=el('div','reading-file-row');row.append(el('span','',file.name+' · '+Math.ceil(file.size/1024)+' KB'),el('span','reading-file-status pending','Pending'),btn('Remove',()=>{pendingFiles.splice(i,1);renderPending()},'reading-file-remove'));fileSelection.append(row)}}files.addEventListener('change',()=>{pendingFiles.push(...files.files);files.value='';renderPending()});sourceArea.append(fileHint);const oldFiles=el('div');function renderSaved(){oldFiles.replaceChildren(attachmentList(keptFiles,file=>{keptFiles=keptFiles.filter(x=>x.id!==file.id);renderSaved();fileHint.textContent='Attachment removed. Save your note to apply.'}))}renderSaved();sourceArea.append(oldFiles);sourceArea.append(el('p','reading-source-help','Selected files are pending until you save. Saved attachments show their sync status.'));
+ const files=field(sourceArea,'Upload files (PDF, Word, images)','files','','file');files.multiple=true;files.accept='.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.mp3,.wav,.m4a,.ogg';const fileHint=el('p','sub','Up to 10 attachments, 20 MiB total pending upload. Attachments sync when Notion is connected.');let pendingFiles=[],keptFiles=[...(r?.attachments||[])];const sourceButtons=el('div','reading-source-buttons'),fileSelection=el('div','reading-pending-files');files.closest('label').classList.add('reading-file-picker');const pickFiles=(accept)=>{files.accept=accept;files.click()};sourceButtons.append(btn('Images',()=>pickFiles('image/*'),'reading-source-tab'),btn('Audio',()=>pickFiles('audio/*'),'reading-source-tab'),btn('Files',()=>pickFiles('.pdf,.doc,.docx,.txt,.epub'),'reading-source-tab'),btn('Links',()=>{link.closest('label').hidden=!link.closest('label').hidden;if(!link.closest('label').hidden)link.focus()},'reading-source-tab'));sourceArea.prepend(sourceButtons);sourceArea.append(fileSelection);function renderPending(){fileSelection.replaceChildren();for(const [i,file]of pendingFiles.entries()){const row=el('div','reading-file-row');row.append(el('span','',file.name+' · '+Math.ceil(file.size/1024)+' KB'),el('span','reading-file-status pending','Pending'),btn('Remove',()=>{pendingFiles.splice(i,1);renderPending()},'reading-file-remove'));fileSelection.append(row)}}files.addEventListener('change',()=>{pendingFiles.push(...files.files);files.value='';renderPending()});sourceArea.append(fileHint);const oldFiles=el('div');function renderSaved(){oldFiles.replaceChildren(attachmentList(keptFiles,file=>{keptFiles=keptFiles.filter(x=>x.id!==file.id);renderSaved();fileHint.textContent='Attachment removed. Save your note to apply.'}))}renderSaved();sourceArea.append(oldFiles);sourceArea.append(el('p','reading-source-help','Selected files are pending until you save. Saved attachments show their sync status.'));
 
  const note=field(form,'Notes','body',r?.body||'','textarea');const richNote=RexReadingEditor.attach(note,r?.richBody,r?.editorBody);
  link.closest('label').hidden=!link.value;
  const submit=el('button','action','Save note');submit.type='submit';form.append(submit);
  form.addEventListener('submit',async e=>{e.preventDefault();
  if(!source.value.trim())return source.focus();if(!note.value.trim())return note.focus();if(link.value&&!url(link.value)){link.setCustomValidity('Enter an HTTP or HTTPS link.');link.reportValidity();return}
- const selectedFiles=[...pendingFiles];if(selectedFiles.some(f=>f.size>20*1024*1024)||keptFiles.length+selectedFiles.length>10){fileHint.textContent='Choose up to 10 files, no larger than 20 MB each.';return}submit.disabled=true;submit.textContent='Saving…';fileHint.textContent='Saving note and attachments…';let added=[];try{if(selectedFiles.length)added=await storeFiles(selectedFiles)}catch(error){fileHint.textContent=error.message;submit.disabled=false;submit.textContent='Retry save';return}
- const now=new Date().toISOString(),base=r,item={...base,id:base?.id||crypto.randomUUID(),title:source.value.trim(),source:source.value.trim(),noteTitle:source.value.trim(),kind:'article',writtenDate:base?.writtenDate||date.value,createdAt:base?.createdAt||now,updated:now,status:base?.status||'reading',url:link.value,body:note.value,logs:base?.logs||[]};
+ const selectedFiles=[...pendingFiles];if(pendingBytes([...keptFiles,...selectedFiles])>20*1024*1024||keptFiles.length+selectedFiles.length>10){fileHint.textContent='Choose up to 10 files with at most 20 MiB pending upload.';return}submit.disabled=true;submit.textContent='Saving…';fileHint.textContent='Saving note and attachments…';let added=[];try{if(selectedFiles.length)added=await storeFiles(selectedFiles)}catch(error){fileHint.textContent=error.message;submit.disabled=false;submit.textContent='Retry save';return}
+ if(!loadLibrary()){fileHint.textContent=storageError;submit.disabled=false;return}
+ const base=r&&records.find(record=>record.id===r.id);
+ if(r&&(!base||base.deleted||base.updated!==r.updated||base.remoteRevision!==r.remoteRevision)){
+  fileHint.textContent='This article changed while you were editing. Your draft is still open; copy it before reopening the article.';
+  submit.disabled=false;submit.textContent='Save note';return;
+ }
+ const now=new Date().toISOString(),item={...base,id:base?.id||crypto.randomUUID(),title:source.value.trim(),source:source.value.trim(),noteTitle:source.value.trim(),kind:'article',writtenDate:base?.writtenDate||date.value,createdAt:base?.createdAt||now,updated:now,status:base?.status||'reading',url:link.value,body:note.value,logs:base?.logs||[]};
  item.richBody=richNote.html();item.editorBody=richNote.document();item.writtenDate=date.value;item.attachments=[...keptFiles,...added];
  if(save(base?records.map(x=>x.id===base.id?item:x):[...records,item])){d.close()}else{submit.disabled=false;fileHint.textContent='Could not save your note. Check storage and retry.'}
  });
@@ -115,7 +131,7 @@ const readingSyncMessage=el('p','sub');readingSyncMessage.setAttribute('role','s
 const readingSyncActions=el('div','reading-sync-actions');readingSyncActions.append(btn('Connect & sync',async()=>{if(!readingKey.value)return readingKey.focus();try{const status=await readingRequest('/status');if(status.editorSchemaVersion!==1)throw Error('The reading service needs the editor update. Local notes are retained.');readingConnected=true;sessionStorage.setItem('rex-reading-access-key',readingKey.value);readingSummary.textContent='Notion · Connected';await syncReading()}catch(error){readingConnected=false;readingSummary.textContent='Notion · Connection failed';readingSyncMessage.textContent=error.message;readingSyncError=error.message;updateSyncStatus()}},'ghost'),btn('Retry sync',()=>syncReading(),'ghost'),btn('Disconnect',()=>{readingConnected=false;readingKey.value='';sessionStorage.removeItem('rex-reading-access-key');readingSummary.textContent='Notion · Disconnected';readingSyncMessage.textContent='Disconnected. Local notes and Notion records are retained.';readingSyncError='';updateSyncStatus()},'ghost'));
 readingSettings.append(readingSummary,readingKey,readingSyncActions,readingSyncMessage);panel.append(readingSettings);
 try{readingKey.value=sessionStorage.getItem('rex-reading-access-key')||sessionStorage.getItem('arcane-session-password')||document.getElementById('arcanePassword')?.value||''}catch{}
-const syncStrip=el('div','reading-sync-strip'),syncLabel=el('span'),syncRetry=btn('Retry',()=>{if(!readingConnected&&readingKey.value){readingLastRefresh=0;restoreReadingConnection()}else syncReading()},'ghost');syncStrip.setAttribute('role','status');syncStrip.setAttribute('aria-live','polite');syncStrip.append(syncLabel,syncRetry);header.append(syncStrip);
+const syncStrip=el('div','reading-sync-strip'),syncLabel=el('span'),syncRetry=btn('Retry',()=>{if(!readingConnected&&readingKey.value){readingLastRefresh=0;restoreReadingConnection()}else syncReading()},'ghost');syncStrip.setAttribute('role','status');syncStrip.setAttribute('aria-live','polite');syncStrip.append(syncLabel,syncRetry);title.append(syncStrip);
 function updateSyncStatus(){const pending=records.filter(readingDirty).length;let state,text;if(readingSyncBusy){state='syncing';text='Syncing to Notion…'}else if(!navigator.onLine){state='pending';text=pending?'Offline · '+pending+' pending':'Offline · Saved on this device'}else if(readingSyncError){state='error';text='Sync failed · Changes kept on this device'}else if(!readingConnected){state='local';text=pending?'Saved on this device · '+pending+' pending':'Notion not connected'}else if(pending){state='pending';text='Saved on this device · '+pending+' pending'}else{state='synced';text='Synced to Notion'+(readingSyncedAt?' · '+new Date(readingSyncedAt).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'}):'')}syncStrip.dataset.state=state;syncLabel.textContent=text;syncRetry.hidden=!(state==='error'||state==='pending');syncRetry.disabled=readingSyncBusy||!navigator.onLine;syncStrip.title=readingSyncError||text;dispatchEvent(new CustomEvent('rex-reading-updated'));}
 addEventListener('offline',updateSyncStatus);addEventListener('online',updateSyncStatus);
 async function readingRequest(path,options={}){const response=await fetch(readingOrigin+'/api/reading'+path,{...options,headers:{'X-Arcane-Key':readingKey.value},cache:'no-store'});let data;try{data=await response.json()}catch{throw Error('Invalid gateway response. Check the reading service.')}if(!response.ok)throw Error(data.error&& !/[\u3400-\u9fff]/.test(data.error)?data.error:'Notion request failed ('+response.status+'). Check the access key and database permissions.');return data}
@@ -125,24 +141,42 @@ async function syncReading(){
  if(readingSyncBusy)return;if(!readingConnected){readingSettings.open=true;readingSyncMessage.textContent='Enter your access key and connect first.';return}
  readingSyncBusy=true;readingSyncError='';updateSyncStatus();readingSummary.textContent='Notion · Syncing…';
  try{
+  if(!loadLibrary())throw Error(storageError);
   if(!readingMigrationDone){await readingRequest('/migrate',{method:'POST',body:new FormData()});readingMigrationDone=true;}
-  const before=await readingRequest('/records');if(!Array.isArray(before.records)||before.complete!==true)throw Error('Could not load reading records.');for(const removed of before.records.filter(r=>r.deleted)){const i=records.findIndex(r=>r.id===removed.id);if(i>=0)records[i]={...removed,syncedUpdated:removed.updated};}localStorage.setItem(key,JSON.stringify(records));
+  const before=await readingRequest('/records');if(!Array.isArray(before.records)||before.complete!==true)throw Error('Could not load reading records.');
   const remoteBefore=new Map(before.records.map(r=>[r.id,r]));
-  for(const local of records.filter(readingDirty)){const remote=remoteBefore.get(local.id);if(remote&&!remote.deleted&&local.remoteRevision&&remote.remoteRevision!==local.remoteRevision)throw Error('This note changed in Notion and on this device: '+local.title+'. Your local version is retained. Resolve both versions before retrying.');}
+  if(!loadLibrary())throw Error(storageError);
+  const failures=[];
   for(const original of [...records].filter(readingDirty)){
-   readingSyncMessage.textContent='Syncing: '+original.title;
-   const payload={...original,editorClientVersion:1,body:original.body||'',logs:original.logs||[],attachments:original.attachments||[]};delete payload.syncedUpdated;delete payload.notionUrl;delete payload.remotePageId;
-   const form=new FormData();form.append('record',JSON.stringify(payload));let bytes=0;
-   for(const f of payload.attachments){if(f.blockId)continue;const blob=await readFile(f.id);bytes+=blob.size;if(bytes>20*1024*1024)throw Error('Keep pending attachments below 20 MiB per note.');form.append('files',blob,f.id)}
-   const result=await readingRequest('/records',{method:'POST',body:form});if(!result.record?.id)throw Error('Invalid sync response.');
-   const current=records.find(r=>r.id===original.id);
-   if(current?.updated===original.updated)records=records.map(r=>r.id===original.id?{...result.record,syncedUpdated:original.updated}:r);
-   else if(current)records=records.map(r=>r.id===original.id?{...r,remoteRevision:result.record.remoteRevision,remotePageId:result.record.remotePageId}:r);
-   localStorage.setItem(key,JSON.stringify(records));
+   if(!loadLibrary())throw Error(storageError);
+   const latest=records.find(r=>r.id===original.id);
+   if(!latest||latest.updated!==original.updated||!readingDirty(latest))continue;
+   try{
+    const remote=remoteBefore.get(original.id);
+    if(remote?.deleted){
+     if(!original.deleted)throw Error('Deleted on another device. Your local draft is retained.');
+     records=records.map(r=>r.id===original.id?{...remote,syncedUpdated:remote.updated}:r);
+     localStorage.setItem(key,JSON.stringify(records));
+     continue;
+    }
+    if(remote&&original.remoteRevision&&remote.remoteRevision!==original.remoteRevision)
+     throw Error('Changed on another device. Your local version is retained.');
+    readingSyncMessage.textContent='Syncing: '+original.title;
+    const payload={...original,editorClientVersion:1,body:original.body||'',logs:original.logs||[],attachments:original.attachments||[]};delete payload.syncedUpdated;delete payload.notionUrl;delete payload.remotePageId;
+    const form=new FormData();form.append('record',JSON.stringify(payload));let bytes=0;
+    for(const f of payload.attachments){if(f.blockId)continue;const blob=await readFile(f.id);bytes+=blob.size;if(bytes>20*1024*1024)throw Error('Keep pending attachments below 20 MiB per note.');form.append('files',blob,f.id)}
+    const result=await readingRequest('/records',{method:'POST',body:form});if(result.record?.id!==original.id||!result.record.remoteRevision)throw Error('Invalid sync response.');
+    if(!loadLibrary())throw Error(storageError);
+    const current=records.find(r=>r.id===original.id);
+    if(current?.updated===original.updated)records=records.map(r=>r.id===original.id?{...result.record,syncedUpdated:original.updated}:r);
+    else if(current)records=records.map(r=>r.id===original.id?{...r,remoteRevision:result.record.remoteRevision,remotePageId:result.record.remotePageId}:r);
+    localStorage.setItem(key,JSON.stringify(records));
+   }catch(error){failures.push(original.title+' · '+error.message)}
   }
   const remote=await readingRequest('/records');if(!Array.isArray(remote.records)||remote.complete!==true)throw Error('Notion records could not be fully loaded. Please retry.');
+  if(!loadLibrary())throw Error(storageError);
   const map=new Map(records.map(r=>[r.id,r]));for(const r of remote.records){if(!r||typeof r.id!=='string'||!Array.isArray(r.logs))continue;const local=map.get(r.id);if(!local||!readingDirty(local))map.set(r.id,{...r,syncedUpdated:r.updated})}
-  records=[...map.values()];localStorage.setItem(key,JSON.stringify(records));render();readingSummary.textContent='Notion · Connected';readingSyncMessage.textContent='Synced · '+remote.records.filter(r=>!r.deleted).length+' reading records';feedback.textContent='Synced to Notion';readingSyncedAt=Date.now();readingSyncError='';
+  records=[...map.values()];localStorage.setItem(key,JSON.stringify(records));render();if(failures.length)throw Error(failures.join(' / '));readingSummary.textContent='Notion · Connected';readingSyncMessage.textContent='Synced · '+remote.records.filter(r=>!r.deleted).length+' reading records';feedback.textContent='Synced to Notion';readingSyncedAt=Date.now();readingSyncError='';
  }catch(error){readingSyncError=error.message;readingSummary.textContent='Notion · Retry needed';readingSyncMessage.textContent=error.message+' · Local notes are retained.';feedback.textContent='Saved on this device · Notion sync incomplete';}
  finally{readingSyncBusy=false;updateSyncStatus();if(readingConnected&&!readingSyncError&&records.some(readingDirty))queueReadingSync()}
 }
@@ -170,7 +204,7 @@ function deleteReading(r,dialog){
  const deleted={id:current.id,kind:current.kind,title:current.title,body:'',logs:[],attachments:[],deleted:true,updated:new Date().toISOString(),remoteRevision:current.remoteRevision,remotePageId:current.remotePageId};
  if(save(records.map(x=>x.id===r.id?deleted:x),'Deleted')){dialog?.close();feedback.textContent='Deleted.';}
 }
-addEventListener('storage',e=>{if(e.key!==key)return;try{const next=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(next)){records=next;render();updateSyncStatus()}}catch{}});
+addEventListener('storage',e=>{if(e.key!==key)return;loadLibrary();render();updateSyncStatus()});
 
 let readingLastRefresh=0,readingRestoreBusy=false;
 async function restoreReadingConnection(){

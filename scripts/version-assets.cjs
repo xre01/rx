@@ -16,6 +16,16 @@ function updateUrls(text) {
     (url, file) => file === 'sw.js' ? url : file + '?v=' + version(file));
 }
 
+// Update nested worker imports before hashing their parent scripts.
+for (const file of ['focus-push-sw.js']) {
+  const original = fs.readFileSync(file, 'utf8');
+  const updated = updateUrls(original);
+  if (original !== updated) {
+    if (process.argv.includes('--check')) throw Error(file + ' has stale import versions.');
+    fs.writeFileSync(file, updated);
+  }
+}
+
 const html = updateUrls(fs.readFileSync('index.html', 'utf8'));
 const worker = updateUrls(fs.readFileSync('sw.js', 'utf8'));
 const entries = JSON.parse(worker.match(/^const CORE=(\[.*?\])\.map/m)[1]);
