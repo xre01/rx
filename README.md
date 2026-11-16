@@ -31,10 +31,7 @@ Reading and PTE share the My World Notion database through the existing authenti
 
 The already deployed reading API supports status, migration, record sync and authenticated media. Book/article metadata and sync receipts are stored in its existing Durable Object; Notion pages display readable notes, dates and source links. The gateway must retain this Durable Object state when deploying changes. Notes edited in Notion are not automatically imported into the website; edit reading content from the Reading panel.
 
-### Reading XP
-
-Book notes award 3 XP per day with at least one non-empty note, shared across all books. Articles award 3 XP each, capped at 30 XP per note date. Empty books, empty notes and future dates do not earn XP. Reading XP is reconciled from surviving records, so edits/retries cannot award duplicate XP and deletion recalculates the daily caps without changing PTE XP. Deletions sync as tombstones and move Notion records to Trash.
-
+Practice, reading and focus records no longer award XP. Previously earned XP remains visible in the profile. Reading deletions sync as tombstones and move Notion records to Trash.
 
 ## Rich notes release
 
@@ -47,7 +44,6 @@ Checks (run from the repository root):
 ```sh
 node tests/reading-sync.cjs
 node tests/pte-rich-sync.cjs
-node tests/reading-xp.cjs
 ```
 
 A new service-worker cache version removes only older `rex-focus-offline-*` resource caches on activation. Notes, attachments, XP and browser-session connection keys are retained.
@@ -80,7 +76,7 @@ Tasks support Repeat: Does not repeat, Daily, Weekdays (Monday–Friday), Weekly
 
 For fixed-day cycles such as rent every 28 days, choose `Every N days` and enter the interval. Occurrences are calculated as start date plus multiples of that many calendar days, independently of month lengths and daylight-saving time. `Selected weekdays` remains the separate weekday-based option.
 
-Home Focus totals all saved PTE, Reading and general Home focus records for the Sydney day, including saved partial sessions of at least a minute, with duplicate IDs excluded. Home's timer statistics show all areas. Reading statistics remain Reading-only; PTE statistics exclude both Reading and Home sessions. New general sessions started from Home use a `Home · ` source marker; existing unmarked sessions retain their legacy PTE classification. Opening another panel does not reclassify a running session. XP calculations are unchanged.
+Home Focus totals all saved PTE, Reading and general Home focus records for the Sydney day, including saved partial sessions of at least a minute, with duplicate IDs excluded. Home's timer statistics show all areas. Reading statistics remain Reading-only; PTE statistics exclude both Reading and Home sessions. New general sessions started from Home use a `Home · ` source marker; existing unmarked sessions retain their legacy PTE classification. Opening another panel does not reclassify a running session.
 
 ## Calm interface and interaction feedback
 

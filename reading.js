@@ -32,7 +32,7 @@ function renderCalendar(){
  if(selectedDay)calendar.append(el('p','reading-calendar-selection',selectedDay+' · '+(counts.get(selectedDay)||0)+' article notes'));
 }
 const shelf=el('section','reading-bookshelf'),shelfGrid=el('div','reading-shelf-grid');shelf.append(el('h2','','Bookshelf'),shelfGrid);const columns=el('div','reading-content-columns');panel.insertBefore(columns,library);panel.insertBefore(shelf,calendar);columns.append(library);
-function save(next,message='Saved'){if(storageError){feedback.textContent=storageError;return false}try{if(!localStorage.getItem('rex-reading-editor-backup-v1'))localStorage.setItem('rex-reading-editor-backup-v1',localStorage.getItem(key)||'[]');localStorage.setItem(key,JSON.stringify(next));records=next;updateReadingXp();render();updateSyncStatus();queueReadingSync();dispatchEvent(new CustomEvent('rex-feedback',{detail:{message,tone:'success'}}));return true}catch{feedback.textContent='Could not save. Your changes are still in the open form; check browser storage.';return false}}
+function save(next,message='Saved'){if(storageError){feedback.textContent=storageError;return false}try{if(!localStorage.getItem('rex-reading-editor-backup-v1'))localStorage.setItem('rex-reading-editor-backup-v1',localStorage.getItem(key)||'[]');localStorage.setItem(key,JSON.stringify(next));records=next;render();updateSyncStatus();queueReadingSync();dispatchEvent(new CustomEvent('rex-feedback',{detail:{message,tone:'success'}}));return true}catch{feedback.textContent='Could not save. Your changes are still in the open form; check browser storage.';return false}}
 function url(value){try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)?u.href:null}catch{return null}}
 function render(){renderCalendar();
 grid.replaceChildren();shelfGrid.replaceChildren();const q=search.value.trim().toLowerCase(),list=records.filter(r=>!r.deleted&&(r.kind==='book'||!selectedDay||noteDays(r).includes(selectedDay))&&[r.title,r.source,r.body,r.author,r.tags,...r.logs.map(l=>l.note)].join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));const books=list.filter(r=>r.kind==='book'),articles=list.filter(r=>r.kind==='article');shelf.hidden=false;library.hidden=!selectedDay;
@@ -126,7 +126,7 @@ async function syncReading(){
  readingSyncBusy=true;readingSyncError='';updateSyncStatus();readingSummary.textContent='Notion · Syncing…';
  try{
   if(!readingMigrationDone){await readingRequest('/migrate',{method:'POST',body:new FormData()});readingMigrationDone=true;}
-  const before=await readingRequest('/records');if(!Array.isArray(before.records)||before.complete!==true)throw Error('Could not load reading records.');for(const removed of before.records.filter(r=>r.deleted)){const i=records.findIndex(r=>r.id===removed.id);if(i>=0)records[i]={...removed,syncedUpdated:removed.updated};}localStorage.setItem(key,JSON.stringify(records));updateReadingXp();
+  const before=await readingRequest('/records');if(!Array.isArray(before.records)||before.complete!==true)throw Error('Could not load reading records.');for(const removed of before.records.filter(r=>r.deleted)){const i=records.findIndex(r=>r.id===removed.id);if(i>=0)records[i]={...removed,syncedUpdated:removed.updated};}localStorage.setItem(key,JSON.stringify(records));
   const remoteBefore=new Map(before.records.map(r=>[r.id,r]));
   for(const local of records.filter(readingDirty)){const remote=remoteBefore.get(local.id);if(remote&&!remote.deleted&&local.remoteRevision&&remote.remoteRevision!==local.remoteRevision)throw Error('This note changed in Notion and on this device: '+local.title+'. Your local version is retained. Resolve both versions before retrying.');}
   for(const original of [...records].filter(readingDirty)){
@@ -142,7 +142,7 @@ async function syncReading(){
   }
   const remote=await readingRequest('/records');if(!Array.isArray(remote.records)||remote.complete!==true)throw Error('Notion records could not be fully loaded. Please retry.');
   const map=new Map(records.map(r=>[r.id,r]));for(const r of remote.records){if(!r||typeof r.id!=='string'||!Array.isArray(r.logs))continue;const local=map.get(r.id);if(!local||!readingDirty(local))map.set(r.id,{...r,syncedUpdated:r.updated})}
-  records=[...map.values()];localStorage.setItem(key,JSON.stringify(records));updateReadingXp();render();readingSummary.textContent='Notion · Connected';readingSyncMessage.textContent='Synced · '+remote.records.filter(r=>!r.deleted).length+' reading records';feedback.textContent='Synced to Notion';readingSyncedAt=Date.now();readingSyncError='';
+  records=[...map.values()];localStorage.setItem(key,JSON.stringify(records));render();readingSummary.textContent='Notion · Connected';readingSyncMessage.textContent='Synced · '+remote.records.filter(r=>!r.deleted).length+' reading records';feedback.textContent='Synced to Notion';readingSyncedAt=Date.now();readingSyncError='';
  }catch(error){readingSyncError=error.message;readingSummary.textContent='Notion · Retry needed';readingSyncMessage.textContent=error.message+' · Local notes are retained.';feedback.textContent='Saved on this device · Notion sync incomplete';}
  finally{readingSyncBusy=false;updateSyncStatus();if(readingConnected&&!readingSyncError&&records.some(readingDirty))queueReadingSync()}
 }
@@ -165,13 +165,12 @@ async function openReadingFile(file){
  }catch(error){if(!d.isConnected)return;status.textContent=error.message;stage.append(btn('Retry preview',load,'reading-note-open'))}};await load();
 }
 
-function updateReadingXp(){try{window.RexReadingXP?.reconcile(records,day())}catch{feedback.textContent='Notes saved. XP could not update; please retry.'}}
 function deleteReading(r,dialog){
  const current=records.find(x=>x.id===r.id);if(!current)return;
  const deleted={id:current.id,kind:current.kind,title:current.title,body:'',logs:[],attachments:[],deleted:true,updated:new Date().toISOString(),remoteRevision:current.remoteRevision,remotePageId:current.remotePageId};
- if(save(records.map(x=>x.id===r.id?deleted:x),'Deleted')){dialog?.close();feedback.textContent='Deleted. Reading XP has been recalculated.';}
+ if(save(records.map(x=>x.id===r.id?deleted:x),'Deleted')){dialog?.close();feedback.textContent='Deleted.';}
 }
-addEventListener('storage',e=>{if(e.key!==key)return;try{const next=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(next)){records=next;updateReadingXp();render();updateSyncStatus()}}catch{}});
+addEventListener('storage',e=>{if(e.key!==key)return;try{const next=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(next)){records=next;render();updateSyncStatus()}}catch{}});
 
 let readingLastRefresh=0,readingRestoreBusy=false;
 async function restoreReadingConnection(){
@@ -187,7 +186,7 @@ addEventListener('online',()=>{readingLastRefresh=0;restoreReadingConnection();}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')restoreReadingConnection();});
 setInterval(restoreReadingConnection,60000);
 updateSyncStatus();
-updateReadingXp();
+
 render();
 restoreReadingConnection();
 if(location.hash==='#reading')entry.click();

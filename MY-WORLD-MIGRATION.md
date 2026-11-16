@@ -17,6 +17,6 @@ Required properties: existing Name/title, Date/date and Tags/multi-select; add T
 
 A book remains one original website record with its full notes and attachments. Each distinct note date has a `Reading day` calendar entry in the same database, linked to that original book. These entries are excluded from Reading's API so they cannot create duplicate books or XP. They follow website edits, renames and deletions. Articles keep their existing single-date record. Undated books/pages retain unset dates rather than inventing dates.
 
-Validation: `pnpm test`, `node tests/my-world-sync.cjs`, `node tests/activity-separation.cjs`, `node tests/reading-xp.cjs`, `node tests/pte-xp.cjs`.
+Validation: `pnpm test`, `node tests/my-world-sync.cjs`, `node tests/activity-separation.cjs`.
 
 After migration, do not query the old PTE source: a deleted or unshared legacy database returns 404 and must not break the My World archive. Retain the original NOTION_DATA_SOURCE_ID value only for its existing Durable Object identity.
