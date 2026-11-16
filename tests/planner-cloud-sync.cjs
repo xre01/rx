@@ -34,5 +34,26 @@ const habit={id:'habit-a',title:'Walk',days:['2026-11-12'],icon:'🌱'};
  const damaged=boot({'rex-cloud-origin':'https://sync.test','rex-cloud-token':'test','rex-home-planner-v1':'broken'},remote);await damaged.sync();
  assert.equal(damaged.localStorage.getItem('rex-home-planner-v1'),'broken','cloud restore preserves unreadable local planner data');
  assert.equal(damaged.requests.filter(method=>method==='POST').length,0,'invalid local planner data is never uploaded');
+
+ const deadlineApp=boot({'rex-cloud-origin':'https://sync.test','rex-cloud-token':'test','rex-home-planner-v1':JSON.stringify({tasks:[{...task,dueDate:'2026-11-18',dueTime:'18:00'}],habits:[]})});
+ await deadlineApp.sync();
+ assert.equal(deadlineApp.remote.has('planner|task:task-a'),false,'older workers retain deadline tasks locally');
+ assert.equal(JSON.parse(deadlineApp.localStorage.getItem('rex-home-planner-v1')).tasks[0].dueDate,'2026-11-18');
+ worker.plannerDeadlines=true;
+ await deadlineApp.sync();
+ assert.equal(deadlineApp.remote.get('planner|task:task-a').data.value.dueDate,'2026-11-18');
+
+ const listApp=boot({'rex-cloud-origin':'https://sync.test','rex-cloud-token':'test','rex-home-planner-v1':JSON.stringify({tasks:[{...task,date:'',repeat:'none'}],habits:[]})});
+ await listApp.sync();assert.equal(listApp.remote.has('planner|task:task-a'),false);
+ assert.equal(JSON.parse(listApp.localStorage.getItem('rex-home-planner-v1')).tasks[0].date,'');
+ worker.plannerLists=true;
+ await listApp.sync();assert.equal(listApp.remote.get('planner|task:task-a').data.value.date,'');
+
+ const timed=boot({'rex-cloud-origin':'https://sync.test','rex-cloud-token':'test','rex-home-planner-v1':JSON.stringify({tasks:[{...task,date:'',repeat:'none',done:true,completedAt:1794880800000}],habits:[]})});
+ await timed.sync();assert.equal(timed.remote.has('planner|task:task-a'),false);
+ worker.plannerCompletionTimes=true;
+ await timed.sync();assert.equal(timed.remote.get('planner|task:task-a').data.value.completedAt,1794880800000);
+ const timedReload=boot({'rex-cloud-origin':'https://sync.test','rex-cloud-token':'test'},timed.remote);await timedReload.sync();
+ assert.equal(JSON.parse(timedReload.localStorage.getItem('rex-home-planner-v1')).tasks[0].completedAt,1794880800000);
  console.log('PASS: planner tasks and habits sync, deletions propagate, remote data restores, and unreadable local planner data is preserved');
 })().catch(error=>{console.error(error);process.exit(1)});

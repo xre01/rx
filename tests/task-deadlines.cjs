@@ -1,0 +1,34 @@
+const fs=require('fs'),assert=require('node:assert/strict');
+const source=fs.readFileSync('tests/home-page.cjs','utf8');
+const setup=new Function('require',source.slice(0,source.indexOf("const key='rex-home-planner"))+';return setup;')(require);
+const key='rex-home-planner-v1';
+const task={id:'due',title:'Deadline test',date:'2026-11-16',dueDate:'2026-11-16',dueTime:'18:00',done:false};
+const recurring={id:'repeat',title:'Daily deadline',date:'2026-11-16',dueDate:'2026-11-16',dueTime:'18:00',repeat:'daily',completedDates:{}};
+const {w,doc}=setup({[key]:JSON.stringify({tasks:[task,recurring],habits:[]})},'2026-11-17T02:00:00Z');
+try{
+ const read=()=>JSON.parse(w.localStorage.getItem(key)).tasks;
+ assert.equal(read()[0].date,'2026-11-17');
+ assert.equal(read()[0].dueDate,'2026-11-16');
+ const row=doc.querySelector('[data-task-id=due]');
+ assert.match(row.textContent,/Overdue 1 day · 18:00/);
+ assert.equal(row.querySelector('.task-due').dataset.state,'overdue');
+ assert.match(doc.querySelector('[data-task-id=repeat]').textContent,/Due today · 18:00/);
+ row.querySelector('input').click();
+ assert.equal(doc.querySelector('[data-task-id=due] .task-due').dataset.state,'completed');
+ doc.querySelector('[data-task-id=due] .life-row-actions button').click();
+ let form=doc.querySelector('.life-editor form');
+ assert.equal(form.querySelector('.task-deadline-editor').tagName,'DIV');
+ assert.equal(form.querySelector('.life-task-options').tagName,'DIV');
+ form.querySelector('[name=dueDate]').value='2026-11-18';
+ form.querySelector('[name=dueTime]').value='20:00';
+ form.dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ assert.equal(read()[0].dueDate,'2026-11-18');
+ assert.equal(read()[0].dueTime,'20:00');
+ doc.querySelector('[data-task-id=due] .life-row-actions button').click();
+ form=doc.querySelector('.life-editor form');
+ [...form.querySelectorAll('button')].find(b=>b.textContent==='Clear deadline').click();
+ form.dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ assert.equal(read()[0].dueDate,undefined);
+ assert.equal(read()[0].dueTime,undefined);
+ console.log('PASS: deadlines survive rollover, recur per occurrence, show overdue/completed state and support edit/removal');
+}finally{w.close()}

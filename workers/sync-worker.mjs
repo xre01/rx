@@ -76,14 +76,18 @@ function validPlannerRecord({ id, data }) {
       && validDays(value.days)
       && (value.icon === undefined || typeof value.icon === 'string' && value.icon.length <= 16);
   }
-  const fields = ['id', 'title', 'date', 'subtasks', 'time', 'priority', 'repeat', 'intervalDays', 'weekdays', 'completedDates', 'done', 'subtaskChecks'];
-  if (!Object.keys(value).every(key => fields.includes(key)) || !isDate(value.date)
+  const fields = ['id', 'title', 'date', 'subtasks', 'time', 'priority', 'repeat', 'intervalDays', 'weekdays', 'completedDates', 'done', 'subtaskChecks', 'dueDate', 'dueTime', 'completedAt'];
+  if (value.date==='' && (value.time || value.repeat && value.repeat!=='none')) return false;
+  if (!Object.keys(value).every(key => fields.includes(key)) || !(value.date===''||isDate(value.date))
+    || (value.dueDate !== undefined && !isDate(value.dueDate))
+    || (value.dueTime !== undefined && (!value.dueDate || !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value.dueTime)))
     || (value.time !== undefined && value.time !== '' && !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value.time))
     || (value.priority !== undefined && !['normal', 'important'].includes(value.priority))
     || (value.repeat !== undefined && !['none', 'daily', 'weekdays', 'weekly', 'custom', 'interval'].includes(value.repeat))
     || (value.intervalDays !== undefined && (!Number.isSafeInteger(value.intervalDays) || value.intervalDays < 1 || value.intervalDays > 36_500))
     || (value.repeat === 'interval' && value.intervalDays === undefined)
     || (value.repeat === 'custom' && (!Array.isArray(value.weekdays) || !value.weekdays.length))
+    || (value.completedAt !== undefined && (!Number.isSafeInteger(value.completedAt) || value.completedAt<=0 || value.completedAt>8640000000000000 || !value.done))
     || (value.done !== undefined && typeof value.done !== 'boolean')
     || (value.weekdays !== undefined && (!Array.isArray(value.weekdays) || value.weekdays.length > 7
       || value.weekdays.some(day => !Number.isInteger(day) || day < 0 || day > 6) || new Set(value.weekdays).size !== value.weekdays.length))
@@ -95,7 +99,7 @@ function validPlannerRecord({ id, data }) {
   if (value.subtaskChecks !== undefined) {
     const checks = value.subtaskChecks;
     if (!checks || typeof checks !== 'object' || Array.isArray(checks) || Object.keys(checks).length > 9000) return false;
-    if (!Object.entries(checks).every(([date, states]) => isDate(date) && states && typeof states === 'object'
+    if (!Object.entries(checks).every(([date, states]) => (isDate(date)||date==='undated') && states && typeof states === 'object'
       && !Array.isArray(states) && Object.keys(states).length <= 30
       && Object.entries(states).every(([childId, done]) => validId(childId) && typeof done === 'boolean'))) return false;
   }
@@ -164,7 +168,7 @@ export default {
           'SELECT kind,id,data,deleted,revision FROM records ORDER BY kind,id',
         ).all();
         return json({
-          storage: 'd1', schemaVersion: 3,
+          storage: 'd1', schemaVersion: 3, plannerDeadlines: true, plannerLists: true, plannerCompletionTimes: true,
           supportedKinds: [...LEGACY_KINDS, ...DASHBOARD_KINDS],
           records: result.results.map(publicRecord),
         }, 200, cors);
