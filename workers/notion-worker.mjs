@@ -40,6 +40,11 @@ function validDate(date) {
 function marker(block, id) {
   return (block[block.type]?.rich_text || []).some(t => t.text?.link?.url?.endsWith('#submission=' + id));
 }
+function reflectionSnapshots(page,blocks){
+ const result=[];let current;
+ for(const b of blocks){if(b.archived||b.in_trash)continue;if(b.type==='heading_3'){current=null;const label=(b.heading_3.rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');if(/^Daily Reflection(?:\s*·\s*网站记录)?\s*$/.test(label)){const link=(b.heading_3.rich_text||[]).find(t=>t.text?.link?.url?.includes('#submission='))?.text.link.url,submission=link?.split('#submission=')[1];current={id:submission||b.id,submission,date:page.properties.Date?.date?.start,note:'',media:[]};result.push(current)}}else if(current){if(['to_do','paragraph'].includes(b.type))current.note+=(current.note?'\n\n':'')+(b[b.type].rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');else if(['image','audio','file','pdf','video'].includes(b.type))current.media.push({name:(b[b.type].caption||[]).map(t=>t.text?.content??t.plain_text??'').join('')||b.type,type:b.type,proxy:'/api/media/'+page.id+'/'+b.id})}}
+ return result;
+}
 function belongs(env, page) {
   return (page.parent?.data_source_id === READING_SOURCE || page.parent?.database_id === READING_DB)
     ? page.properties?.Type?.select?.name === 'PTE'
@@ -90,7 +95,7 @@ export default {
         const media = blocks.filter(b => ['image','audio','file','pdf','video'].includes(b.type)).map(b => ({ name: (b[b.type].caption || []).map(t => t.plain_text ?? t.text?.content ?? '').join('') || b.type, type: b.type, proxy: `/api/media/${page.id}/${b.id}` }));
         async function richChildren(rows,depth=0){if(depth>8)throw fail('Note nesting exceeds the editor limit.',409);const out=[];for(const b of rows){if(b.archived||b.in_trash||['image','audio','file','pdf','video'].includes(b.type))continue;if(b.type==='toggle'&&readingText(b).startsWith('Sync in progress'))continue;const v={...b[b.type]};if(b.has_children||v.children?.length)v.children=await richChildren(v.children||await children(env,b.id),depth+1);out.push({object:'block',type:b.type,[b.type]:v});}return out;}
         let richNotes;try{richNotes=RexRichDoc.normalize(await richChildren(blocks),1000,500000);}catch(error){richNotes=null;}
-        return finish(json({ notes:richNotes?RexRichDoc.plain(richNotes).split('\n'):notes, media,richNotes }));
+        return finish(json({ notes:richNotes?RexRichDoc.plain(richNotes).split('\n'):notes, media,richNotes,reflections:reflectionSnapshots(page,blocks) }));
       }
       const media = path.match(/^\/api\/media\/([0-9a-f-]{36})\/([0-9a-f-]{36})$/i);
       if (media && request.method === 'GET') {
@@ -365,6 +370,7 @@ async function readingHandle(request,state,env) {
  if(await state.storage.get('reading-tombstone:'+item.id))throw fail('This reading record was deleted. Refresh to load the latest records.',409);
  if(typeof item.body!=='string'||item.body.length>50000||item.logs.length>40||item.logs.some(l=>!l||!validDate(l.date)||typeof l.note!=='string'||l.note.length>50000))throw fail('笔记内容过长或日期无效。');
  if(JSON.stringify(item).length>120000)throw fail('单条记录内容超出同步上限。',413);
+ if(item.tags!==undefined){if(!Array.isArray(item.tags)||item.tags.length>8||item.tags.some(t=>typeof t!=='string'||!t.trim()||t.trim().length>32))throw fail('Use up to 8 tags, with 32 characters or fewer each.');const seen=new Set();item.tags=item.tags.map(t=>t.trim()).filter(t=>{const k=t.toLowerCase();if(seen.has(k))return false;seen.add(k);return true});}
  if(item.kind==='article'&&!validDate(item.writtenDate))throw fail('笔记日期无效。');
  if(item.url){try{if(!['https:','http:'].includes(new URL(item.url).protocol))throw Error();}catch{throw fail('原文链接无效。');}}
  const files=form.getAll('files').filter(f=>typeof f!=='string'),attachments=item.attachments||[];
@@ -401,7 +407,7 @@ async function readingHandle(request,state,env) {
  if(item.kind==='article'){if(item.url)body.push(readingBlock('paragraph','原文：'+item.url));if(item.richBody)body.push(...item.richBody);else if(item.body)body.push(readingBlock('paragraph',item.body));}
  else for(const log of item.logs){body.push(readingBlock('heading_3',log.date));if(log.richNote)body.push(...log.richNote);else body.push(readingBlock('paragraph',log.note));}
  body.push(...fileBlocks);if(body.length>95)throw fail('笔记数量超过单次同步上限。',413);
- const clean={...(item.editorBody?{editorBody:item.editorBody}:{}),id:item.id,kind:item.kind,title:item.title,source:item.source||item.title,noteTitle:item.title,body:item.body,...(item.richBody?{richBody:item.richBody}:{}),logs:item.logs,attachments:mapped,writtenDate:item.writtenDate||null,createdAt:item.createdAt,updated:item.updated,status:item.status||'reading',url:item.kind==='article'?(item.url||''):''};
+ const clean={...(item.tags!==undefined?{tags:item.tags}:previous?.tags?{tags:previous.tags}:{}),...(item.editorBody?{editorBody:item.editorBody}:{}),id:item.id,kind:item.kind,title:item.title,source:item.source||item.title,noteTitle:item.title,body:item.body,...(item.richBody?{richBody:item.richBody}:{}),logs:item.logs,attachments:mapped,writtenDate:item.writtenDate||null,createdAt:item.createdAt,updated:item.updated,status:item.status||'reading',url:item.kind==='article'?(item.url||''):''};
  const version={object:'block',type:'toggle',toggle:{rich_text:[...rich(item.kind==='book'?'读书笔记':('文章笔记 · '+item.writtenDate)),{type:'text',text:{content:' · 网站记录',link:{url:'https://xre01.github.io/rx/#reading-revision='+hash}}}],children:[]}};
  const finalVersionTitle=version.toggle.rich_text;version.toggle.rich_text=rich('Sync in progress');
  const properties={Name:{title:rich(item.title)},Date:{date:item.kind==='article'?{start:item.writtenDate}:null},Type:{select:{name:'Reading'}},RecordKind:{select:{name:item.kind==='book'?'Book':'Article'}}};

@@ -8,13 +8,13 @@ try{
  w.document.querySelector('.reading-shelf-book').click();
  const first=()=>w.document.querySelector('.reading-book-note');
  assert.equal(first().querySelector('.reading-note-prose').textContent,'Newest note');
- const menu=first().querySelector('.reading-note-actions');menu.open=true;menu.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));assert.equal(menu.open,false);
+ assert.equal(first().querySelector('details'),null);assert.equal(first().querySelectorAll('.reading-note-direct-actions button').length,2);assert.ok(first().querySelector('[aria-label="Edit note"] svg'));assert.ok(first().querySelector('[aria-label="Delete note"] svg'));
  assert.equal(w.document.querySelector('.reading-recall'),null);
  assert.deepEqual([...w.document.querySelectorAll('.reading-day-heading time')].map(n=>n.textContent),['2026-10-20','2026-10-19','2026-10-18']);
  w.confirm=()=>false;first().querySelector('.reading-note-delete').click();assert.deepEqual(JSON.parse(w.localStorage.getItem(key)),[original]);
  w.confirm=()=>true;first().querySelector('.reading-note-delete').click();
  const after=JSON.parse(w.localStorage.getItem(key))[0];assert.equal(after.body,'');assert.deepEqual(after.logs.map(n=>n.note),['Legacy note','Keep this note']);assert.equal(w.document.querySelectorAll('.reading-book-note').length,2);
  assert.equal(first().querySelector('.reading-note-prose').textContent,'Keep this note');
- first().querySelector('.reading-note-action').click();assert.ok(w.document.querySelector('.reading-form'));assert.equal(w.document.querySelector('textarea[name=note]').value,'Keep this note');
- console.log('PASS: date groups, no recall exercise, keyboard dismissal, cancellation, confirmed deletion preserves legacy/sibling notes, edit opens correct note');
+ first().querySelector('.reading-note-edit').click();assert.ok(w.document.querySelector('.reading-form'));assert.equal(w.document.querySelector('textarea[name=note]').value,'Keep this note');
+ console.log('PASS: date groups, no recall exercise, direct icon controls, cancellation, confirmed deletion preserves legacy/sibling notes, edit opens correct note');
 }finally{w.close()}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs><clipPath id="ball"><circle cx="32" cy="32" r="24"/></clipPath><linearGradient id="red" x1="12" y1="8" x2="48" y2="34" gradientUnits="userSpaceOnUse"><stop stop-color="#ef8d63"/><stop offset="1" stop-color="#ce453f"/></linearGradient></defs>
+  <g clip-path="url(#ball)"><path d="M8 8h48v24H8z" fill="url(#red)"/><path d="M8 32h48v24H8z" fill="#fff7db"/><path d="M8 32h48" stroke="#3d4654" stroke-width="6"/></g>
+  <circle cx="32" cy="32" r="24" stroke="#3d4654" stroke-width="3"/>
+  <circle cx="32" cy="32" r="9" fill="#fff7db" stroke="#3d4654" stroke-width="3"/><circle cx="32" cy="32" r="4" fill="#e5dcb8"/>
+  <path d="M17 23a18 18 0 0 1 8-8" stroke="#fff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
+</svg>

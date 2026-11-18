@@ -1,15 +1,15 @@
 # Rex World · Study Sanctuary
 
-A lightweight English PTE dashboard with daily and weekly views, calendar backfills, reflections, focus timing, Notion archives and PNG statistics exports.
+A lightweight study app with Home planning, PTE practice, reading notes, dated study timelines, reflections, focus timing and Notion/D1 sync.
 
 ## Features
 
 - Speaking uploads: DI, SGD and RL use images plus audio; RTS uses a prompt plus audio. Today and past dates use the same submission flow.
 - WE and Reading use upload dialogs with question navigation; Reading also supports batch mistake screenshots.
-- Count-only backfills are separate from attachment submissions. Reflections follow the selected calendar date and store drafts and files locally.
+- Count-only backfills are separate from attachment submissions. Home’s Reflection icon opens the reader/editor/history; drafts and files remain local until saved to Notion.
 - Weekly Review includes recorded local counts and backfills. PNG exports support day, Monday–Sunday week, month and year.
-- Notion Archive uses a calendar, content search and attachments loaded on demand. Search indexes the records returned by the configured service and indicates incomplete results.
-- One stylesheet, calm colors and a frosted floating mobile navigation bar. Reduced-motion preferences are respected.
+- The PTE study timeline opens from its header icon. Five dates per page are grouped by year; day details show practice/focus totals and saved Notion check-ins, with on-demand audio/images. Search reads saved check-in content and reports partial results.
+- One stylesheet and six themes, with illustrated mobile navigation that blends into each theme’s page background. Reduced-motion preferences are respected.
 
 ## Storage and sync
 
@@ -19,15 +19,15 @@ Notion and Cloudflare D1 require the user's existing service configuration. Noti
 
 ## Validation
 
-Local checks cover syntax, resource references and hashes, historical speaking upload payloads with mocked responses, duplicate submissions, date validation, count backfills, archive search with mocked content, PNG period aggregation including leap years, and service-worker cache behavior. Browser checks cover view switching, calendar-linked reflections, upload dialogs, profile, timer and mobile layout.
+Local checks cover syntax, resource references and hashes, historical speaking upload payloads with mocked responses, duplicate submissions, date validation, count backfills, archive search with mocked content, PNG period aggregation including leap years, and service-worker cache behavior. Browser checks cover view switching, icon-driven readers, profile connections, theme navigation, timers and mobile layout.
 
-Live Notion/D1 integration needs the user's configured service and was not exercised by creating remote test records. The GitHub review branch does not deploy the website.
+Live Notion/D1 integration needs the user's configured service and was not exercised by creating remote test records. GitHub Pages serves the committed frontend; Cloudflare Workers require a separate deployment.
 
 ## Reading journal
 
-Reading is a native sidebar panel alongside PTE and Notion Archive. It includes a bookshelf with dated book notes, article notes selected from a calendar, search, and image/audio/document/link attachments. Clicking the selected calendar date again collapses its notes.
+Reading is a native navigation panel alongside Home and PTE. Its bookshelf shows three 2:3 covers per row with shelf dividers. Article notes appear in a year-grouped timeline, five per page; selecting one opens a full reader. Search, tags and image/audio/document/link attachments are supported.
 
-Reading and PTE share the My World Notion database through the existing authenticated Cloudflare gateway. `Type` separates `Reading`, `PTE` and future `Work` records. Reading still uses `/api/reading/*` and PTE still uses `/api/entries`; frontend records, statistics and XP stay separate. Enter the gateway access key under Reading's Notion settings; the server-side Notion token stays in Cloudflare. Drafts and selected files are retained locally until sync succeeds. Reading credentials are session-scoped; existing Notion Archive session credentials can prefill the Reading connection.
+Reading and PTE share the My World Notion database through the existing authenticated Cloudflare gateway. `Type` separates `Reading`, `PTE` and future `Work` records. Reading still uses `/api/reading/*` and PTE still uses `/api/entries`; frontend records, statistics and XP stay separate. Configure the gateway once under Me → Notion; Reading shares that connection and aborts requests when it changes or disconnects. The server-side Notion token stays in Cloudflare. Drafts and selected files are retained locally until sync succeeds. Me also contains D1 configuration; both services offer an optional remembered-key bookmark. Turning the bookmark off retains the current session while removing persistent key storage.
 
 The already deployed reading API supports status, migration, record sync and authenticated media. Book/article metadata and sync receipts are stored in its existing Durable Object; Notion pages display readable notes, dates and source links. The gateway must retain this Durable Object state when deploying changes. Notes edited in Notion are not automatically imported into the website; edit reading content from the Reading panel.
 
@@ -35,7 +35,7 @@ Practice, reading and focus records no longer award XP. The Study Days card show
 
 ## Rich notes release
 
-Reading and PTE Speaking/Writing/Reading support native Notion text annotations and structured blocks. Listening is unchanged. Plain-text records remain supported. Preview themes and avatar frames are not part of this release.
+Reading and PTE Speaking/Writing/Reading support native Notion text annotations and structured blocks. Listening is unchanged. Plain-text records remain supported. The six appearance themes remain device-local.
 
 Frontend files are deployed by GitHub Pages. `workers/notion-worker.mjs` is the separately deployed Cloudflare source; keep the existing secrets and Durable Object bindings when updating it. No credentials belong in the repository.
 

@@ -8483,126 +8483,7 @@ html#rexTheme body#rexSanctuary .summary-local-save {
 html#rexTheme body#rexSanctuary #archiveGrid {
   display: block !important;
 }
-html#rexTheme body#rexSanctuary .archive-connection {
-  margin: 0 0 18px;
-  border: 1px solid #e3e6d9;
-  border-radius: 16px;
-  background: #fffdf8;
-  padding: 12px 16px;
-}
-.archive-connection > summary {
-  cursor: pointer;
-  font-size: 12px;
-  color: #7f8971;
-  min-height: 26px;
-  align-content: center;
-}
-html#rexTheme body#rexSanctuary #archives .archive-connection .card {
-  border: 0 !important;
-  box-shadow: none !important;
-  padding: 16px 0 0 !important;
-}
-.archive-calendar-shell {
-  background: #fffdf8;
-  border: 1px solid #e6e7dc;
-  border-radius: 22px;
-  padding: 24px;
-}
-.archive-calendar-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 18px;
-}
-.archive-month-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.archive-month-nav strong {
-  font-size: 17px;
-  font-weight: 500;
-  min-width: 95px;
-  text-align: center;
-  letter-spacing: 0.03em;
-}
-.archive-month-nav button {
-  border: 0;
-  background: transparent;
-  color: #7d8970;
-  min-width: 36px;
-  min-height: 40px;
-  border-radius: 10px;
-  font-size: 15px;
-}
-.archive-month-nav button:hover {
-  background: #eff2e7;
-}
-html#rexTheme body#rexSanctuary #archives .archive-calendar-toolbar input {
-  flex: 1;
-  padding: 10px 14px;
-  font: inherit;
-}
-.archive-calendar-legend {
-  font-size: 11px;
-  color: #929b83;
-  margin-bottom: 16px;
-}
-.archive-calendar-days,
-.archive-calendar-week {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 8px;
-}
-.archive-calendar-week {
-  color: #a2a695;
-  font-size: 11px;
-  text-align: center;
-  margin-bottom: 10px;
-}
-.archive-calendar-days .archive-date {
-  position: relative;
-  min-height: 58px;
-  border: 1px solid transparent;
-  border-radius: 14px;
-  background: #f8f8f1;
-  color: #a0a592;
-  font-size: 13px;
-  padding: 10px 4px 17px;
-}
-.archive-calendar-days .archive-date.has-records {
-  color: #596b48;
-  background: #eef2e5;
-}
-.archive-calendar-days .has-records:after {
-  content: "";
-  position: absolute;
-  bottom: 8px;
-  left: calc(50% - 2px);
-  width: 4px;
-  height: 4px;
-  background: #89a46b;
-  border-radius: 50%;
-}
-.archive-calendar-days .archive-date.is-today {
-  border-color: #d8decb;
-}
-.archive-calendar-days .archive-date.is-selected {
-  background: #829b68;
-  color: #fff;
-  border-color: #829b68;
-}
-.archive-calendar-days .is-selected.has-records:after {
-  background: #fff;
-}
-.archive-search-status {
-  font-size: 12px;
-  color: #879378;
-  margin: 22px 0 12px;
-  line-height: 1.7;
-}
+
 .archive-calendar-results {
   display: grid;
   gap: 12px;
@@ -8622,34 +8503,7 @@ html#rexTheme body#rexSanctuary #archives .archive-calendar-results .archive-ent
   font-size: 15px;
   margin: 0 0 10px;
 }
-@media (max-width: 700px) {
-  .archive-calendar-shell {
-    padding: 16px;
-    border-radius: 18px;
-  }
-  .archive-calendar-toolbar {
-    gap: 10px;
-  }
-  .archive-month-nav {
-    width: 100%;
-    justify-content: space-between;
-  }
-  .archive-calendar-days,
-  .archive-calendar-week {
-    gap: 5px;
-  }
-  .archive-calendar-days .archive-date {
-    min-height: 44px;
-    border-radius: 10px;
-    font-size: 12px;
-  }
-  html#rexTheme body#rexSanctuary #archives .archive-calendar-toolbar input {
-    flex-basis: 100%;
-  }
-  .archive-calendar-legend {
-    font-size: 10px;
-  }
-}
+
 html#rexTheme body#rexSanctuary #archives #archiveMessage {
   box-shadow: none !important;
   font-size: 11px !important;
@@ -8662,10 +8516,7 @@ html#rexTheme body#rexSanctuary #home :is(.hero-task-card, .dashboard-calendar-c
   border: 1px solid #ffffffd1 !important;
   color: #354c48 !important;
 }
-html#rexTheme
-  body#rexSanctuary
-  #archives
-  :is(.archive-calendar-shell, .archive-connection, .card, .archive-entry) {
+html#rexTheme body#rexSanctuary #archives :is(.card,.archive-entry) {
   background: linear-gradient(145deg, #ffffffb8, #ffffff69) !important;
   border: 1px solid #ffffffd1 !important;
   border-radius: 24px !important;
@@ -8741,19 +8592,7 @@ html#rexTheme
   border-color: #fff !important;
   color: #506d4b !important;
 }
-html#rexTheme body#rexSanctuary #archives .archive-calendar-days .archive-date {
-  background: #ffffff5e;
-  border-color: #ffffff6b;
-  color: #8a9a8f;
-}
-html#rexTheme body#rexSanctuary #archives .archive-calendar-days .archive-date.has-records {
-  background: #dcebdac2;
-  color: #4f6b50;
-}
-html#rexTheme body#rexSanctuary #archives .archive-calendar-days .archive-date.is-selected {
-  background: #8ca987;
-  color: #fff;
-}
+
 html#rexTheme body#rexSanctuary #archives .archive-calendar-results .archive-entry {
   background: #ffffff94 !important;
   border-color: #ffffffd1 !important;
@@ -8875,7 +8714,7 @@ html#rexTheme body#rexSanctuary #home :is(.hero-task-card, .dashboard-calendar-c
     inset 0 1px #fff,
     0 3px 12px #44634b06 !important;
 }
-html#rexTheme body#rexSanctuary #archives :is(.archive-calendar-shell, .archive-connection, .archive-entry) {
+html#rexTheme body#rexSanctuary #archives :is(.archive-entry) {
   background: linear-gradient(145deg, #ffffffdf, #f7fbf6db) !important;
   box-shadow:
     inset 0 1px #fff,
@@ -10674,33 +10513,7 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
 .reading-toolbar .reading-action-group > .reading-add-book {
   border-left: 1px solid #b59d6c !important;
 }
-.reading-sync-settings {
-  margin-top: 24px;
-  border-top: 1px solid var(--border);
-  padding-top: 18px;
-  color: #7a8d75;
-  font-size: 12px;
-}
-.reading-sync-settings summary {
-  cursor: pointer;
-  margin-bottom: 14px;
-}
-.reading-sync-settings > input {
-  width: min(100%, 360px);
-}
-.reading-sync-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 12px 0;
-}
-.reading-sync-actions button {
-  padding: 9px 12px;
-  font-size: 11px;
-}
-.reading-sync-settings .sub {
-  line-height: 1.8;
-}
+
 .reading-dialog.reading-book-reader {
   width: min(780px, 100% - 28px);
   padding: 32px;
@@ -10779,58 +10592,7 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
   color: #6c7d6a;
   font-variant-numeric: tabular-nums;
 }
-.reading-note-actions {
-  position: relative;
-  flex: none;
-}
-.reading-note-actions > summary {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid #e5e4d9;
-  border-radius: 50%;
-  background: #f8f7ef;
-  color: #697d6c;
-  cursor: pointer;
-  list-style: none;
-  letter-spacing: 2px;
-  font: 600 13px system-ui;
-}
-.reading-note-actions > summary::-webkit-details-marker {
-  display: none;
-}
-.reading-note-actions > summary:hover,
-.reading-note-actions[open] > summary {
-  background: #eaf0e5;
-  border-color: #a8b89f;
-}
-.reading-note-action-list {
-  position: absolute;
-  right: 0;
-  top: 42px;
-  z-index: 5;
-  display: grid;
-  width: 144px;
-  padding: 6px;
-  border: 1px solid #dedfd1;
-  border-radius: 10px;
-  background: #fffef9;
-  box-shadow: 0 8px 24px #304d3620;
-}
-.reading-note-action {
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  padding: 11px 12px;
-  text-align: left;
-  color: #4c6654;
-  font: 400 12px system-ui;
-  cursor: pointer;
-}
-.reading-note-action:hover {
-  background: #edf1e7;
-}
+
 .reading-note-delete {
   color: #a36353;
 }
@@ -10897,14 +10659,7 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
 .reading-journal-card > .reading-attachments:empty {
   display: none;
 }
-.reading-note-actions summary:focus-visible {
-  outline: 2px solid #638a73;
-  outline-offset: 3px;
-}
-.reading-note-action:focus-visible {
-  outline: 2px solid #638a73;
-  outline-offset: 3px;
-}
+
 @media (max-width: 600px) {
   .reading-dialog.reading-book-reader {
     padding: 22px 16px;
@@ -11793,75 +11548,11 @@ html#rexTheme body#rexSanctuary #home .compact-metrics .countdown-metric small {
   color: #819184 !important;
   white-space: normal !important;
 }
-html#rexTheme body#rexSanctuary #reading .reading-focus-card {
-  color: #456553;
-}
-.reading-focus-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  font-size: 13px;
-  font-weight: 600;
-}
-.reading-focus-heading button {
-  padding: 8px 14px;
-  border: 1px solid #cbdcc8;
-  border-radius: 10px;
-  background: #fff;
-  color: #547453;
-  font: inherit;
-}
-.reading-focus-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 18px;
-}
-.reading-focus-metrics div {
-  display: grid;
-  gap: 7px;
-}
-.reading-focus-metrics span {
-  color: #859489;
-  font-size: 12px;
-}
-.reading-focus-metrics strong {
-  font-size: 24px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-.reading-focus-card p {
-  font-size: 11px;
-  color: #8b998d;
-  margin: 14px 0 0;
-  line-height: 1.5;
-}
-@media (max-width: 540px) {
-  .reading-focus-metrics {
-    gap: 10px;
-  }
-  .reading-focus-metrics strong {
-    font-size: 18px;
-  }
-}
+
 html#rexTheme body#rexSanctuary #focusOverlay.reading-timer .focus-goal {
   display: none !important;
 }
-html#rexTheme body#rexSanctuary #reading .reading-focus-heading .reading-tomato-entry {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  min-width: 52px;
-  padding: 5px;
-  border: 0 !important;
-  border-radius: 50%;
-  background: transparent !important;
-  box-shadow: none;
-  transition: transform 0.16s;
-}
+
 html#rexTheme body#rexSanctuary #reading .reading-tomato-entry:hover {
   transform: translateY(-2px);
 }
@@ -11914,54 +11605,18 @@ html#rexTheme body#rexSanctuary:before {
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) .personal-sidebar {
   border-color: var(--line) !important;
 }
-html#rexTheme
-  body#rexSanctuary:is(#rexSanctuary)
-  :is(#home, #reading, #archives)
-  :is(
-    .card,
-    .hero-task-card,
-    .dashboard-calendar-card,
-    .daily-summary-card,
-    .reading-calendar,
-    .reading-library,
-    .archive-calendar-shell,
-    .archive-message,
-    .archive-entry,
-    .weekly-review
-  ) {
+html#rexTheme body#rexSanctuary:is(#rexSanctuary) :is(#home,#reading,#archives) :is(.card,.hero-task-card,.dashboard-calendar-card,.daily-summary-card,.reading-calendar,.reading-library,.archive-message,.archive-entry,.weekly-review) {
   border: 1px solid var(--line) !important;
   color: var(--ink) !important;
 }
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) #home .compact-metrics > :is(article, button) {
   color: var(--ink) !important;
 }
-html#rexTheme
-  body#rexSanctuary:is(#rexSanctuary)
-  :is(
-    h1,
-    h2,
-    h3,
-    .viewtitle,
-    .compact-metrics strong,
-    .reading-focus-metrics strong,
-    .reading-calendar-controls strong
-  ) {
+html#rexTheme body#rexSanctuary:is(#rexSanctuary) :is(h1,h2,h3,.viewtitle,.compact-metrics strong,.reading-calendar-controls strong) {
   color: var(--ink) !important;
   text-shadow: none !important;
 }
-html#rexTheme
-  body#rexSanctuary:is(#rexSanctuary)
-  :is(
-    .eyebrow,
-    .sub,
-    .compact-metrics > article > span,
-    .compact-metrics > button > span,
-    .compact-metrics small,
-    .reading-focus-metrics span,
-    .reading-focus-card p,
-    .calendar-weekdays,
-    .reading-calendar-weekdays
-  ) {
+html#rexTheme body#rexSanctuary:is(#rexSanctuary) :is(.eyebrow,.sub,.compact-metrics>article>span,.compact-metrics>button>span,.compact-metrics small,.calendar-weekdays,.reading-calendar-weekdays) {
   color: var(--muted) !important;
 }
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) .personal-card .rex-sidebar-nav {
@@ -12051,18 +11706,7 @@ html#rexTheme body#rexSanctuary:is(#rexSanctuary) #home .hero-task-track {
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) #home .hero-task-track > span {
   background: #a5bac9 !important;
 }
-html#rexTheme
-  body#rexSanctuary:is(#rexSanctuary)
-  :is(#home, #reading, #archives)
-  :is(
-    .calendar-day.selected,
-    .calendar-day.today,
-    .calendar-day[aria-pressed="true"],
-    .reading-calendar-day.selected,
-    .reading-calendar-day.today,
-    .reading-calendar-day[aria-pressed="true"],
-    .archive-date.is-selected
-  ) {
+html#rexTheme body#rexSanctuary:is(#rexSanctuary) :is(#home,#reading,#archives) :is(.calendar-day.selected,.calendar-day.today,.calendar-day[aria-pressed="true"],.reading-calendar-day.selected,.reading-calendar-day.today,.reading-calendar-day[aria-pressed="true"]) {
   background: #e0eaf1 !important;
   color: #4d6e85 !important;
   border-color: #c5d7e3 !important;
@@ -12257,10 +11901,7 @@ html#rexTheme
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) :is(.hero-language-tabs, .reading-action-group) {
   box-shadow: none !important;
 }
-html#rexTheme
-  body#rexSanctuary:is(#rexSanctuary)
-  #reading
-  :is(.reading-focus-card, .reading-focus-heading, .reading-tomato-entry) {
+html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading :is(.reading-tomato-entry) {
   color: #647b8a !important;
 }
 html#rexTheme
@@ -12270,10 +11911,7 @@ html#rexTheme
   color: #8aa0af !important;
   stroke: currentColor !important;
 }
-html#rexTheme
-  body#rexSanctuary:is(#rexSanctuary)
-  #archives
-  :is(summary, .pill, .archive-calendar-legend, .archive-search-status) {
+html#rexTheme body#rexSanctuary:is(#rexSanctuary) #archives :is(summary,.pill) {
   color: #82939f !important;
   border-color: var(--line) !important;
   background: transparent !important;
@@ -12334,77 +11972,14 @@ html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-sync-strip b
 .reading-sync-strip button[hidden] {
   display: none !important;
 }
-.reading-weekly {
-  border-top: 1px solid #e1e5e5;
-  margin-top: 20px;
-  padding-top: 18px;
-}
-.reading-weekly-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 12px;
-  color: #6d8594;
-}
-.reading-weekly-heading time {
-  font-size: 11px;
-  color: #96a2a9;
-}
-.reading-weekly-values {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin: 14px 0;
-}
-.reading-weekly-values > div {
-  display: grid;
-  gap: 5px;
-}
-.reading-weekly-values strong {
-  font-size: 20px;
-  font-weight: 500;
-  color: #526e80;
-  font-variant-numeric: tabular-nums;
-}
-.reading-weekly-values span {
-  font-size: 11px;
-  color: #8b9aa3;
-}
-.reading-week-days {
-  display: flex;
-  gap: 8px;
-}
-.reading-week-days > span {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  background: #f1f3f2;
-  color: #a6b0b5;
-  font-size: 10px;
-  border: 1px solid transparent;
-}
-.reading-week-days > .has-reading {
-  background: #dfeaf1;
-  color: #56788f;
-}
-.reading-week-days > [aria-current="date"] {
-  border-color: #bccfdc;
-}
+
 @media (max-width: 600px) {
   #reading .reading-heading {
     align-items: flex-start;
     gap: 12px;
     flex-direction: column;
   }
-  .reading-weekly-values {
-    gap: 10px;
-  }
-  .reading-weekly-values strong {
-    font-size: 18px;
-  }
+
 }
 #reading > p[role="status"]:empty {
   display: none;
@@ -12417,14 +11992,7 @@ html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-day
   border-color: #9cb8ca !important;
   box-shadow: inset 0 0 0 1px #b3cbdc !important;
 }
-html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-today-label {
-  display: block;
-  font-size: 8px;
-  line-height: 1.2;
-  color: #7e9aaf;
-  margin-top: 1px;
-  font-weight: 400;
-}
+
 .reading-calendar-actions {
   display: flex;
   align-items: center;
@@ -12537,16 +12105,7 @@ html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-day
 html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-day.is-today {
   padding-bottom: 10px !important;
 }
-html#rexTheme body#rexSanctuary:is(#rexSanctuary) #reading .reading-calendar-day .reading-today-label {
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 3px !important;
-  margin: 0 !important;
-  font-size: 7px !important;
-  line-height: 8px !important;
-  pointer-events: none;
-}
+
 .archive-dashboard-sync summary {
   font-size: 13px;
   cursor: pointer;
@@ -13001,21 +12560,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary #rexWordmark:active {
     background-position: 100% 50%;
   }
 }
-html#rexTheme
-  body#rexSanctuary#rexSanctuary
-  :is(#home, #reading, #archives)
-  :is(
-    .card,
-    .hero-task-card,
-    .dashboard-calendar-card,
-    .daily-summary-card,
-    .reading-calendar,
-    .reading-library,
-    .archive-calendar-shell,
-    .archive-message,
-    .archive-entry,
-    .weekly-review
-  ) {
+html#rexTheme body#rexSanctuary#rexSanctuary :is(#home,#reading,#archives) :is(.card,.hero-task-card,.dashboard-calendar-card,.daily-summary-card,.reading-calendar,.reading-library,.archive-message,.archive-entry,.weekly-review) {
   background: linear-gradient(160deg, var(--surface) 55%, var(--depth-surface-bottom)) !important;
   box-shadow:
     inset 0 1px 0 var(--depth-highlight),
@@ -13025,7 +12570,6 @@ html#rexTheme
     box-shadow 0.2s var(--depth-ease),
     border-color 0.2s var(--depth-ease) !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary #reading .reading-focus-card,
 html#rexTheme body#rexSanctuary#rexSanctuary .personal-card {
   transition:
     box-shadow 0.2s var(--depth-ease),
@@ -13819,89 +13363,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary .rex-sidebar-footer {
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics .rex-metric-icon svg {
   color: #2163a1 !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary .sanctuary-weekly {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 215px;
-  gap: 24px;
-  margin-top: 14px;
-  padding: 20px 24px;
-  border: 1px solid var(--line);
-  border-radius: 21px;
-  background: var(--surface);
-  box-shadow: var(--sanctuary-shadow);
-  color: var(--ink);
-}
-.sanctuary-weekly h2 {
-  margin: 0 0 12px;
-  font:
-    600 22px Segoe UI,
-    sans-serif;
-}
-.sanctuary-week-bars {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 18px;
-  text-align: center;
-  font-size: 11px;
-}
-.sanctuary-week-bars > div {
-  display: grid;
-  grid-template-rows: 16px 75px 18px;
-  gap: 4px;
-  min-width: 0;
-}
-.sanctuary-bar-track {
-  display: flex;
-  align-items: flex-end;
-  border-bottom: 1px solid var(--line);
-}
-.sanctuary-bar-track > span {
-  display: block;
-  width: 100%;
-  max-width: 34px;
-  margin: 0 auto;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(#bbd8ee, #8ab4d3);
-}
-.sanctuary-week-bars .is-today .sanctuary-bar-track > span {
-  background: linear-gradient(#f3cf91, #c6a16a);
-}
-.sanctuary-week-totals {
-  display: grid;
-  gap: 8px;
-}
-.sanctuary-week-totals > div {
-  padding: 9px 16px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #f8f9f7;
-}
-.sanctuary-week-totals span {
-  display: block;
-  font-size: 12px;
-}
-.sanctuary-week-totals strong {
-  font-size: 28px;
-  font-weight: 400;
-  margin-right: 8px;
-}
-.sanctuary-week-totals small {
-  font-size: 12px;
-  color: var(--muted);
-}
-@media (max-width: 600px) {
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary .sanctuary-weekly {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 16px;
-    gap: 16px;
-  }
-  .sanctuary-week-totals {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .sanctuary-week-bars {
-    gap: 12px;
-  }
-}
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .pte-count-rows {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 10px 12px !important;
@@ -14327,7 +13788,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #home .compact-metrics
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading.active {
   display: grid !important;
   grid-template-columns: minmax(0, 1.95fr) minmax(330px, 1fr) !important;
-  grid-template-areas: "heading heading" "summary calendar" "toolbar calendar" "books calendar" "notes notes" "sync sync" !important;
+  grid-template-areas: "heading heading" "toolbar calendar" "books calendar" "notes notes" "sync sync" !important;
   gap: 16px !important;
   align-items: start !important;
   padding: 0 !important;
@@ -14361,58 +13822,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-head
   color: var(--muted) !important;
   margin: 0 !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-card {
-  grid-area: summary !important;
-  padding: 22px !important;
-  margin: 0 !important;
-  border-radius: 28px !important;
-  border: 1px solid rgba(255,255,255,.92) !important;
-  background: radial-gradient(ellipse at 0% 0%, #ffffffed, transparent 65%), radial-gradient(ellipse at 100% 100%, #d8e8f08a, transparent 60%), linear-gradient(135deg, #fffffff0, #eef4f7b5 55%, #fff8edd9) !important;
-  box-shadow: inset 0 1px 1px #fff, inset 0 -1px 2px #9aafbf30, 0 18px 40px #3b566318, 0 3px 8px #3b56630b !important;
-  min-width: 0 !important;
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-heading {
-  color: var(--ink) !important;
-  font-size: 18px !important;
-  font-weight: 600 !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics {
-  gap: 12px !important;
-  margin: 18px 0 !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics > div {
-  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 3px #6a91ad1c, 0 8px 16px #41647b12, 0 1px 3px #41647b15 !important;
-  padding: 17px 14px !important;
-  border-radius: 19px !important;
-  background: radial-gradient(ellipse at 12% 0%, #ffffffed, transparent 75%), linear-gradient(145deg, #f6fbffba, #d8e8f2c9 65%, #eaf2f7e6) !important;
-  border: 1px solid #ffffffd9 !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics strong {
-  font-size: clamp(19px, 2.2vw, 27px) !important;
-  letter-spacing: -0.035em;
-  font-variant-numeric: tabular-nums;
-  text-shadow: 0 1px 0 #ffffffeb;
-  font-weight: 600 !important;
-  color: #284c67 !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics span {
-  color: var(--muted) !important;
-  font-size: 12px !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly {
-  border-top: 1px solid #ffffffd9 !important;
-  margin-top: 16px !important;
-  padding: 16px !important;
-  border-radius: 19px;
-  background: linear-gradient(145deg, #ffffffa6, #eff4f76b);
-  box-shadow: inset 0 1px 1px #fff, 0 4px 14px #41647b08;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly-heading,
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-weekly-values strong {
-  color: var(--ink) !important;
-}
+
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-toolbar {
   grid-area: toolbar !important;
   display: flex !important;
@@ -14554,15 +13964,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-jour
   padding: 20px !important;
   box-shadow: none !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-sync-settings {
-  grid-area: sync !important;
-  margin: 0 !important;
-  padding: 16px 20px !important;
-  background: var(--surface) !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 14px !important;
-  color: var(--muted) !important;
-}
+
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives.active {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -14590,7 +13992,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives > p.sub {
   font-size: 13px !important;
   color: var(--muted) !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-connection,
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-dashboard-sync {
   margin: 0 !important;
   padding: 16px 20px !important;
@@ -14601,18 +14002,12 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-das
   min-width: 0 !important;
   color: var(--ink) !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-connection > summary,
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-dashboard-sync > summary {
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-dashboard-sync>summary {
   font-size: 13px !important;
   color: var(--ink) !important;
   cursor: pointer !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-connection > .card {
-  padding: 18px 0 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
+
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives #archiveGrid {
   grid-column: 1/-1 !important;
   margin: 0 !important;
@@ -14626,57 +14021,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives #archiveMess
   background: var(--surface) !important;
   border-radius: 14px !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-shell {
-  display: grid !important;
-  grid-template-columns: minmax(330px, 0.85fr) minmax(0, 1.15fr) !important;
-  grid-template-areas: "toolbar toolbar" "legend legend" "week status" "days results" !important;
-  gap: 12px 24px !important;
-  padding: 22px !important;
-  border-radius: 21px !important;
-  background: var(--surface) !important;
-  border: 1px solid var(--line) !important;
-  box-shadow: var(--sanctuary-shadow) !important;
-  min-width: 0 !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-toolbar {
-  grid-area: toolbar !important;
-  gap: 16px !important;
-  flex-wrap: wrap !important;
-  margin: 0 !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-toolbar input {
-  width: min(420px, 100%) !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  min-height: 44px !important;
-  font-size: 14px !important;
-  border-radius: 11px !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-legend {
-  grid-area: legend !important;
-  margin: 0 !important;
-  color: var(--muted) !important;
-  font-size: 12px !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-week {
-  grid-area: week !important;
-  margin: 0 !important;
-  color: var(--muted) !important;
-  font-size: 12px !important;
-  align-self: center !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-days {
-  grid-area: days !important;
-  gap: 6px !important;
-  align-self: start !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-search-status {
-  grid-area: status !important;
-  margin: 0 !important;
-  color: var(--muted) !important;
-  font-size: 12px !important;
-  align-self: center !important;
-}
+
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-results {
   grid-area: results !important;
   margin: 0 !important;
@@ -14685,29 +14030,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-cal
   gap: 12px !important;
   align-self: start !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-date {
-  min-height: 38px !important;
-  height: 38px !important;
-  background: #eef5fa !important;
-  color: var(--ink) !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 9px !important;
-  box-shadow: none !important;
-  font-size: 14px !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-date.has-records {
-  background: #c2ddf0 !important;
-  border-color: #aacfe8 !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-date.is-selected {
-  background: #a9cee9 !important;
-  border-color: #88b4d5 !important;
-  color: var(--ink) !important;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-date.is-today {
-  border-color: #d29a45 !important;
-  box-shadow: inset 0 0 0 1px #d29a45 !important;
-}
+
 html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-entry {
   padding: 18px !important;
   margin: 0 !important;
@@ -14726,11 +14049,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-rec
   border-color: var(--line) !important;
   border-radius: 12px !important;
 }
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-controls button,
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-month-nav button,
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .profile-settings-actions button,
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-actions button,
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-toolbar button {
+html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-controls button,html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .profile-settings-actions button,html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-actions button,html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-toolbar button {
   min-height: 38px !important;
   border-radius: 10px !important;
   font-size: 12px !important;
@@ -14740,35 +14059,19 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-tool
 @media (max-width: 1100px) {
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading.active {
     grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-areas: "heading" "summary" "toolbar" "books" "calendar" "notes" "sync" !important;
+    grid-template-areas: "heading" "toolbar" "books" "calendar" "notes" "sync" !important;
   }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-shell {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-areas: "toolbar" "legend" "week" "days" "status" "results" !important;
-  }
+
 }
 @media (max-width: 600px) {
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives.active {
     grid-template-columns: minmax(0, 1fr) !important;
   }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-shell,
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-bookshelf,
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar,
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-card,
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-library {
+  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-bookshelf,html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar,html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-library {
     padding: 16px !important;
     border-radius: 19px !important;
   }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics {
-    gap: 6px !important;
-  }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics > div {
-    padding: 10px 8px !important;
-  }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-focus-metrics strong {
-    font-size: 21px !important;
-  }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-month-nav,
+
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-toolbar {
     gap: 8px !important;
   }
@@ -14778,29 +14081,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-tool
   html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-calendar-actions {
     margin-left: 0 !important;
   }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-calendar-toolbar input {
-    width: 100% !important;
-  }
-  html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-month-nav button {
-    padding: 6px 8px !important;
-    min-width: 30px !important;
-  }
-}
 
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week-days > span {
-  background: linear-gradient(145deg, #ffffffd9, #dfeaf1b3) !important;
-  border: 1px solid #ffffffd9;
-  box-shadow: inset 0 1px 0 #fff, 0 3px 6px #41647b12;
-  color: #627f96;
-  border-radius: 10px;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week-days > span.has-reading {
-  background: linear-gradient(145deg, #a5c6dc, #7299b5) !important;
-  color: #fff;
-}
-html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week-days > span[aria-current="date"] {
-  outline: 1px solid #c6a56c;
-  outline-offset: 2px;
 }
 
 /* Personal Home */
@@ -14856,9 +14137,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
     background:var(--calm-page)!important; color:var(--calm-text)!important;
     font-family:system-ui,-apple-system,'Segoe UI',sans-serif!important;
   }
-  html[data-calm-ui] body:before,html[data-calm-ui] body:after,
-  html[data-calm-ui] :where(.personal-sidebar,.personal-card,.card,.focus-dialog,.reading-focus-card):before,
-  html[data-calm-ui] :where(.personal-sidebar,.personal-card,.card,.focus-dialog,.reading-focus-card):after {
+  html[data-calm-ui] body:before,html[data-calm-ui] body:after,html[data-calm-ui] :where(.personal-sidebar,.personal-card,.card,.focus-dialog):before,html[data-calm-ui] :where(.personal-sidebar,.personal-card,.card,.focus-dialog):after {
     display:none!important;
   }
   html[data-calm-ui] :where(.rex-fireworks,.rex-sidebar-footer,.rex-metric-hint,.ui-success-toast) {display:none!important}
@@ -14893,21 +14172,21 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
     background:var(--calm-selected)!important;color:var(--calm-text)!important;border-color:#94ad8b!important;font-weight:650!important;
   }
   html[data-calm-ui] .rex-sidebar-nav i {display:none!important}
-  html[data-calm-ui] :where(.card,.life-card,.hero-task-card,.dashboard-calendar-card,.daily-summary-card,.sanctuary-weekly,.reading-focus-card,.reading-weekly-card,.reading-weekly-summary,.reading-calendar,.reading-bookshelf,.reading-article-content,.weekly-review-card,.archive-calendar,.archive-day-group) {
+  html[data-calm-ui] :where(.card,.life-card,.hero-task-card,.dashboard-calendar-card,.daily-summary-card,.reading-weekly-card,.reading-weekly-summary,.reading-calendar,.reading-bookshelf,.reading-article-content,.weekly-review-card,.archive-calendar,.archive-day-group) {
     background:var(--calm-surface)!important;border-color:var(--calm-border)!important;
     box-shadow:0 2px 8px #293d3606!important;border-radius:16px!important;color:var(--calm-text)!important;backdrop-filter:none!important;
   }
   html[data-calm-ui] :where(.compact-dashboard,.compact-main,.compact-side,.life-home,#reading,#archives,.reference-welcome,.reading-content-columns,.archive-grid) {background:transparent!important;box-shadow:none!important;color:var(--calm-text)!important}
   html[data-calm-ui] :where(.compact-heading h1,.reading-heading h1,.viewtitle,.life-heading h1) {font:600 25px/1.3 system-ui,sans-serif!important;color:var(--calm-text)!important;text-shadow:none!important;letter-spacing:-.5px!important}
-  html[data-calm-ui] :where(.card h2,.life-card h2,.hero-task-heading h2,.dashboard-calendar-card h2,.daily-summary-card h2,.sanctuary-weekly h2,.reading-bookshelf>h2,.archive-day-title) {font:600 17px/1.4 system-ui,sans-serif!important;color:var(--calm-text)!important;text-shadow:none!important}
-  html[data-calm-ui] :where(.life-date,.life-stats span,.life-empty,.life-task small,.life-habit small,.life-event small,.sub,.eyebrow,.compact-heading time,.reading-sync-strip,.archive-note,.focus-stat-note,.focus-offline,.personal-growth,.reading-weekly-label,.reading-today-label) {color:var(--calm-muted)!important}
+  html[data-calm-ui] :where(.card h2,.life-card h2,.hero-task-heading h2,.dashboard-calendar-card h2,.daily-summary-card h2,.reading-bookshelf>h2,.archive-day-title) {font:600 17px/1.4 system-ui,sans-serif!important;color:var(--calm-text)!important;text-shadow:none!important}
+  html[data-calm-ui] :where(.life-date,.life-stats span,.life-empty,.life-task small,.life-habit small,.life-event small,.sub,.eyebrow,.compact-heading time,.reading-sync-strip,.archive-note,.focus-stat-note,.focus-offline,.personal-growth) {color:var(--calm-muted)!important}
   html[data-calm-ui] :where(.compact-metrics>article,.compact-metrics>button,.hero-task-row,.pte-count-row,.pte-question,.archive-record,.reading-book-jacket,.reading-book-note,.reading-article-content,.focus-stat-grid>div,.focus-history>li) {
     background:var(--calm-surface)!important;border-color:var(--calm-border)!important;box-shadow:none!important;color:var(--calm-text)!important;
   }
-  html[data-calm-ui] :where(.compact-metrics strong,.metric-value,.life-stats strong,.life-day-count b,.reading-focus-metrics strong,.reading-weekly-summary strong) {color:var(--calm-accent)!important;text-shadow:none!important;font-weight:500!important}
+  html[data-calm-ui] :where(.compact-metrics strong,.metric-value,.life-stats strong,.life-day-count b,.reading-weekly-summary strong) {color:var(--calm-accent)!important;text-shadow:none!important;font-weight:500!important}
   html[data-calm-ui] :where(.sanctuary-practice-icon,.rex-metric-icon,.hero-task-row>b,.sanctuary-practice-copy>span,.reading-book-jacket strong) {color:var(--calm-accent)!important;background:transparent!important;text-shadow:none!important}
-  html[data-calm-ui] :where(.hero-task-track,.personal-progress,.progress,.sanctuary-bar-track) {background:#d9e1d3!important;box-shadow:none!important}
-  html[data-calm-ui] :where(.hero-task-track>span,.personal-progress>span,.progress>div,.sanctuary-bar-track>span,.weekly-bars i) {background:#6f8b68!important;box-shadow:none!important;transition:width .25s ease,height .25s ease!important}
+  html[data-calm-ui] :where(.hero-task-track,.personal-progress,.progress) {background:#d9e1d3!important;box-shadow:none!important}
+  html[data-calm-ui] :where(.hero-task-track>span,.personal-progress>span,.progress>div,.weekly-bars i) {background:#6f8b68!important;box-shadow:none!important;transition:width .25s ease,height .25s ease!important}
   html[data-calm-ui] :where(.life-task,.life-habit,.life-event,.reading-file-row,.archive-record-header) {border-color:#d3ddcd!important}
   html[data-calm-ui] :where(button,summary,[role="option"]) {
     -webkit-tap-highlight-color:transparent;
@@ -14944,9 +14223,9 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] :where(.focus-heading,.reading-dialog-heading,.life-editor h2,.profile-popover-heading,.pte-inline-heading) {background:transparent!important;color:var(--calm-text)!important;border-color:var(--calm-border)!important}
   html[data-calm-ui] :where(.focus-time,.timer-digits,#focusTitle,.focus-section-title,.reading-dialog h2,.life-editor h2,.profile-popover h2) {color:var(--calm-text)!important;text-shadow:none!important;filter:none!important}
   html[data-calm-ui] :where(.timer-cloud,.timer-glass-stars,.timer-suspension) {display:none!important}
-  html[data-calm-ui] :where(.calendar-day,.reading-calendar-day,.archive-day,.reading-week-days>span,.focus-time-presets button) {background:var(--calm-surface)!important;color:var(--calm-muted)!important;border-color:#d0dac9!important;box-shadow:none!important}
-  html[data-calm-ui] :where(.calendar-day[aria-pressed="true"],.reading-calendar-day[aria-pressed="true"],.archive-day[aria-pressed="true"],.reading-week-days>span.has-reading) {background:var(--calm-selected)!important;color:#294b32!important;border-color:#789771!important;box-shadow:inset 0 0 0 1px #789771!important}
-  html[data-calm-ui] :where(.calendar-day[aria-current="date"],.reading-calendar-day[aria-current="date"],.reading-week-days>span[aria-current="date"]) {outline:2px solid #829c74!important;outline-offset:-2px!important}
+  html[data-calm-ui] :where(.calendar-day,.reading-calendar-day,.archive-day,.focus-time-presets button) {background:var(--calm-surface)!important;color:var(--calm-muted)!important;border-color:#d0dac9!important;box-shadow:none!important}
+  html[data-calm-ui] :where(.calendar-day[aria-pressed="true"],.reading-calendar-day[aria-pressed="true"],.archive-day[aria-pressed="true"]) {background:var(--calm-selected)!important;color:#294b32!important;border-color:#789771!important;box-shadow:inset 0 0 0 1px #789771!important}
+  html[data-calm-ui] :where(.calendar-day[aria-current="date"],.reading-calendar-day[aria-current="date"]) {outline:2px solid #829c74!important;outline-offset:-2px!important}
   html[data-calm-ui] .life-task.is-done {background:#e1ebdb!important;border-radius:8px!important}
   html[data-calm-ui] .life-task.is-done strong {color:var(--calm-muted)!important}
   html[data-calm-ui] .life-repeat-days label:has(:checked) {background:var(--calm-selected)!important;border-color:#789771!important}
@@ -14980,7 +14259,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
     html[data-calm-ui] .calm-feedback {bottom:16px!important}
   }
   @media(prefers-reduced-motion:reduce) {
-    html[data-calm-ui] :where(button,summary,[role="option"],.hero-task-track>span,.personal-progress>span,.progress>div,.sanctuary-bar-track>span,.weekly-bars i) {transition:none!important}
+    html[data-calm-ui] :where(button,summary,[role="option"],.hero-task-track>span,.personal-progress>span,.progress>div,.weekly-bars i) {transition:none!important}
     html[data-calm-ui] :where(.calm-confirmed,button[aria-busy="true"]:after) {animation:none!important}
     html[data-calm-ui] :where(button,summary):not(:disabled):active,html[data-calm-ui] .calm-pressed {transform:none!important}
   }
@@ -15010,19 +14289,19 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
     --panel:var(--calm-surface)!important;--ui-ink:var(--calm-text)!important;--ui-muted:var(--calm-muted)!important;
     --gold:var(--calm-accent)!important;--teal:var(--calm-accent)!important;--accent:var(--calm-accent)!important;--line:var(--calm-border)!important;
   }
-  html[data-calm-ui] :where(.reading-focus-metrics>div,.reading-weekly,.archive-connection,.archive-dashboard-sync,.archive-calendar-shell,.archive-entry,.reading-sync-settings,.reading-source-area,.rich-editor-tools) {
+  html[data-calm-ui] :where(.archive-dashboard-sync,.archive-entry,.reading-source-area,.rich-editor-tools) {
     background:var(--calm-surface)!important;border-color:var(--calm-border)!important;box-shadow:none!important;backdrop-filter:none!important;
   }
-  html[data-calm-ui] :where(.reading-focus-metrics>div,.reading-weekly) {border-radius:12px!important;padding:14px!important}
-  html[data-calm-ui] :where(.reading-focus-heading,.reading-weekly-heading,.reading-weekly-values strong,.archive-month-nav strong,.archive-connection>summary,.archive-dashboard-sync>summary) {color:var(--calm-text)!important}
-  html[data-calm-ui] :where(.compact-metrics,.reading-focus-card,.archive-calendar-shell) {font-family:system-ui,sans-serif!important}
+
+  html[data-calm-ui] :where(.archive-dashboard-sync>summary) {color:var(--calm-text)!important}
+  html[data-calm-ui] :where(.compact-metrics) {font-family:system-ui,sans-serif!important}
   html[data-calm-ui] .compact-metrics>:is(article,button) {min-height:112px!important;padding:16px!important;border-radius:14px!important}
   html[data-calm-ui] .compact-metrics strong {font-family:inherit!important;font-size:32px!important;line-height:1.2!important;margin-top:10px!important}
   html[data-calm-ui] .compact-metrics strong .metric-value {font-size:inherit!important}
-  html[data-calm-ui] :where(.compact-metrics .metric-unit,.compact-metrics>article>span,.countdown-metric>small,.reading-weekly-values span) {color:var(--calm-muted)!important;font-size:12px!important}
+  html[data-calm-ui] :where(.compact-metrics .metric-unit,.compact-metrics>article>span,.countdown-metric>small) {color:var(--calm-muted)!important;font-size:12px!important}
   html[data-calm-ui] .compact-metrics strong.metric-text-value {font-size:21px!important}
   html[data-calm-ui] .compact-metrics .rex-metric-icon svg {width:18px!important;height:18px!important;color:var(--calm-accent)!important;stroke:currentColor!important}
-  html[data-calm-ui] .reading-focus-card>p {color:var(--calm-muted)!important;font-size:11px!important}
+
   html[data-calm-ui] .reading-tomato-entry svg path {stroke:#607e55!important;fill:none!important}
   html[data-calm-ui] .reading-tomato-entry svg path:first-child {fill:var(--calm-selected)!important}
   html[data-calm-ui] .reading-tomato-entry svg circle {fill:var(--calm-surface)!important}
@@ -15037,7 +14316,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] dialog {background:var(--calm-surface)!important;color:var(--calm-text)!important;border:1px solid var(--calm-border)!important;box-shadow:0 12px 40px #293d3620!important;backdrop-filter:none!important}
   html[data-calm-ui] dialog>header {background:transparent!important;color:var(--calm-text)!important;border-color:var(--calm-border)!important}
   html[data-calm-ui] :where(.hero-task-detail,.hero-generic-detail,.pte-inline-heading,.archive-record-details,.reading-preview-panel,.focus-time-picker) {background:var(--calm-surface)!important;color:var(--calm-text)!important;border-color:var(--calm-border)!important;box-shadow:none!important}
-  html[data-calm-ui] :where(.hero-task-card,.dashboard-calendar-card,.sanctuary-weekly,.reading-focus-card,.archive-calendar-shell) :where(small,.sub) {color:var(--calm-muted)!important}
+  html[data-calm-ui] :where(.hero-task-card,.dashboard-calendar-card) :where(small,.sub) {color:var(--calm-muted)!important}
   html[data-calm-ui] :where(.hero-task-card h2,dialog>header h2,.hero-task-detail h3) {font:600 17px/1.4 system-ui,sans-serif!important;color:var(--calm-text)!important}
   html[data-calm-ui] :where(.hero-task-number,.hero-task-quantity,.calendar-note,.focus-stat-grid,.focus-history) {color:var(--calm-muted)!important}
   html[data-calm-ui] :where(.calendar-note,.reading-source-help) {background:transparent!important}
@@ -15067,7 +14346,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
   html[data-calm-ui] .personal-sidebar {position:fixed!important;top:auto!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;left:12px!important;right:12px!important;width:auto!important;height:auto!important;padding:8px!important;background:linear-gradient(135deg,rgba(253,251,244,.96),rgba(237,232,219,.92))!important;backdrop-filter:blur(22px) saturate(130%)!important;-webkit-backdrop-filter:blur(22px) saturate(130%)!important;overflow:visible!important;border:1px solid rgba(255,255,255,.8)!important;border-radius:25px!important;z-index:80!important;box-shadow:inset 0 1px 1px #ffffffd9,inset 0 -1px 1px #b4a58d26,0 12px 30px #6652391a,0 3px 8px #6652390d!important;box-sizing:border-box!important}
   html[data-calm-ui] .personal-sidebar .personal-card {display:block!important;padding:0!important;margin:0!important}
   html[data-calm-ui] .personal-card>.personal-avatar-menu,html[data-calm-ui] .personal-card>.personal-growth {display:none!important}
-  html[data-calm-ui] .personal-card>.rex-sidebar-nav {display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;margin:0!important;gap:3px!important}
+  html[data-calm-ui] .personal-card>.rex-sidebar-nav {display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;margin:0!important;gap:3px!important}
   html[data-calm-ui] .personal-card>.rex-sidebar-nav button {min-height:50px!important;padding:6px 2px!important;border-radius:18px!important;font-size:10px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:5px!important;min-width:0!important}
   html[data-calm-ui] .personal-card>.rex-sidebar-nav span {white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:100%!important}
   html[data-calm-ui] .personal-card>.rex-sidebar-nav svg {width:20px!important;height:20px!important}
@@ -15093,12 +14372,21 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
 }
 /* Keep book covers aligned regardless of title wrapping. */
 @layer calm {
-  html[data-calm-ui] .reading-shelf-grid {align-items:stretch!important}
-  html[data-calm-ui] .reading-shelf-book {height:236px!important;min-width:0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:12px!important}
+  html[data-calm-ui] .reading-shelf-grid {display:grid!important;grid-template-columns:minmax(0,1fr)!important;align-items:stretch!important;gap:26px!important;border:0!important;box-shadow:none!important;background:transparent!important}
+  html[data-calm-ui] .reading-shelf-row {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:14px;padding:0 0 12px;border-bottom:5px solid var(--calm-border);border-radius:0 0 3px 3px;min-width:0}
+  html[data-calm-ui] .reading-shelf-book {width:100%!important;height:auto!important;aspect-ratio:2/3;min-height:0!important;min-width:0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:12px!important}
   html[data-calm-ui] .reading-shelf-book:hover {transform:none!important}
   html[data-calm-ui] .reading-book-jacket {display:grid!important;grid-template-rows:28px minmax(0,1fr) 18px!important;height:100%!important;min-height:0!important;gap:12px!important;padding:20px 16px!important;box-sizing:border-box!important;border:1px solid var(--calm-border)!important;border-radius:12px!important}
   html[data-calm-ui] .reading-book-jacket strong {align-self:center!important;display:-webkit-box!important;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden!important;font:500 18px/1.5 system-ui,sans-serif!important;margin:0!important}
   html[data-calm-ui] :where(.reading-book-mark,.reading-book-count) {color:var(--calm-muted)!important;opacity:1!important}
+  @media(max-width:600px){
+   html[data-calm-ui] .reading-shelf-row {gap:8px;padding-bottom:10px}
+   html[data-calm-ui] #reading .reading-bookshelf {padding:16px 12px!important}
+   html[data-calm-ui] .reading-shelf-row .reading-book-jacket {grid-template-rows:minmax(0,1fr) 18px!important;gap:8px!important;padding:12px 7px!important;border-radius:8px!important}
+   html[data-calm-ui] .reading-shelf-row .reading-book-mark {display:none!important}
+   html[data-calm-ui] .reading-shelf-row .reading-book-jacket strong {font-size:14px!important;line-height:1.5!important}
+   html[data-calm-ui] .reading-shelf-row .reading-book-count {font-size:11px!important}
+  }
 }
 /* Agenda: quiet day/week/month planning with a single add action. */
 @layer calm {
@@ -15259,11 +14547,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #reading .reading-week
  html[data-calm-ui] .habit-morpeko {display:inline-flex;width:48px;height:48px;flex-shrink:0;vertical-align:middle}
  html[data-calm-ui] .habit-morpeko img {width:100%;height:100%;display:block;object-fit:contain;border-radius:0;transform:scale(1.1)}
  html[data-calm-ui] .habit-icon-choices button:has(.habit-morpeko) {padding:3px!important}
-}
-
-@layer calm {
- @media(max-width:599px){
- }
 }
 
 @layer calm {
@@ -15817,15 +15100,16 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
 
 @layer calm {
   html[data-calm-ui] #home .compact-heading:has(.depth-view-picker) {
-    grid-template-columns:minmax(0,1fr) repeat(3,44px)!important;
+    grid-template-columns:repeat(3,44px) minmax(0,1fr) repeat(2,44px)!important;
     column-gap:8px!important;
   }
-  html[data-calm-ui] #home .compact-heading :is(.dashboard-timer-button,.depth-view-trigger,.dashboard-export,.memo-entry) {
+  html[data-calm-ui] #home .compact-heading :is(.dashboard-timer-button,.depth-view-trigger,.dashboard-export,.dashboard-timeline-button,.memo-entry) {
     width:44px!important;min-width:44px!important;height:44px!important;padding:0!important;
     display:inline-grid!important;place-items:center!important;place-content:center!important;justify-self:end!important;
     margin:0!important;border-radius:12px!important;
   }
-  html[data-calm-ui] #home .compact-heading .memo-entry {grid-column:4;grid-row:2;}
+  html[data-calm-ui] #home .compact-heading .dashboard-timeline-button {grid-column:5!important;grid-row:2!important;}
+  html[data-calm-ui] #home .compact-heading .memo-entry {grid-column:6!important;grid-row:2!important;}
   html[data-calm-ui] #home .compact-heading .depth-view-picker {width:44px!important;}
   html[data-calm-ui] #home .compact-heading .rex-dashboard-date {grid-column:1 / -1!important;justify-self:end!important;}
   html[data-calm-ui] #home .compact-heading h1 {justify-self:start!important;}
@@ -15927,11 +15211,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
  html[data-calm-ui] .task-editor :is(input:not([type=checkbox]),select) {min-width:0;min-height:44px;padding:10px 12px!important;border-radius:10px!important;font:400 14px system-ui,sans-serif!important}
  html[data-calm-ui] .task-schedule-fields {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
 
-
-
-
-
-
  html[data-calm-ui] .task-editor .task-deadline-fields {}
 
  html[data-calm-ui] .task-editor .task-subtask-fields {margin-top:4px}
@@ -15946,7 +15225,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
 
 @layer calm {
  html[data-calm-ui] .task-editor .task-field-label {display:block;min-width:0;line-height:1.5}
-
 
  html[data-calm-ui] .task-editor .task-deadline-fields>label {min-width:0}
 }
@@ -16005,4 +15283,280 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
 
 @layer calm {
  html[data-calm-ui] .task-completed-at {display:block;margin-top:6px;color:var(--calm-muted);font:400 12px/1.5 system-ui,sans-serif;text-decoration:none}
+}
+
+/* Reading notes grouped by year, with compact date cards. */
+#reading .reading-timeline-summary { margin: -8px 0 8px; }
+#reading .reading-timeline-year + .reading-timeline-year { margin-top: 30px; }
+#reading .reading-timeline-year-heading { margin: 0 0 14px; font-size: 19px; font-weight: 500; color: var(--calm-muted, #75816e); }
+#reading .reading-timeline-notes { display: grid; gap: 14px; min-width: 0; }
+#reading .reading-timeline-entry { border: 1px solid var(--border, #d9dfce); border-radius: 17px; background: var(--calm-surface, #fffdf5); overflow: hidden; }
+#reading .reading-timeline-card { display: grid; grid-template-columns: 84px minmax(0, 1fr); cursor: pointer; min-height: 125px; width: 100%; border: 0; border-radius: inherit; padding: 0; text-align: left; font: inherit; color: inherit; background: transparent; }
+#reading .reading-timeline-card:focus-visible { outline: 2px solid #829c74; outline-offset: -3px; border-radius: 16px; }
+#reading .reading-timeline-stamp { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-right: 1px solid var(--border, #d9dfce); }
+#reading .reading-timeline-day { font-size: 33px; line-height: 1.15; font-weight: 600; }
+#reading .reading-timeline-month { font-size: 13px; color: var(--calm-muted, #75816e); }
+#reading .reading-timeline-text { display: flex; flex-direction: column; justify-content: center; gap: 7px; padding: 20px 24px; min-width: 0; }
+#reading .reading-timeline-title { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; font-size: 17px; font-weight: 500; }
+#reading .reading-timeline-excerpt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 14px; line-height: 1.65; color: var(--calm-muted, #75816e); overflow-wrap: anywhere; }
+#reading .reading-timeline-meta { display: flex; gap: 12px; font-size: 11px; color: var(--calm-muted, #75816e); }
+#reading .reading-timeline-meta:empty { display: none; }
+#reading .reading-timeline-empty { padding: 28px 20px; border: 1px dashed #b9c8af; border-radius: 16px; color: var(--calm-muted, #75816e); line-height: 1.7; }
+#reading .reading-article-heading { scroll-margin-top: 20px; }
+#reading .reading-timeline-pagination { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; width: 100%; margin-top: 10px; padding-top: 18px; border-top: 1px solid var(--border, #d9dfce); }
+#reading .reading-timeline-pagination button { min-height: 44px; padding: 8px 12px; font-size: 13px; }
+#reading .reading-timeline-prev { justify-self: start; }
+#reading .reading-timeline-next { justify-self: end; }
+#reading .reading-timeline-pagination button:disabled { opacity: .4; cursor: default; }
+#reading .reading-timeline-page { font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--calm-muted, #75816e); }
+@media (max-width: 600px) {
+ #reading .reading-timeline-card { grid-template-columns: 65px minmax(0, 1fr); min-height: 115px; }
+ #reading .reading-timeline-text { padding: 16px; }
+ #reading .reading-timeline-day { font-size: 28px; }
+ #reading .reading-timeline-title { font-size: 16px; }
+}
+
+/* Open a note in the timeline frame, keeping the list and its page in place. */
+@layer calm {
+ .summary-history-dialog { width: min(560px,calc(100vw - 28px))!important; max-width: none!important; max-height: min(760px,calc(100dvh - 40px))!important; margin: auto; padding: 0!important; overflow: hidden!important; background: var(--calm-surface)!important; color: var(--calm-text)!important; border: 1px solid var(--calm-border)!important; border-radius: 20px!important; box-shadow: 0 18px 60px #293d3626; }
+ .summary-history-dialog[open] { display: flex!important; flex-direction: column; }
+ .summary-history-dialog [hidden] { display: none!important; }
+ .reflection-history-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: none; padding: 20px 22px 18px; border-bottom: 1px solid var(--calm-border); }
+ .reflection-history-heading h2 { margin: 0; font: 500 18px/1.4 system-ui,sans-serif; color: var(--calm-text); }
+ .reflection-history-header-actions { display: flex; align-items: center; gap: 2px; flex: none; }
+ .reflection-history-subtitle { margin: 5px 0 0; color: var(--calm-muted); font-size: 12px; }
+ .summary-history-dialog .reflection-history-close { display: grid; place-items: center; flex: none; width: 40px; height: 40px; padding: 0; border: 0!important; border-radius: 50%; background: transparent!important; color: var(--calm-muted)!important; }
+ .reflection-history-close svg { width: 20px; height: 20px; }
+ .reflection-history-list { min-height: 0; overflow: auto; padding: 18px 22px 22px; }
+ .reflection-history-year + .reflection-history-year { margin-top: 26px; }
+ .reflection-history-year-label { margin: 0 0 12px; font: 400 14px/1.5 system-ui,sans-serif; color: var(--calm-muted); }
+ .reflection-history-entry { margin-top: 12px; overflow: hidden; border: 1px solid var(--calm-border); border-radius: 14px; background: color-mix(in srgb,var(--calm-inset) 35%,var(--calm-surface)); }
+ .summary-history-dialog .reflection-history-note { display: grid; grid-template-columns: 62px minmax(0,1fr); align-items: stretch; width: 100%; min-height: 106px; padding: 0; border: 0!important; background: transparent!important; color: var(--calm-text)!important; text-align: left; font: inherit; }
+ .reflection-history-date { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-right: 1px solid var(--calm-border); }
+ .reflection-history-date strong { font: 500 28px/1.1 system-ui,sans-serif; }
+ .reflection-history-date>span { color: var(--calm-muted); font-size: 12px; }
+ .reflection-history-copy { display: flex; flex-direction: column; justify-content: center; min-width: 0; gap: 10px; padding: 16px; }
+ .reflection-history-preview { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; font-size: 14px; line-height: 1.75; }
+ .reflection-history-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; color: var(--calm-muted); font-size: 11px; }
+ .reflection-history-meta>span { display: inline-flex; align-items: center; gap: 5px; }
+ .reflection-history-state:before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--calm-muted); opacity: .7; }
+ .reflection-history-notion { display: block; padding: 0 16px 12px; text-align: right; font-size: 11px; color: var(--calm-muted); }
+ .reflection-history-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: none; padding: 14px 22px; border-top: 1px solid var(--calm-border); }
+ .reflection-history-page-button { min-height: 40px; padding: 8px 10px; font-size: 12px; border-radius: 10px; }
+ .reflection-history-page-number { font-size: 12px; white-space: nowrap; color: var(--calm-muted); }
+ .reflection-history-status { margin: 0; padding: 0 22px 16px; color: var(--calm-muted); font-size: 12px; }
+ .reflection-history-status:empty { display: none; }
+ .reflection-history-empty { margin: 0; padding: 28px 0; color: var(--calm-muted); line-height: 1.8; }
+ .reflection-history-cloud { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: none; padding: 8px 22px; border-bottom: 1px solid var(--calm-border); color: var(--calm-muted); font-size: 12px; }
+ .summary-history-dialog .reflection-cloud-refresh { display: grid; place-items: center; flex: none; width: 40px; height: 40px; padding: 0; border: 0!important; background: transparent!important; border-radius: 50%; }
+ .reflection-cloud-refresh svg { width: 18px; height: 18px; }
+ .reflection-cloud-back { min-height: 40px; margin-bottom: 20px; padding: 8px 12px; border-radius: 10px; font-size: 12px; }
+ .reflection-cloud-note { margin: 0 0 24px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.95; font-size: 16px; }
+ .reflection-cloud-file { display: block; width: 100%; margin: 10px 0; padding: 10px 12px; border: 1px solid var(--calm-border); border-radius: 10px; font-size: 12px; text-align: left; overflow-wrap: anywhere; }
+ @media(max-width:380px) {
+  .reflection-history-heading { padding: 18px 16px 16px; }
+  .reflection-history-list { padding: 16px; }
+  .reflection-history-pagination { padding: 12px 16px; }
+  .reflection-history-copy { padding: 14px; }
+ }
+}
+@layer calm {
+ #lifeHome .home-reflection-card { grid-column: 1/-1; margin-top: 18px; scroll-margin-top: 20px; }
+ #lifeHome.home-reflection-open.active { display: block!important; }
+ #lifeHome.home-reflection-open > :not(.home-reflection-card) { display: none!important; }
+ .home-reflection-card [hidden] { display: none!important; }
+ .home-reflection-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+ .home-reflection-heading h2 { margin: 0; }
+ .home-reflection-date { display: block; margin-top: 4px; color: var(--calm-muted); font-size: 12px; }
+ .home-reflection-heading .is-detail { margin-right: auto; }
+ .home-reflection-controls { display: flex; align-items: center; gap: 2px; }
+ .home-reflection-card .home-reflection-icon { display: grid; place-items: center; width: 40px; height: 44px; flex: none; padding: 0; border: 0!important; border-radius: 50%; background: transparent!important; color: var(--calm-muted)!important; }
+ .home-reflection-icon svg { width: 20px; height: 20px; }
+ .home-reflection-card .home-reflection-preview { display: block; width: 100%; text-align: left; padding: 18px 0 0; border: 0!important; background: transparent!important; box-shadow: none!important; }
+ .home-reflection-excerpt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; font-size: 14px; line-height: 1.8; }
+ .home-reflection-hint { display: block; margin-top: 12px; font-size: 12px; color: var(--calm-muted); }
+ .home-reflection-card .daily-summary-card { margin: 0!important; padding: 0!important; border: 0!important; border-radius: 0!important; background: transparent!important; box-shadow: none!important; min-height: 0!important; }
+ .home-reflection-card .daily-summary-card>header, .home-reflection-card .summary-date-hint, .home-reflection-card .summary-history { display: none!important; }
+ .home-reflection-card[data-view="read"] :is(.sanctuary-reflection-editor,.summary-link-editor,.daily-summary-card>footer,.summary-files button,.summary-links button,.home-reflection-edit-title) { display: none!important; }
+ .home-reflection-card:not([data-view="summary"]) .home-reflection-heading { padding-bottom: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--calm-border); }
+ .home-reflection-reading { min-height: 180px; margin-bottom: 24px; }
+ .home-reflection-reading h2, .home-reflection-edit-title { margin: 0 0 22px!important; }
+ .home-reflection-body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 17px; line-height: 1.95; }
+ .home-reflection-card .sanctuary-reflection-editor { display: flex!important; flex-direction: column; gap: 0; min-width: 0; width: 100%; margin: 0; padding: 0; background: var(--calm-surface); border: 1px solid var(--calm-border); border-radius: 14px; overflow: hidden; }
+ .home-reflection-card .sanctuary-reflection-editor:focus-within { border-color: var(--calm-accent); }
+ .home-reflection-card textarea { box-sizing: border-box!important; width: 100%!important; max-width: 100%; min-width: 0; min-height: 260px!important; height: clamp(260px, 40vh, 400px); margin: 0!important; padding: 16px!important; border: 0!important; border-radius: 0!important; resize: none!important; font-size: 16px!important; line-height: 1.85!important; }
+ .home-reflection-card textarea:focus-visible { outline: none!important; box-shadow: none!important; }
+ .home-reflection-card .summary-tools { display: grid!important; grid-template-columns: repeat(4,minmax(0,1fr)); align-items: center; flex: none; width: 100%; gap: 0; padding: 6px 8px; border-top: 1px solid color-mix(in srgb,var(--calm-border) 65%,transparent); }
+ .home-reflection-card .summary-tools button { display: grid; place-items: center; justify-self: center; width: 44px; min-width: 44px; height: 44px; min-height: 44px; margin: 0; padding: 0!important; border: 0!important; border-radius: 10px; background: transparent!important; color: var(--calm-muted)!important; }
+ .home-reflection-card .summary-tools button:hover { background: var(--calm-inset)!important; color: var(--calm-accent)!important; }
+ .home-reflection-card .summary-tools svg { width: 18px; height: 18px; }
+ .home-reflection-card .daily-summary-card>footer { margin-top: 20px; }
+ .home-reflection-message:empty, .home-reflection-card .summary-status:empty { display: none; }
+ .home-reflection-card :is(.summary-status,.home-reflection-message) { font-size: 12px; margin: 14px 0 0; }
+}
+@layer calm {
+ .study-timeline { scroll-margin-top: 20px; }
+ html[data-calm-ui] #home .compact-main.compact-main-without-sidebar { grid-template-columns: minmax(0,1fr)!important; }
+ html[data-calm-ui] #studyTimelineDialog { box-sizing: border-box; width: min(560px,calc(100% - 24px)); max-height: calc(100dvh - 48px); padding: 52px 24px 24px!important; border: 1px solid var(--calm-border)!important; border-radius: 22px!important; background: var(--calm-surface)!important; color: var(--calm-text)!important; overflow-y: auto; }
+ html[data-calm-ui] #studyTimelineDialog:not([open]) { display: none!important; }
+ html[data-calm-ui] #studyTimelineDialog::backdrop { background: rgb(20 35 26 / 32%); backdrop-filter: blur(3px); }
+ html[data-calm-ui] #studyTimelineDialog>.study-timeline { width: 100%!important; box-sizing: border-box; margin: 0!important; padding: 0!important; border: 0!important; background: transparent!important; box-shadow: none!important; }
+ html[data-calm-ui] #studyTimelineDialog>.study-timeline-close { position: absolute; top: 10px; right: 12px; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0!important; border-radius: 50%; background: transparent!important; color: var(--calm-muted)!important; }
+ .study-timeline [hidden] { display: none!important; }
+ .study-timeline-heading { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 14px; }
+ .study-timeline-heading h2 { margin: 0!important; font-size: 16px!important; white-space: nowrap; }
+ .study-timeline-tools { display: flex; flex: none; align-items: center; gap: 2px; }
+ .study-timeline-tools :is(.study-icon-button,.study-date-picker) { display: grid; place-items: center; position: relative; width: 40px; height: 44px; padding: 0; border: 0!important; border-radius: 50%; background: transparent!important; color: var(--calm-muted)!important; cursor: pointer; }
+ .study-timeline-tools :is(.study-icon-button,.study-date-picker):hover { background: var(--calm-inset)!important; }
+ .study-timeline-tools svg { width: 19px; height: 19px; pointer-events: none; }
+ .study-date-picker input { position: absolute; inset: 0; width: 100%; height: 100%; min-width: 0; padding: 0; opacity: 0; cursor: pointer; }
+ .study-date-picker input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; cursor: pointer; }
+ .study-date-picker:focus-within { outline: 2px solid var(--calm-accent); outline-offset: 2px; }
+ .study-timeline button { min-height: 44px; }
+ .study-page-summary { margin: 0 0 18px; font-size: 12px; }
+ .study-year-heading { margin: 24px 0 14px; color: var(--calm-muted); font-size: 18px; font-weight: 500; }
+ .study-day-card { display: grid; grid-template-columns: 65px minmax(0,1fr); width: 100%; margin-bottom: 14px; padding: 0; min-height: 110px!important; border: 1px solid var(--calm-border); border-radius: 16px; overflow: hidden; text-align: left; font: inherit; }
+ .study-day-stamp { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-right: 1px solid var(--calm-border); }
+ .study-day-stamp strong { font-size: 28px; font-weight: 600; line-height: 1.2; }
+ .study-day-stamp>span { color: var(--calm-muted); font-size: 12px; }
+ .study-day-copy { display: flex; flex-direction: column; justify-content: center; min-width: 0; gap: 8px; padding: 16px; }
+ .study-day-copy>strong { font-size: 14px; font-weight: 500; }
+ .study-day-excerpt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; color: var(--calm-muted); font-size: 12px; line-height: 1.6; }
+ .study-day-copy small { color: var(--calm-muted); font-size: 11px; }
+ .study-timeline-pagination { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid var(--calm-border); padding-top: 16px; margin-top: 20px; }
+ .study-timeline-pagination button { padding: 8px 12px; font-size: 12px; }
+ .study-page-number { color: var(--calm-muted); font-size: 12px; white-space: nowrap; }
+ .study-timeline-status:empty { display: none; }
+ html[data-calm-ui] { --nav-sprite:url("assets/spring-nav-v1.png"); }
+ html[data-calm-ui][data-ui-theme="winter"] { --nav-sprite:url("assets/winter-nav-v1.png"); }
+ html[data-calm-ui][data-ui-theme="newyear"] { --nav-sprite:url("assets/newyear-nav-v1.png"); }
+ html[data-calm-ui][data-ui-theme="halloween"] { --nav-sprite:url("assets/halloween-nav-v1.png"); }
+ html[data-calm-ui][data-ui-theme="christmas"] { --nav-sprite:url("assets/christmas-nav-v1.png"); }
+ @media(max-width:599px){
+  html[data-calm-ui] #rexSanctuary .personal-sidebar { left:0!important; right:0!important; bottom:0!important; padding:6px 12px calc(8px + env(safe-area-inset-bottom))!important; border:0!important; border-radius:0!important; background:var(--calm-page)!important; box-shadow:none!important; backdrop-filter:none!important; -webkit-backdrop-filter:none!important; }
+  html[data-calm-ui] #rexSanctuary .personal-sidebar::before { content:none!important; display:none!important; }
+  html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav button { min-height:80px!important; gap:2px!important; padding:2px 0 4px!important; border:0!important; background:transparent!important; box-shadow:none!important; color:var(--calm-muted)!important; font-size:11px!important; }
+  html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav button>svg { display:none!important; }
+  html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav button::before { content:""!important; display:block!important; position:static!important; flex:none; width:56px!important; height:56px!important; opacity:1!important; background-image:var(--nav-icon,var(--nav-sprite)); background-position:var(--nav-position,0 0); background-size:var(--nav-size,200% 200%); background-repeat:no-repeat; transition:transform .16s ease; }
+  html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav [data-side-view="home"] { --nav-position:100% 0; }
+  html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav [data-side-view="reading"] { --nav-position:0 100%; }
+  html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav .mobile-me { --nav-position:100% 100%; }
+  html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav button:is(.active,[aria-current="page"],.is-profile-open) { background:transparent!important; border:0!important; color:var(--calm-accent)!important; box-shadow:none!important; font-weight:600; }
+  html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav button:is(.active,[aria-current="page"],.is-profile-open)::before { transform:translateY(-3px) scale(1.05); }
+  html[data-calm-ui] #rexSanctuary main { padding-bottom:calc(122px + env(safe-area-inset-bottom))!important; }
+  html[data-calm-ui][data-ui-theme="pokemon"] #rexSanctuary .personal-card>.rex-sidebar-nav button { --nav-position:center; --nav-size:contain; }
+  html[data-calm-ui][data-ui-theme="pokemon"] #rexSanctuary [data-side-view="lifeHome"] { --nav-icon:url("assets/pokemon-nav-ball.svg"); }
+  html[data-calm-ui][data-ui-theme="pokemon"] #rexSanctuary [data-side-view="home"] { --nav-icon:url("assets/habit-morpeko-full-clear.png"); }
+  html[data-calm-ui][data-ui-theme="pokemon"] #rexSanctuary [data-side-view="reading"] { --nav-icon:url("assets/habit-keldeo-clear.png"); }
+  html[data-calm-ui][data-ui-theme="pokemon"] #rexSanctuary .mobile-me { --nav-icon:url("assets/habit-morpeko-hangry-clear.png"); }
+  @media(prefers-reduced-motion:reduce){html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav button::before { transition:none; }}
+ }
+ html[data-calm-ui] #lifeHome .home-reflection-card[hidden] { display: none!important; }
+ html[data-calm-ui] .reading-note-direct-actions { display: flex; flex: none; align-items: center; gap: 4px; }
+ html[data-calm-ui] .reading-book-reader .reading-book-top { display: flex!important; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px!important; }
+ html[data-calm-ui] .reading-book-actions { display: flex; align-items: center; gap: 8px; }
+ html[data-calm-ui] .reading-book-actions .reading-icon-button { display: inline-grid!important; place-items: center; width: 42px; height: 42px; min-height: 42px; padding: 0!important; margin: 0!important; border: 1px solid var(--calm-border)!important; border-radius: 12px; background: transparent!important; color: var(--calm-muted)!important; box-shadow: none!important; }
+ html[data-calm-ui] .reading-book-actions .reading-book-add { background: var(--calm-selected)!important; color: var(--calm-accent)!important; }
+ html[data-calm-ui] .reading-book-actions .reading-book-delete svg { width: 30px!important; height: 30px!important; }
+ html[data-calm-ui] .reading-note-direct-actions .reading-icon-button { display: inline-grid!important; place-items: center; width: 40px; height: 40px; min-height: 40px; padding: 0!important; border: 0!important; background: transparent!important; box-shadow: none!important; color: var(--calm-muted)!important; }
+ html[data-calm-ui] #reading .reading-heading { display: grid!important; grid-template-columns: minmax(0,1fr) 44px!important; align-items: center!important; gap: 6px 12px!important; }
+ html[data-calm-ui] #reading .reading-heading>div:first-child { display: contents!important; }
+ html[data-calm-ui] #reading .reading-heading h1 { grid-column: 1; grid-row: 1; align-self: center; margin: 0!important; }
+ html[data-calm-ui] #reading .reading-heading>.reading-tomato-entry { grid-column: 2; grid-row: 1; justify-self: end; display: inline-grid!important; place-items: center; width: 44px; height: 44px; min-height: 44px; padding: 0!important; margin: 0!important; border: 0!important; background: transparent!important; box-shadow: none!important; border-radius: 12px; }
+ html[data-calm-ui] #reading .reading-heading .sub { grid-column: 1/-1; grid-row: 2; }
+ html[data-calm-ui] #reading .reading-heading .reading-sync-strip { grid-column: 1/-1; grid-row: 3; }
+ html[data-calm-ui] #archives .archive-connections { grid-column: 1/-1; min-width: 0; padding: 16px 20px; border: 1px solid var(--calm-border); border-radius: 16px; background: var(--calm-surface); }
+ html[data-calm-ui] #profilePopover #archives.me-sync-settings { display: block!important; width: 100%!important; max-width: none!important; margin: 20px 0 0!important; padding: 0!important; background: transparent!important; border: 0!important; box-shadow: none!important; }
+ html[data-calm-ui] #profilePopover #archives #archiveGrid { display: none!important; }
+ html[data-calm-ui] #profilePopover #archives .archive-settings { display: grid!important; grid-template-columns: minmax(0,1fr)!important; gap: 14px!important; }
+ html[data-calm-ui] #profilePopover #archives .archive-controls { display: flex!important; flex-wrap: wrap; gap: 8px; }
+ html[data-calm-ui] #profilePopover #archives input { box-sizing: border-box; min-width: 0; width: 100%; }
+ html[data-calm-ui] #archives .sync-icon-button { display: inline-grid!important; place-items: center; width: 42px; min-width: 42px; height: 42px; min-height: 42px; padding: 0!important; border-radius: 12px; }
+ html[data-calm-ui] #archives .sync-icon-button svg { width: 20px; height: 20px; }
+ html[data-calm-ui] #archives .sync-icon-button[aria-pressed="true"] { background: var(--calm-selected)!important; color: var(--calm-accent)!important; }
+ html[data-calm-ui] #archives #cloudDisconnect[hidden] { display: none!important; }
+ html[data-calm-ui] #archives #clearArchive[hidden] { display: none!important; }
+ html[data-calm-ui] #profilePopover #archives .archive-controls .sync-icon-button { flex: 0 0 42px!important; width: 42px!important; min-width: 42px!important; padding: 0!important; }
+ html[data-calm-ui] #archives .archive-connection-tabs { display: flex!important; flex-direction: row!important; gap: 6px; flex-wrap: nowrap!important; margin: 0 0 18px; padding-bottom: 12px; border-bottom: 1px solid var(--calm-border); }
+ html[data-calm-ui] #profilePopover #archives .archive-connection-tabs>button { flex: 0 0 auto!important; width: auto!important; min-width: 0!important; margin: 0!important; white-space: nowrap; }
+ html[data-calm-ui] #archives .archive-connection-tabs button { min-height: 40px; padding: 8px 13px; border: 0!important; border-radius: 10px; background: transparent!important; color: var(--calm-muted)!important; font-size: 13px; }
+ html[data-calm-ui] #archives .archive-connection-tabs button[aria-selected="true"] { background: var(--calm-inset)!important; color: var(--calm-text)!important; }
+ html[data-calm-ui] #archives .archive-connection-panel { padding: 0!important; margin: 0!important; border: 0!important; border-radius: 0!important; background: transparent!important; box-shadow: none!important; }
+ html[data-calm-ui] #archives .archive-connection-panel[hidden] { display: none!important; }
+ html[data-calm-ui] #archives .archive-connection-panel>.card { padding: 0!important; margin: 0!important; border: 0!important; background: transparent!important; box-shadow: none!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-fields { display: grid!important; grid-template-columns: minmax(0,1fr)!important; gap: 14px!important; box-sizing: border-box!important; width: 100%!important; min-width: 0!important; margin: 0!important; padding: 0!important; border: 0!important; border-radius: 0!important; background: transparent!important; box-shadow: none!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-field { position: relative; display: grid!important; grid-template-rows: 24px 44px!important; gap: 7px!important; margin: 0!important; color: var(--calm-muted)!important; font: 400 13px/24px system-ui,sans-serif!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-field>label:not(.archive-remember) { margin: 0!important; color: inherit!important; font: inherit!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-field>input { box-sizing: border-box!important; width: 100%!important; min-height: 44px!important; margin: 0!important; padding: 10px 12px!important; border: 1px solid var(--calm-border)!important; border-radius: 10px!important; background: var(--calm-surface)!important; color: var(--calm-text)!important; font: 400 14px/1.5 system-ui,sans-serif!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions { display: flex!important; flex-wrap: nowrap!important; gap: 8px!important; margin: 16px 0 0!important; padding: 0!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button { flex: 0 0 42px!important; width: 42px!important; height: 42px!important; min-width: 42px!important; min-height: 42px!important; margin: 0!important; padding: 0!important; border: 1px solid var(--calm-border)!important; border-radius: 12px!important; background: transparent!important; color: var(--calm-muted)!important; box-shadow: none!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button[aria-pressed="true"] { background: var(--calm-selected)!important; color: var(--calm-accent)!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-status { display: block!important; min-height: 38.4px; margin: 12px 0 0!important; padding: 0!important; border: 0!important; border-radius: 0!important; background: transparent!important; color: var(--calm-muted)!important; font: 400 12px/1.6 system-ui,sans-serif!important; white-space: normal!important; }
+ html[data-calm-ui] #profilePopover #archives .archive-remember input[type="checkbox"] { width: auto!important; min-height: auto!important; }
+ html[data-calm-ui] #profilePopover #archives label.sync-remember-icon { position: absolute!important; top: 0; right: 0; display: grid!important; place-items: center; width: 24px; height: 24px; min-height: 0!important; margin: 0!important; padding: 0!important; border: 0!important; background: transparent!important; box-shadow: none!important; color: var(--calm-muted); cursor: pointer; }
+ html[data-calm-ui] #profilePopover #archives .sync-remember-icon input { position: absolute; inset: 0; width: 100%!important; height: 100%!important; margin: 0!important; opacity: 0; cursor: pointer; }
+ html[data-calm-ui] #profilePopover #archives .sync-remember-icon:has(input:checked) { color: var(--calm-accent); }
+ html[data-calm-ui] #profilePopover #archives .sync-remember-icon:has(input:checked) svg path { fill: currentColor; }
+ html[data-calm-ui] #profilePopover #archives .sync-remember-icon:has(input:focus-visible) { outline: 2px solid var(--calm-accent); outline-offset: 2px; }
+ .study-search { margin: 0 0 18px; }
+ .study-search input { box-sizing: border-box; width: 100%; min-height: 44px; padding: 11px 14px; border: 1px solid var(--calm-border); border-radius: 12px; background: var(--calm-surface); color: var(--calm-text); font: inherit; }
+ .study-search-status { margin: 8px 0 0; font-size: 12px; }
+ .study-search-status:empty { display: none; }
+ .study-checkins { border-top: 1px solid var(--calm-border); padding-top: 22px; }
+ .study-checkins [role="status"]:empty { display: none; }
+ .study-checkin-records { display: grid; gap: 20px; }
+ .study-checkin-records .archive-entry { min-width: 0; padding: 0 0 18px; border: 0!important; border-bottom: 1px solid var(--calm-border)!important; border-radius: 0!important; background: transparent!important; box-shadow: none!important; overflow-wrap: anywhere; }
+ .study-checkin-records .archive-entry h3 { margin: 0 0 6px; font-size: 15px; }
+ .study-checkin-records .archive-entry .meta { font-size: 12px; color: var(--calm-muted); }
+ .study-checkin-records .archive-note { white-space: pre-wrap; }
+ .study-checkin-records .archive-attachment { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 14px 0; }
+ .study-checkin-records :is(audio,img) { display: block; max-width: 100%; }
+ .study-checkin-records audio { width: 100%; }
+ .study-checkin-records img { height: auto; border-radius: 12px; }
+ .study-checkin-refresh { margin-top: 14px; }
+ .study-detail-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid var(--calm-border); }
+ .study-detail-bar time { font-size: 13px; color: var(--calm-muted); }
+ .study-back { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0!important; background: transparent!important; border-radius: 50%; }
+ .study-back svg { width: 21px; height: 21px; }
+ .study-details>h2 { margin: 0 0 20px; }
+ .study-detail-stats { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-bottom: 26px; }
+ .study-detail-stats>div { display: flex; flex-direction: column; gap: 8px; padding: 14px; border: 1px solid var(--calm-border); border-radius: 14px; }
+ .study-detail-stats span { font-size: 12px; color: var(--calm-muted); }
+ .study-detail-stats strong { font-size: 23px; font-weight: 500; }
+ .study-detail-section { margin: 22px 0; }
+ .study-detail-section h3 { font-size: 15px; font-weight: 500; margin: 0 0 12px; }
+ .study-detail-rows { list-style: none; padding: 0; margin: 0; }
+ .study-detail-rows li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--calm-border); font-size: 13px; }
+ .study-detail-rows li span { overflow-wrap: anywhere; min-width: 0; }
+ .study-detail-rows li strong { white-space: nowrap; font-weight: 500; }
+ .study-detail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+ .study-detail-actions button { font-size: 12px; }
+}
+@layer calm {
+ #reading.reading-note-open.active { display: block!important; }
+ #reading.reading-note-open > :not(.reading-content-columns) { display: none!important; }
+ #reading .reading-grid[hidden], #reading .reading-note-reader[hidden] { display: none!important; }
+ #reading .reading-note-reader { min-height: 65vh; scroll-margin-top: 20px; }
+ #reading .reading-reader-bar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; margin-bottom: 24px; border-bottom: 1px solid var(--calm-border, #d9dfce); background: transparent!important; box-shadow: none!important; }
+ #reading .reading-reader-controls { display: flex; align-items: center; gap: 6px; }
+ #reading .reading-reader-bar .reading-icon-button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0!important; border: 0!important; border-radius: 50%; background: transparent!important; color: var(--calm-muted, #75816e)!important; cursor: pointer; }
+ #reading .reading-reader-bar .reading-icon-button:hover { background: var(--calm-inset, #e8efdf)!important; }
+ #reading .reading-reader-bar .reading-icon-button.has-tags { color: var(--calm-accent, #456e53)!important; background: var(--calm-inset, #e8efdf)!important; }
+ #reading .reading-reader-bar svg { width: 21px; height: 21px; }
+ #reading .reading-reader-article { max-width: 72ch; margin: 0 auto; padding: 0 4px 28px; overflow-wrap: anywhere; }
+ #reading .reading-reader-title { font: 500 clamp(22px, 3vw, 28px)/1.5 system-ui, sans-serif!important; color: var(--calm-text, #344b35); margin: 24px 0; }
+ #reading .reading-reader-article .reading-note-prose { font-size: 17px; line-height: 1.95; }
+ #reading .reading-reader-article > .reading-original-link { display: inline-block; margin-bottom: 24px; }
+ #reading .reading-reader-article > .reading-attachments:empty { display: none; }
+ #reading .reading-note-tags { display: flex; flex-wrap: wrap; gap: 7px; margin: -10px 0 24px; }
+ #reading .reading-note-tag { padding: 3px 10px; border-radius: 12px; background: var(--calm-inset, #e8efdf); color: var(--calm-muted, #75816e); font-size: 12px; overflow-wrap: anywhere; }
+ #reading .reading-timeline-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+ #reading .reading-tag-filter { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; }
+ #reading .reading-tag-filter svg { width: 16px; height: 16px; flex: none; color: var(--calm-muted, #75816e); }
+ #reading .reading-tag-filter select { width: auto; max-width: 160px; min-height: 38px; padding: 6px 10px; font-size: 12px; }
+ #reading .reading-timeline-tags { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+ .reading-tags-dialog { width: min(420px, calc(100vw - 32px)); }
+ .reading-tag-choices { display: flex; flex-wrap: wrap; gap: 7px; max-height: 160px; overflow: auto; }
+ .reading-tag-choices button { padding: 5px 10px; border-radius: 14px; font-size: 12px; }
+ .reading-tag-actions { display: flex; justify-content: flex-end; gap: 10px; }
 }
