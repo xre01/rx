@@ -15463,8 +15463,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
    --nav-icon:url("assets/pokemon-nav-pikachu.png"); --nav-position:40% 57.5%; --nav-size:90.625% auto;
   }
   html[data-calm-ui][data-ui-theme="pokemon"] #rexSanctuary .rex-sidebar-nav [data-side-view="reading"]::before {
-   translate:0 -.75px;
-   scale:.87;
+   translate:0 -.5px;
    clip-path:polygon(
     8.8% 20.6%, 10.6% 19.4%, 15.9% 18.4%, 22.8% 18.8%, 26.6% 20.9%,
     29.4% 24.1%, 32.2% 19.7%, 36.9% 16.9%, 40.0% 16.9%, 42.2% 15.9%,
