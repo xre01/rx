@@ -15443,6 +15443,8 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
   html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav button::before {
    content:""!important; display:block!important; position:static!important; flex:none; width:30px!important; height:30px!important; opacity:1!important;
    background-image:var(--nav-icon,var(--nav-sprite)); background-position:var(--nav-position,0 0); background-size:var(--nav-size,200% 200%); background-repeat:no-repeat;
+   /* Keep the 30px layout slot while rendering the artwork at 32px. */
+   scale:calc(32 / 30); translate:0 -.5px;
   }
   html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav [data-side-view="home"] { --nav-position:100% 0; }
   html[data-calm-ui] #rexSanctuary .personal-card>.rex-sidebar-nav [data-side-view="reading"] { --nav-position:0 100%; }
@@ -15463,7 +15465,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
    --nav-icon:url("assets/pokemon-nav-pikachu.png"); --nav-position:40% 57.5%; --nav-size:90.625% auto;
   }
   html[data-calm-ui][data-ui-theme="pokemon"] #rexSanctuary .rex-sidebar-nav [data-side-view="reading"]::before {
-   translate:0 -.5px;
    clip-path:polygon(
     8.8% 20.6%, 10.6% 19.4%, 15.9% 18.4%, 22.8% 18.8%, 26.6% 20.9%,
     29.4% 24.1%, 32.2% 19.7%, 36.9% 16.9%, 40.0% 16.9%, 42.2% 15.9%,
