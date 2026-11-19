@@ -118,6 +118,7 @@ async function deleteLifeDraft(date){
  busy=true;clearTimeout(draftTimer);
  try{
   await initialLoad;
+  if(date!==draftDate&&!await persist())return false;
   const all=await storedLifeRecords(),existing=all.find(r=>r.kind==='reflection-deletion'&&r.date===date),local=all.find(r=>r.date===date&&r.kind!=='reflection-deletion');
   let origin=local?.origin||(date===draftDate?draftOrigin:'');try{origin ||= window.RexReflectionCloud?.origin?.()||''}catch{}
   const record=existing||{kind:'reflection-deletion',date,origin,operationId:crypto.randomUUID()};

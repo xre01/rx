@@ -4,7 +4,7 @@ const uuid=()=> '12345678-1234-4234-8234-'+String(++serial).padStart(12,'0');
 function assign(list,parent){return list.map(b=>{const id=uuid(),copy={...b,id,parent:{block_id:parent}};if(b[b.type]?.children){blocks.set(id,assign(b[b.type].children,id));copy.has_children=true;copy[b.type]={...b[b.type]};delete copy[b.type].children}return copy})}
 async function notion(env,path,method='GET',data){
  calls.push({path,method});
- if(path==='data_sources/3fd0d1ce-21d1-8046-a3e4-000bae86ce0d')return {id:'ok'};
+ if(path==='data_sources/3fd0d1ce-21d1-8046-a3e4-000bae86ce0d')return {id:'ok',properties:{Type:{type:'select',select:{options:[{name:'PTE'},{name:'Reading'},{name:'Work'},{name:'生活'}]}}}};
  if(path.endsWith('/query'))return {results:pages.filter(p=>!p.archived),has_more:false};
  if(path==='pages'&&method==='POST'){const p={id:uuid(),url:'https://notion.so/test',parent:data.parent,properties:data.properties};pages.push(p);blocks.set(p.id,assign(data.children||[],p.id));return p}
  if(path.startsWith('pages/')){const p=pages.find(p=>p.id===path.split('/')[1]);if(method==='PATCH'){const properties={...p.properties,...data.properties};Object.assign(p,data);p.properties=properties;}return p}

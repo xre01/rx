@@ -59,6 +59,7 @@ function lifeSections(blocks){
 }
 async function correctLifeType(env,page,blocks){
   if(page.properties?.Type?.select?.name==='PTE'&&lifeSections(blocks).onlyLife){
+    await ensureLifeType(env);
     await notion(env,'pages/'+page.id,'PATCH',{properties:{Type:{select:{name:'生活'}},Name:{title:rich(page.properties.Date?.date?.start+' · 生活')}}});
   }
 }
@@ -284,7 +285,21 @@ async function pteDay(env,date){
  if(current.results.length)return current.results[0];
  return null;
 }
+let lifeTypeReady;
+async function ensureLifeType(env){
+  if(lifeTypeReady)return lifeTypeReady;
+  lifeTypeReady=(async()=>{
+    const schema=await notion(env,'data_sources/'+READING_SOURCE),property=schema.properties?.Type;
+    if(property?.type!=='select'||!Array.isArray(property.select?.options))throw fail('Notion Type must be a select property.',409);
+    if(!property.select.options.some(option=>option.name==='生活')){
+      const options=property.select.options.map(({id,name,color})=>({...id&&{id},name,...color&&{color}}));
+      await notion(env,'data_sources/'+READING_SOURCE,'PATCH',{properties:{Type:{select:{options:[...options,{name:'生活',color:'green'}]}}}});
+    }
+  })().catch(error=>{lifeTypeReady=null;throw error;});
+  return lifeTypeReady;
+}
 async function lifePagesForDate(env,date){
+  await ensureLifeType(env);
   const pages=[];let cursor;
   do{
     const result=await notion(env,`data_sources/${READING_SOURCE}/query`,'POST',{page_size:100,filter:{and:[{or:[typeFilter('PTE'),typeFilter('生活')]},{property:'Date',date:{equals:date}}]},...(cursor?{start_cursor:cursor}:{})});
@@ -299,6 +314,7 @@ async function lifeDay(env,date){
   return null;
 }
 async function ptePages(env,includeLife=false){
+ if(includeLife)await ensureLifeType(env);
  const pages=new Map();let truncated=false;
  const sources=[READING_SOURCE];
  for(const source of sources){let cursor;do{
