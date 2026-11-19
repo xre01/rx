@@ -20,4 +20,3 @@ self.addEventListener('fetch',event=>{
  }
  if(ASSETS.has(url.href))event.respondWith(caches.open(CACHE).then(async cache=>await cache.match(request)||fetch(request)));
 });
- 
