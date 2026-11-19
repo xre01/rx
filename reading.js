@@ -170,7 +170,7 @@ function notebook(r){
  });
 }
 
-let readingConnected=false,readingSyncBusy=false,readingSyncTimer,readingMigrationDone=false,readingSyncError="",readingSyncedAt=0;
+let readingConnected=false,readingSyncBusy=false,readingSyncTimer,readingMigrationDone=false,readingSyncError="",readingSyncedAt=0,readingRestoreBusy=false;
 let readingOrigin='https://rex-notion-calendar.xren0220.workers.dev',readingConnectionAbort=new AbortController();
 const readingKey={value:''},readingSummary={textContent:''},readingSyncMessage={textContent:''};
 function adoptReadingConnection(){
@@ -179,8 +179,8 @@ function adoptReadingConnection(){
  clearTimeout(readingSyncTimer);readingConnectionAbort.abort();readingConnectionAbort=new AbortController();readingOrigin=origin||readingOrigin;readingKey.value=access;readingConnected=false;readingMigrationDone=false;readingSyncError='';readingSyncedAt=0;return true;
 }
 adoptReadingConnection();
-const syncStrip=el('div','reading-sync-strip'),syncLabel=el('span'),syncRetry=btn('Retry',()=>{if(!readingConnected&&readingKey.value){readingLastRefresh=0;restoreReadingConnection()}else syncReading()},'ghost');syncStrip.setAttribute('role','status');syncStrip.setAttribute('aria-live','polite');syncStrip.append(syncLabel,syncRetry);title.append(syncStrip);
-function updateSyncStatus(){const pending=records.filter(readingDirty).length;let state,text;if(readingSyncBusy){state='syncing';text='Syncing to Notion…'}else if(!navigator.onLine){state='pending';text=pending?'Offline · '+pending+' pending':'Offline · Saved on this device'}else if(readingSyncError){state='error';text='Sync failed · Changes kept on this device'}else if(!readingConnected){state='local';text=pending?'Saved on this device · '+pending+' pending':'Notion not connected'}else if(pending){state='pending';text='Saved on this device · '+pending+' pending'}else{state='synced';text='Synced to Notion'+(readingSyncedAt?' · '+new Date(readingSyncedAt).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'}):'')}syncStrip.dataset.state=state;syncLabel.textContent=text;syncRetry.hidden=!(state==='error'||state==='pending');syncRetry.disabled=readingSyncBusy||!navigator.onLine;syncStrip.title=readingSyncError||text;dispatchEvent(new CustomEvent('rex-reading-updated'));}
+const syncStrip=el('div','reading-sync-strip'),syncLabel=el('span'),syncRetry=btn('Refresh',()=>refreshReadingFromUser(),'ghost');syncStrip.setAttribute('role','status');syncStrip.setAttribute('aria-live','polite');syncStrip.append(syncLabel,syncRetry);title.append(syncStrip);
+function updateSyncStatus(){const pending=records.filter(readingDirty).length;let state,text;if(readingSyncBusy){state='syncing';text='Syncing to Notion…'}else if(!navigator.onLine){state='pending';text=pending?'Offline · '+pending+' pending':'Offline · Saved on this device'}else if(readingSyncError){state='error';text='Sync failed · Changes kept on this device'}else if(!readingConnected){state='local';text=pending?'Saved on this device · '+pending+' pending':'Notion not connected'}else if(pending){state='pending';text='Saved on this device · '+pending+' pending'}else{state='synced';text='Synced to Notion'+(readingSyncedAt?' · '+new Date(readingSyncedAt).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'}):'')}syncStrip.dataset.state=state;syncLabel.textContent=text;syncRetry.textContent=state==='error'||state==='pending'?'Retry':'Refresh';syncRetry.setAttribute('aria-label',state==='error'?'Retry Notion sync':'Refresh Notion sync');syncRetry.hidden=!readingKey.value&&state!=='pending';syncRetry.disabled=readingSyncBusy||readingRestoreBusy||!navigator.onLine;syncStrip.title=readingSyncError||text;dispatchEvent(new CustomEvent('rex-reading-updated'));}
 addEventListener('offline',updateSyncStatus);addEventListener('online',updateSyncStatus);
 async function readingRequest(path,options={}){const connectionSignal=readingConnectionAbort.signal;const response=await fetch(readingOrigin+'/api/reading'+path,{...options,signal:readingConnectionAbort.signal,headers:{'X-Arcane-Key':readingKey.value},cache:'no-store'});let data;try{data=await response.json()}catch{throw Error('Invalid gateway response. Check the reading service.')}if(connectionSignal.aborted)throw Error('Notion connection changed.');if(!response.ok)throw Error(data.error&& !/[\u3400-\u9fff]/.test(data.error)?data.error:'Notion request failed ('+response.status+'). Check the access key and database permissions.');return data}
 function readingDirty(r){return !r.remoteRevision||r.syncedUpdated!==r.updated}
@@ -255,22 +255,66 @@ function deleteReading(r,dialog){
 }
 addEventListener('storage',e=>{if(e.key!==key)return;loadLibrary();render();updateSyncStatus()});
 
-let readingLastRefresh=0,readingRestoreBusy=false;
-async function restoreReadingConnection(){
+let readingLastRefresh=0;
+async function restoreReadingConnection({force=false}={}){
  if(adoptReadingConnection())readingLastRefresh=0;
- if(!readingKey.value){updateSyncStatus();return}
+ if(!readingKey.value||!navigator.onLine){updateSyncStatus();return false}
  if(document.visibilityState==='hidden'||readingSyncBusy||readingRestoreBusy)return;
- if(Date.now()-readingLastRefresh<30000)return;
+ if(!force&&Date.now()-readingLastRefresh<30000)return false;
  const attemptSignal=readingConnectionAbort.signal;readingLastRefresh=Date.now();readingRestoreBusy=true;
- try{if(!readingConnected){const status=await readingRequest('/status');if(status.editorSchemaVersion!==1)throw Error('The reading service needs the editor update. Local notes are retained.');readingConnected=true;}await syncReading();}
- catch(error){if(attemptSignal===readingConnectionAbort.signal){readingSyncError=readingKey.value?error.message:'';readingSummary.textContent='Notion · Retry needed';readingSyncMessage.textContent=error.message+' · Local notes are retained.';}}
+ try{if(!readingConnected){const status=await readingRequest('/status');if(status.editorSchemaVersion!==1)throw Error('The reading service needs the editor update. Local notes are retained.');readingConnected=true;}await syncReading();return readingConnected&&!readingSyncError;}
+ catch(error){if(attemptSignal===readingConnectionAbort.signal){readingSyncError=readingKey.value?error.message:'';readingSummary.textContent='Notion · Retry needed';readingSyncMessage.textContent=error.message+' · Local notes are retained.';}return false;}
  finally{readingRestoreBusy=false;updateSyncStatus();if(attemptSignal!==readingConnectionAbort.signal){readingLastRefresh=0;restoreReadingConnection()}}
 }
 addEventListener('rex-notion-connection-changed',()=>{adoptReadingConnection();readingLastRefresh=0;updateSyncStatus();restoreReadingConnection()});
 addEventListener('focus',restoreReadingConnection);
 addEventListener('online',()=>{readingLastRefresh=0;restoreReadingConnection();});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')restoreReadingConnection();});
-setInterval(restoreReadingConnection,60000);
+const pullStatus=el('div','reading-pull-status');
+pullStatus.hidden=true;pullStatus.setAttribute('role','status');pullStatus.setAttribute('aria-live','polite');panel.append(pullStatus);
+let pullStart=null,pullDistance=0,pullStatusTimer;
+function showPullStatus(text){clearTimeout(pullStatusTimer);pullStatus.textContent=text;pullStatus.hidden=false;}
+function resetPull(){pullStart=null;pullDistance=0;document.documentElement.classList.remove('reading-pull-active');}
+async function refreshReadingFromUser(){
+ if(readingSyncBusy||readingRestoreBusy)return;
+ resetPull();clearTimeout(readingSyncTimer);
+ if(!navigator.onLine){showPullStatus('Offline · Your notes are saved on this device');}
+ else if(!readingKey.value){showPullStatus('Connect to Notion to refresh');}
+ else{
+  showPullStatus('Syncing to Notion…');
+  const success=await restoreReadingConnection({force:true});
+  showPullStatus(success?'Synced to Notion':'Sync failed · Tap Retry to try again');
+ }
+ pullStatusTimer=setTimeout(()=>{pullStatus.hidden=true},3000);
+}
+function canPull(target){
+ if(!panel.classList.contains('active')||document.querySelector('dialog[open]')||readingSyncBusy||readingRestoreBusy)return false;
+ if((document.scrollingElement?.scrollTop||window.scrollY||0)>0)return false;
+ if(window.getSelection()?.toString()||target.closest('input,textarea,select,button,a,audio,video,[contenteditable="true"]'))return false;
+ for(let node=target;node&&node!==document.body;node=node.parentElement)if(node.scrollTop>0)return false;
+ return true;
+}
+panel.addEventListener('touchstart',event=>{
+ resetPull();
+ if(event.touches.length!==1||!canPull(event.target))return;
+ const touch=event.touches[0];pullStart={x:touch.clientX,y:touch.clientY,id:touch.identifier};
+ document.documentElement.classList.add('reading-pull-active');
+},{passive:true});
+panel.addEventListener('touchmove',event=>{
+ if(!pullStart)return;
+ const touch=event.touches[0];
+ if(event.touches.length!==1||touch.identifier!==pullStart.id||!canPull(event.target)){resetPull();pullStatus.hidden=true;return;}
+ const distance=touch.clientY-pullStart.y;
+ if(distance<0||Math.abs(touch.clientX-pullStart.x)>Math.max(12,distance)){resetPull();pullStatus.hidden=true;return;}
+ pullDistance=distance;
+ if(distance>8){if(event.cancelable)event.preventDefault();showPullStatus(distance>=72?'Release to sync':'Pull down to sync');}
+},{passive:false});
+panel.addEventListener('touchend',()=>{
+ const refresh=pullDistance>=72&&pullStart&&canPull(panel);
+ resetPull();if(refresh)refreshReadingFromUser();else pullStatus.hidden=true;
+});
+panel.addEventListener('touchcancel',()=>{resetPull();pullStatus.hidden=true;});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){resetPull();pullStatus.hidden=true;}});
 updateSyncStatus();
 
 render();

@@ -200,7 +200,7 @@ $('loadArchive').addEventListener('click',()=>load());
 function autoRefresh(){if($('gateway').value&&$('arcanePassword').value)load(true)}
 addEventListener('online',autoRefresh);addEventListener('focus',autoRefresh);addEventListener('rex-notion-saved',()=>setTimeout(autoRefresh,500));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoRefresh()});
-setInterval(autoRefresh,60000);setTimeout(()=>{updateNotionControls();autoRefresh()},0);
+setTimeout(()=>{updateNotionControls();autoRefresh()},0);
 $('clearArchive').addEventListener('click',()=>{
   resetArchive();archiveLoaded=false;archiveTruncated=false;renderArchive([], '', '', revision, new AbortController().signal);localStorage.removeItem(cfgKey);sessionStorage.removeItem('arcane-session-password');
   $('gateway').value='';$('arcanePassword').value='';$('loadArchive').disabled=false;$('archiveStatus').textContent='Not connected';
