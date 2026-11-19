@@ -1,4 +1,4 @@
-# Rex World · Study Sanctuary
+# Rex World · 
 
 A lightweight study app with Home planning, PTE practice, reading notes, dated study timelines, reflections, focus timing and Notion/D1 sync.
 
