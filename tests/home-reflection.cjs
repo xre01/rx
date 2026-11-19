@@ -33,4 +33,3 @@ const q=s=>d.querySelector(s),click=label=>q('[aria-label="'+label+'"]').click()
  assert.ok(!JSON.parse(w.localStorage.getItem('rex-reflection-days-v1')||'[]').includes(today));
  console.log('PASS: five-note history pages, empty drafts excluded without deletion, safe previews, history record navigation, reflection moved below Home tasks; summary/read/edit/history, existing drafts/files/links, local save failures and timeline date routing');
 }finally{w.close()}})().catch(e=>{console.error(e);process.exitCode=1});
- 
