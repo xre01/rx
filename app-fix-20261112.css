@@ -15647,3 +15647,46 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
     #homeDailyReflection .home-reflection-controls { flex-basis: 100%; margin-inline-start: 0; }
   }
 }
+
+@layer calm {
+  html[data-calm-ui] #reading .reading-action-group {
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  html[data-calm-ui] #reading .reading-action-group > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 0 16px !important;
+    border: 1px solid transparent !important;
+    border-radius: 12px !important;
+    font: 600 14px/1.2 system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap;
+  }
+  html[data-calm-ui] #reading .reading-action-group > .action {
+    background: color-mix(in srgb, var(--calm-accent) 88%, var(--calm-surface)) !important;
+    color: #fff !important;
+  }
+  html[data-calm-ui] #reading .reading-action-group > .reading-add-book {
+    background: color-mix(in srgb, var(--calm-accent) 8%, var(--calm-surface)) !important;
+    border-color: color-mix(in srgb, var(--calm-accent) 28%, var(--calm-surface)) !important;
+    color: var(--calm-accent) !important;
+  }
+  html[data-calm-ui] #reading .reading-action-group > .action:hover {
+    background: var(--calm-accent) !important;
+  }
+  html[data-calm-ui] #reading .reading-action-group > .reading-add-book:hover {
+    background: color-mix(in srgb, var(--calm-accent) 15%, var(--calm-surface)) !important;
+    border-color: var(--calm-accent) !important;
+  }
+  html[data-calm-ui] #reading .reading-action-group > button:focus-visible {
+    outline: 2px solid var(--calm-accent) !important;
+    outline-offset: 3px !important;
+  }
+}
