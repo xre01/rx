@@ -22,7 +22,6 @@ const remove=iconButton('trash','Delete life record',async()=>{
  }finally{remove.disabled=false}
 });
 const retryDelete=iconButton('history','Retry Notion deletion',async()=>{await api.flushDeletions();refresh();message.textContent=api.pendingDeletionDates.includes(api.date)?'Notion 删除仍待同步，请检查连接后重试。':'Notion 删除已同步。'});
-for(const [button,label] of [[retryDelete,'Retry'],[back,'Back'],[edit,'Edit'],[remove,'Delete'],[historyButton,'History'],[save,'Save']])button.append(el('span','',label));
 controls.append(edit,remove,retryDelete,historyButton,save);heading.append(back,caption,controls);
 const preview=el('button','home-reflection-preview');preview.type='button';preview.setAttribute('aria-label','Read reflection');const excerpt=el('span','home-reflection-excerpt'),hint=el('span','home-reflection-hint','Read note ↗');preview.append(excerpt,hint);preview.addEventListener('click',()=>open(api.date,'read'));
 const reading=el('article','home-reflection-reading'),readTitle=el('h2','','生活'),body=el('p','home-reflection-body');readTitle.tabIndex=-1;reading.append(readTitle,body);

@@ -15608,30 +15608,42 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
 }
 
 @layer calm {
-  #homeDailyReflection .home-reflection-heading,
-  #homeDailyReflection .home-reflection-controls { flex-wrap: wrap; gap: 8px; }
-  #homeDailyReflection .home-reflection-controls { margin-inline-start: auto; }
-  #homeDailyReflection .home-reflection-icon {
-    display: inline-flex;
+  #homeDailyReflection .home-reflection-heading {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: center;
-    gap: 7px;
-    width: auto;
-    min-height: 44px;
-    padding: 0 12px !important;
-    border: 1px solid var(--calm-border) !important;
-    border-radius: 10px;
-    color: var(--calm-text) !important;
-    font-weight: 600;
+    gap: 8px;
   }
+  #homeDailyReflection .home-reflection-heading > .is-detail { min-width: 0; }
+  #homeDailyReflection .home-reflection-controls {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: 2px;
+    margin-inline-start: auto;
+  }
+  #homeDailyReflection .home-reflection-icon {
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 50%;
+    color: var(--calm-text) !important;
+  }
+  #homeDailyReflection .home-reflection-icon:hover { background: var(--calm-inset) !important; }
+  #homeDailyReflection .home-reflection-icon:focus-visible { outline: 2px solid var(--calm-accent); outline-offset: -3px; }
   #homeDailyReflection .home-reflection-date {
     margin: 0;
     color: var(--calm-text) !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   #homeDailyReflection .home-reflection-body { max-width: 65ch; color: var(--calm-text) !important; }
-  @media (max-width: 600px) {
-    #homeDailyReflection .home-reflection-controls { flex-basis: 100%; margin-inline-start: 0; }
-  }
 }
 
 @layer calm {
