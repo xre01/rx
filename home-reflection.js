@@ -54,4 +54,3 @@ document.querySelector('.rex-sidebar-nav [data-side-view="lifeHome"]')?.addEvent
 function day(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
 window.RexHomeReflection={open};setView('summary');
 })();
- 
