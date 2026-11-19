@@ -12,17 +12,18 @@ const heading=el('div','home-reflection-heading'),caption=el('div'),title=el('h2
 let view='summary',returnY=0,opening=false,returnTarget=null;
 const quickEntry=iconButton('journal','生活',()=>open(day(),'read',quickEntry));quickEntry.classList.add('life-reflection-toggle');quickEntry.setAttribute('aria-controls',card.id);home.querySelector('.life-heading-actions')?.append(quickEntry);
 const back=iconButton('back','Back to Home',()=>leave()),edit=iconButton('edit','Edit reflection',()=>open(api.date,'edit')),historyButton=iconButton('history','Reflection history',async()=>{if(view==='edit'&&!await flush())return;history.click()}),save=iconButton('save','Save reflection',async()=>{if(await flush())setView('read')});
-const remove=iconButton('trash','Delete local reflection',async()=>{
+const remove=iconButton('trash','Delete life record',async()=>{
  const date=api.date;
- if(!window.confirm('Delete the reflection for '+date+' from this device, including its links and attachments? Any copy saved in Notion will remain there.'))return;
+ if(!window.confirm('Delete all life records for '+date+' from this device and Notion, including links and attachments?'))return;
  remove.disabled=true;
  try{
-  if(await api.deleteLocalDraft(date)){refresh();edit.focus();message.textContent='Reflection deleted from this device.'}
+  const result=await api.deleteDraft(date);if(result){refresh();edit.focus();message.textContent=result.pending?'已从本机删除，Notion 删除待同步。恢复连接后会继续处理。':'已从本机和 Notion 删除生活记录。'}
   else message.textContent='Could not delete this reflection. Please try again.';
  }finally{remove.disabled=false}
 });
-for(const [button,label] of [[back,'Back'],[edit,'Edit'],[remove,'Delete'],[historyButton,'History'],[save,'Save']])button.append(el('span','',label));
-controls.append(edit,remove,historyButton,save);heading.append(back,caption,controls);
+const retryDelete=iconButton('history','Retry Notion deletion',async()=>{await api.flushDeletions();refresh();message.textContent=api.pendingDeletionDates.includes(api.date)?'Notion 删除仍待同步，请检查连接后重试。':'Notion 删除已同步。'});
+for(const [button,label] of [[retryDelete,'Retry'],[back,'Back'],[edit,'Edit'],[remove,'Delete'],[historyButton,'History'],[save,'Save']])button.append(el('span','',label));
+controls.append(edit,remove,retryDelete,historyButton,save);heading.append(back,caption,controls);
 const preview=el('button','home-reflection-preview');preview.type='button';preview.setAttribute('aria-label','Read reflection');const excerpt=el('span','home-reflection-excerpt'),hint=el('span','home-reflection-hint','Read note ↗');preview.append(excerpt,hint);preview.addEventListener('click',()=>open(api.date,'read'));
 const reading=el('article','home-reflection-reading'),readTitle=el('h2','','生活'),body=el('p','home-reflection-body');readTitle.tabIndex=-1;reading.append(readTitle,body);
 const message=el('p','sub home-reflection-message');message.setAttribute('role','status');message.setAttribute('aria-live','polite');
@@ -30,7 +31,7 @@ host.prepend(el('h2','home-reflection-edit-title','生活'));
 card.append(heading,preview,reading,host,message);home.querySelector('.life-columns').after(card);
 function refresh(){
  const text=note.value.trim(),files=host.querySelectorAll('.summary-file').length,links=host.querySelectorAll('.summary-links a').length;
- remove.hidden=view!=='read'||!(text||files||links);
+ remove.hidden=view!=='read'||!(text||files||links);retryDelete.hidden=view==='summary'||!api.pendingDeletionDates.includes(api.date);
  stamp.textContent=date.textContent;stamp.dateTime=date.textContent;
  excerpt.textContent=text||(files||links?[files?files+' attachments':'',links?links+' links':''].filter(Boolean).join(' · '):"记录生活、感受与反思…");
  body.textContent=text||(!files&&!links?'这一天还没有生活记录。':'');hint.textContent=text||files||links?'Read note ↗':'Write a reflection ↗';
@@ -49,7 +50,7 @@ async function leave(){
  if(view==='edit'){if(await flush())setView('read');return}
  setView('summary');(returnTarget?.isConnected&&returnTarget!==preview?returnTarget:quickEntry).focus({preventScroll:true});window.scrollTo({top:returnY,behavior:'instant'});
 }
-note.addEventListener('input',refresh);new MutationObserver(refresh).observe(host,{childList:true,subtree:true,characterData:true});
+addEventListener('rex-life-deletion-status',refresh);note.addEventListener('input',refresh);new MutationObserver(refresh).observe(host,{childList:true,subtree:true,characterData:true});
 document.querySelector('.rex-sidebar-nav [data-side-view="lifeHome"]')?.addEventListener('click',async()=>{if(opening)return;if(view==='edit'&&!await flush())return;if(view!=='summary')setView('summary');await api.open(day());refresh()});
 function day(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
 window.RexHomeReflection={open};setView('summary');

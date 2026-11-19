@@ -20,7 +20,7 @@ vm.createContext(ctx);vm.runInContext(fs.readFileSync('rich-doc.js','utf8')+'\n'
 async function submit(item,file){const form=new FormData();form.append('record',JSON.stringify(item));if(file)form.append('files',new Blob(['test pdf'],{type:'application/pdf'}),file);return (await ctx.handle(new Request('https://worker.test/api/reading/records',{method:'POST',body:form}),state,{})).json()}
 
 ctx.categories={language:'Language',reflection:'生活'};ctx.marker=(b,id)=>(b[b.type]?.rich_text||[]).some(t=>t.text?.link?.url?.endsWith('#submission='+id));
-const worker=fs.readFileSync('workers/notion-worker.mjs','utf8');const calendar=worker.slice(worker.indexOf('export class Calendar'),worker.indexOf('(function(root)'));
+const worker=fs.readFileSync('workers/notion-worker.mjs','utf8');vm.runInContext(worker.slice(worker.indexOf('function lifeSections'),worker.indexOf('function belongs')),ctx);const calendar=worker.slice(worker.indexOf('export class Calendar'),worker.indexOf('(function(root)'));
 // Shared rich helpers appear between the Calendar and reading extension.
 vm.runInContext(calendar.replace('export class Calendar','class Calendar')+'\nglobalThis.TestCalendar=Calendar;',ctx);
 (async()=>{const calendar=new ctx.TestCalendar(state,{NOTION_DATA_SOURCE_ID:'pte-source',ALLOWED_ORIGIN:'https://xre01.github.io'});

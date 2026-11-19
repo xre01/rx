@@ -24,12 +24,12 @@ const q=s=>d.querySelector(s),click=label=>q('[aria-label="'+label+'"]').click()
  click('Reflection history');await tick();assert.match(q('.reflection-history-cloud').textContent,/Notion/);q('[aria-label="Read reflection 2026-11-16"]').click();assert.equal(q('.reflection-cloud-note').textContent,'Cloud-only reflection');assert.equal(records.get(today).note,draftBefore);assert.equal(records.has('2026-11-16'),false);q('.reflection-cloud-back').click();
  w.RexReflectionCloud.load=async()=>{throw Error('Network unavailable')};q('[aria-label="Refresh reflections from Notion"]').click();await tick();assert.match(q('.reflection-history-cloud').textContent,/Local drafts are retained/);assert.equal(records.get(today).note,draftBefore);
  q('[aria-label="Close reflection history"]').click();
- const remove=q('[aria-label="Delete local reflection"]');
+ const remove=q('[aria-label="Delete life record"]');
  assert.equal(remove.hidden,false);
  w.confirm=()=>false;remove.click();await tick();assert.equal(records.get(today).note,draftBefore);
  w.confirm=()=>true;fail=true;remove.click();await tick();assert.equal(note.value,draftBefore);
  fail=false;remove.click();await tick();assert.equal(records.has(today),false);assert.equal(records.has(past),true);
- assert.equal(note.value,'');assert.equal(remove.hidden,true);assert.equal(host.querySelectorAll('.summary-file,.summary-links a').length,0);
+ assert.equal(w.RexDailyReflection.pendingDeletionDates.includes(today),true);assert.equal(q('[aria-label="Retry Notion deletion"]').hidden,false);let deletedDate;w.RexReflectionCloud.remove=async(date)=>{deletedDate=date};await w.RexDailyReflection.flushDeletions();assert.equal(deletedDate,today);assert.equal(w.RexDailyReflection.pendingDeletionDates.length,0);assert.equal([...records.values()].some(r=>r.kind==='reflection-deletion'),false);assert.equal(note.value,'');assert.equal(remove.hidden,true);assert.equal(host.querySelectorAll('.summary-file,.summary-links a').length,0);
  assert.ok(!JSON.parse(w.localStorage.getItem('rex-reflection-days-v1')||'[]').includes(today));
  console.log('PASS: five-note history pages, empty drafts excluded without deletion, safe previews, history record navigation, reflection moved below Home tasks; summary/read/edit/history, existing drafts/files/links, local save failures and timeline date routing');
 }finally{w.close()}})().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,0 +1,24 @@
+const fs=require('fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
+const source=fs.readFileSync('daily-summary.js','utf8'),today=new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()),records=new Map([[today,{date:today,note:'Synced life note',links:[],files:[],synced:true,origin:'https://original.test',submission:'old'}]]);
+let failWrite=false;
+function setup(){
+ const w=new JSDOM('<div class="daily-reflection-host"></div><input id="gateway" value="https://original.test"><input id="arcanePassword" value="key">',{url:'https://test.invalid',runScripts:'outside-only'}).window;
+ // Apply writes only after the whole transaction succeeds, like IndexedDB.
+ w.indexedDB={open(){const open={};queueMicrotask(()=>{open.result={transaction(){const writes=[],tx={objectStore(){return {get(key){const r={};queueMicrotask(()=>{r.result=records.get(key);r.onsuccess()});return r},getAll(){const r={};queueMicrotask(()=>{r.result=[...records.values()];r.onsuccess()});return r},put(v,k){writes.push(()=>records.set(k,v));complete()},delete(k){writes.push(()=>records.delete(k));complete()}}}};let scheduled=false;function complete(){if(scheduled)return;scheduled=true;queueMicrotask(()=>{if(failWrite)tx.onerror?.();else{writes.forEach(f=>f());tx.oncomplete?.()}})}return tx}};open.onsuccess()});return open}};
+ w.eval(source);return w;
+}
+const tick=()=>new Promise(r=>setTimeout(r,20));
+(async()=>{let w=setup();try{
+ await tick();Object.defineProperty(w.navigator,'onLine',{value:false,configurable:true});let calls=0;w.RexReflectionCloud={remove:async()=>{calls++},origin:()=> 'https://original.test'};
+ failWrite=true;assert.equal(await w.RexDailyReflection.deleteDraft(today),false);assert.equal(records.get(today).note,'Synced life note');assert.equal([...records.values()].some(r=>r.kind==='reflection-deletion'),false);failWrite=false;
+ const offline=await w.RexDailyReflection.deleteDraft(today);assert.equal(offline.pending,true);assert.equal(records.has(today),false);const queued=[...records.values()].find(r=>r.kind==='reflection-deletion');assert.ok(queued.operationId);assert.equal(queued.origin,'https://original.test');assert.equal(calls,0);
+ const note=w.document.querySelector('textarea');note.value='New draft after deletion';note.dispatchEvent(new w.Event('input'));await w.RexDailyReflection.saveDraft();assert.equal(records.get(today).note,'New draft after deletion');assert.equal([...records.values()].filter(r=>r.kind==='reflection-deletion').length,1);w.close();
+ w=setup();await tick();assert.equal(w.RexDailyReflection.pendingDeletionDates.includes(today),true);assert.equal(w.document.querySelector('textarea').value,'New draft after deletion');let failNetwork=true,seen;
+ w.RexReflectionCloud={origin:()=> 'https://original.test',remove:async(date,data)=>{calls++;seen={date,...data};if(failNetwork)throw Error('offline')}};await w.RexDailyReflection.flushDeletions();assert.equal(w.RexDailyReflection.pendingDeletionDates.includes(today),true);assert.equal(seen.operationId,queued.operationId);assert.equal(seen.origin,'https://original.test');
+ let uploads=0;w.RexNotionUpload=async()=>{uploads++;return {ok:true,json:async()=>({url:'https://notion.so/new'})}};await w.document.querySelector('.summary-save').onclick();assert.equal(uploads,0,'failed deletion blocks replacing the same date');assert.equal(records.get(today).note,'New draft after deletion');
+ failNetwork=false;w.dispatchEvent(new w.Event('online'));await tick();assert.equal(w.RexDailyReflection.pendingDeletionDates.length,0);assert.equal([...records.values()].some(r=>r.kind==='reflection-deletion'),false);assert.equal(records.get(today).note,'New draft after deletion','deletion completion preserves a newer draft');await w.document.querySelector('.summary-save').onclick();assert.equal(uploads,1);
+ // A deletion enqueued during a flush is picked up by the same awaited flush.
+ const older='2026-11-12',other='2026-11-11';records.set('delete:first',{kind:'reflection-deletion',operationId:'first',date:older,origin:'https://original.test'});let release,entered;const started=new Promise(r=>entered=r),seenDates=[];
+ w.RexReflectionCloud.remove=async(date)=>{seenDates.push(date);if(date===older){entered();await new Promise(r=>release=r)}};const flushing=w.RexDailyReflection.flushDeletions();await started;const deletion=w.RexDailyReflection.deleteDraft(other);await tick();release();await flushing;assert.equal((await deletion).pending,false);assert.deepEqual(seenDates,[older,other]);assert.equal(w.RexDailyReflection.pendingDeletionDates.length,0);
+ assert.equal(w.localStorage.getItem('key'),null);console.log('PASS: atomic local deletion, persistent offline tombstones, restart/retry, original gateway, new-draft preservation, upload ordering and concurrent queue flushing');
+}finally{w.close()}})().catch(e=>{console.error(e);process.exitCode=1});

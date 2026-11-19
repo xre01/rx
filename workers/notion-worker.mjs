@@ -45,9 +45,26 @@ function reflectionSnapshots(page,blocks){
  for(const b of blocks){if(b.archived||b.in_trash)continue;if(b.type==='heading_3'){current=null;const label=(b.heading_3.rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');if(/^(?:生活|Daily Reflection)(?:\s*·\s*网站记录)?\s*$/.test(label)){const link=(b.heading_3.rich_text||[]).find(t=>t.text?.link?.url?.includes('#submission='))?.text.link.url,submission=link?.split('#submission=')[1];current={id:submission||b.id,submission,date:page.properties.Date?.date?.start,note:'',media:[]};result.push(current)}}else if(current){if(['to_do','paragraph'].includes(b.type))current.note+=(current.note?'\n\n':'')+(b[b.type].rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');else if(['image','audio','file','pdf','video'].includes(b.type))current.media.push({name:(b[b.type].caption||[]).map(t=>t.text?.content??t.plain_text??'').join('')||b.type,type:b.type,proxy:'/api/media/'+page.id+'/'+b.id})}}
  return result;
 }
+function lifeSections(blocks){
+  const ids=[],submissions=[];let life=false;
+  const visible=blocks.filter(b=>!b.archived&&!b.in_trash);
+  for(const block of visible){
+    if(block.type==='heading_3')life=/^(?:生活|Daily Reflection)(?:\s*·\s*网站记录)?\s*$/.test(readingText(block));
+    if(!life)continue;
+    ids.push(block.id);
+    const link=(block[block.type]?.rich_text||[]).find(t=>t.text?.link?.url?.includes('#submission='))?.text.link.url;
+    const id=link?.split('#submission=')[1];if(readingUUID(id))submissions.push(id);
+  }
+  return {ids,submissions,onlyLife:ids.length>0&&visible.every(b=>ids.includes(b.id)||b.type==='paragraph'&&!readingText(b).trim())};
+}
+async function correctLifeType(env,page,blocks){
+  if(page.properties?.Type?.select?.name==='PTE'&&lifeSections(blocks).onlyLife){
+    await notion(env,'pages/'+page.id,'PATCH',{properties:{Type:{select:{name:'生活'}},Name:{title:rich(page.properties.Date?.date?.start+' · 生活')}}});
+  }
+}
 function belongs(env, page) {
   return (page.parent?.data_source_id === READING_SOURCE || page.parent?.database_id === READING_DB)
-    ? page.properties?.Type?.select?.name === 'PTE'
+    ? ['PTE','生活'].includes(page.properties?.Type?.select?.name)
     : false;
 }
 
@@ -71,6 +88,12 @@ export default {
       const path = new URL(request.url).pathname;
       if(focusMatch)return finish(await env.CALENDAR.get(env.CALENDAR.idFromName('focus:'+focusMatch[1])).fetch(request));
       if(path.startsWith('/api/reading/')){if(request.method==='POST'){const reader=request.body?.getReader();if(!reader)throw fail('内容为空。');const chunks=[];let size=0;while(true){const {value,done}=await reader.read();if(done)break;size+=value.byteLength;if(size>LIMIT+512*1024){await reader.cancel();throw fail('同步内容不能超过 20 MiB。',413)}chunks.push(value)}request=new Request(request.url,{method:request.method,headers:request.headers,body:new Blob(chunks)});}const stub=env.CALENDAR.get(env.CALENDAR.idFromName('reading:'+READING_SOURCE));return finish(await stub.fetch(request));}
+      if(path==='/api/reflections/delete'&&request.method==='POST'){
+        const reader=request.body?.getReader();if(!reader)throw fail('Missing deletion request.',400);
+        const chunks=[];let size=0;while(true){const {value,done}=await reader.read();if(done)break;size+=value.byteLength;if(size>2048){await reader.cancel();throw fail('Deletion request too large.',413);}chunks.push(value);}
+        const safe=new Request(request.url,{method:'POST',headers:request.headers,body:new Blob(chunks)});
+        return finish(await env.CALENDAR.get(env.CALENDAR.idFromName(env.NOTION_DATA_SOURCE_ID)).fetch(safe));
+      }
       if (path === '/api/entries' && request.method === 'POST') {
         if (!request.headers.get('Content-Type')?.startsWith('multipart/form-data')) throw fail('请使用上传表单。');
         // Bound the streamed request before buffering or parsing attachments.
@@ -82,8 +105,8 @@ export default {
         return finish(await stub.fetch(safeRequest));
       }
       if (path === '/api/entries' && request.method === 'GET') {
-        const {pages,truncated} = await ptePages(env);
-        const records = pages.map(p => ({ id: p.id, title: (p.properties.Name?.title || []).map(t => t.plain_text ?? t.text?.content ?? '').join(''), date: p.properties.Date?.date?.start, url: p.url, minutes: null, exp: null, media: [], category: '每日任务' }));
+        const {pages,truncated} = await ptePages(env,true);
+        const records = pages.map(p => ({ id: p.id, title: (p.properties.Name?.title || []).map(t => t.plain_text ?? t.text?.content ?? '').join(''), date: p.properties.Date?.date?.start, url: p.url, minutes: null, exp: null, media: [], category: p.properties.Type?.select?.name==='生活'?'生活':'每日任务' }));
         return finish(json({ records, truncated }));
       }
       const match = path.match(/^\/api\/entries\/([0-9a-f-]{36})$/i);
@@ -91,6 +114,7 @@ export default {
         const page = await notion(env, `pages/${match[1]}`);
         if (!belongs(env, page)) throw fail('无法访问此页面。', 403);
         const blocks = await children(env, page.id);
+        await correctLifeType(env,page,blocks);
         const notes = blocks.filter(b => ['heading_3','paragraph','to_do'].includes(b.type)).map(b => (b[b.type].rich_text || []).map(t => t.plain_text ?? t.text?.content ?? '').join(''));
         const media = blocks.filter(b => ['image','audio','file','pdf','video'].includes(b.type)).map(b => ({ name: (b[b.type].caption || []).map(t => t.plain_text ?? t.text?.content ?? '').join('') || b.type, type: b.type, proxy: `/api/media/${page.id}/${b.id}` }));
         async function richChildren(rows,depth=0){if(depth>8)throw fail('Note nesting exceeds the editor limit.',409);const out=[];for(const b of rows){if(b.archived||b.in_trash||['image','audio','file','pdf','video'].includes(b.type))continue;if(b.type==='toggle'&&readingText(b).startsWith('Sync in progress'))continue;const v={...b[b.type]};if(b.has_children||v.children?.length)v.children=await richChildren(v.children||await children(env,b.id),depth+1);out.push({object:'block',type:b.type,[b.type]:v});}return out;}
@@ -120,11 +144,34 @@ export class Calendar {
   queue;
   constructor(state, env) { this.state = state; this.env = env; /** @type {Promise<any>} */ this.queue = Promise.resolve(); }
   fetch(request) {
-    const result = this.queue.then(() => new URL(request.url).pathname.startsWith('/api/focus/')?focusHandle(request,this.state):new URL(request.url).pathname.startsWith('/api/reading/')?readingHandle(request,this.state,this.env):this.submit(request));
+    const result = this.queue.then(() => new URL(request.url).pathname.startsWith('/api/focus/')?focusHandle(request,this.state):new URL(request.url).pathname.startsWith('/api/reading/')?readingHandle(request,this.state,this.env):new URL(request.url).pathname==='/api/reflections/delete'?this.deleteLife(request):this.submit(request));
     this.queue = result.catch(() => {});
     return result.catch(e => json({ error: e.message }, e.status || 500));
   }
   alarm(){const result=this.queue.then(()=>focusAlarm(this.state));this.queue=result.catch(()=>{});return result;}
+  async deleteLife(request){
+    let data;try{data=await request.json();}catch{throw fail('Invalid life deletion request.',400);}
+    const {date,operationId}=data||{};
+    if(!validDate(date)||!readingUUID(operationId))throw fail('Invalid life deletion request.',400);
+    const key='life:delete:'+operationId;
+    let operation=await this.state.storage.get(key);
+    if(operation&&operation.date!==date)throw fail('Deletion identity does not match the date.',409);
+    if(operation?.done)return json({ok:true,date});
+    if(!operation){
+      const pages=await lifePagesForDate(this.env,date),targets=[];
+      for(const page of pages){
+        const blocks=await children(this.env,page.id),section=lifeSections(blocks);
+        if(page.properties.Type?.select?.name==='生活'||section.ids.length)targets.push({pageId:page.id,archive:page.properties.Type?.select?.name==='生活'||section.onlyLife,ids:section.ids,submissions:section.submissions});
+      }
+      operation={date,targets,done:false};await this.state.storage.put(key,operation);
+    }
+    for(const target of operation.targets){
+      for(const id of target.submissions)await this.state.storage.put('life:deleted:'+id,true);
+      if(target.archive)await notion(this.env,'pages/'+target.pageId,'PATCH',{archived:true});
+      else for(const id of target.ids)await notion(this.env,'blocks/'+id,'PATCH',{archived:true});
+    }
+    await this.state.storage.put(key,{...operation,done:true});return json({ok:true,date});
+  }
   async submit(request) {
     const form = await request.formData();
     const id = String(form.get('id') || ''), date = String(form.get('date') || ''), note = String(form.get('note') || '').trim(), requestedCategory = String(form.get('category') || ''), category = requestedCategory === 'skill' ? 'reflection' : requestedCategory;
@@ -132,12 +179,13 @@ export class Calendar {
     const files = form.getAll('files').filter(f => typeof f !== 'string' && f.size);
     if (!/^[0-9a-f-]{36}$/i.test(id) || !validDate(date) || !categories[category] || note.length > 2000 || (!note && !files.length)) throw fail('请填写有效日期、分类、任务或附件。');
     if (files.length > 16 || files.reduce((s,f) => s + f.size, 0) > LIMIT) throw fail('最多 16 个附件，总大小不能超过 20 MiB。', 413);
+    if(category==='reflection'&&await this.state.storage.get('life:deleted:'+id))throw fail('This life record was deleted. Reopen the date before saving a new entry.',409);
     const cached = await this.state.storage.get('receipt:' + id);
     if (cached) return json(cached);
     const env = this.env;
     // Retain this object's original identity and receipts while changing its Notion destination.
-    let page = await pteDay(env,date);
-    if (!page) page = await notion(env, 'pages', 'POST', { parent: { type: 'data_source_id', data_source_id: READING_SOURCE }, properties: { Name: { title: rich(`${date} · 每日任务`) }, Date: { date: { start: date } }, Type:{select:{name:'PTE'}} } });
+    let page = category==='reflection'?await lifeDay(env,date):await pteDay(env,date);
+    if (!page) page = await notion(env, 'pages', 'POST', { parent: { type: 'data_source_id', data_source_id: READING_SOURCE }, properties: { Name: { title: rich(`${date} · ${category==='reflection'?'生活':'每日任务'}`) }, Date: { date: { start: date } }, Type:{select:{name:category==='reflection'?'生活':'PTE'}} } });
     const receipt = { pageId: page.id, url: page.url, date };
     // Recover from a lost response or restart after Notion accepted the append.
     const existing = await children(env, page.id);
@@ -236,11 +284,25 @@ async function pteDay(env,date){
  if(current.results.length)return current.results[0];
  return null;
 }
-async function ptePages(env){
+async function lifePagesForDate(env,date){
+  const pages=[];let cursor;
+  do{
+    const result=await notion(env,`data_sources/${READING_SOURCE}/query`,'POST',{page_size:100,filter:{and:[{or:[typeFilter('PTE'),typeFilter('生活')]},{property:'Date',date:{equals:date}}]},...(cursor?{start_cursor:cursor}:{})});
+    pages.push(...result.results.filter(p=>p.properties.Date?.date?.start===date&&['PTE','生活'].includes(p.properties.Type?.select?.name)));cursor=result.has_more?result.next_cursor:null;
+  }while(cursor);
+  return pages;
+}
+async function lifeDay(env,date){
+  const pages=await lifePagesForDate(env,date),current=pages.find(p=>p.properties.Type.select.name==='生活');
+  if(current)return current;
+  for(const page of pages){const blocks=await children(env,page.id);if(lifeSections(blocks).onlyLife){await correctLifeType(env,page,blocks);return page;}}
+  return null;
+}
+async function ptePages(env,includeLife=false){
  const pages=new Map();let truncated=false;
  const sources=[READING_SOURCE];
  for(const source of sources){let cursor;do{
-  const result=await notion(env,`data_sources/${source}/query`,'POST',{page_size:100,sorts:[{property:'Date',direction:'descending'}],...(source===READING_SOURCE?{filter:typeFilter('PTE')}:{}),...(cursor?{start_cursor:cursor}:{})});
+  const result=await notion(env,`data_sources/${source}/query`,'POST',{page_size:100,sorts:[{property:'Date',direction:'descending'}],...(source===READING_SOURCE?{filter:includeLife?{or:[typeFilter('PTE'),typeFilter('生活')]}:typeFilter('PTE')}:{}),...(cursor?{start_cursor:cursor}:{})});
   for(const page of result.results)pages.set(page.id,page);cursor=result.has_more?result.next_cursor:null;
  }while(cursor&&pages.size<500);truncated ||= !!cursor;}
  return {pages:[...pages.values()].sort((a,b)=>(b.properties.Date?.date?.start||'').localeCompare(a.properties.Date?.date?.start||'')),truncated};
