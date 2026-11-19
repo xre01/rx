@@ -42,9 +42,7 @@ selectionObservers.add({editor,update(){const current=getSelection();if(current.
  if(source){
   const sourceButtons=source.querySelector('.reading-source-buttons');
   if(sourceButtons){sourceButtons.classList.add('rich-source-tools');tools.prepend(sourceButtons);}
-  source.querySelector('legend')?.remove();source.classList.add('rich-editor-sources');
-  source.querySelectorAll('.reading-source-help').forEach(n=>n.remove());
-  const hint=source.querySelector('p.sub');if(hint){hint.classList.add('rich-source-instructions');hint.hidden=true;new MutationObserver(()=>{hint.hidden=/Up to 10 attachments/.test(hint.textContent);hint.classList.toggle('rich-source-instructions',hint.hidden)}).observe(hint,{childList:true,subtree:true,characterData:true});}
+  source.classList.add('rich-editor-sources');
   wrap.insertBefore(source,editor);
  }
  sync();const api={html:()=>{sync();return RexRichCodec.parse(clean(editor.innerHTML));},set:(text,doc)=>{editor.innerHTML=doc?RexRichCodec.render(doc):'';if(!doc)editor.textContent=text||'';sync();},editor};Object.defineProperty(textarea,'rexRichDocument',{get:()=>api.html(),configurable:true});function locked(){const disabled=textarea.disabled||textarea.readOnly;editor.contentEditable=String(!disabled);tools.querySelectorAll('button,select').forEach(b=>b.disabled=disabled);}new MutationObserver(locked).observe(textarea,{attributes:true,attributeFilter:['disabled','readonly']});locked();textarea.closest('form')?.addEventListener('submit',event=>{try{api.html();if(textarea.maxLength>0&&textarea.value.length>textarea.maxLength)throw Error('Keep this note within '+textarea.maxLength+' characters.');if(textarea.required&&!textarea.value.trim())throw Error('Add note content first.');}catch(error){event.preventDefault();event.stopImmediatePropagation();status.textContent=error.message;editor.focus();}},true);return api;}

@@ -10299,17 +10299,20 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
   max-width: 100%;
   font-size: 12px;
 }
+/* Attachment rows and link editing appear only when they have content. */
 .reading-source-area {
   grid-column: 1/-1;
   min-width: 0;
-  border: 1px solid var(--border);
-  border-radius: 9px;
   display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
 }
-.reading-source-area legend {
-  font-size: 12px;
-  color: #7b8c78;
-  padding: 0 6px;
+.reading-source-status:empty,
+.reading-source-area:not(:has(label:not([hidden]):not(.reading-file-picker), .reading-file-row, .reading-source-status:not(:empty))) {
+  display: none !important;
 }
 .reading-source-area .sub {
   margin: 0;
@@ -10370,15 +10373,6 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
 .reading-file-remove:hover {
   text-decoration: underline;
 }
-.reading-source-help {
-  color: #84917e;
-  line-height: 1.8;
-  margin: 0;
-}
-.reading-source-area {
-  background: #edf2e640;
-  border-color: #b7c8ad;
-}
 .reading-notebook label:has(textarea) {
   border-top: 1px solid var(--border);
 }
@@ -10394,14 +10388,7 @@ html#rexTheme body#rexSanctuary .compact-dashboard.show-weekly-view > .compact-m
   padding: 14px;
   line-height: 1.9;
 }
-.reading-source-area {
-  padding: 12px;
-  gap: 10px;
-}
 .reading-source-area .sub,
-.reading-source-help {
-  font-size: 10px;
-}
 .reading-file-row {
   background: #fffdf7;
   padding: 8px 10px;
@@ -11125,8 +11112,7 @@ html#rexTheme body#rexSanctuary .rich-editor-wrap .rich-editor-sources {
   width: 100% !important;
 }
 html#rexTheme body#rexSanctuary .rich-editor-sources [hidden],
-html#rexTheme body#rexSanctuary .rich-editor-sources > div:empty,
-html#rexTheme body#rexSanctuary .rich-source-instructions {
+html#rexTheme body#rexSanctuary .rich-editor-sources > div:empty {
   display: none !important;
 }
 html#rexTheme body#rexSanctuary .rich-editor-sources label:not([hidden]) {
@@ -14291,7 +14277,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-con
     --panel:var(--calm-surface)!important;--ui-ink:var(--calm-text)!important;--ui-muted:var(--calm-muted)!important;
     --gold:var(--calm-accent)!important;--teal:var(--calm-accent)!important;--accent:var(--calm-accent)!important;--line:var(--calm-border)!important;
   }
-  html[data-calm-ui] :where(.archive-dashboard-sync,.archive-entry,.reading-source-area,.rich-editor-tools) {
+  html[data-calm-ui] :where(.archive-dashboard-sync,.archive-entry,.rich-editor-tools) {
     background:var(--calm-surface)!important;border-color:var(--calm-border)!important;box-shadow:none!important;backdrop-filter:none!important;
   }
 
@@ -14321,7 +14307,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-con
   html[data-calm-ui] :where(.hero-task-card,.dashboard-calendar-card) :where(small,.sub) {color:var(--calm-muted)!important}
   html[data-calm-ui] :where(.hero-task-card h2,dialog>header h2,.hero-task-detail h3) {font:600 17px/1.4 system-ui,sans-serif!important;color:var(--calm-text)!important}
   html[data-calm-ui] :where(.hero-task-number,.hero-task-quantity,.calendar-note,.focus-stat-grid,.focus-history) {color:var(--calm-muted)!important}
-  html[data-calm-ui] :where(.calendar-note,.reading-source-help) {background:transparent!important}
+  html[data-calm-ui] :where(.calendar-note) {background:transparent!important}
   html[data-calm-ui] :where(.daily-summary-card h2,.dashboard-calendar-card h2):before {color:var(--calm-accent)!important}
   html[data-calm-ui] :where(.hero-task-delete,.focus-delete-one,.pte-other-delete,.reading-note-delete,.life-row-actions button:last-child):hover {background:#f0e1d8!important;color:#754039!important;border-color:#b78b7d!important}
 }
