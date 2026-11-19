@@ -12247,9 +12247,11 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home button.depth-view-trigger[ari
 }
 .depth-view-options {
   position: absolute;
-  right: 0;
+  inset-inline-start: 0;
   top: calc(100% + 8px);
-  min-width: 190px;
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 160px;
   z-index: 100;
   display: grid;
   gap: 4px;
@@ -12261,7 +12263,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home button.depth-view-trigger[ari
     inset 0 1px 0 var(--depth-highlight),
     0 4px 10px var(--depth-shadow-near),
     0 16px 36px -10px var(--depth-shadow-hover);
-  transform-origin: top right;
+  transform-origin: top left;
   animation: depth-menu-enter 0.16s var(--depth-ease);
 }
 .depth-view-options[hidden] {
@@ -15600,4 +15602,48 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
  .reading-tag-choices { display: flex; flex-wrap: wrap; gap: 7px; max-height: 160px; overflow: auto; }
  .reading-tag-choices button { padding: 5px 10px; border-radius: 14px; font-size: 12px; }
  .reading-tag-actions { display: flex; justify-content: flex-end; gap: 10px; }
+}
+
+@layer calm {
+  .reading-notebook .reading-form input[name="source"] {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 44px !important;
+    padding: 8px 12px !important;
+    border: 1px solid var(--calm-border, #aab7a6) !important;
+    border-radius: 8px !important;
+  }
+
+  .reading-notebook .reading-form input[name="source"]:focus-visible {
+    outline: 2px solid var(--calm-accent, #49664f) !important;
+    outline-offset: -2px !important;
+  }
+}
+
+@layer calm {
+  #homeDailyReflection .home-reflection-heading,
+  #homeDailyReflection .home-reflection-controls { flex-wrap: wrap; gap: 8px; }
+  #homeDailyReflection .home-reflection-controls { margin-inline-start: auto; }
+  #homeDailyReflection .home-reflection-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: auto;
+    min-height: 44px;
+    padding: 0 12px !important;
+    border: 1px solid var(--calm-border) !important;
+    border-radius: 10px;
+    color: var(--calm-text) !important;
+    font-weight: 600;
+  }
+  #homeDailyReflection .home-reflection-date {
+    margin: 0;
+    color: var(--calm-text) !important;
+  }
+  #homeDailyReflection .home-reflection-body { max-width: 65ch; color: var(--calm-text) !important; }
+  @media (max-width: 600px) {
+    #homeDailyReflection .home-reflection-controls { flex-basis: 100%; margin-inline-start: 0; }
+  }
 }
