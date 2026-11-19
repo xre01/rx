@@ -2,7 +2,7 @@
 const module = undefined;
 const VERSION = '2025-09-03';
 const LIMIT = 20 * 1024 * 1024;
-const categories = { language: 'PTE 练习', reflection: 'Daily Reflection' };
+const categories = { language: 'PTE 练习', reflection: '生活' };
 const json = (body, status = 200) => Response.json(body, { status });
 const fail = (message, status = 400) => Object.assign(new Error(message), { status });
 const rich = content => [{ type: 'text', text: { content } }];
@@ -42,7 +42,7 @@ function marker(block, id) {
 }
 function reflectionSnapshots(page,blocks){
  const result=[];let current;
- for(const b of blocks){if(b.archived||b.in_trash)continue;if(b.type==='heading_3'){current=null;const label=(b.heading_3.rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');if(/^Daily Reflection(?:\s*·\s*网站记录)?\s*$/.test(label)){const link=(b.heading_3.rich_text||[]).find(t=>t.text?.link?.url?.includes('#submission='))?.text.link.url,submission=link?.split('#submission=')[1];current={id:submission||b.id,submission,date:page.properties.Date?.date?.start,note:'',media:[]};result.push(current)}}else if(current){if(['to_do','paragraph'].includes(b.type))current.note+=(current.note?'\n\n':'')+(b[b.type].rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');else if(['image','audio','file','pdf','video'].includes(b.type))current.media.push({name:(b[b.type].caption||[]).map(t=>t.text?.content??t.plain_text??'').join('')||b.type,type:b.type,proxy:'/api/media/'+page.id+'/'+b.id})}}
+ for(const b of blocks){if(b.archived||b.in_trash)continue;if(b.type==='heading_3'){current=null;const label=(b.heading_3.rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');if(/^(?:生活|Daily Reflection)(?:\s*·\s*网站记录)?\s*$/.test(label)){const link=(b.heading_3.rich_text||[]).find(t=>t.text?.link?.url?.includes('#submission='))?.text.link.url,submission=link?.split('#submission=')[1];current={id:submission||b.id,submission,date:page.properties.Date?.date?.start,note:'',media:[]};result.push(current)}}else if(current){if(['to_do','paragraph'].includes(b.type))current.note+=(current.note?'\n\n':'')+(b[b.type].rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');else if(['image','audio','file','pdf','video'].includes(b.type))current.media.push({name:(b[b.type].caption||[]).map(t=>t.text?.content??t.plain_text??'').join('')||b.type,type:b.type,proxy:'/api/media/'+page.id+'/'+b.id})}}
  return result;
 }
 function belongs(env, page) {
@@ -143,7 +143,10 @@ export class Calendar {
     const existing = await children(env, page.id);
     if (!existing.some(b => marker(b, id))) {
       /** @type {any[]} */ const blocks = [{ object: 'block', type: 'heading_3', heading_3: { rich_text: [...rich(categories[category]), { type: 'text', text: { content: ' · 网站记录', link: { url: `${env.ALLOWED_ORIGIN}/rx/#submission=${id}` } } }] } }];
-      if (note&&!structured) blocks.push({ object: 'block', type: 'to_do', to_do: { rich_text: rich(note), checked: false } });
+      if (note&&!structured) {
+        const type = category === 'reflection' ? 'paragraph' : 'to_do';
+        blocks.push({ object: 'block', type, [type]: { rich_text: rich(note), ...(type === 'to_do' ? { checked: false } : {}) } });
+      }
       for (const file of files) {
         const contentType = uploadType(file);
         const upload = await notion(env, 'file_uploads', 'POST', { mode: 'single_part', filename: file.name, content_type: contentType });

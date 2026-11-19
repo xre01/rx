@@ -30,10 +30,11 @@ function summary(date){return window.RexDashboardStore.summary(date)}
 const count=s=>s.counts.reduce((total,r)=>total+(Number(r.count)||0),0);
 const name=r=>r.label||String(r.type||'').split(':').slice(-1)[0]||'Practice';
 function renderList(){
- const restoreSearchFocus=document.activeElement===searchInput;list.replaceChildren();const days=[...new Set(searchQuery?searchMatches.map(r=>r.date).filter(valid):[day(),...(summary().days||[]).filter(valid),...cloudDays.filter(valid)])].sort((a,b)=>b.localeCompare(a));const pages=Math.max(1,Math.ceil(days.length/5));page=Math.min(page,pages);const start=(page-1)*5;
+ const restoreSearchFocus=document.activeElement===searchInput;list.replaceChildren();const days=[...new Set(searchQuery?searchMatches.map(r=>r.date).filter(valid):[day(),...(summary().days||[]).filter(valid),...cloudDays.filter(valid)])].filter(date=>{if(searchQuery||cloudDays.includes(date))return true;const activity=summary(date);return count(activity)>0||activity.seconds>0;}).sort((a,b)=>b.localeCompare(a));const pages=Math.max(1,Math.ceil(days.length/5));page=Math.min(page,pages);const start=(page-1)*5;
  const heading=el('div','study-timeline-heading'),title=el('h2','','Study timeline');title.tabIndex=-1;const controls=el('div','study-timeline-tools');
  const label=el('label','study-date-picker'),picker=el('input');label.title='Choose date';label.append(studyIcon('date'));picker.type='date';picker.max=day();picker.value=selected;picker.setAttribute('aria-label','Open study date');picker.addEventListener('change',()=>openDate(picker.value));picker.addEventListener('click',()=>{try{picker.showPicker?.()}catch{}});label.append(picker);
  controls.append(iconButton('today','Today',()=>{page=1;openDate(day())}),label,iconButton('add','Backfill practice',()=>openBackfill(new Date(Date.parse(day()+'T12:00:00Z')-86400000).toISOString().slice(0,10)),'study-backfill-open'));heading.append(title,controls);list.append(heading,searchWrap,el('p','sub study-page-summary',(days.length?start+1:0)+'–'+Math.min(start+5,days.length)+' of '+days.length+(days.length===1?' day':' days')+' · Newest first'));
+ if(!days.length)list.append(el('p','sub study-timeline-empty',searchQuery?'No matching study records.':'No study records yet. Days appear after you practise or save a PTE focus session.'));
  let year='',group;
  for(const date of days.slice(start,start+5)){
   if(date.slice(0,4)!==year){year=date.slice(0,4);group=el('section','study-timeline-year');group.append(el('h3','study-year-heading',year));list.append(group)}
@@ -52,7 +53,7 @@ function renderDetail(){
  const checkins=el('section','study-detail-section study-checkins');checkins.append(el('h3','','Check-ins'));detail.append(checkins);if(window.RexStudyCheckins){if(timelineVisible)disposeCheckins=window.RexStudyCheckins.mount(checkins,selected)}else checkins.append(el('p','sub','Check-in reader is unavailable. Reload to retry.'));
 }
 function render(){disposeCheckins();disposeCheckins=()=>{};renderList();list.hidden=view!=='list';detail.hidden=view!=='detail';if(view==='detail')renderDetail()}
-async function loadCloudDays(){if(!window.RexStudyCheckins)return;try{const index=await window.RexStudyCheckins.loadIndex();cloudDays=index.records.map(r=>r.date.slice(0,10));renderList()}catch(error){status.textContent=error.message}}
+async function loadCloudDays(){if(!window.RexStudyCheckins)return;try{const result=await window.RexStudyCheckins.search('');cloudDays=result.matches.map(r=>r.date.slice(0,10));if(result.partial)status.textContent='Some study records could not be checked. Reopen the timeline to retry.';renderList()}catch(error){status.textContent=error.message}}
 addEventListener('rex-study-timeline-open',()=>{timelineVisible=true;if(view==='detail')render();if(searchStatus.textContent==='Search paused.')searchInput.dispatchEvent(new Event('input'));loadCloudDays()});
 addEventListener('rex-study-timeline-close',()=>{timelineVisible=false;disposeCheckins();disposeCheckins=()=>{};clearTimeout(searchTimer);searchRequest?.abort();searchVersion++;if(searchQuery&&searchStatus.textContent==='Searching note content…')searchStatus.textContent='Search paused.'});
 addEventListener('rex-notion-saved',loadCloudDays);

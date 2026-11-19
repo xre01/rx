@@ -63,7 +63,7 @@ async function getMedia(origin,key,path,version,signal,scope){
 }
 function safeLink(value){try{const url=new URL(value);return ['https:','http:'].includes(url.protocol)?url.href:null}catch{return null}}
 function archivePracticeOnly(item){
- const reflection=s=>/^(?:Daily Reflection|reflection|skill)(?:\s*·\s*网站记录)?$/i.test(String(s||'').trim());
+ const reflection=s=>/^(?:生活|Daily Reflection|reflection|skill)(?:\s*·\s*网站记录)?$/i.test(String(s||'').trim());
  if(reflection(item.category))return {...item,notes:[],richNotes:[],media:[]};
  const plain=b=>(b?.[b.type]?.rich_text||[]).map(t=>t.text?.content??t.plain_text??'').join('');let skip=false,found=false;
  const out={...item};
@@ -72,6 +72,7 @@ function archivePracticeOnly(item){
  if(found){const known=Array.isArray(item.reflections),excluded=new Set((item.reflections||[]).flatMap(r=>r.media||[]).map(f=>f.proxy));out.media=known?(item.media||[]).filter(f=>!excluded.has(f.proxy)):[];}
  return out;
 }
+function hasPracticeContent(item){return (item.notes||[]).some(line=>line.trim()&&!/^(?:PTE 练习|PTE practice|Practice notes)(?:\s*·.*)?$/i.test(line.trim()))||item.media?.length>0;}
 function recordCard(item,origin,key,version,signal,scope){
   const current=()=>!signal.aborted&&(scope?scope.current():version===revision),report=text=>scope?scope.report(text):msg(text);
   item=archivePracticeOnly(item);
@@ -146,7 +147,7 @@ async function load(automatic=false){
   const response=await fetch(origin+'/api/entries',{headers:{'X-Arcane-Key':key},signal,cache:'no-store'});const payload=await response.json();
   if(request!==requestRevision||signal.aborted)return;
   if(!response.ok)throw Error(payload.error||'Sync failed');if(!Array.isArray(payload.records))throw Error('Invalid Notion response');
-  const list=payload.records.filter(item=>item&&typeof item==='object'),groups=groupedRecords(list.filter(item=>!/^(?:Daily Reflection|reflection|skill)$/i.test(item.category||'')).map(archivePracticeOnly));
+  const list=payload.records.filter(item=>item&&typeof item==='object'),groups=groupedRecords(list.filter(item=>!/^(?:生活|Daily Reflection|reflection|skill)$/i.test(item.category||'')).map(archivePracticeOnly));
   archiveLoaded=true;archiveTruncated=payload.truncated===true;
   $('archiveStatus').textContent='Connected · Auto sync on';
   window.RexNotionReconcile?.(list,{origin,complete:payload.truncated!==true&&list.length===payload.records.length&&list.every(item=>typeof item.id==='string'&&item.id)});
@@ -165,7 +166,7 @@ async function studyIndex({force=false}={}){
  const same=value=>value&&value.origin===c.origin&&value.key===c.key;
  if(!force&&same(studyIndexCache)&&Date.now()-studyIndexCache.at<60000)return studyIndexCache.value;
  if(!force&&same(studyIndexPending))return studyIndexPending.promise;
- const pending={...c};pending.promise=(async()=>{const data=await studyRequest(c,'/api/entries');if(!Array.isArray(data.records))throw Error('Invalid Notion record list.');const records=data.records.filter(r=>r&&dayKey(r.date)&&/^[0-9a-f-]{36}$/i.test(r.id||'')&&!/^(?:Daily Reflection|reflection|skill)(?:\s*·\s*网站记录)?$/i.test(r.category||''));const value={records,connected:true,truncated:data.truncated===true};studyIndexCache={...c,at:Date.now(),value};return value})();studyIndexPending=pending;
+ const pending={...c};pending.promise=(async()=>{const data=await studyRequest(c,'/api/entries');if(!Array.isArray(data.records))throw Error('Invalid Notion record list.');const records=data.records.filter(r=>r&&dayKey(r.date)&&/^[0-9a-f-]{36}$/i.test(r.id||'')&&!/^(?:生活|Daily Reflection|reflection|skill)(?:\s*·\s*网站记录)?$/i.test(r.category||''));const value={records,connected:true,truncated:data.truncated===true};studyIndexCache={...c,at:Date.now(),value};return value})();studyIndexPending=pending;
  try{return await pending.promise}finally{if(studyIndexPending===pending)studyIndexPending=null}
 }
 function mountStudyCheckins(host,date){
@@ -178,8 +179,8 @@ function mountStudyCheckins(host,date){
    await Promise.all(Array.from({length:Math.min(3,pages.length)},async()=>{while(cursor<pages.length&&scope.current()){const i=cursor++,page=pages[i];try{const cacheKey=c.origin+'|'+page.id,cache=studyDetails.get(cacheKey);let data;if(!force&&cache&&cache.key===c.key&&Date.now()-cache.at<60000)data=cache.data;else{data=await studyRequest(c,'/api/entries/'+page.id,abort.signal);studyDetails.set(cacheKey,{key:c.key,at:Date.now(),data})}results[i]={...page,notes:Array.isArray(data.notes)?data.notes:[],richNotes:data.richNotes,media:Array.isArray(data.media)?data.media:[],reflections:data.reflections}}catch(error){if(abort.signal.aborted)throw error;failed++;results[i]={...page,notes:['Could not load this check-in. Refresh to retry.'],media:[]}}}}));
    if(!scope.current()||token!==run)return;
    const currentConnection=studyConnection();if(!currentConnection||currentConnection.origin!==c.origin||currentConnection.key!==c.key){status.textContent='Notion connection changed. Refresh to load check-ins.';return}
-   for(const item of results)body.append(recordCard(item,c.origin,c.key,0,abort.signal,scope));
-   status.textContent=failed?'Some check-ins could not be loaded. Refresh to retry.':!pages.length?(index.truncated?'No check-ins for this date in the loaded results.':'No saved check-ins for this date.'):(index.truncated?'Showing check-ins from the loaded Notion results.':'');
+   const practice=results.map(archivePracticeOnly).filter(hasPracticeContent);for(const item of practice)body.append(recordCard(item,c.origin,c.key,0,abort.signal,scope));
+   status.textContent=failed?'Some check-ins could not be loaded. Refresh to retry.':!practice.length?(index.truncated?'No check-ins for this date in the loaded results.':'No saved check-ins for this date.'):(index.truncated?'Showing check-ins from the loaded Notion results.':'');
   }catch(error){if(scope.current()&&token===run)status.textContent=error.name==='AbortError'?'Loading timed out. Refresh to retry.':error.message}
   finally{if(alive&&token===run)refresh.disabled=false}
  }
@@ -188,7 +189,7 @@ function mountStudyCheckins(host,date){
 async function searchStudyNotes(query,{signal}={}){
  const c=studyConnection();if(!c)return {matches:[],connected:false,partial:false};
  const index=await studyIndex(),terms=query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean),matches=[];let cursor=0,failed=0;
- await Promise.all(Array.from({length:Math.min(3,index.records.length)},async()=>{while(cursor<index.records.length&&!signal?.aborted){const page=index.records[cursor++];try{const cacheKey=c.origin+'|'+page.id,cache=studyDetails.get(cacheKey);let data;if(cache&&cache.key===c.key&&Date.now()-cache.at<60000)data=cache.data;else{data=await studyRequest(c,'/api/entries/'+page.id,signal);studyDetails.set(cacheKey,{key:c.key,at:Date.now(),data})}const item=archivePracticeOnly({...page,...data}),note=(item.notes||[]).join('\n'),text=[item.title,item.category,note,...(item.media||[]).map(f=>f.name||'')].join(' ').toLocaleLowerCase();if(terms.every(term=>text.includes(term)))matches.push({date:dayKey(page.date),title:page.title||'Check-in',note})}catch(error){if(signal?.aborted)throw error;failed++}}}));
+ await Promise.all(Array.from({length:Math.min(3,index.records.length)},async()=>{while(cursor<index.records.length&&!signal?.aborted){const page=index.records[cursor++];try{const cacheKey=c.origin+'|'+page.id,cache=studyDetails.get(cacheKey);let data;if(cache&&cache.key===c.key&&Date.now()-cache.at<60000)data=cache.data;else{data=await studyRequest(c,'/api/entries/'+page.id,signal);studyDetails.set(cacheKey,{key:c.key,at:Date.now(),data})}const item=archivePracticeOnly({...page,...data}),note=(item.notes||[]).join('\n'),text=[item.title,item.category,note,...(item.media||[]).map(f=>f.name||'')].join(' ').toLocaleLowerCase();if(hasPracticeContent(item)&&terms.every(term=>text.includes(term)))matches.push({date:dayKey(page.date),title:page.title||'Check-in',note})}catch(error){if(signal?.aborted)throw error;failed++}}}));
  if(signal?.aborted)throw new DOMException('Search cancelled','AbortError');const active=studyConnection();if(!active||active.origin!==c.origin||active.key!==c.key)throw Error('Notion connection changed. Search again.');
  return {matches,connected:true,partial:index.truncated||failed>0,truncated:index.truncated,failed};
 }
