@@ -67,7 +67,16 @@ function restoreArticlePosition(){
  const card=[...grid.querySelectorAll('.reading-timeline-card')].find(n=>n.dataset.noteId===articleReturn.id);
  (card||grid.querySelector('.reading-article-heading'))?.focus({preventScroll:true});window.scrollTo({top:articleReturn.scrollY,behavior:'instant'});
 }
+let editorActionPending=false;
+function deferReadingEditor(action){
+ if(window.RexReadingEditor)return false;
+ if(!editorActionPending){
+  editorActionPending=true;feedback.textContent='Loading reading editor…';
+  window.RexAssets.load('readingEditor').then(()=>{feedback.textContent='';action()}).catch(error=>{feedback.textContent=error.message}).finally(()=>{editorActionPending=false});
+ }return true;
+}
 function openArticleReader(id){
+ if(deferReadingEditor(()=>openArticleReader(id)))return;
  if(!records.some(r=>r.id===id&&!r.deleted&&r.kind==='article'))return;
  articleReturn={id,scrollY:window.scrollY};activeArticleId=id;renderArticleReader();
  articleReader.scrollIntoView({block:'start',behavior:'instant'});articleReader.querySelector('.reading-reader-title').focus({preventScroll:true});
@@ -115,6 +124,7 @@ function noteActions(edit,remove){
 }
 function journalDate(value){const date=el('time','reading-book-date',value);date.dateTime=value;return date}
 function bookPage(r){
+ if(deferReadingEditor(()=>bookPage(r)))return;
  const d=dialog(r.source||r.title);d.classList.add('reading-notebook','reading-book-reader');
  const notes=bookNotes(r),top=el('div','reading-book-top');
  const actions=el('div','reading-book-actions');actions.setAttribute('role','group');actions.setAttribute('aria-label','Book actions');const add=readingIconButton('edit','Add note',()=>{d.close();bookEntry(r)},'reading-book-add');const plus=document.createElementNS('http://www.w3.org/2000/svg','path');plus.setAttribute('d','M12 5v14M5 12h14');add.querySelector('svg').replaceChildren(plus);const discard=readingIconButton('delete','Discard book',()=>deleteReading(r,d),'reading-book-delete');const discardSvg=discard.querySelector('svg');discardSvg.setAttribute('viewBox','0 0 32 32');discardSvg.setAttribute('stroke-width','1.7');discardSvg.replaceChildren();const iconParts=[['M15.8 5H7a4 4 0 0 0-4 4v17a3 3 0 0 0 3 3h15M3 26a3 3 0 0 1 3-3h15l-.8 3 .8 3M21 16v7M9.5 16.5h4m-4 3.5h7M7.5 26h10',1.7],['M30.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z',1.7],['M20.5 6.5l5 5m0-5-5 5',1.7]];for(const [data,weight]of iconParts){const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',data);path.setAttribute('stroke-width',String(weight));discardSvg.append(path)};actions.append(add,discard);top.append(el('p','sub','Books · '+notes.length+' notes'),actions);d.append(top);
@@ -128,6 +138,7 @@ function bookPage(r){
  if(!notes.length)history.append(el('p','sub','Add your first note, then keep writing as you read.'));d.append(history);
 }
 function bookEntry(r,existing){
+ if(deferReadingEditor(()=>bookEntry(r,existing)))return;
  const d=dialog((existing?'Edit note · ':'Add note · ')+(r.source||r.title));d.classList.add('reading-notebook');const form=el('form','reading-form');d.append(form);
  const date=field(form,'Note date','date',existing?.date||day(),'date');date.required=true;date.max=day();
  const note=field(form,'Notes','note',existing?.note||'','textarea');const richNote=RexReadingEditor.attach(note,existing?.richNote,existing?.editorNote);
@@ -145,6 +156,7 @@ function addBook(){
  form.addEventListener('submit',e=>{e.preventDefault();const title=name.value.trim();if(!title)return name.focus();const now=new Date().toISOString(),item={id:crypto.randomUUID(),kind:'book',title,source:title,logs:[],body:'',status:'reading',createdAt:now,updated:now};if(save([...records,item]))d.close()});
 }
 function notebook(r){
+ if(deferReadingEditor(()=>notebook(r)))return;
  const d=dialog(r?'Edit article note':'Write note');d.classList.add('reading-notebook');const form=el('form','reading-form');d.append(form);
  const source=field(form,'Article title','source',r?.source||r?.title||'');source.maxLength=200;source.required=true;
  const date=field(form,'Note date','writtenDate',r?.writtenDate||day(),'date');date.required=true;date.max=day();

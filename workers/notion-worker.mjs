@@ -17,12 +17,35 @@ function uploadType(file) {
 async function notion(env, path, method = 'GET', body) {
   const headers = { Authorization: `Bearer ${env.NOTION_TOKEN}`, 'Notion-Version': VERSION };
   if (body && !(body instanceof FormData)) headers['Content-Type'] = 'application/json';
-  const response = await fetch('https://api.notion.com/v1/' + path, {
-    method, headers, body: body instanceof FormData ? body : body ? JSON.stringify(body) : undefined
-  });
-  const value = await response.json();
-  if (!response.ok) throw fail(response.status === 429 ? 'Notion 请求较多，请稍后重试。' : `Notion 请求失败（${response.status}）。请检查数据库授权、密钥和文件格式。`, 502);
-  return value;
+  // Reads and explicit rate-limit rejections can be retried safely. An ambiguous
+  // failed write must return to the existing submission/receipt flow instead.
+  const readOnly = method === 'GET' || method === 'POST' && path.endsWith('/query');
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    let response;
+    try {
+      response = await fetch('https://api.notion.com/v1/' + path, {
+        method, headers, body: body instanceof FormData ? body : body ? JSON.stringify(body) : undefined,
+        signal: AbortSignal.timeout(20000),
+      });
+    } catch (error) {
+      if (readOnly && attempt < 2) { await new Promise(resolve => setTimeout(resolve, 1000 * 2 ** attempt)); continue; }
+      throw fail('Notion connection timed out or was interrupted. Retry the existing submission.', 503);
+    }
+    if (attempt < 2 && (response.status === 429 || readOnly && response.status >= 500)) {
+      const header = response.headers.get('Retry-After');
+      const seconds = header === null ? NaN : Number(header);
+      const delay = header === null ? 1000 * 2 ** attempt : Number.isFinite(seconds) ? Math.max(0, seconds * 1000) : Math.max(0, Date.parse(header) - Date.now());
+      if (Number.isFinite(delay) && delay <= 30000) {
+        await response.body?.cancel();
+        await new Promise(resolve => setTimeout(resolve, delay)); continue;
+      }
+    }
+    let value;
+    try { value = await response.json(); }
+    catch { throw fail('Notion returned an invalid response. Your local content is retained.', 502); }
+    if (!response.ok) throw fail(response.status === 429 ? 'Notion 请求较多，请稍后重试。' : `Notion 请求失败（${response.status}）。请检查数据库授权、密钥和文件格式。`, response.status === 429 ? 503 : 502);
+    return value;
+  }
 }
 async function children(env, id) {
   const rows = []; let cursor;
