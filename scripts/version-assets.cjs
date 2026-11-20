@@ -17,7 +17,7 @@ function updateUrls(text) {
 }
 
 // Update nested worker imports before hashing their parent scripts.
-for (const file of ['focus-push-sw.js']) {
+for (const file of ['focus-push-sw.js','asset-loader.js']) {
   const original = fs.readFileSync(file, 'utf8');
   const updated = updateUrls(original);
   if (original !== updated) {
@@ -28,7 +28,7 @@ for (const file of ['focus-push-sw.js']) {
 
 const html = updateUrls(fs.readFileSync('index.html', 'utf8'));
 const worker = updateUrls(fs.readFileSync('sw.js', 'utf8'));
-const entries = JSON.parse(worker.match(/^const CORE=(\[.*?\])\.map/m)[1]);
+const entries = ['CORE','OPTIONAL'].flatMap(name => JSON.parse(worker.match(new RegExp('^const '+name+'=(\\[.*?\\])\\.map','m'))[1]));
 const release = crypto.createHash('sha256');
 for (const entry of entries) {
   const file = entry.split('?')[0];
