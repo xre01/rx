@@ -15498,14 +15498,14 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
  html[data-calm-ui] #profilePopover #archives.me-sync-settings { display: block!important; width: 100%!important; max-width: none!important; margin: 20px 0 0!important; padding: 0!important; background: transparent!important; border: 0!important; box-shadow: none!important; }
  html[data-calm-ui] #profilePopover #archives #archiveGrid { display: none!important; }
  html[data-calm-ui] #profilePopover #archives .archive-settings { display: grid!important; grid-template-columns: minmax(0,1fr)!important; gap: 14px!important; }
- html[data-calm-ui] #profilePopover #archives .archive-controls { display: flex!important; flex-wrap: wrap; gap: 8px; }
+ html[data-calm-ui] #profilePopover #archives .archive-controls { display: flex!important; align-items: center; flex-wrap: wrap; gap: 4px; }
  html[data-calm-ui] #profilePopover #archives input { box-sizing: border-box; min-width: 0; width: 100%; }
- html[data-calm-ui] #archives .sync-icon-button { display: inline-grid!important; place-items: center; width: 42px; min-width: 42px; height: 42px; min-height: 42px; padding: 0!important; border-radius: 12px; }
+ html[data-calm-ui] #archives .sync-icon-button { display: inline-grid!important; place-items: center; width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 0!important; border: 0!important; border-radius: 999px; background: transparent!important; color: var(--calm-accent)!important; }
  html[data-calm-ui] #archives .sync-icon-button svg { width: 20px; height: 20px; }
- html[data-calm-ui] #archives .sync-icon-button[aria-pressed="true"] { background: var(--calm-selected)!important; color: var(--calm-accent)!important; }
+
  html[data-calm-ui] #archives #cloudDisconnect[hidden] { display: none!important; }
  html[data-calm-ui] #archives #clearArchive[hidden] { display: none!important; }
- html[data-calm-ui] #profilePopover #archives .archive-controls .sync-icon-button { flex: 0 0 42px!important; width: 42px!important; min-width: 42px!important; padding: 0!important; }
+ html[data-calm-ui] #profilePopover #archives .archive-controls .sync-icon-button { flex: 0 0 44px!important; width: 44px!important; min-width: 44px!important; padding: 0!important; }
  html[data-calm-ui] #archives .archive-connection-tabs { display: flex!important; flex-direction: row!important; gap: 6px; flex-wrap: nowrap!important; margin: 0 0 18px; padding-bottom: 12px; border-bottom: 1px solid var(--calm-border); }
  html[data-calm-ui] #profilePopover #archives .archive-connection-tabs>button { flex: 0 0 auto!important; width: auto!important; min-width: 0!important; margin: 0!important; white-space: nowrap; }
  html[data-calm-ui] #archives .archive-connection-tabs button { min-height: 40px; padding: 8px 13px; border: 0!important; border-radius: 10px; background: transparent!important; color: var(--calm-muted)!important; font-size: 13px; }
@@ -15517,9 +15517,12 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
  html[data-calm-ui] #profilePopover #archives .sync-settings-field { position: relative; display: grid!important; grid-template-rows: 24px 44px!important; gap: 7px!important; margin: 0!important; color: var(--calm-muted)!important; font: 400 13px/24px system-ui,sans-serif!important; }
  html[data-calm-ui] #profilePopover #archives .sync-settings-field>label:not(.archive-remember) { margin: 0!important; color: inherit!important; font: inherit!important; }
  html[data-calm-ui] #profilePopover #archives .sync-settings-field>input { box-sizing: border-box!important; width: 100%!important; min-height: 44px!important; margin: 0!important; padding: 10px 12px!important; border: 1px solid var(--calm-border)!important; border-radius: 10px!important; background: var(--calm-surface)!important; color: var(--calm-text)!important; font: 400 14px/1.5 system-ui,sans-serif!important; }
- html[data-calm-ui] #profilePopover #archives .sync-settings-actions { display: flex!important; flex-wrap: nowrap!important; gap: 8px!important; margin: 16px 0 0!important; padding: 0!important; }
- html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button { flex: 0 0 42px!important; width: 42px!important; height: 42px!important; min-width: 42px!important; min-height: 42px!important; margin: 0!important; padding: 0!important; border: 1px solid var(--calm-border)!important; border-radius: 12px!important; background: transparent!important; color: var(--calm-muted)!important; box-shadow: none!important; }
- html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button[aria-pressed="true"] { background: var(--calm-selected)!important; color: var(--calm-accent)!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions { display: flex!important; align-items: center!important; flex-wrap: nowrap!important; gap: 4px!important; margin: 16px 0 0!important; padding: 0!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button { flex: 0 0 44px!important; width: 44px!important; height: 44px!important; min-width: 44px!important; min-height: 44px!important; margin: 0!important; padding: 0!important; border: 0!important; border-radius: 999px!important; background: transparent!important; color: var(--calm-accent)!important; box-shadow: none!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button:not(:disabled):hover { background: var(--calm-selected)!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button:not(:disabled):active { background: var(--calm-inset)!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button:focus-visible { outline: 2px solid var(--calm-accent)!important; outline-offset: 2px!important; }
+ html[data-calm-ui] #profilePopover #archives .sync-settings-actions .sync-icon-button:disabled { opacity: .5; }
  html[data-calm-ui] #profilePopover #archives .sync-settings-status { display: block!important; min-height: 38.4px; margin: 12px 0 0!important; padding: 0!important; border: 0!important; border-radius: 0!important; background: transparent!important; color: var(--calm-muted)!important; font: 400 12px/1.6 system-ui,sans-serif!important; white-space: normal!important; }
  html[data-calm-ui] #profilePopover #archives .archive-remember input[type="checkbox"] { width: auto!important; min-height: auto!important; }
  html[data-calm-ui] #profilePopover #archives label.sync-remember-icon { position: absolute!important; top: 0; right: 0; display: grid!important; place-items: center; width: 24px; height: 24px; min-height: 0!important; margin: 0!important; padding: 0!important; border: 0!important; background: transparent!important; box-shadow: none!important; color: var(--calm-muted); cursor: pointer; }
@@ -15691,18 +15694,18 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
   }
 }
 
-/* Service connection switches: a 44px touch target with an iOS-style capsule. */
+/* Unified service controls: quiet theme colors and generous touch targets. */
 @layer calm {
   html[data-calm-ui] #archives button.service-switch {
     --switch-progress: 0;
-    --switch-thumb-width: 28px;
+    --switch-thumb-width: 24px;
     position: relative;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    flex: 0 0 60px !important;
-    width: 60px !important;
-    min-width: 60px !important;
+    flex: 0 0 56px !important;
+    width: 56px !important;
+    min-width: 56px !important;
     height: 44px !important;
     min-height: 44px !important;
     margin: 0 !important;
@@ -15724,13 +15727,13 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
   html[data-calm-ui] #archives .service-switch-track {
     position: relative;
     display: block;
-    width: 52px;
-    height: 32px;
-    flex: 0 0 52px;
+    width: 48px;
+    height: 28px;
+    flex: 0 0 48px;
     overflow: hidden;
     border-radius: 999px;
-    background: #d5d8dc;
-    box-shadow: inset 0 0 0 1px rgb(30 40 45 / 5%);
+    background: var(--calm-border);
+    box-shadow: none;
     isolation: isolate;
   }
   html[data-calm-ui] #archives .service-switch-track::before {
@@ -15738,7 +15741,7 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: #34c759;
+    background: var(--calm-accent);
     opacity: var(--switch-progress);
     transition: opacity 220ms ease;
   }
@@ -15748,15 +15751,15 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
     left: 2px;
     display: block;
     width: var(--switch-thumb-width);
-    height: 28px;
+    height: 24px;
     border-radius: 999px;
     background: #fff;
-    box-shadow: 0 2px 5px rgb(0 0 0 / 18%), 0 0 1px rgb(0 0 0 / 15%);
-    transform: translateX(calc(var(--switch-progress) * (48px - var(--switch-thumb-width))));
+    box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+    transform: translateX(calc(var(--switch-progress) * (44px - var(--switch-thumb-width))));
     transition: transform 280ms cubic-bezier(.22,1,.36,1), width 180ms cubic-bezier(.22,1,.36,1);
   }
   html[data-calm-ui] #archives button.service-switch.is-pressing {
-    --switch-thumb-width: 33px;
+    --switch-thumb-width: 28px;
   }
   html[data-calm-ui] #archives .service-switch.is-dragging .service-switch-thumb {
     transition: width 180ms ease;
