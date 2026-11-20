@@ -26,10 +26,10 @@ let mediaUrls=[],revision=0,controller=null,lastPayload=null,requestRevision=0,r
 grid.classList.add('archive-grouped');
 $('gateway').value=localStorage.getItem(cfgKey)||'https://rex-notion-calendar.xren0220.workers.dev';
 $('arcanePassword').value=sessionStorage.getItem('arcane-session-password')||'';
-const notionToggle=button('sync-icon-button','');notionToggle.id='notionConnect';$('loadArchive').before(notionToggle);$('clearArchive').hidden=true;
+const notionToggle=button('service-switch','');notionToggle.innerHTML='<span class="service-switch-track" aria-hidden="true"><span class="service-switch-thumb"></span></span>';notionToggle.setAttribute('role','switch');window.RexServiceSwitch?.attach(notionToggle);notionToggle.id='notionConnect';$('loadArchive').before(notionToggle);$('clearArchive').hidden=true;
 function updateNotionControls(){
  const enabled=!!sessionStorage.getItem('arcane-session-password'),busy=!!requestController,refresh=$('loadArchive'),svg=path=>'<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+path+'</svg>';
- notionToggle.innerHTML=svg(enabled?'<path d="M10 13a5 5 0 0 0 7 .1l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7-.1l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>':'<path d="m3 3 18 18M10 13a5 5 0 0 0 4.5 1.3M17 13l3-3a5 5 0 0 0-7-7l-1.7 1.7M7 11l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>');notionToggle.setAttribute('aria-label',enabled?'Disconnect Notion':'Connect Notion');notionToggle.setAttribute('aria-pressed',String(enabled));notionToggle.title=enabled?'Connected · Click to disconnect':'Connect';notionToggle.disabled=busy;
+ notionToggle.setAttribute('aria-label','Notion connection');notionToggle.setAttribute('aria-checked',String(enabled));notionToggle.title=enabled?'Notion on · Switch off':'Notion off · Switch on';notionToggle.disabled=busy;notionToggle.setAttribute('aria-busy',String(busy));
  refresh.classList.remove('action');refresh.classList.add('sync-icon-button');refresh.innerHTML=svg('<path d="M20 7v5h-5M4 17v-5h5M6.1 7a7 7 0 0 1 11.6-2L20 8M4 16l2.3 3A7 7 0 0 0 17.9 17"/>');refresh.setAttribute('aria-label',busy?'Syncing Notion':'Sync Notion now');refresh.setAttribute('aria-busy',String(busy));refresh.title=busy?'Syncing…':'Sync now';refresh.disabled=busy||!enabled;
 }
 notionToggle.addEventListener('click',()=>{if(sessionStorage.getItem('arcane-session-password'))$('clearArchive').click();else{$('loadArchive').disabled=false;$('loadArchive').click();updateNotionControls()}});

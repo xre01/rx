@@ -130,3 +130,8 @@ Dashboard sync coordinates tabs with Web Locks where available, reloads shared q
 The theme applies before rendering; remaining initial scripts preserve their dependency order with defer. Reading's editor loads on the first reader/editor action, and PNG export loads on first use. Failed feature loads can be retried. The service worker first installs the core app, then fills the editor/export and seasonal-image cache after page startup. The offline status reports full readiness only after this optional cache completes. Existing records, credentials and attachment stores are retained.
 
 Build with pnpm build and run pnpm test. Deployment uses the existing GitHub Pages frontend and separately deployed workers/notion-worker.mjs; preserve all existing Worker secrets, bindings and Durable Object state. This update does not require a D1 schema change.
+
+
+## Connection switches
+
+Notion and D1 connection controls use capsule switches with a white thumb, green enabled track, press feedback and drag-to-set interaction. Tapping, dragging, Space/Enter and directional keys use the same existing connection/disconnection handlers. Short drags snap back, vertical scrolling/cancelled gestures leave the service unchanged, and syncing disables the switch. The adjacent manual-sync button and the existing credential/disconnection behavior remain unchanged. Reduced-motion preferences disable transitions.

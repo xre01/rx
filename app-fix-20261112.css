@@ -15690,3 +15690,92 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
     outline-offset: -3px !important;
   }
 }
+
+/* Service connection switches: a 44px touch target with an iOS-style capsule. */
+@layer calm {
+  html[data-calm-ui] #archives button.service-switch {
+    --switch-progress: 0;
+    --switch-thumb-width: 28px;
+    position: relative;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 60px !important;
+    width: 60px !important;
+    min-width: 60px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    direction: ltr;
+  }
+  html[data-calm-ui] #archives button.service-switch[aria-checked="true"] {
+    --switch-progress: 1;
+  }
+  html[data-calm-ui] #archives .service-switch-track {
+    position: relative;
+    display: block;
+    width: 52px;
+    height: 32px;
+    flex: 0 0 52px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #d5d8dc;
+    box-shadow: inset 0 0 0 1px rgb(30 40 45 / 5%);
+    isolation: isolate;
+  }
+  html[data-calm-ui] #archives .service-switch-track::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: #34c759;
+    opacity: var(--switch-progress);
+    transition: opacity 220ms ease;
+  }
+  html[data-calm-ui] #archives .service-switch-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    display: block;
+    width: var(--switch-thumb-width);
+    height: 28px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 18%), 0 0 1px rgb(0 0 0 / 15%);
+    transform: translateX(calc(var(--switch-progress) * (48px - var(--switch-thumb-width))));
+    transition: transform 280ms cubic-bezier(.22,1,.36,1), width 180ms cubic-bezier(.22,1,.36,1);
+  }
+  html[data-calm-ui] #archives button.service-switch.is-pressing {
+    --switch-thumb-width: 33px;
+  }
+  html[data-calm-ui] #archives .service-switch.is-dragging .service-switch-thumb {
+    transition: width 180ms ease;
+  }
+  html[data-calm-ui] #archives .service-switch.is-dragging .service-switch-track::before {
+    transition: none;
+  }
+  html[data-calm-ui] #archives button.service-switch:focus-visible {
+    outline: 2px solid var(--calm-accent) !important;
+    outline-offset: 2px !important;
+  }
+  html[data-calm-ui] #archives button.service-switch:disabled {
+    opacity: .5;
+    cursor: wait;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html[data-calm-ui] #archives .service-switch-thumb,
+    html[data-calm-ui] #archives .service-switch-track::before {
+      transition: none !important;
+    }
+  }
+}
