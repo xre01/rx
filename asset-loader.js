@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const paths={readingEditor:'reading-editor.js?v=19b6046a341a',dashboardExport:'dashboard-export.js?v=cdad9c9e4ac0'},pending=new Map();
+const paths={readingEditor:'reading-editor.js?v=19b6046a341a',dashboardExport:'dashboard-export.js?v=0294b2363036'},pending=new Map();
 function load(name){
  if(!paths[name])return Promise.reject(Error('Unknown feature'));
  if(pending.has(name))return pending.get(name);
