@@ -10,19 +10,19 @@
   "theme_color": "#e9eee4",
   "icons": [
     {
-      "src": "rex-wing-192.png?v=20261120-reva1",
+      "src": "reva-icon-192.png?v=32e936739d92",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "rex-wing-512.png?v=20261120-reva1",
+      "src": "reva-icon-512.png?v=eab678a728fa",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "reva-maskable-512.png?v=20261120-reva1",
+      "src": "reva-maskable-512.png?v=223a8f91f129",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

@@ -12,16 +12,16 @@ function version(file) {
 }
 
 function updateUrls(text) {
-  return text.replace(/([A-Za-z0-9_./-]+\.(?:js|css))\?v=[A-Za-z0-9_-]+/g,
+  return text.replace(/([A-Za-z0-9_./-]+\.(?:js|css|png|ico|webmanifest))\?v=[A-Za-z0-9_-]+/g,
     (url, file) => file === 'sw.js' ? url : file + '?v=' + version(file));
 }
 
-// Update nested worker imports before hashing their parent scripts.
-for (const file of ['focus-push-sw.js','asset-loader.js']) {
+// Update nested resources before hashing the manifest and parent scripts.
+for (const file of ['manifest.webmanifest','focus-push-sw.js','asset-loader.js']) {
   const original = fs.readFileSync(file, 'utf8');
   const updated = updateUrls(original);
   if (original !== updated) {
-    if (process.argv.includes('--check')) throw Error(file + ' has stale import versions.');
+    if (process.argv.includes('--check')) throw Error(file + ' has stale resource versions.');
     fs.writeFileSync(file, updated);
   }
 }
@@ -30,6 +30,8 @@ const html = updateUrls(fs.readFileSync('index.html', 'utf8'));
 const worker = updateUrls(fs.readFileSync('sw.js', 'utf8'));
 const entries = ['CORE','OPTIONAL'].flatMap(name => JSON.parse(worker.match(new RegExp('^const '+name+'=(\\[.*?\\])\\.map','m'))[1]));
 const release = crypto.createHash('sha256');
+// Worker-only changes also start a fresh release without hashing the hash itself.
+release.update(worker.replace(/^const CACHE='[^']+';/m, "const CACHE='<release>';"));
 for (const entry of entries) {
   const file = entry.split('?')[0];
   const content = file === 'index.html' ? html : fs.readFileSync(file);

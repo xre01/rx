@@ -21,10 +21,10 @@ for (const icon of manifest.icons) {
   assert.equal(bytes.readUInt32BE(16), width);
   assert.equal(bytes.readUInt32BE(20), height);
 }
-const ico = fs.readFileSync('rex-wing.ico');
+const ico = fs.readFileSync('reva.ico');
 assert.equal(ico.readUInt16LE(2), 1);
 assert.equal(ico.readUInt16LE(4), 7);
 for (const file of fs.readdirSync('.').filter(name => /\.(js|html|webmanifest)$/.test(name))) {
-  assert.ok(!/monogram1|rex-icon-|favicon-rex|apple-touch-icon-rex/.test(fs.readFileSync(file, 'utf8')), `Legacy icon reference: ${file}`);
+  assert.ok(!/monogram1|rex-icon-|rex-wing|favicon-rex|apple-touch-icon-rex/.test(fs.readFileSync(file, 'utf8')), `Legacy icon reference: ${file}`);
 }
 console.log('PASS: local page and precache resources exist, manifest icon dimensions match, ICO contains seven sizes, no legacy icon references');

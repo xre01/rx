@@ -4,7 +4,7 @@ Revo.
 
 A lightweight study app with Home planning, PTE practice, reading notes, dated study timelines, reflections, focus timing and Notion/D1 sync.
 
-The Reva R-wing icon is provided for iOS Home Screen, browser tabs, desktop installation and Android maskable launchers.
+The white, black and champagne-gold Reva R-wing icon is provided for iOS Home Screen, browser tabs, desktop installation and Android maskable launchers.
 
 ## Features
 
@@ -14,6 +14,8 @@ The Reva R-wing icon is provided for iOS Home Screen, browser tabs, desktop inst
 - Weekly Review includes recorded local counts and backfills. PNG exports support day, Monday–Sunday week, month and year.
 - The PTE study timeline opens from its header icon. Five dates per page are grouped by year; day details show practice/focus totals and saved Notion check-ins, with on-demand audio/images. Search reads saved check-in content and reports partial results.
 - One stylesheet and six themes, with illustrated mobile navigation that blends into each theme’s page background. Reduced-motion preferences are respected.
+
+Icon, manifest and script URLs use content hashes. Each release gets a fresh offline resource cache; activation removes previous app caches and obsolete entries. If the new core cannot download, the working offline version is retained. This cleanup does not clear local records, IndexedDB attachments or connection settings.
 
 ## Storage and sync
 

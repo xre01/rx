@@ -1,14 +1,17 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-const base='https://xre01.github.io/rx/',listeners={},deleted=[],added=[],entries=new Map(),fetched=[];let unavailable='';
-const cache={keys:async()=>[{url:base+'old-preview.js'},{url:base+'cream-theme.css?v=old'},{url:base+'index.html'}],delete:async request=>deleted.push(request.url),
- async addAll(requests){for(const request of requests){assert.equal(request.cache,'reload');added.push(request.url);entries.set(request.url,new Response('cached'))}},
+const base='https://xre01.github.io/rx/',listeners={},deleted=[],added=[],entries=new Map(),fetched=[];let unavailable='',installFails=false,skipWaits=0,currentCache;
+const stale=['old-preview.js','cream-theme.css?v=old','rex-wing-512.png?v=20261120-reva1','reva-icon-192.png?v=old','manifest.webmanifest?v=old'].map(path=>base+path);
+const cache={keys:async()=>[...stale,...entries.keys()].map(url=>({url})),delete:async request=>{deleted.push(request.url);entries.delete(request.url)},
+ async addAll(requests){if(installFails)throw Error('download failed');for(const request of requests){assert.equal(request.cache,'reload');added.push(request.url);entries.set(request.url,new Response('cached'))}},
  async match(request){return entries.get(typeof request==='string'?request:request.url)?.clone()},async put(request,response){entries.set(typeof request==='string'?request:request.url,response.clone())}};
-const ctx={importScripts(){},URL,Request,Response,fetch:async request=>{const url=typeof request==='string'?request:request.url;fetched.push(url);if(url.includes(unavailable)&&unavailable)throw Error('offline');return new Response('network')},self:{location:{href:base+'sw.js'},addEventListener:(name,handler)=>listeners[name]=handler,skipWaiting:async()=>{},clients:{claim:async()=>{}}},caches:{keys:async()=>['rex-focus-offline-old','another-app-cache'],delete:async name=>deleted.push(name),open:async()=>cache}};
+const ctx={importScripts(){},URL,Request,Response,fetch:async request=>{const url=typeof request==='string'?request:request.url;fetched.push(url);if(url.includes(unavailable)&&unavailable)throw Error('offline');return new Response('network')},self:{location:{href:base+'sw.js'},addEventListener:(name,handler)=>listeners[name]=handler,skipWaiting:async()=>{skipWaits++},clients:{claim:async()=>{}}},caches:{keys:async()=>['rex-focus-offline-old','rex-focus-offline-previous',currentCache,'another-app-cache'],delete:async name=>deleted.push(name),open:async()=>cache}};
 vm.createContext(ctx);vm.runInContext(fs.readFileSync('sw.js','utf8'),ctx);
+currentCache=vm.runInContext('CACHE',ctx);
 async function event(name,details={}){let pending;listeners[name]({...details,waitUntil:job=>pending=job});await pending}
 (async()=>{
+ installFails=true;await assert.rejects(event('install'),/download failed/);assert.equal(skipWaits,0);assert.deepEqual(deleted,[],'failed update leaves the working offline version available');installFails=false;
  await event('install');assert(!added.some(url=>/\/(?:reading-editor|dashboard-export)\.js\?/.test(url)),'heavy modules do not compete with the startup cache');assert(added.some(url=>url.includes('/asset-loader.js?')));assert(added.some(url=>url.includes('/dashboard-export-loader.js?')));
- await event('activate');assert.deepEqual(deleted,['rex-focus-offline-old',base+'old-preview.js',base+'cream-theme.css?v=old']);
+ await event('activate');assert.deepEqual(deleted,['rex-focus-offline-old','rex-focus-offline-previous',...stale]);assert(added.every(url=>entries.has(url)),'cleanup keeps every current asset and leaves unrelated caches untouched');
  const stylesheet=new URL(fs.readFileSync('index.html','utf8').match(/<link rel="stylesheet" href="([^"]+)"/)[1],base).href;assert(added.includes(stylesheet));assert.equal(added.filter(url=>new URL(url).pathname.endsWith('.css')).length,1);
  let report;unavailable='/reading-editor.js';await event('message',{data:{type:'REX_CACHE_OPTIONAL'},source:{postMessage:value=>report=value}});assert.equal(report.complete,false);assert(added.every(url=>entries.has(url)),'optional failure preserves the working core cache');
  unavailable='';await event('message',{data:{type:'REX_CACHE_OPTIONAL'},source:{postMessage:value=>report=value}});assert.equal(report.complete,true);assert([...entries.keys()].some(url=>url.includes('/reading-editor.js?')));assert([...entries.keys()].some(url=>url.includes('/dashboard-export.js?')));
