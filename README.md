@@ -1,6 +1,10 @@
-# Rex World · 
+# Reva
+
+Revo.
 
 A lightweight study app with Home planning, PTE practice, reading notes, dated study timelines, reflections, focus timing and Notion/D1 sync.
+
+The Reva R-wing icon is provided for iOS Home Screen, browser tabs, desktop installation and Android maskable launchers.
 
 ## Features
 

@@ -1,6 +1,6 @@
 (()=>{
  const brand=document.getElementById('rexWordmark');if(!brand)return;
- brand.setAttribute('aria-label','Rex World, celebrate');brand.title='Keep fighting, Rex!';
+ brand.setAttribute('aria-label','Reva, celebrate');brand.title='Keep fighting, Rex!';
  const toast=document.createElement('div');toast.className='rex-cheer';toast.setAttribute('role','status');toast.setAttribute('aria-live','polite');toast.hidden=true;document.body.append(toast);
  const message=document.createElement('span');message.className='rex-cheer-message';message.textContent='Keep fighting,';const name=document.createElement('strong');name.className='rex-cheer-name';name.textContent='Rex！';toast.append(message,name);
  const canvas=document.createElement('canvas');canvas.className='rex-fireworks';canvas.setAttribute('aria-hidden','true');canvas.hidden=true;document.body.append(canvas);
