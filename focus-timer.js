@@ -79,7 +79,21 @@ function celebrate(){
 function close(){picker.hidden=true;saveTimer();overlay.hidden=true;timerOpener?.setAttribute('aria-expanded','false');timerOpener?.focus()}
 let timerOpener=ball;
 function openTimer(activity='focus',trigger=document.activeElement){statsActivity=activity==='home'?'all':activity==='reading'?'reading':'focus';timerOpener=trigger||ball;if(!running&&elapsed===0)sessionActivity=activity==='reading'?'reading':activity==='home'?'home':'focus';overlay.classList.toggle('reading-timer',sessionActivity==='reading');document.getElementById('focusTitle').textContent=sessionActivity==='reading'?'Reading Timer':'Focus Timer';timerOpener.setAttribute('aria-expanded','true');document.getElementById('profilePopover').hidden=true;document.getElementById('profileToggle').setAttribute('aria-expanded','false');overlay.hidden=false;paint();renderStats();overlay.querySelector('.focus-close').focus()}
-window.RexFocusTimer={open:openTimer};
+function startStep(goal,trigger){
+ openTimer('home',trigger);
+ if(running||elapsed>0||pendingSession){
+  status.textContent='Finish the current session before starting a new step.';
+  return;
+ }
+ mode='down';
+ overlay.querySelectorAll('[data-timer-mode]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.timerMode===mode)));
+ document.getElementById('focusDuration').hidden=true;
+ document.getElementById('focusGoal').value=goal.slice(0,80);
+ minutes.value=5;
+ reset();
+ start.click();
+}
+window.RexFocusTimer={open:openTimer,startStep};
 ball.setAttribute('aria-label','Reva');ball.removeAttribute('aria-expanded');ball.removeAttribute('aria-haspopup');ball.removeAttribute('title');
 overlay.querySelector('.focus-close').addEventListener('click',close);overlay.querySelector('.focus-minimize').addEventListener('click',close);overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
 overlay.querySelectorAll('[data-timer-mode]').forEach(b=>b.addEventListener('click',()=>{if(mode===b.dataset.timerMode||!recordAbandon())return;mode=b.dataset.timerMode;overlay.querySelectorAll('[data-timer-mode]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.getElementById('focusDuration').hidden=true;reset()}));minutes.addEventListener('change',reset);

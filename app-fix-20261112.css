@@ -15782,3 +15782,26 @@ html#rexTheme body#rexSanctuary#rexSanctuary #home .depth-view-check {
     }
   }
 }
+
+.life-task .task-breakdown-action,
+.task-editor .task-breakdown-action {
+  max-width: 100%;
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--calm-text, currentColor);
+  font-size: .875rem;
+}
+.task-editor .task-breakdown-action { margin-inline-start: 8px; }
+.task-next-step {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin-block: 4px;
+  font-size: .875rem;
+  overflow-wrap: anywhere;
+}
+.task-breakdown-status:empty { display: none; }

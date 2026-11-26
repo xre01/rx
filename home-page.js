@@ -66,7 +66,35 @@
  function controls(row,kind,item){const group=el('span',undefined,'life-row-actions');const edit=action('Edit',()=>editor(kind,item)),del=action('×',()=>remove(kind,item));edit.className='life-edit-button';edit.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15Z"/></svg>';edit.title='Edit';del.title='Delete';edit.setAttribute('aria-label','Edit '+item.title);del.setAttribute('aria-label','Delete '+item.title);group.append(edit,del);row.append(group)}
  const morpekoModes={'morpeko-full':'莫鲁贝可 · 饱腹模式','morpeko-hangry':'莫鲁贝可 · 空腹模式','keldeo':'凯路迪欧'};
  function morpekoIcon(mode){const wrap=el('span',undefined,'habit-morpeko'),image=el('img');image.src=({'morpeko-full':'assets/habit-morpeko-full-clear.png','morpeko-hangry':'assets/habit-morpeko-hangry-clear.png','keldeo':'assets/habit-keldeo-clear.png'})[mode];image.alt=morpekoModes[mode];image.width=40;image.height=40;wrap.append(image);return wrap}
- function editor(kind,item,defaults={}){const d=el('dialog',undefined,'life-editor');if(kind==='task')d.classList.add('task-editor');const title=el('h2',(item?'Edit ': 'Add ')+(kind==='task'&&item?.repeat&&item.repeat!=='none'?'recurring task':{task:'task',habit:'habit',event:'important date'}[kind]));title.id='lifeEditorTitle';d.setAttribute('aria-labelledby',title.id);const form=el('form');function field(label,name,type,value){const wrap=el('label'),caption=el('span',label,'task-field-label'),input=el('input');wrap.append(caption);input.name=name;input.type=type;input.value=value||'';wrap.append(input);form.append(wrap);return input}const name=field('Name','title','text',item?.title);name.required=true;name.maxLength=80;let date,time,dueDate,dueTime,priority,repeat,interval,category,pinned,icon,subtaskRows=[],weekdayInputs=[];
+
+ function suggestSubtasks(title){
+  const sequence=title.split(/\s*(?:[;；、→]|\bthen\b|然后|接着)\s*/iu).map(step=>step.replace(/^[,，]\s*|\s*[,，]$/g,'').trim()).filter(Boolean);
+  const unique=[...new Set(sequence)];
+  if(unique.length>1)return unique.slice(0,30);
+  const chinese=/\p{Script=Han}/u.test(title);
+  const topic=title.length>38?title.slice(0,37).trimEnd()+'…':title;
+  const templates=[
+   [/\b(?:write|draft|essay|report|presentation|slides|resume|résumé)\b|写|报告|论文|简历|演讲|幻灯|周报/iu,
+    ['Open a draft and write three bullet points','Draft the first section from those points','Finish the draft and check it against the requirements'],
+    ['打开文档，写下三个要点','根据要点写出第一段或第一页','补全草稿，对照要求检查一遍']],
+   [/\b(?:study|learn|practice|exam|review|revision|pte|read)\b|复习|背单词|学习|做题|练习|阅读|备考|考试/iu,
+    ['Open the material and pick one question or section','Try that question or section without looking at the answer','Check your work and write down one thing to practice next'],
+    ['打开资料，选一道题或一小节','先自己做完这道题或学完这一小节','核对结果，记下一项需要再练的内容']],
+   [/\b(?:email|reply|message|contact|call)\b|邮件|回复|联系|打电话|发消息/iu,
+    ['Find the recipient and write down what you need from them','Draft a brief message or the first sentence of the call','Send the message or make the call'],
+    ['找到联系方式，写下要确认的一件事','起草一条简短消息或电话开场白','发出消息或拨打电话']],
+   [/\b(?:clean|tidy|declutter|organize|laundry)\b|打扫|清理|收拾|整理|洗衣/iu,
+    ['Pick one small area and gather what you need','Work on just that area for five minutes','Put away supplies and finish any remaining area'],
+    ['选一个小区域，把要用的工具拿出来','只处理这个区域，先做五分钟','收好工具，再处理剩下的区域']]
+  ];
+  const template=templates.find(([pattern])=>pattern.test(title));
+  if(template)return template[chinese?2:1];
+  return chinese
+   ? ['为「'+topic+'」准备材料，写下一个具体动作','先做这个动作中五分钟能完成的部分','补齐剩余内容，确认「'+topic+'」已经完成']
+   : ['Set up for “'+topic+'” and pick one concrete action','Work on the smallest useful part for five minutes','Finish the remaining work and check the result'];
+ }
+
+ function editor(kind,item,defaults={}){const d=el('dialog',undefined,'life-editor');if(kind==='task')d.classList.add('task-editor');const title=el('h2',(item?'Edit ': 'Add ')+(kind==='task'&&item?.repeat&&item.repeat!=='none'?'recurring task':{task:'task',habit:'habit',event:'important date'}[kind]));title.id='lifeEditorTitle';d.setAttribute('aria-labelledby',title.id);const form=el('form');function field(label,name,type,value){const wrap=el('label'),caption=el('span',label,'task-field-label'),input=el('input');wrap.append(caption);input.name=name;input.type=type;input.value=value||'';wrap.append(input);form.append(wrap);return input}const name=field('Name','title','text',item?.title);name.required=true;name.maxLength=80;let date,time,dueDate,dueTime,priority,repeat,interval,category,pinned,icon,subtaskRows=[],weekdayInputs=[],autoBreakdown;
  if(kind==='habit'){icon=field('图标（emoji 或符号）','icon','text',typeof item?.icon==='string'?item.icon:'');icon.maxLength=16;icon.placeholder='例如 📖';const choices=el('div',undefined,'habit-icon-choices');for(const symbol of ['📖','💧','🏃','🧘','🌱','✍️','💪','🎯']){const pick=action(symbol,()=>{icon.value=symbol});pick.setAttribute('aria-label','选择图标 '+symbol);choices.append(pick)}for(const [value,label]of Object.entries(morpekoModes)){const pick=action('',()=>{icon.value=value});pick.append(morpekoIcon(value));pick.title=label;pick.setAttribute('aria-label',label);choices.append(pick)}form.append(choices)}
  if(kind!=='habit'){date=field('Date','date','date',item?item.date:(defaults.date??(kind==='task'&&agendaView==='list'?'':selected)));date.required=kind!=='task'}if(kind==='task'){time=field('Time','time','time',item?.time||defaults.time);const label=el('fieldset',undefined,'task-priority-picker');
  label.append(el('legend','Priority'));
@@ -103,7 +131,44 @@
   deadline.append(fields,clearDeadline);
   form.append(deadline);
  }
- if(kind==='task'){const section=el('section',undefined,'task-subtask-editor'),summary=el('h3','Subtasks'),rows=el('div',undefined,'task-subtask-fields');section.append(summary,rows);const update=()=>{summary.textContent=subtaskRows.length?'Subtasks · '+subtaskRows.length:'Subtasks'};const addRow=(item={})=>{if(subtaskRows.length>=30)return;const row=el('div',undefined,'task-subtask-field'),input=el('input');input.type='text';input.name='subtaskTitle';input.maxLength=80;input.placeholder='Subtask name';input.setAttribute('aria-label','Subtask name');input.value=item.title||'';const entry={id:item.id||crypto.randomUUID(),input};subtaskRows.push(entry);const remove=action('×',()=>{subtaskRows=subtaskRows.filter(r=>r!==entry);row.remove();update()},'subtask-remove');remove.setAttribute('aria-label','Remove subtask');row.append(input,remove);rows.append(row);update();return input};for(const child of subtasksOf(item||{}))addRow(child);section.append(action('＋ Add subtask',()=>{addRow()?.focus()},'subtask-add'));form.append(section)}
+
+ if(kind==='task'){
+  const section=el('section',undefined,'task-subtask-editor'),summary=el('h3','Subtasks'),rows=el('div',undefined,'task-subtask-fields');
+  const stepStatus=el('p',undefined,'task-breakdown-status');stepStatus.setAttribute('role','status');
+  const split=action('自动拆解',generate,'task-breakdown-action');
+  section.append(summary,rows,action('＋ Add subtask',()=>{addRow()?.focus()},'subtask-add'),split,stepStatus);
+  const update=()=>{
+   summary.textContent=subtaskRows.length?'Subtasks · '+subtaskRows.length:'Subtasks';
+   split.hidden=subtaskRows.some(({input})=>input.value.trim());
+  };
+  function addRow(item={}){
+   if(subtaskRows.length>=30)return;
+   const row=el('div',undefined,'task-subtask-field'),input=el('input');
+   input.type='text';input.name='subtaskTitle';input.maxLength=80;input.placeholder='Subtask name';
+   input.setAttribute('aria-label','Subtask name');input.value=item.title||'';
+   input.addEventListener('input',update);
+   const entry={id:item.id||crypto.randomUUID(),input};subtaskRows.push(entry);
+   const remove=action('×',()=>{subtaskRows=subtaskRows.filter(r=>r!==entry);row.remove();update()},'subtask-remove');
+   remove.setAttribute('aria-label','Remove subtask');
+   row.append(input,remove);rows.append(row);update();
+   return input;
+  }
+  function generate(){
+   if(split.hidden)return;
+   const taskTitle=name.value.trim();
+   if(!taskTitle){name.setCustomValidity('Please enter a task name first.');name.reportValidity();name.focus();return}
+   const steps=suggestSubtasks(taskTitle);
+   steps.forEach((step,index)=>{
+    const input=subtaskRows[index]?.input||addRow();
+    input.value=step.slice(0,input.maxLength);
+   });
+   update();stepStatus.textContent='可以修改建议步骤，确认后保存。';
+   subtaskRows[0].input.focus();
+  }
+  for(const child of subtasksOf(item||{}))addRow(child);
+  form.append(section);
+  if(defaults.breakdown)autoBreakdown=generate;
+ }
  const feedback=el('p');feedback.setAttribute('role','status');form.append(feedback);const buttons=el('div',undefined,'life-editor-actions'),cancel=action('Cancel',()=>d.close()),save=el('button','Save');save.type='submit';buttons.append(cancel,save);if(kind==='task'&&item)buttons.append(action('Delete',()=>{remove(kind,item);if(!model.tasks.some(record=>record.id===item.id))d.close()}));if(kind==='event'&&item)buttons.prepend(action('Delete',()=>{remove(kind,item);if(!(events()||[]).some(record=>record.id===item.id))d.close()}));form.append(buttons);d.append(title,form);document.body.append(d);d.addEventListener('close',()=>d.remove());form.addEventListener('submit',e=>{e.preventDefault();if(!name.value.trim()){name.setCustomValidity('Enter a name.');name.reportValidity();return}if(date&&((date.value&&!validDate(date.value))||date.required&&!date.value)){feedback.textContent='Choose a valid date.';return}if(kind==='task'&&repeat.value==='interval'&&(!Number.isSafeInteger(Number(interval.value))||Number(interval.value)<1||Number(interval.value)>36500)){feedback.textContent='Enter a whole number of days (1–36500).';return}if(kind==='task'&&repeat.value==='custom'&&!weekdayInputs.some(input=>input.checked)){feedback.textContent='Choose at least one day.';return}if(kind==='task'&&!date.value&&(time.value||repeat.value!=='none')){feedback.textContent='Choose a date for a scheduled time or repeating task.';return}if(kind==='task'&&dueDate.value&&!validDate(dueDate.value)){feedback.textContent='Choose a valid due date.';return}
  if(kind==='task'&&dueTime.value&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(dueTime.value)){feedback.textContent='Choose a valid due time.';return}
  if(kind==='task'&&repeat.value!=='none'&&dueDate.value&&dueDate.value<date.value){feedback.textContent='For a recurring task, choose a due date on or after its start date.';return}
@@ -111,7 +176,7 @@
  if(dueDate.value){record.dueDate=dueDate.value;if(dueTime.value)record.dueTime=dueTime.value;else delete record.dueTime}
  else{delete record.dueDate;delete record.dueTime}
  reconcileSubtasks(record,item);completionTime(record,item);
- }let ok;if(kind==='event'){const list=events();ok=list!==null&&saveEvents(item?list.map(r=>r.id===item.id?record:r):[...list,record])}else{const prop=kind==='task'?'tasks':'habits';ok=persist({...model,[prop]:item?model[prop].map(r=>r.id===item.id?record:r):[...model[prop],record]})}if(ok)d.close();else feedback.textContent='Could not save. Your input is retained. Check browser storage.'});name.addEventListener('input',()=>name.setCustomValidity(''));d.showModal();name.focus()}
+ }let ok;if(kind==='event'){const list=events();ok=list!==null&&saveEvents(item?list.map(r=>r.id===item.id?record:r):[...list,record])}else{const prop=kind==='task'?'tasks':'habits';ok=persist({...model,[prop]:item?model[prop].map(r=>r.id===item.id?record:r):[...model[prop],record]})}if(ok)d.close();else feedback.textContent='Could not save. Your input is retained. Check browser storage.'});name.addEventListener('input',()=>name.setCustomValidity(''));d.showModal();if(autoBreakdown)autoBreakdown();else name.focus()}
  function occurs(task,date){
   if(!validDate(task.date)||date<task.date)return false;
   const weekday=new Date(date+'T12:00:00Z').getUTCDay();
@@ -164,8 +229,23 @@
  function taskRow(task,date){
   const row=el('div',undefined,'life-task'+(task.done?' is-done':'')),check=el('input');row.dataset.date=date;row.dataset.taskId=task.id;check.type='checkbox';check.checked=!!task.done;check.setAttribute('aria-label','Complete '+task.title);row.setAttribute('role','group');row.setAttribute('aria-label',task.title+' · '+date);
   check.addEventListener('change',()=>{if(!persist({...model,tasks:model.tasks.map(r=>r.id===task.id?completeTask(r,date,check.checked):r)},check.checked?'Completed':'Reopened'))check.checked=!!task.done});
-  const copy=el('div');copy.append(el('strong',task.title),el('small',((agendaView==='day'||agendaView==='month')?'Task':task.time||'Anytime')+(repeating(task)?' · '+(task.repeat==='interval'?'Every '+task.intervalDays+' days':{daily:'Daily',weekdays:'Weekdays',weekly:'Weekly',custom:'Selected weekdays'}[task.repeat]||''):'')));if(task.priority==='important'){row.classList.add('is-important');const badge=el('span','! Important','task-priority-badge');copy.querySelector('small').append(badge)}const children=subtasksOf(task);if(children.length){if(!repeating(task)&&task.priority!=='important')copy.querySelector('small').hidden=true;const state=subtaskState(task,date),details=el('details',undefined,'task-subtasks'),summary=el('summary','Subtasks '+children.filter(child=>state[child.id]).length+'/'+children.length),token=task.id+'|'+date;details.open=expandedSubtasks.has(token);details.append(summary);details.addEventListener('toggle',()=>{if(details.isConnected){if(details.open)expandedSubtasks.add(token);else expandedSubtasks.delete(token)}});for(const child of children){const label=el('label',undefined,'task-subtask'+(state[child.id]?' is-done':'')),input=el('input');input.type='checkbox';input.checked=!!state[child.id];input.setAttribute('aria-label','Complete subtask '+child.title);input.addEventListener('change',()=>{expandedSubtasks.add(token);const ok=persist({...model,tasks:model.tasks.map(current=>{if(current.id!==task.id)return current;const checks={...subtaskState(current,date),[child.id]:input.checked},done=subtasksOf(current).every(item=>checks[item.id]);return completionTime({...(repeating(current)?{...current,completedDates:{...(current.completedDates||{}),[date]:done}}:{...current,done}),subtaskChecks:{...(current.subtaskChecks||{}),[date||'undated']:checks}},current)})},input.checked?'Completed':'Reopened');if(!ok)input.checked=!!state[child.id]});label.append(input,el('span',child.title));details.append(label)}copy.append(details)}const due=taskDeadline(task,date);
+  const copy=el('div');copy.append(el('strong',task.title),el('small',((agendaView==='day'||agendaView==='month')?'Task':task.time||'Anytime')+(repeating(task)?' · '+(task.repeat==='interval'?'Every '+task.intervalDays+' days':{daily:'Daily',weekdays:'Weekdays',weekly:'Weekly',custom:'Selected weekdays'}[task.repeat]||''):'')));if(task.priority==='important'){row.classList.add('is-important');const badge=el('span','! Important','task-priority-badge');copy.querySelector('small').append(badge)}const children=subtasksOf(task),state=children.length?subtaskState(task,date):{};if(children.length){if(!repeating(task)&&task.priority!=='important')copy.querySelector('small').hidden=true;const details=el('details',undefined,'task-subtasks'),summary=el('summary','Subtasks '+children.filter(child=>state[child.id]).length+'/'+children.length),token=task.id+'|'+date;details.open=expandedSubtasks.has(token);details.append(summary);details.addEventListener('toggle',()=>{if(details.isConnected){if(details.open)expandedSubtasks.add(token);else expandedSubtasks.delete(token)}});for(const child of children){const label=el('label',undefined,'task-subtask'+(state[child.id]?' is-done':'')),input=el('input');input.type='checkbox';input.checked=!!state[child.id];input.setAttribute('aria-label','Complete subtask '+child.title);input.addEventListener('change',()=>{expandedSubtasks.add(token);const ok=persist({...model,tasks:model.tasks.map(current=>{if(current.id!==task.id)return current;const checks={...subtaskState(current,date),[child.id]:input.checked},done=subtasksOf(current).every(item=>checks[item.id]);return completionTime({...(repeating(current)?{...current,completedDates:{...(current.completedDates||{}),[date]:done}}:{...current,done}),subtaskChecks:{...(current.subtaskChecks||{}),[date||'undated']:checks}},current)})},input.checked?'Completed':'Reopened');if(!ok)input.checked=!!state[child.id]});label.append(input,el('span',child.title));details.append(label)}copy.append(details)}const due=taskDeadline(task,date);
  if(due){const hint=el('span',due.text,'task-due');hint.dataset.state=due.state;copy.append(hint)}
+
+ if(!task.done){
+  const nextStep=children.find(child=>!state[child.id]);
+  if(nextStep){
+   const next=el('div',undefined,'task-next-step');
+   const focus=action('专注 5 分钟',event=>window.RexFocusTimer?.startStep(nextStep.title,event.currentTarget),'task-breakdown-action');
+   focus.setAttribute('aria-label','专注 5 分钟 · '+nextStep.title);
+   next.append(el('span','下一步 · '+nextStep.title),focus);
+   copy.append(next);
+  }else if(!children.length){
+   const split=action('自动拆解',()=>editor('task',task,{breakdown:true}),'task-breakdown-action');
+   split.setAttribute('aria-label','自动拆解 · '+task.title);
+   copy.append(split);
+  }
+ }
  if(agendaView==='list'&&task.done){
   const completed=el('span','Completed','task-completed-at');
   if(Number.isSafeInteger(task.completedAt)&&task.completedAt>0&&task.completedAt<=8640000000000000){
