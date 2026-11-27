@@ -104,7 +104,7 @@ The compact identity/navigation update reduces the visible avatar to 24px with a
 
 ## Agenda views
 
-My Day shows a Monday–Sunday date strip with the selected date, a separate today marker and dots for dates with tasks. Click a date or use Left/Right/Home/End while the strip is focused; navigation across weeks, months and leap days uses the existing Sydney date rules. Full-width task cards place time and an actions menu on the right, with completion and subtasks retained. Selecting a task title opens the existing editor. Month, List, filters, the floating add button and all storage/sync formats remain available.
+My Day shows a Monday–Sunday date strip with the selected date, a separate today marker, without task dots beneath dates. Click a date or use Left/Right/Home/End while the strip is focused; navigation across weeks, months and leap days uses the existing Sydney date rules. Full-width task cards place time and an actions menu on the right, with completion and subtasks retained. Selecting a task title opens the existing editor. Month, List, filters, the floating add button and all storage/sync formats remain available.
 
 The production stylesheet is `app.css`. The dated legacy asset and overridden timeline/subtask layout rules have been removed; shared checkbox and current-time treatments are retained in the My Day component source. The new service-worker release removes obsolete owned resource caches, preserving local records, attachments, connection settings and unrelated caches. Resource checks reject references to the old stylesheet. Recurring completion, filters, save failures, cancelled deletion and keyboard menu interaction are covered by the My Day regression test.
 

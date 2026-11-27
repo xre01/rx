@@ -56,14 +56,6 @@
     text-decoration-thickness: 2px;
     text-underline-offset: 4px;
   }
-  html[data-calm-ui] #lifeHome .agenda-week-marker {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: currentColor;
-    visibility: hidden;
-  }
-  html[data-calm-ui] #lifeHome .has-tasks .agenda-week-marker { visibility: visible; }
   html[data-calm-ui] #lifeHome .agenda-day-heading {
     display: flex;
     align-items: baseline;

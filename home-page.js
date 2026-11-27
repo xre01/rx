@@ -232,9 +232,7 @@
    button.setAttribute('aria-label',dateCaption(date,{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
    button.setAttribute('aria-pressed',String(date===selected));if(date===day)button.setAttribute('aria-current','date');
    const count=tasksOn(date).length;button.setAttribute('aria-description',count+' '+(count===1?'task':'tasks'));
-   const marker=el('span',undefined,'agenda-week-marker');marker.setAttribute('aria-hidden','true');
-   button.classList.toggle('has-tasks',count>0);
-   button.append(el('span',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index],'agenda-week-name'),el('span',String(Number(date.slice(8))),'agenda-week-number'),marker);
+   button.append(el('span',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index],'agenda-week-name'),el('span',String(Number(date.slice(8))),'agenda-week-number'));
    button.addEventListener('keydown',event=>{
     let target;if(event.key==='ArrowRight')target=shift(date,1);else if(event.key==='ArrowLeft')target=shift(date,-1);else if(event.key==='Home')target=start;else if(event.key==='End')target=shift(start,6);else return;
     event.preventDefault();selected=target;expandedMonthDate=null;render();strip.querySelector('[data-date="'+target+'"]')?.focus();
