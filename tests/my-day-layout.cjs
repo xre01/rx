@@ -25,6 +25,8 @@ try {
   assert.equal(strip.querySelector('[aria-pressed=true]').dataset.date, '2026-11-27');
   assert.equal(strip.querySelector('[aria-current=date]').dataset.date, '2026-11-27');
   assert.equal(strip.querySelectorAll('[tabindex="0"]').length, 1);
+  assert.equal(strip.querySelector('.agenda-week-marker'), null, 'week dates do not show task dots');
+  assert.equal(strip.querySelector('[data-date="2026-11-27"]').getAttribute('aria-description'), '2 tasks', 'task counts remain available to assistive technology');
   assert.equal(d.querySelector('.agenda-day-count').textContent, '2 tasks');
   assert.deepEqual([...d.querySelectorAll('.agenda-day-time')].map(time => time.textContent), ['All day', '17:30']);
   assert.equal(d.querySelector('[data-task-id=timed] time').dateTime, '2026-11-27T17:30');
