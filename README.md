@@ -27,7 +27,7 @@ Notion and Cloudflare D1 require the user's existing service configuration. Noti
 
 ### Performance maintenance
 
-Edit `styles/app.css` for appearance changes, then run `pnpm build`. The build serializes the stylesheet with the pinned CSS parser into the existing production CSS file without reordering rules, layers or declarations. The source remains readable; GitHub Pages still serves a single stylesheet. `tests/style-build.cjs` verifies that the committed output preserves the complete parsed source. This reduces the stylesheet from 516,523 to 453,897 bytes (gzip: 78,391 to 72,031 bytes in local measurements).
+Edit `styles/app.css` for shared appearance changes and `styles/my-day.css` for the My Day layout, then run `pnpm build`. The build serializes these sources with the pinned CSS parser into the existing production CSS file without reordering rules, layers or declarations. The sources remain readable; GitHub Pages still serves a single stylesheet. `tests/style-build.cjs` verifies that the committed output preserves the complete parsed sources. Initial compaction reduced the stylesheet from 516,523 to 453,897 bytes (gzip: 78,391 to 72,031 bytes in local measurements), before subsequent layout additions.
 
 Home skips its periodic minute redraw and second-by-second countdown updates while the document is hidden or another panel is active. Returning to a visible Home reloads the saved planner state immediately; opening Home continues to refresh it as before. Timer recording and cloud-sync scheduling are unchanged.
 
@@ -103,6 +103,10 @@ Validation: `node tests/calm-ui.cjs` covers real save/failure integration, press
 The compact identity/navigation update reduces the visible avatar to 24px with a 44px profile control, removes its frame and shadow, and aligns the name beside it. Tablet-width windows use one horizontal navigation row; narrow phones retain two compact rows. Profile access, all four navigation entries and wide-screen sidebar navigation remain available. CSS/resource checks and 390px, 600px and desktop layout checks pass.
 
 ## Agenda views
+
+My Day shows a Monday–Sunday date strip with the selected date, a separate today marker and dots for dates with tasks. Click a date or use Left/Right/Home/End while the strip is focused; navigation across weeks, months and leap days uses the existing Sydney date rules. Full-width task cards place time and an actions menu on the right, with completion and subtasks retained. Selecting a task title opens the existing editor. Month, List, filters, the floating add button and all storage/sync formats remain available.
+
+The production stylesheet is `app.css`. The dated legacy asset and overridden timeline/subtask layout rules have been removed; shared checkbox and current-time treatments are retained in the My Day component source. The new service-worker release removes obsolete owned resource caches, preserving local records, attachments, connection settings and unrelated caches. Resource checks reject references to the old stylesheet. Recurring completion, filters, save failures, cancelled deletion and keyboard menu interaction are covered by the My Day regression test.
 
 Agenda now provides My day, Week and Month tabs, a date picker, previous/next period navigation, a Today action and one bottom-right add button. Completion filters are available under the options menu. Week view groups occurrences Monday–Sunday; month view shows dated task counts and the selected day's tasks. New tasks inherit the selected date. Existing task IDs, one-off completion and all recurrence rules are preserved, with completion stored separately for each occurrence. This interface change keeps the existing browser-local planner storage.
 

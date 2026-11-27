@@ -2,8 +2,8 @@
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const css = require('css-tree');
-const source = fs.readFileSync('styles/app.css', 'utf8');
-const output = fs.readFileSync('app-fix-20261112.css', 'utf8');
+const source = ['styles/app.css', 'styles/my-day.css'].map(file => fs.readFileSync(file, 'utf8')).join('\n');
+const output = fs.readFileSync('app.css', 'utf8');
 const canonical = text => css.generate(css.parse(text));
 assert.equal(output.trimEnd(), canonical(source), 'committed CSS matches its source');
 assert.equal(canonical(output), canonical(source), 'CSS keeps rule order, values, selectors and priority');

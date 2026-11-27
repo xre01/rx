@@ -24,7 +24,7 @@ const tick = () => new Promise(resolve => setTimeout(resolve, 15));
   try {
     let source = fs.readFileSync('reading.js', 'utf8');
     assert.doesNotMatch(source, /reading-pull|refreshReadingFromUser|touchstart|touchmove/);
-    assert.doesNotMatch(fs.readFileSync('app-fix-20261112.css', 'utf8'), /reading-pull/);
+    assert.doesNotMatch(fs.readFileSync('app.css', 'utf8'), /reading-pull/);
     assert.doesNotMatch(fs.readFileSync('notion-archive.js', 'utf8'), /setInterval\(autoRefresh/);
     source = source.slice(0, source.lastIndexOf('})();')) + 'window.queueSyncForTest=queueReadingSync;})();';
     w.eval(source);
