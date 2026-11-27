@@ -25,6 +25,14 @@ Notion and Cloudflare D1 require the user's existing service configuration. Noti
 
 ## Validation
 
+### Performance maintenance
+
+Edit `styles/app.css` for appearance changes, then run `pnpm build`. The build serializes the stylesheet with the pinned CSS parser into the existing production CSS file without reordering rules, layers or declarations. The source remains readable; GitHub Pages still serves a single stylesheet. `tests/style-build.cjs` verifies that the committed output preserves the complete parsed source. This reduces the stylesheet from 516,523 to 453,897 bytes (gzip: 78,391 to 72,031 bytes in local measurements).
+
+Home skips its periodic minute redraw and second-by-second countdown updates while the document is hidden or another panel is active. Returning to a visible Home reloads the saved planner state immediately; opening Home continues to refresh it as before. Timer recording and cloud-sync scheduling are unchanged.
+
+Pull requests and pushes to main run the regression suite and rebuild the committed assets through `.github/workflows/validate.yml`. The final check rejects build output that differs from the committed files. No Worker deployment or storage migration is required for these changes.
+
 Local checks cover syntax, resource references and hashes, historical speaking upload payloads with mocked responses, duplicate submissions, date validation, count backfills, archive search with mocked content, PNG period aggregation including leap years, and service-worker cache behavior. Browser checks cover view switching, icon-driven readers, profile connections, theme navigation, timers and mobile layout.
 
 Live Notion/D1 integration needs the user's configured service and was not exercised by creating remote test records. GitHub Pages serves the committed frontend; Cloudflare Workers require a separate deployment.

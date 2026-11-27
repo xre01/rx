@@ -1,0 +1,11 @@
+'use strict';
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const css = require('css-tree');
+const source = fs.readFileSync('styles/app.css', 'utf8');
+const output = fs.readFileSync('app-fix-20261112.css', 'utf8');
+const canonical = text => css.generate(css.parse(text));
+assert.equal(output.trimEnd(), canonical(source), 'committed CSS matches its source');
+assert.equal(canonical(output), canonical(source), 'CSS keeps rule order, values, selectors and priority');
+assert(output.length < source.length, 'production CSS removes formatting overhead');
+console.log('PASS: compact production CSS preserves the complete parsed stylesheet');

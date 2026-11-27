@@ -254,5 +254,15 @@
  }
  initialiseAgenda();
  panel.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>editor(b.dataset.add)));panel.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;panel.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));render()}));panel.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>nav.querySelector('[data-side-view="'+b.dataset.go+'"]')?.click()));panel.querySelectorAll('.life-focus').forEach(b=>b.addEventListener('click',()=>window.RexFocusTimer?.open('home',b)));
- addEventListener('rex-cloud-changed',()=>{load();render()});addEventListener('rex-local-changed',render);addEventListener('storage',event=>{load();if(event.key===countdownFormatKey){countdownFormat=localStorage.getItem(countdownFormatKey)==='time'?'time':'days';countdownOptions.querySelectorAll('[data-countdown-format]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.countdownFormat===countdownFormat)))}render()});setInterval(()=>{if(!countdownPage.hidden&&countdownFormat==='time')panel.querySelectorAll('.life-event').forEach(updateCountdownRow)},1000);setInterval(render,60000);homeButton.click();
+ addEventListener('rex-cloud-changed',()=>{load();render()});addEventListener('rex-local-changed',render);addEventListener('storage',event=>{load();if(event.key===countdownFormatKey){countdownFormat=localStorage.getItem(countdownFormatKey)==='time'?'time':'days';countdownOptions.querySelectorAll('[data-countdown-format]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.countdownFormat===countdownFormat)))}render()});
+ setInterval(()=>{
+  if(!document.hidden&&panel.classList.contains('active')&&!countdownPage.hidden&&countdownFormat==='time')panel.querySelectorAll('.life-event').forEach(updateCountdownRow);
+ },1000);
+ setInterval(()=>{
+  if(!document.hidden&&panel.classList.contains('active'))render();
+ },60000);
+ document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&panel.classList.contains('active')){load();render()}
+ });
+ homeButton.click();
 })();

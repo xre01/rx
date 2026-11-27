@@ -1,0 +1,33 @@
+'use strict';
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const { JSDOM } = require('jsdom');
+const dom = new JSDOM('<main><section id="home" class="panelview active"></section><section id="reading" class="panelview"></section></main><nav class="rex-sidebar-nav"><button data-side-view="home"><span>PTE</span></button></nav>', { url: 'https://test.invalid/', runScripts: 'outside-only' });
+const w = dom.window, d = w.document, timers = [];
+let hidden = false;
+Object.defineProperty(d, 'hidden', { get: () => hidden });
+w.setInterval = (callback, delay) => { timers.push({ callback, delay }); return timers.length; };
+w.scrollTo = () => {};
+w.RexDashboardStore = { summary: () => ({ seconds: 0 }), focusTotal: () => 0 };
+const key = 'rex-home-planner-v1';
+const day = new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Sydney', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+const record = title => JSON.stringify({ tasks: [{ id: 'task', title, date: day }], habits: [] });
+w.localStorage.setItem(key, record('Original'));
+try {
+  w.eval(fs.readFileSync('home-page.js', 'utf8'));
+  const panel = d.getElementById('lifeHome'), task = () => panel.querySelector('.life-task');
+  const minute = timers.find(timer => timer.delay === 60000).callback;
+  const initial = task(); assert(initial);
+  hidden = true; minute(); assert.equal(task(), initial, 'background tab does not rebuild Home');
+  hidden = false; panel.classList.remove('active'); minute();
+  assert.equal(task(), initial, 'inactive Home does not rebuild');
+  panel.classList.add('active'); minute();
+  assert.notEqual(task(), initial, 'visible Home retains its minute refresh');
+  hidden = true; w.localStorage.setItem(key, record('Updated on resume'));
+  d.dispatchEvent(new w.Event('visibilitychange'));
+  assert(!panel.textContent.includes('Updated on resume'));
+  hidden = false; d.dispatchEvent(new w.Event('visibilitychange'));
+  assert(panel.textContent.includes('Updated on resume'), 'returning to the tab reloads saved planner data immediately');
+  assert.equal(JSON.parse(w.localStorage.getItem(key)).tasks[0].title, 'Updated on resume');
+  console.log('PASS: hidden/inactive Home skips periodic work and resumes with current saved data');
+} finally { w.close(); }
