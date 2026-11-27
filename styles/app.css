@@ -14439,24 +14439,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-con
 }
 
 @layer calm {
- html[data-calm-ui] .life-agenda[data-view="day"] .life-tasks {display:block!important;min-height:360px!important;padding-top:8px}
- html[data-calm-ui] .agenda-time-slot {display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;position:relative;padding:8px 0 18px}
- html[data-calm-ui] .agenda-time-label {font-size:12px;color:var(--calm-muted);text-align:center;padding-top:20px;border-right:1px dashed #bdcdb7}
- html[data-calm-ui] .agenda-time-cards {display:grid;gap:9px;min-width:0}
- html[data-calm-ui] .agenda-time-cards .life-task {padding:16px 12px;border:1px solid #d3ddcd!important;border-radius:14px;background:#f7f8f1;gap:10px;box-shadow:0 3px 12px #38523d05}
- html[data-calm-ui] .agenda-time-cards .life-task input {appearance:none;border:2px solid #78916f;border-radius:50%;width:21px;height:21px;margin:0;display:grid;place-content:center;cursor:pointer}
- html[data-calm-ui] .agenda-time-cards .life-task input:checked {background:var(--calm-accent);border-color:var(--calm-accent)}
- html[data-calm-ui] .agenda-time-cards .life-task input:checked::after {content:'✓';color:white;font-size:14px}
- html[data-calm-ui] .agenda-time-cards .life-task strong {font-size:16px}
- html[data-calm-ui] .agenda-time-cards .life-row-actions {gap:3px}
- html[data-calm-ui] .agenda-time-cards .life-row-actions button {font-size:11px;padding:5px}
- html[data-calm-ui] .agenda-now {display:flex;align-items:center;gap:12px;color:#507b72;margin:4px 0 18px;font-size:12px}
- html[data-calm-ui] .agenda-now time {width:58px;flex-shrink:0;text-align:center;font-variant-numeric:tabular-nums}
- html[data-calm-ui] .agenda-now>span {height:0;border-top:1px dashed #84a69b;flex:1}
- html[data-calm-ui] .life-agenda[data-view="day"] .agenda-empty {padding-top:65px}
-}
-
-@layer calm {
  html[data-calm-ui] .life-heading-actions {justify-content:flex-end!important;gap:8px!important;position:relative;align-items:center!important}
  html[data-calm-ui] .life-columns>aside {display:block!important}
 }
@@ -14680,8 +14662,6 @@ html#rexTheme body#rexSanctuary#rexSanctuary#rexSanctuary #archives .archive-con
 }
 
 @layer calm {
- html[data-calm-ui] .agenda-time-cards .life-task:has(.task-subtasks) {display:grid!important;grid-template-columns:22px minmax(0,1fr)!important;align-items:start!important}
- html[data-calm-ui] .agenda-time-cards .life-task:has(.task-subtasks)>.life-row-actions {grid-column:2;justify-content:flex-end}
  html[data-calm-ui] .life-task:has(.task-subtasks)>input {align-self:start;margin-top:3px!important}
 }
 

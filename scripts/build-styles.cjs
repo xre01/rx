@@ -8,4 +8,4 @@ const source = ['styles/app.css', 'styles/my-day.css'].map(file => fs.readFileSy
 const errors = [];
 const ast = css.parse(source, { onParseError: error => errors.push(error.message) });
 if (errors.length) throw Error(errors.join('\n'));
-fs.writeFileSync('app-fix-20261112.css', css.generate(ast) + '\n');
+fs.writeFileSync('app.css', css.generate(ast) + '\n');

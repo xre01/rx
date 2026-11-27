@@ -1,5 +1,10 @@
 /* My Day: a compact week selector and full-width task cards. */
 @layer calm {
+  /* Shared checkbox treatments retained from the former timeline layer. */
+  html[data-calm-ui] .agenda-time-cards .life-task input {appearance:none;border:2px solid #78916f;border-radius:50%;width:21px;height:21px;margin:0;display:grid;place-content:center;cursor:pointer}
+  html[data-calm-ui] .agenda-time-cards .life-task input:checked {background:var(--calm-accent);border-color:var(--calm-accent)}
+  html[data-calm-ui] .agenda-time-cards .life-task input:checked::after {content:'✓';color:white;font-size:14px}
+  html[data-calm-ui] .life-agenda[data-view="day"] .agenda-empty {padding-top:65px}
   html[data-calm-ui] #lifeHome .agenda-week {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -76,11 +81,13 @@
     font-size: 13px;
   }
   html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .life-tasks {
+    display: block !important;
     min-height: 280px !important;
     padding-top: 4px;
   }
   html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-time-slot {
     display: block;
+    position: relative;
     padding: 0 0 12px;
   }
   html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-time-label {
@@ -93,7 +100,7 @@
     white-space: nowrap;
     border: 0;
   }
-  html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-time-cards { gap: 12px; }
+  html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-time-cards { display: grid; gap: 12px; min-width: 0; }
   html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .life-task {
     display: grid !important;
     grid-template-columns: 24px minmax(0, 1fr) 64px !important;
@@ -206,12 +213,15 @@
     color: #754039 !important;
   }
   html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-now {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
     gap: 8px;
     margin: 2px 0 14px;
     color: var(--calm-muted);
   }
-  html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-now time { width: auto; }
-  html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-now > span { border-color: var(--calm-border); }
+  html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-now time { width: auto; flex-shrink: 0; text-align: center; font-variant-numeric: tabular-nums; }
+  html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .agenda-now > span { height: 0; border-top: 1px dashed var(--calm-border); flex: 1; }
   @media (max-width: 380px) {
     html[data-calm-ui] #lifeHome .agenda-week { gap: 1px; padding: 4px; }
     html[data-calm-ui] #lifeHome .agenda-week-day { min-height: 70px; }

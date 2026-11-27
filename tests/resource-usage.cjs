@@ -1,5 +1,7 @@
 const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
 const files=fs.readdirSync('.'),sources=files.filter(f=>/\.(html|js|css|webmanifest)$/.test(f)&&f!=='sw.js').map(file=>({file,text:fs.readFileSync(file,'utf8')}));
+assert(!files.includes('app-fix-20261112.css'),'obsolete dated stylesheet is removed');
+for(const file of ['index.html','sw.js','scripts/build-styles.cjs'])assert(!fs.readFileSync(file,'utf8').includes('app-fix-20261112.css'),file+' must not request the obsolete stylesheet');
 const sidebar=fs.readFileSync('sidebar.js','utf8');assert.doesNotMatch(sidebar,/rex-feather-gust|rex-wind-feather|rex-wind-sweep|rex-feather-shine/,'removed feather animation must not be generated at runtime');
 const nested=fs.readdirSync('assets').filter(f=>/\.(png|webp|ico|svg)$/.test(f)).map(f=>'assets/'+f);
 const assets=nested.concat(files.filter(f=>/\.(css|png|webp|ico|webmanifest)$/.test(f)));

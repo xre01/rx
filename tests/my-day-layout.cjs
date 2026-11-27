@@ -58,5 +58,39 @@ try {
   assert.equal(JSON.parse(w.localStorage.getItem(key)).tasks.find(task => task.id === 'all').done, true);
   d.querySelector('[data-task-id=all] [aria-label="Delete Plan the day"]').click();
   assert(!JSON.parse(w.localStorage.getItem(key)).tasks.some(task => task.id === 'all'));
+  const saved = JSON.parse(w.localStorage.getItem(key));
+  saved.tasks.push({ id: 'daily', title: 'Daily practice', date: '2026-11-27', repeat: 'daily', completedDates: {}, subtasks: [{ id: 'step', title: 'One question' }] });
+  w.localStorage.setItem(key, JSON.stringify(saved));
+  w.dispatchEvent(new w.StorageEvent('storage', { key }));
+  const complete = () => d.querySelector('[data-task-id=daily] > input');
+  complete().checked = true; complete().dispatchEvent(new w.Event('change'));
+  strip.querySelector('[data-date="2026-11-28"]').click();
+  assert.equal(complete().checked, false, 'another occurrence retains independent completion');
+  const child = d.querySelector('[data-task-id=daily] .task-subtask input');
+  child.checked = true; child.dispatchEvent(new w.Event('change'));
+  assert.equal(complete().checked, true, 'finishing the subtask completes that occurrence');
+  strip.querySelector('[data-date="2026-11-27"]').click();
+  assert.equal(complete().checked, true);
+  complete().checked = false; complete().dispatchEvent(new w.Event('change'));
+  assert.equal(JSON.parse(w.localStorage.getItem(key)).tasks.find(task => task.id === 'daily').completedDates['2026-11-28'], true);
+  const beforeFilter = w.localStorage.getItem(key);
+  d.querySelector('[data-filter=done]').click();
+  assert.equal(d.querySelectorAll('.life-task').length, 0);
+  assert.equal(d.querySelector('.agenda-day-count').textContent, '0 tasks');
+  assert.equal(w.localStorage.getItem(key), beforeFilter);
+  d.querySelector('[data-filter=all]').click();
+  const menus = [...d.querySelectorAll('.agenda-task-menu')];
+  menus[0].open = true; menus[1].querySelector('summary').click();
+  assert.equal(menus[0].open, false, 'opening a menu by keyboard-generated click closes the previous menu');
+  const setItem = w.Storage.prototype.setItem;
+  w.Storage.prototype.setItem = () => { throw Error('quota'); };
+  try {
+    complete().checked = true; complete().dispatchEvent(new w.Event('change'));
+    assert.equal(complete().checked, false, 'failed save restores the checkbox');
+    assert.equal(w.localStorage.getItem(key), beforeFilter, 'failed save preserves existing data');
+  } finally { w.Storage.prototype.setItem = setItem; }
+  w.confirm = () => false;
+  d.querySelector('[data-task-id=daily] [aria-label="Delete Daily practice"]').click();
+  assert(JSON.parse(w.localStorage.getItem(key)).tasks.some(task => task.id === 'daily'), 'cancelled deletion retains the recurring series');
   console.log('PASS: week dates, leap/month rollover, keyboard focus, right-side time, subtasks, task actions and unchanged Month/List');
 } finally { w.close(); }

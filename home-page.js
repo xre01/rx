@@ -187,6 +187,7 @@
    const menu=el('details',undefined,'agenda-task-menu'),summary=el('summary');
    summary.setAttribute('aria-label','Actions for '+task.title);summary.title='Task actions';
    summary.innerHTML='<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>';
+   summary.addEventListener('click',()=>{panel.querySelectorAll('.agenda-task-menu[open]').forEach(other=>{if(other!==menu)other.open=false})});
    const actions=row.querySelector('.life-row-actions');
    const edit=actions.querySelector('button');edit.replaceChildren(el('span','Edit'));
    actions.querySelector('button:last-child').textContent='Delete';
