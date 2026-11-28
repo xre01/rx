@@ -14,7 +14,7 @@
  const panel=document.createElement('section');panel.id='lifeHome';panel.className='panelview life-home';main.prepend(panel);
  panel.innerHTML=`<header class="life-heading"><div><h1>Home</h1><p class="life-date"></p></div><div class="life-heading-actions"><button type="button" class="life-focus"></button></div></header>
  <section class="life-overview" aria-label="Today"><div class="life-ring"><strong>0%</strong><span>Today</span></div><div class="life-stats" aria-label="Today at a glance"></div></section><p class="life-status" role="status"></p>
- <div class="life-columns"><section class="life-card life-agenda" data-view="day" aria-label="Agenda"><div class="agenda-tabs" role="tablist" aria-label="Agenda view"><button type="button" id="agenda-tab-day" role="tab" data-agenda-view="day" aria-selected="true" aria-controls="agenda-content">My day</button><button type="button" id="agenda-tab-month" role="tab" data-agenda-view="month" aria-selected="false" aria-controls="agenda-content" tabindex="-1">Month</button><button type="button" id="agenda-tab-list" aria-label="清单" title="清单" role="tab" data-agenda-view="list" aria-selected="false" aria-controls="agenda-content" tabindex="-1">☷ List</button></div><div class="agenda-toolbar"><label class="agenda-date"><strong class="agenda-caption"></strong><input type="date" class="agenda-date-input" aria-label="Select agenda date"></label><div class="agenda-date-actions"><button type="button" data-agenda-step="-1" aria-label="Previous agenda period">‹</button><button type="button" class="agenda-today">Today</button><button type="button" data-agenda-step="1" aria-label="Next agenda period">›</button><details class="agenda-menu"><summary aria-label="Agenda options">•••</summary><div class="life-filters"><button type="button" data-filter="all" aria-pressed="true">All</button><button type="button" data-filter="open" aria-pressed="false">To do</button><button type="button" data-filter="done" aria-pressed="false">Done</button></div></details></div></div><div class="agenda-week" role="group" aria-label="Week dates"></div><div class="agenda-day-heading"><h2>My tasks</h2><span class="agenda-day-count"></span></div><div id="agenda-content" role="tabpanel" aria-labelledby="agenda-tab-day"><div class="agenda-month" aria-label="Month calendar" hidden></div><div class="life-tasks"></div></div><button type="button" data-add="task" class="agenda-add" aria-label="Add task">＋</button></section>
+ <div class="life-columns"><section class="life-card life-agenda" data-view="day" aria-label="Agenda"><div class="agenda-tabs" role="tablist" aria-label="Agenda view"><button type="button" id="agenda-tab-day" role="tab" data-agenda-view="day" aria-selected="true" aria-controls="agenda-content">My day</button><button type="button" id="agenda-tab-month" role="tab" data-agenda-view="month" aria-selected="false" aria-controls="agenda-content" tabindex="-1">Month</button><button type="button" id="agenda-tab-list" aria-label="清单" title="清单" role="tab" data-agenda-view="list" aria-selected="false" aria-controls="agenda-content" tabindex="-1">☷ List</button></div><div class="agenda-toolbar"><label class="agenda-date"><strong class="agenda-caption"></strong><input type="date" class="agenda-date-input" aria-label="Select agenda date"></label><div class="agenda-date-actions"><button type="button" data-agenda-step="-1" aria-label="Previous agenda period">‹</button><button type="button" class="agenda-today">Today</button><button type="button" data-agenda-step="1" aria-label="Next agenda period">›</button><details class="agenda-menu"><summary aria-label="Agenda options">•••</summary><div class="life-filters"><button type="button" data-filter="all" aria-pressed="true">All</button><button type="button" data-filter="open" aria-pressed="false">To do</button><button type="button" data-filter="done" aria-pressed="false">Done</button></div></details></div></div><div class="agenda-hero"><b></b><div><small></small><h2></h2></div></div><div class="agenda-day-heading"><h2>My tasks</h2><span class="agenda-day-count"></span></div><div id="agenda-content" role="tabpanel" aria-labelledby="agenda-tab-day"><div class="agenda-month" aria-label="Month calendar" hidden></div><section class="month-planner" hidden></section><div class="life-tasks"></div></div><div class="agenda-week" role="group" aria-label="Browse dates"></div><button type="button" data-add="task" class="agenda-add" aria-label="Add task">＋</button></section>
  <aside><section class="life-card life-dates-card"><header><h2>Countdowns</h2><button type="button" data-add="event" aria-label="Add important date">＋</button></header><div class="life-events"></div></section><section class="life-card"><header><h2>Habits</h2><button type="button" data-add="habit">＋ Habit</button></header><div class="life-habits"></div></section></aside></div>`;
  const countdownToggle=document.createElement('button');countdownToggle.type='button';countdownToggle.className='life-countdown-toggle';panel.querySelector('.life-heading-actions').prepend(countdownToggle);
  const countdownPage=document.createElement('section');countdownPage.className='life-countdown-page';countdownPage.hidden=true;countdownPage.setAttribute('aria-label','Countdowns');const countdownCard=panel.querySelector('.life-dates-card');countdownPage.append(countdownCard);panel.append(countdownPage);const countdownBack=document.createElement('button');countdownBack.type='button';countdownBack.className='life-countdown-back';countdownBack.textContent='⊙';countdownBack.setAttribute('aria-label','Close countdowns');countdownCard.querySelector('header').prepend(countdownBack);const countdownOptions=document.createElement('details');countdownOptions.className='countdown-options';countdownOptions.innerHTML='<summary aria-label="Countdown menu"><span aria-hidden="true">☰</span></summary><div><span class="countdown-menu-label">Filter</span><button type="button" data-countdown-filter="all" aria-pressed="true">全部</button><button type="button" data-countdown-filter="anniversary" aria-pressed="false">纪念日</button><button type="button" data-countdown-filter="birthday" aria-pressed="false">生日</button><button type="button" data-countdown-filter="holiday" aria-pressed="false">节日</button><span class="countdown-menu-label">Display</span><button type="button" data-countdown-format="days" aria-pressed="true">Days</button><button type="button" data-countdown-format="time" aria-pressed="false">Years · days · time</button></div>';countdownCard.querySelector('header').prepend(countdownOptions);let countdownFilter='all',countdownFormat='days';try{countdownFormat=localStorage.getItem(countdownFormatKey)==='time'?'time':'days'}catch{}countdownOptions.querySelectorAll('[data-countdown-format]').forEach(item=>item.setAttribute('aria-pressed',String(item.dataset.countdownFormat===countdownFormat)));countdownOptions.querySelectorAll('[data-countdown-filter]').forEach(button=>button.addEventListener('click',()=>{countdownFilter=button.dataset.countdownFilter;countdownOptions.querySelectorAll('[data-countdown-filter]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));countdownOptions.open=false;render()}));countdownOptions.querySelectorAll('[data-countdown-format]').forEach(button=>button.addEventListener('click',()=>{countdownFormat=button.dataset.countdownFormat;try{localStorage.setItem(countdownFormatKey,countdownFormat)}catch{}countdownOptions.querySelectorAll('[data-countdown-format]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));countdownOptions.open=false;render()}));document.addEventListener('pointerdown',event=>{if(!countdownOptions.contains(event.target))countdownOptions.open=false});countdownCard.querySelector('[data-add=event]').classList.add('countdown-add');
@@ -204,37 +204,65 @@
  function pteCalendarDates(){try{const rows=JSON.parse(localStorage.getItem('rex-countdown-targets-v1')||'[]');return Array.isArray(rows)?rows.filter(row=>row&&validDate(row.date)).map(row=>({...row,title:'PTE',calendarKind:'pte'})):[]}catch{return []}}
  function openPteCountdown(){nav.querySelector('[data-side-view="home"]')?.click();document.querySelector('.countdown-metric')?.click()}
  function pteCalendarCard(record){const card=action('',openPteCountdown,'agenda-inline-milestone agenda-pte-card');card.setAttribute('aria-label','Open PTE Countdown · '+record.date);card.append(el('strong','PTE Exam'),el('small','PTE Countdown'));return card}
+ // Statewide NSW public holidays for the published 2026–27 calendar.
+ const holidays=[
+ ['元旦','01-01','01-01'],['澳大利亚日','01-26','01-26'],
+ ['耶稣受难日','04-03','03-26'],['复活节周六','04-04','03-27'],['复活节周日','04-05','03-28'],['复活节周一','04-06','03-29'],
+ ['澳新军团日','04-25','04-25'],['澳新军团日补假','04-27','04-26'],['国王诞辰','06-08','06-14'],
+ ['劳动节','10-05','10-04'],['圣诞节','12-25','12-25'],['节礼日','12-26','12-26'],['圣诞节补假',null,'12-27'],['节礼日补假','12-28','12-28']
+];
  function renderMonth(month,day){
+  const planner=$('.month-planner'),plan=el('div',undefined,'month-plans');
+  planner.replaceChildren(el('h3','Month planner'),plan);
+  const summary=(date,title,kind)=>{
+   const row=action('',()=>{selected=date;expandedMonthDate=date;render();$('.agenda-inline-details')?.scrollIntoView?.({block:'nearest'})},'month-plan-row');
+   row.dataset.kind=kind;row.append(el('time',date.slice(8)),el('span',title));plan.append(row);
+  };
   for(const name of ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])month.append(el('span',name,'agenda-weekday'));
   const first=selected.slice(0,7)+'-01',gridStart=weekStart(first),last=new Date(Date.UTC(Number(selected.slice(0,4)),Number(selected.slice(5,7)),0)).getUTCDate(),cells=Math.ceil((((weekday(first)+6)%7)+last)/7)*7,milestones=[...(events()||[]).filter(r=>validDate(r.date)),...pteCalendarDates()];
   for(let i=0;i<cells;i++){
    const date=shift(gridStart,i),tasks=filteredTasks(date),entries=[...(filter==='done'?[]:milestones.filter(r=>r.date===date).map(record=>({kind:record.calendarKind==='pte'?'pte':'event',record}))),...tasks.map(record=>({kind:'task',record}))],cell=el('div',undefined,'agenda-month-cell'),button=action('',()=>toggleMonthDate(date),'agenda-month-day');
+   const year=Number(date.slice(0,4)),md=date.slice(5);
+   const publicDays=filter==='done'?[]:holidays.filter(([,a,b])=>(year===2026?a:year===2027?b:null)===md).map(([title])=>title);
+   const cultural=filter==='done'?[]:window.RexCalendarLabels?.get(date)?.holidays||[];
+   const labelsForDay=publicDays.length?publicDays:cultural;
+   if(date.slice(0,7)===selected.slice(0,7)){
+    for(const entry of entries)if(entry.kind!=='task'||entry.record.priority==='important'||/房租|租金|\brent\b/i.test(entry.record.title))summary(date,entry.record.title,entry.kind);
+    for(const title of labelsForDay)summary(date,title,'holiday');
+   }
    cell.dataset.date=date;cell.setAttribute('role','group');cell.setAttribute('aria-label',date);cell.setAttribute('data-selected',String(date===expandedMonthDate));
-   const number=el('span',String(Number(date.slice(8))),'agenda-date-number');if(date===day){number.classList.add('is-today');button.setAttribute('aria-current','date')}const info=window.RexCalendarLabels?.get(date),annotation=el('span',info?.primary||lunarLabel(date),'agenda-lunar');if(info?.holidays.length)annotation.classList.add('is-festival');if(info?.details){annotation.title=info.details;button.setAttribute('aria-description',info.details)}button.append(number,annotation);button.setAttribute('aria-label',date);button.setAttribute('aria-pressed',String(date===expandedMonthDate));button.setAttribute('aria-expanded',String(date===expandedMonthDate));button.title=date+(entries.length?' · '+entries.length+' items':'');
+   const number=el('span',String(Number(date.slice(8))),'agenda-date-number');if(date===day){number.classList.add('is-today');button.setAttribute('aria-current','date')}const info=window.RexCalendarLabels?.get(date),annotation=el('span',labelsForDay[0]||info?.primary||lunarLabel(date),'agenda-lunar');if(labelsForDay.length)annotation.classList.add('is-festival');if(info?.details){annotation.title=info.details;button.setAttribute('aria-description',info.details)}button.append(number,annotation);button.setAttribute('aria-label',date);button.setAttribute('aria-pressed',String(date===expandedMonthDate));button.setAttribute('aria-expanded',String(date===expandedMonthDate));button.title=date+(entries.length?' · '+entries.length+' items':'');
    if(date.slice(0,7)!==selected.slice(0,7)){cell.classList.add('is-outside');button.classList.add('is-outside')}if(i%7===6)cell.classList.add('is-last-column');cell.append(button);
    const labels=el('div',undefined,'agenda-month-entries');
-   for(const entry of entries.slice(0,2)){const item=entry.record,chip=action(item.title,()=>{selected=date;expandedMonthDate=date;render()},'agenda-month-chip'+(entry.kind==='pte'?' is-pte':entry.kind==='event'?' is-milestone':item.done?' is-done':''));chip.dataset.kind=entry.kind;chip.dataset.recordId=item.id;chip.title=item.title;chip.setAttribute('aria-label','Show '+item.title+' · '+date);labels.append(chip)}
+   for(const entry of entries.slice(0,2)){const item=entry.record,chip=action(item.title,()=>{selected=date;expandedMonthDate=date;render()},'agenda-month-chip'+(entry.kind==='pte'?' is-pte':entry.kind==='event'?' is-milestone':item.done?' is-done':''));if(entry.kind==='task'&&repeating(item)&&item.priority!=='important'&&!/房租|租金|\brent\b/i.test(item.title))chip.classList.add('routine-task');chip.dataset.kind=entry.kind;chip.dataset.recordId=item.id;chip.title=item.title;chip.setAttribute('aria-label','Show '+item.title+' · '+date);labels.append(chip)}
    if(entries.length>2){const more=action('+'+(entries.length-2)+' more',()=>{selected=date;expandedMonthDate=date;render()},'agenda-month-more');more.setAttribute('aria-label','Show all '+entries.length+' items on '+date);labels.append(more)}cell.append(labels);cell.addEventListener('click',event=>{if(!event.target.closest('button'))toggleMonthDate(date)});month.append(cell);
    if(i%7===6&&expandedMonthDate===selected&&selected>=shift(date,-6)&&selected<=date){const details=el('section',undefined,'agenda-inline-details');details.setAttribute('aria-label','Plans on '+selected);details.dataset.date=selected;
     for(const task of filteredTasks(selected)){const row=taskRow(task,selected),title=row.querySelector('strong'),open=action('',()=>editor('task',task),'agenda-card-title');open.append(title.cloneNode(true));title.replaceWith(open);const time=el('time',task.time||'All day','agenda-card-time');row.querySelector('.life-row-actions').remove();row.append(time);details.append(row)}
     if(filter!=='done')for(const milestone of milestones.filter(record=>record.date===selected)){if(milestone.calendarKind==='pte')details.append(pteCalendarCard(milestone));else{const card=action('',()=>editor('event',milestone),'agenda-inline-milestone');card.append(el('strong',milestone.title),el('small','Countdown'));details.append(card)}}
+    if(filter!=='done'){
+     const md=selected.slice(5),year=Number(selected.slice(0,4));
+     const names=holidays.filter(([,a,b])=>(year===2026?a:year===2027?b:null)===md).map(([name])=>name);
+     for(const name of names.length?names:window.RexCalendarLabels?.get(selected)?.holidays||[])details.append(el('p',name,'agenda-holiday-detail'));
+    }
     const add=action('＋ Add task',()=>editor('task'),'agenda-inline-add');add.setAttribute('aria-label','Add task on '+selected);details.append(add);month.append(details)}
   }
+  if(!plan.children.length)plan.append(el('p','No important dates this month.','life-empty'));
  }
+ let browsedStart=null,browsedSelection=null;
  function renderWeek(day){
   const strip=$('.agenda-week'),heading=$('.agenda-day-heading');
   strip.hidden=heading.hidden=agendaView!=='day';strip.replaceChildren();
   if(agendaView!=='day')return;
-  const start=weekStart(selected);
+  const start=browsedSelection===selected&&browsedStart?browsedStart:weekStart(selected);
   for(let index=0;index<7;index++){
-   const date=shift(start,index),button=action('',()=>{selected=date;expandedMonthDate=null;render()},'agenda-week-day');
-   button.dataset.date=date;button.tabIndex=date===selected?0:-1;
+   const date=shift(start,index),button=action('',()=>{browsedStart=start;browsedSelection=date;selected=date;expandedMonthDate=null;render()},'agenda-week-day');
+   button.dataset.date=date;button.tabIndex=(date===selected||(index===0&&(selected<start||selected>shift(start,6))))?0:-1;
    button.setAttribute('aria-label',dateCaption(date,{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
    button.setAttribute('aria-pressed',String(date===selected));if(date===day)button.setAttribute('aria-current','date');
    const count=tasksOn(date).length;button.setAttribute('aria-description',count+' '+(count===1?'task':'tasks'));
    button.append(el('span',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index],'agenda-week-name'),el('span',String(Number(date.slice(8))),'agenda-week-number'));
    button.addEventListener('keydown',event=>{
-    let target;if(event.key==='ArrowRight')target=shift(date,1);else if(event.key==='ArrowLeft')target=shift(date,-1);else if(event.key==='Home')target=start;else if(event.key==='End')target=shift(start,6);else return;
+    let target;if(event.key==='ArrowRight')target=shift(date,1);else if(event.key==='ArrowLeft')target=shift(date,-1);else if(event.key==='Home')target=weekStart(date);else if(event.key==='End')target=shift(weekStart(date),6);else return;
     event.preventDefault();selected=target;expandedMonthDate=null;render();strip.querySelector('[data-date="'+target+'"]')?.focus();
    });strip.append(button);
   }
@@ -252,6 +280,11 @@
  function renderAgenda(day){
   const agenda=$('.life-agenda');agenda.dataset.view=agendaView;$('#agenda-content').setAttribute('aria-labelledby','agenda-tab-'+agendaView);
   panel.querySelectorAll('[data-agenda-view]').forEach(button=>{const active=button.dataset.agendaView===agendaView;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;if(button.dataset.agendaView==='list')button.innerHTML='<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="m8 11 1 1 2-2M13 11h3m-8 5 1 1 2-2M13 16h3"/></svg>';else button.textContent=({day:active?'My day':'Day',month:active?'My month':'Month'})[button.dataset.agendaView]});
+  const hero=$('.agenda-hero'),isMonth=agendaView==='month';hero.hidden=agendaView==='list';
+  hero.querySelector('b').textContent=selected.slice(isMonth?5:8,isMonth?7:10);
+  hero.querySelector('small').textContent=isMonth?selected.slice(0,4):dateCaption(selected,{month:'long',year:'numeric'});
+  hero.querySelector('h2').textContent=dateCaption(selected,isMonth?{month:'long'}:{weekday:'long'});
+  $('.month-planner').hidden=!isMonth;
   $('.agenda-date-input').value=selected;renderWeek(day);
   $('.agenda-caption').textContent=agendaView==='month'?dateCaption(selected,{month:'long',year:'numeric'}):selected.slice(5,7)+' / '+selected.slice(8)+' '+dateCaption(selected,{weekday:'short'});
   const month=$('.agenda-month');month.hidden=agendaView!=='month';month.replaceChildren();
@@ -270,10 +303,32 @@
   }
  }
  function initialiseAgenda(){
+  const strip=$('.agenda-week');
+  let drag=null,suppressClick=false;
+  strip.addEventListener('pointerdown',e=>{
+   if(!e.isPrimary||e.button!==0)return;
+   drag={x:e.clientX,y:e.clientY,start:strip.firstElementChild.dataset.date,active:false};suppressClick=false;
+  });
+  strip.addEventListener('pointermove',e=>{
+   if(!drag||!e.isPrimary)return;
+   const delta=drag.x-e.clientX;
+   if(!drag.active){
+    if(Math.abs(delta)<8)return;
+    if(Math.abs(e.clientY-drag.y)>Math.abs(delta)){drag=null;return}
+    strip.setPointerCapture(e.pointerId);drag.active=true;suppressClick=true;
+   }
+   const cellWidth=Math.max(1,strip.clientWidth/7),step=Math.trunc(delta/cellWidth);
+   strip.style.setProperty('--drag-offset',(step*cellWidth-delta)+'px');
+   const start=shift(drag.start,step);
+   if(start!==strip.firstElementChild.dataset.date){browsedSelection=selected;browsedStart=start;renderWeek(today())}
+  });
+  for(const event of ['pointercancel','pointerup','lostpointercapture'])strip.addEventListener(event,()=>{drag=null;strip.style.removeProperty('--drag-offset')});
+  strip.addEventListener('pointerleave',()=>{if(!drag?.active)drag=null});
+  strip.addEventListener('click',e=>{if(suppressClick&&e.detail){e.preventDefault();e.stopPropagation();suppressClick=false}},true);
   const tabs=[...panel.querySelectorAll('[data-agenda-view]')];
   tabs.forEach((button,index)=>{button.addEventListener('click',()=>{agendaView=button.dataset.agendaView;expandedMonthDate=null;render()});button.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight')next=(index+1)%tabs.length;else if(event.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=tabs.length-1;else return;event.preventDefault();tabs[next].click();tabs[next].focus()})});
   $('.agenda-date-input').addEventListener('change',event=>{if(validDate(event.target.value)){selected=event.target.value;expandedMonthDate=null;render()}});
-  $('.agenda-today').addEventListener('click',()=>{selected=today();expandedMonthDate=null;render()});
+  $('.agenda-today').addEventListener('click',()=>{browsedStart=null;selected=today();expandedMonthDate=null;render()});
   panel.querySelectorAll('[data-agenda-step]').forEach(button=>button.addEventListener('click',()=>{const step=Number(button.dataset.agendaStep);expandedMonthDate=null;selected=agendaView==='month'?moveMonth(selected,step):shift(selected,step);render()}));
   document.addEventListener('pointerdown',event=>{panel.querySelectorAll('.agenda-task-menu[open]').forEach(menu=>{if(!menu.contains(event.target))menu.open=false})});
   document.addEventListener('keydown',event=>{if(event.key==='Escape')panel.querySelectorAll('.agenda-task-menu[open]').forEach(menu=>{menu.open=false;menu.querySelector('summary').focus()})});
