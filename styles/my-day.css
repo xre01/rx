@@ -220,3 +220,31 @@
     html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] .life-task { gap: 8px !important; padding: 14px 10px !important; }
   }
 }
+
+@layer calm {
+  #lifeHome .life-agenda:is([data-view="day"],[data-view="month"]) {
+    --agenda-paper:color-mix(in srgb,var(--calm-surface) 87%,transparent);
+    background:radial-gradient(ellipse at 93% 2%,rgb(228 201 157 / 27%),transparent 45%),linear-gradient(126deg,var(--calm-selected),var(--calm-surface) 69%,var(--calm-inset))!important;
+  }
+  #lifeHome .agenda-hero {display:flex;align-items:center;gap:22px;margin:16px 0 24px;color:var(--calm-text)}
+  #lifeHome .agenda-hero[hidden],#lifeHome .month-planner[hidden],#lifeHome .agenda-week[hidden]{display:none!important}
+  #lifeHome .agenda-hero b {font:400 clamp(76px,9vw,118px)/.95 Georgia,serif;letter-spacing:-.075em;color:var(--calm-accent)}
+  #lifeHome .agenda-hero small {font:600 11px/1.5 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--calm-muted)}
+  #lifeHome .agenda-hero h2 {font:400 clamp(26px,4vw,40px)/1.15 Georgia,serif!important;margin:4px 0!important;color:var(--calm-text)!important}
+  #lifeHome .life-agenda[data-view="day"] #agenda-content,#lifeHome .month-planner {background:var(--agenda-paper);border:1px solid var(--calm-border);border-radius:18px;padding:16px}
+  html[data-calm-ui] #lifeHome .life-agenda[data-view="day"] #agenda-content .life-tasks {min-height:0!important}
+  #lifeHome .life-agenda[data-view="day"] .agenda-week {margin:16px 0 0;border:0;background:transparent;box-shadow:none;touch-action:pan-y;user-select:none;overflow:hidden;cursor:grab}
+  #lifeHome .agenda-week:active,#lifeHome .agenda-week:active button {cursor:grabbing}
+  #lifeHome .agenda-week button {cursor:inherit;translate:var(--drag-offset,0px) 0}
+  #lifeHome .life-agenda[data-view="month"] #agenda-content {display:grid;grid-template-columns:minmax(0,1.4fr) minmax(210px,1fr);gap:14px;align-items:start}
+  #lifeHome .life-agenda[data-view="month"] .agenda-month {margin:0;background:var(--agenda-paper)}
+  #lifeHome .month-planner h3 {font:400 24px/1.2 Georgia,serif;color:var(--calm-text);margin:0 0 12px}
+  #lifeHome .month-plan-row {display:flex;align-items:center;text-align:left;gap:11px;width:100%;padding:11px 2px!important;border:0!important;border-bottom:1px solid var(--calm-border)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:var(--calm-text)!important}
+  #lifeHome .month-plan-row time {font:400 24px Georgia,serif;min-width:2ch}
+  #lifeHome .month-plan-row span {border-left:3px solid var(--calm-accent);padding-left:10px;overflow-wrap:anywhere}
+  #lifeHome .month-plan-row[data-kind="holiday"] span,#lifeHome .agenda-holiday-detail {border-left:3px solid #8da885;padding-left:10px}
+  #lifeHome .month-plan-row[data-kind="pte"] span {border-color:#819dac}
+  #lifeHome .agenda-month-chip.routine-task {display:none}
+  #lifeHome .agenda-month-cell .agenda-lunar:not(.is-festival){visibility:hidden}
+  @media(max-width:760px){#lifeHome .life-agenda[data-view="month"] #agenda-content {grid-template-columns:minmax(0,1fr)}}
+}

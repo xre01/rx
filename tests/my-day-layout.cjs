@@ -28,6 +28,15 @@ try {
   assert.equal(strip.querySelector('.agenda-week-marker'), null, 'week dates do not show task dots');
   assert.equal(strip.querySelector('[data-date="2026-11-27"]').getAttribute('aria-description'), '2 tasks', 'task counts remain available to assistive technology');
   assert.equal(d.querySelector('.agenda-day-count').textContent, '2 tasks');
+  Object.defineProperty(strip,'clientWidth',{value:350});
+  strip.setPointerCapture=()=>{};
+  const pointer=(type,x)=>{const event=new w.MouseEvent(type,{bubbles:true,button:0,clientX:x,clientY:20});Object.defineProperty(event,'isPrimary',{value:true});strip.dispatchEvent(event)};
+  pointer('pointerdown',300);pointer('pointermove',50);pointer('pointerup',50);
+  assert.equal(dates()[0],'2026-11-28');
+  assert.equal(d.querySelector('.agenda-date-input').value,'2026-11-27','browsing does not select a date');
+  strip.querySelector('button').dispatchEvent(new w.MouseEvent('click',{bubbles:true,detail:1}));
+  assert.equal(d.querySelector('.agenda-date-input').value,'2026-11-27','drag release does not select a task date');
+  d.querySelector('.agenda-today').click();
   assert.deepEqual([...d.querySelectorAll('.agenda-day-time')].map(time => time.textContent), ['All day', '17:30']);
   assert.equal(d.querySelector('[data-task-id=timed] time').dateTime, '2026-11-27T17:30');
   assert(d.querySelector('[data-task-id=timed] .task-subtasks'));
@@ -45,6 +54,12 @@ try {
   d.querySelector('[data-agenda-view=month]').click();
   assert(strip.hidden); assert(d.querySelector('.agenda-day-heading').hidden);
   assert(!d.querySelector('.agenda-month').hidden);
+  picker.value='2026-11-29';picker.dispatchEvent(new w.Event('change'));
+  d.querySelector('[data-agenda-step="1"]').click();
+  assert([...d.querySelectorAll('.month-plan-row')].some(row=>row.textContent==='28节礼日补假'));
+  const holiday=[...d.querySelectorAll('.month-plan-row')].find(row=>row.textContent==='25圣诞节');
+  holiday.click();
+  assert.equal(d.querySelector('.agenda-inline-details .agenda-holiday-detail').textContent,'圣诞节');
   d.querySelector('[data-agenda-view=list]').click();
   assert(strip.hidden); assert.equal(d.querySelector('.life-task strong').textContent, 'Undated task');
   assert.equal(d.querySelector('.agenda-task-menu'), null, 'List retains its existing controls');
